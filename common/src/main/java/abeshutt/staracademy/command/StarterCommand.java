@@ -6,6 +6,7 @@ import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.PokemonStarterData;
 import abeshutt.staracademy.world.data.StarterMode;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.TimeArgumentType;
@@ -24,29 +25,33 @@ public class StarterCommand extends Command {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal(StarAcademyMod.ID)
                 .then(literal("starter")
-                    .requires(source -> source.hasPermissionLevel(4))
-                    .then(literal("mode")
-                        .then(argument("mode", StarterModeArgumentType.starterMode())
-                            .executes(this::onMode)))
-                    .then(literal("set_raffle_interval")
-                        .then(argument("interval", TimeArgumentType.time())
-                            .executes(this::onSetRaffleInterval)))));
+                        .requires(source -> source.hasPermissionLevel(4))
+                        .then(literal("mode")
+                                .then(argument("mode", StringArgumentType.word())
+                                        .suggests(StarterModeArgumentType.SUGGESTIONS)
+                                        .executes(this::onMode)))
+                        .then(literal("set_raffle_interval")
+                                .then(argument("interval", TimeArgumentType.time())
+                                        .executes(this::onSetRaffleInterval)))));
+
     }
 
     private int onMode(CommandContext<ServerCommandSource> context) {
         MinecraftServer server = context.getSource().getServer();
         PokemonStarterData data = ModWorldData.POKEMON_STARTER.getGlobal(server);
-        StarterMode mode = StarterModeArgumentType.getStarterMode(context, "mode");
+        String modeStr = StarterModeArgumentType.getStarterMode(context, "mode");
+
+        StarterMode mode = StarterMode.valueOf(modeStr.toUpperCase());
 
         if(data.setMode(mode)) {
             context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("The starter handler is now ").formatted(Formatting.GRAY))
-                .append(Text.literal(mode.asString()).formatted(Formatting.AQUA))
+                .append(Text.literal(modeStr).formatted(Formatting.AQUA))
                 .append(Text.literal(".").formatted(Formatting.GRAY)), true);
         } else {
             context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("The starter handler is already ").formatted(Formatting.GRAY))
-                .append(Text.literal(mode.asString()).formatted(Formatting.AQUA))
+                .append(Text.literal(modeStr).formatted(Formatting.AQUA))
                 .append(Text.literal(".").formatted(Formatting.GRAY)), true);
         }
 
