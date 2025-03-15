@@ -1,6 +1,5 @@
 package abeshutt.staracademy.item.renderer;
 
-import abeshutt.staracademy.item.OutfitItem;
 import abeshutt.staracademy.item.SafariTicketItem;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;

@@ -1,7 +1,6 @@
 package abeshutt.staracademy.net;
 
 import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.data.adapter.basic.EnumAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;

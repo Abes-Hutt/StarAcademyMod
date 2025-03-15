@@ -1,7 +1,6 @@
 package abeshutt.staracademy.entity.renderer;
 
 import abeshutt.staracademy.entity.model.StarBadgeBeltModel;
-import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.world.data.StarBadgeData;
 import abeshutt.staracademy.world.inventory.BaseInventory;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +14,6 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 

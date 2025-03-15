@@ -1,7 +1,6 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.entity.SlingshotEntity;
-import abeshutt.staracademy.init.ModItems;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

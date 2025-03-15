@@ -1,8 +1,8 @@
 package abeshutt.staracademy.config;
 
 import abeshutt.staracademy.data.entity.EntityPredicate;
-import net.minecraft.entity.Entity;
 import com.google.gson.annotations.Expose;
+import net.minecraft.entity.Entity;
 
 public class EntityYeeterConfig extends FileConfig {
 

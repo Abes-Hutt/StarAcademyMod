@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static abeshutt.staracademy.util.ItemUseLogic.CommandExecutionContext.*;
+import static abeshutt.staracademy.util.ItemUseLogic.CommandExecutionContext.PLAYER;
+import static abeshutt.staracademy.util.ItemUseLogic.CommandExecutionContext.SERVER;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {

@@ -39,6 +39,7 @@
     "mythsandlegends.MixinForceSpawningUtils",
     "mythsandlegends.MixinFormAndAspectUtils",
     "mythsandlegends.MixinPlayerEvents",
+    "numismaticoverhaul.MixinShopBlock",
     "scout.MixinBaseBagItem",
     "terrastorage.MixinPacketRegistry"
   ],

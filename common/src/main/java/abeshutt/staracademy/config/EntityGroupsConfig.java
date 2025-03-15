@@ -47,7 +47,4 @@ public class EntityGroupsConfig extends FileConfig {
         this.groups = new LinkedHashMap<>();
     }
 
-    public Map<Identifier, Set<EntityPredicate>> getGroups() {
-        return groups;
-    }
 }

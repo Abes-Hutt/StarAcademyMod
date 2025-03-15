@@ -35,7 +35,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static abeshutt.staracademy.data.adapter.basic.EnumAdapter.Mode.NAME;
-import static abeshutt.staracademy.world.data.StarterMode.*;
+import static abeshutt.staracademy.world.data.StarterMode.RAFFLE_ENABLED;
+import static abeshutt.staracademy.world.data.StarterMode.RAFFLE_PAUSED;
 import static com.cobblemon.mod.common.util.ResourceLocationExtensionsKt.asIdentifierDefaultingNamespace;
 
 public class PokemonStarterData extends WorldData {

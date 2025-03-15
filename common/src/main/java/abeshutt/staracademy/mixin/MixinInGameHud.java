@@ -7,7 +7,6 @@ import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;
 import abeshutt.staracademy.world.data.SafariData;
-import abeshutt.staracademy.world.data.StarterMode;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.Species;
 import net.minecraft.client.MinecraftClient;
