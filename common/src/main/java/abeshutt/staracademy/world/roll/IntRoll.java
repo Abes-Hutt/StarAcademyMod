@@ -27,6 +27,10 @@ public interface IntRoll extends ISerializable<NbtCompound, JsonObject> {
         return new Uniform(min, max);
     }
 
+    static Triangular ofTriangular(int min, int max) {
+        return new Triangular(min, max);
+    }
+
     class Constant implements IntRoll {
         private int count;
 
@@ -148,11 +152,81 @@ public interface IntRoll extends ISerializable<NbtCompound, JsonObject> {
         }
     }
 
+    class Triangular implements IntRoll {
+        private int min, max;
+
+        protected Triangular() {
+
+        }
+
+        protected Triangular(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public int getMin() {
+            return this.min;
+        }
+
+        public int getMax() {
+            return this.max;
+        }
+
+        @Override
+        public int get(RandomSource random) {
+            int u1 = random.nextInt(this.max - this.min + 1) + this.min;
+            int u2 = random.nextInt(this.max - this.min + 1) + this.min;
+            return (u1 + u2) / 2;
+        }
+
+        @Override
+        public void writeBits(BitBuffer buffer) {
+            Adapters.INT_SEGMENTED_7.writeBits(this.min, buffer);
+            Adapters.INT_SEGMENTED_7.writeBits(this.max, buffer);
+        }
+
+        @Override
+        public void readBits(BitBuffer buffer) {
+            Adapters.INT_SEGMENTED_7.readBits(buffer).ifPresent(value -> this.min = value);
+            Adapters.INT_SEGMENTED_7.readBits(buffer).ifPresent(value -> this.max = value);
+        }
+
+        @Override
+        public Optional<NbtCompound> writeNbt() {
+            NbtCompound nbt = new NbtCompound();
+            Adapters.INT.writeNbt(this.min).ifPresent(tag -> nbt.put("min", tag));
+            Adapters.INT.writeNbt(this.max).ifPresent(tag -> nbt.put("max", tag));
+            return Optional.of(nbt);
+        }
+
+        @Override
+        public void readNbt(NbtCompound nbt) {
+            Adapters.INT.readNbt(nbt.get("min")).ifPresent(value -> this.min = value);
+            Adapters.INT.readNbt(nbt.get("max")).ifPresent(value -> this.max = value);
+        }
+
+        @Override
+        public Optional<JsonObject> writeJson() {
+            JsonObject json = new JsonObject();
+            Adapters.INT.writeJson(this.min).ifPresent(tag -> json.add("min", tag));
+            Adapters.INT.writeJson(this.max).ifPresent(tag -> json.add("max", tag));
+            return Optional.of(json);
+        }
+
+        @Override
+        public void readJson(JsonObject json) {
+            Adapters.INT.readJson(json.get("min")).ifPresent(value -> this.min = value);
+            Adapters.INT.readJson(json.get("max")).ifPresent(value -> this.max = value);
+        }
+    }
+
     static int getMin(IntRoll roll) {
         if(roll instanceof Constant constant) {
             return constant.getCount();
         } else if(roll instanceof Uniform uniform) {
             return uniform.getMin();
+        } else if(roll instanceof Triangular triangular) {
+            return triangular.getMin();
         }
 
         throw new UnsupportedOperationException();
@@ -163,6 +237,8 @@ public interface IntRoll extends ISerializable<NbtCompound, JsonObject> {
             return constant.getCount();
         } else if(roll instanceof Uniform uniform) {
             return uniform.getMax();
+        } else if(roll instanceof Triangular triangular) {
+            return triangular.getMax();
         }
 
         throw new UnsupportedOperationException();
@@ -173,6 +249,7 @@ public interface IntRoll extends ISerializable<NbtCompound, JsonObject> {
             super("type", true);
             this.register("constant", Constant.class, Constant::new);
             this.register("uniform", Uniform.class, Uniform::new);
+            this.register("triangular", Triangular.class, Triangular::new);
         }
 
         @Override
