@@ -8,7 +8,7 @@ import abeshutt.staracademy.world.random.JavaRandom;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import net.fabricmc.loader.api.FabricLoader;
+import dev.architectury.platform.Platform;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -36,27 +36,27 @@ public final class StarAcademyMod {
     public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));
 
     public static void init() {
-        if(FabricLoader.getInstance().isModLoaded("enhancedcelestials")) {
+        if(Platform.isModLoaded("enhancedcelestials")) {
             EnhancedCelestialsCompat.init();
         }
 
         ModRegistries.register();
 
-        CommonEvents.POKEMON_CATCH_RATE.subscribe(Priority.LOWEST, event -> {
+        CommonEvents.POKEMON_CATCH_RATE.register(event -> {
             if(event.getThrower().getWorld().getRegistryKey() == SAFARI) {
                 if (event.getPokeBallEntity().getPokeBall().item() != CobblemonItems.SAFARI_BALL) {
                     event.setCatchRate(0.0F);
                 }
             }
-        });
+        }, Priority.LOWEST);
 
-        CommonEvents.POKEMON_SENT_PRE.subscribe(Priority.NORMAL, event -> {
+        CommonEvents.POKEMON_SENT_PRE.register(event -> {
             if(event.getLevel().getRegistryKey() == SAFARI) {
                 event.cancel();
             }
         });
 
-        CommonEvents.POKEMON_ENTITY_SPAWN.subscribe(Priority.HIGHEST, event -> {
+        CommonEvents.POKEMON_ENTITY_SPAWN.register(event -> {
             if(FORCE_SPAWNING.get()) {
                 return;
             }
@@ -68,16 +68,16 @@ public final class StarAcademyMod {
             double distance = Math.sqrt(dx * dx + dz * dz);
 
             if(distance <= ModConfigs.POKEMON_SPAWN.getSpawnProtectionDistance()) {
-                event.getEntity().discard();
+                event.cancel();
                 return;
             }
 
             ModConfigs.POKEMON_SPAWN.getLevel(distance).ifPresent(roll -> {
                 event.getEntity().getPokemon().setLevel(roll.get(JavaRandom.ofNanoTime()));
             });
-        });
+        }, Priority.HIGHEST);
 
-        CommonEvents.POKEMON_ENTITY_SPAWN.subscribe(Priority.LOWEST, event -> {
+        CommonEvents.POKEMON_ENTITY_SPAWN.register(event -> {
             MinecraftServer server = event.getEntity().getWorld().getServer();
             if(server == null) return;
             Pokemon pokemon = event.getEntity().getPokemon();
@@ -115,7 +115,7 @@ public final class StarAcademyMod {
                     }
                 }
             }
-        });
+        }, Priority.LOWEST);
     }
 
     public static Identifier id(String path) {

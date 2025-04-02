@@ -2,51 +2,71 @@ package abeshutt.staracademy.event;
 
 import java.util.*;
 
-public abstract class Event<D, V, R, L extends Event.Listener<D, V>> {
+public abstract class Event<INVOKER, LISTENER extends Event.Listener> {
 
-    protected final Map<Object, List<L>> keyedListeners;
-    protected final List<L> orderedListeners;
+    protected final Map<Object, List<LISTENER>> keyedListeners;
+    protected final List<LISTENER> orderedListeners;
 
-    public Event() {
+    protected Event() {
         this.keyedListeners = new HashMap<>();
         this.orderedListeners = new ArrayList<>();
     }
 
-    public abstract R invoke(D data);
+    public abstract INVOKER invoker();
 
-    protected void subscribe(L listener) {
-        this.subscribe(null, listener);
-    }
+    public void register(LISTENER listener) {
+        List<LISTENER> keyed = this.keyedListeners.computeIfAbsent(listener.getOwner(),
+                    key -> new ArrayList<>());
+        keyed.add(listener);
 
-    protected void subscribe(Object reference, L listener) {
-        this.keyedListeners.computeIfAbsent(reference, key -> new ArrayList<>()).add(listener);
-        this.orderedListeners.add(listener);
-        this.orderedListeners.sort(Comparator.comparingInt(Listener::getOrder));
-    }
+        List<LISTENER> ordered = this.orderedListeners;
+        int index = Collections.binarySearch(ordered, listener);
 
-    protected void unsubscribe(Object reference) {
-        List<L> listeners = this.keyedListeners.remove(reference);
-        if(listeners == null) return;
-        listeners.forEach(this.orderedListeners::remove);
-        this.orderedListeners.sort(Comparator.comparingInt(Listener::getOrder));
-    }
+        if(index >= 0) {
+            while(index < ordered.size() - 1 && ordered.get(index + 1).compareTo(listener) == 0) {
+                index++;
+            }
 
-    protected static abstract class Listener<K, V> {
-        private final int order;
-
-        public Listener() {
-            this(0);
+            index++;
+        } else {
+            index = -index - 1;
         }
 
-        public Listener(int order) {
+        ordered.add(index, listener);
+    }
+
+    public void release(Object owner) {
+        List<LISTENER> listeners = this.keyedListeners.remove(owner);
+        if(listeners == null || listeners.isEmpty()) return;
+        this.orderedListeners.removeAll(new HashSet<>(listeners));
+    }
+
+    public void clear() {
+        this.keyedListeners.clear();
+        this.orderedListeners.clear();
+    }
+
+    public static class Listener implements Comparable<Listener> {
+        private final Object owner;
+        private final int order;
+
+        public Listener(Object owner, int order) {
+            this.owner = owner;
             this.order = order;
+        }
+
+        public Object getOwner() {
+            return this.owner;
         }
 
         public int getOrder() {
             return this.order;
         }
 
-        public abstract V invoke(K data);
+        @Override
+        public int compareTo(Listener other) {
+            return Integer.compare(this.order, other.getOrder());
+        }
     }
 
 }

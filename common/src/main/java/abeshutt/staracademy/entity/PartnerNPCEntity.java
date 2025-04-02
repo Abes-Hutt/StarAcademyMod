@@ -120,7 +120,7 @@ public class PartnerNPCEntity extends HumanEntity {
     }
 
     static {
-        CommonEvents.POKEMON_SENT_POST.subscribe(Priority.NORMAL, event -> {
+        CommonEvents.POKEMON_SENT_POST.register(event -> {
             World world = event.getPokemonEntity().getWorld();
             if(world.isClient() || world.getServer() == null) return;
             UUID owner = event.getPokemonEntity().getOwnerUuid();
@@ -138,7 +138,7 @@ public class PartnerNPCEntity extends HumanEntity {
 
                 return false;
             });
-        });
+        }, Priority.NORMAL);
     }
 
 }

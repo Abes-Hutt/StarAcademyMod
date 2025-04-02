@@ -2,92 +2,112 @@ package abeshutt.staracademy.event;
 
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.reactive.Observable;
-import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
+import com.cobblemon.mod.common.api.reactive.SimpleObservable;
 import kotlin.Unit;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
-public class CobblemonEvent<T> extends ConsumerEvent<CobblemonEvent.Payload<T>, CobblemonEvent.Listener<T>> {
+public class CobblemonEvent<EVENT> extends Event<CobblemonEvent.Invoker<EVENT>, CobblemonEvent.Listener<EVENT>> {
 
-    private final Observable<T> source;
-    private final List<ObservableSubscription<T>> listeners;
+    private final Observable<EVENT> source;
 
-    public CobblemonEvent(Observable<T> source) {
+    protected CobblemonEvent(Observable<EVENT> source) {
         this.source = source;
-        this.listeners = new ArrayList<>();
 
         for(Priority priority : Priority.values()) {
-            this.listeners.add(this.source.subscribe(priority, event -> {
-                this.invoke(new Payload<>(event, priority));
+            this.source.subscribe(priority, event -> {
+                for(CobblemonEvent.Listener<EVENT> listener : this.orderedListeners) {
+                    if(listener.getPriority() == priority) {
+                        listener.getCallback().accept(event);
+                    }
+                }
+
                 return Unit.INSTANCE;
-            }));
+            });
         }
     }
 
-    public void subscribe(Priority priority, Consumer<T> listener) {
-        this.subscribe(new Listener<>(listener, priority));
+    public static <EVENT> CobblemonEvent<EVENT> of(Observable<EVENT> source) {
+        return new CobblemonEvent<>(source);
     }
 
-    public void subscribe(int order, Priority priority, Consumer<T> listener) {
-        this.subscribe(new Listener<>(order, listener, priority));
+    @Override
+    public Invoker<EVENT> invoker() {
+        return event -> {
+            if(this.source instanceof SimpleObservable<EVENT> observable) {
+                observable.emit(event);
+            }
+        };
     }
 
-    public void subscribe(Object reference, Priority priority, Consumer<T> listener) {
-        this.subscribe(reference, new Listener<>(listener, priority));
+    public void register(Consumer<EVENT> callback) {
+        this.register(null, callback, Priority.NORMAL, 0);
     }
 
-    public void subscribe(Object reference, int order, Priority priority, Consumer<T> listener) {
-        this.subscribe(reference, new Listener<>(order, listener, priority));
+    public void register(Object owner, Consumer<EVENT> callback) {
+        this.register(owner, callback, Priority.NORMAL, 0);
     }
 
-    public void unsubscribe(Object reference) {
-        super.unsubscribe(reference);
+    public void register(Consumer<EVENT> callback, int order) {
+        this.register(null, callback, Priority.NORMAL, order);
     }
 
-    public void dispose() {
-        this.listeners.forEach(this.source::unsubscribe);
+    public void register(Consumer<EVENT> callback, Priority priority) {
+        this.register(null, callback, priority, 0);
     }
 
-    protected static class Payload<T> {
-        private final T data;
+    public void register(Object owner, Consumer<EVENT> callback, Priority priority) {
+        this.register(owner, callback, priority, 0);
+    }
+
+    public void register(Consumer<EVENT> callback, Priority priority, int order) {
+        this.register(null, callback, priority, order);
+    }
+
+    public void register(Object owner, Consumer<EVENT> callback, Priority priority, int order) {
+        this.register(new Listener<>(owner, order, priority, callback));
+    }
+
+    @FunctionalInterface
+    public interface Invoker<EVENT> {
+        void emit(EVENT event);
+
+        default void emit(EVENT... events) {
+            for(EVENT event : events) {
+                this.emit(event);
+            }
+        }
+    }
+
+    protected static class Listener<EVENT> extends Event.Listener {
         private final Priority priority;
+        private final Consumer<EVENT> callback;
 
-        public Payload(T data, Priority priority) {
-            this.data = data;
+        public Listener(Object owner, int order, Priority priority, Consumer<EVENT> callback) {
+            super(owner, order);
             this.priority = priority;
-        }
-
-        public T getData() {
-            return this.data;
+            this.callback = callback;
         }
 
         public Priority getPriority() {
             return this.priority;
         }
-    }
 
-    protected static class Listener<T> extends ConsumerEvent.Listener<Payload<T>> {
-        private final Priority priority;
-
-        public Listener(Consumer<T> function, Priority priority) {
-            super(payload -> function.accept(payload.getData()));
-            this.priority = priority;
-        }
-
-        public Listener(int order, Consumer<T> function, Priority priority) {
-            super(order, payload -> function.accept(payload.getData()));
-            this.priority = priority;
+        public Consumer<EVENT> getCallback() {
+            return this.callback;
         }
 
         @Override
-        public Void invoke(Payload<T> data) {
-            if(data.getPriority() == this.priority) {
-                return super.invoke(data);
+        public int compareTo(Event.Listener listener) {
+            if(listener instanceof Listener<?> other) {
+                int value = Integer.compare(this.getPriority().ordinal(), other.getPriority().ordinal());
+
+                if(value != 0) {
+                    return value;
+                }
             }
 
-            return null;
+            return super.compareTo(listener);
         }
     }
 
