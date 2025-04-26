@@ -144,9 +144,9 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
     }
 
     @Override
-    protected void renderLabelIfPresent(T human, Text text, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    protected void renderLabelIfPresent(T human, Text text, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, float tickDelta) {
         matrixStack.push();
-        super.renderLabelIfPresent(human, text, matrixStack, vertexConsumerProvider, i);
+        super.renderLabelIfPresent(human, text, matrixStack, vertexConsumerProvider, i, tickDelta);
         matrixStack.pop();
     }
 
@@ -171,16 +171,17 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
         sleeve.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(human.getSkinTexture())), light, OverlayTexture.DEFAULT_UV);
     }
 
-    protected void setupTransforms(T human, MatrixStack matrixStack, float f, float g, float h) {
-        float i = human.getLeaningPitch(h);
-        float j;
-        float k;
+    protected void setupTransforms(T human, MatrixStack matrixStack, float f, float g, float h, float i) {
+        float j = human.getLeaningPitch(h);
+        float k = human.getPitch(h);
+        float l;
+        float m;
         if (human.isFallFlying()) {
-            super.setupTransforms(human, matrixStack, f, g, h);
-            j = (float)human.getRoll() + h;
-            k = MathHelper.clamp(j * j / 100.0F, 0.0F, 1.0F);
+            super.setupTransforms(human, matrixStack, f, g, h, i);
+            l = (float)human.getFallFlyingTicks() + h;
+            m = MathHelper.clamp(l * l / 100.0F, 0.0F, 1.0F);
             if (!human.isUsingRiptide()) {
-                matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(k * (-90.0F - human.getPitch())));
+                matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(m * (-90.0F - k)));
             }
 
             Vec3d vec3d = human.getRotationVec(h);
@@ -188,21 +189,20 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
             double d = vec3d2.horizontalLengthSquared();
             double e = vec3d.horizontalLengthSquared();
             if (d > 0.0 && e > 0.0) {
-                double l = (vec3d2.x * vec3d.x + vec3d2.z * vec3d.z) / Math.sqrt(d * e);
-                double m = vec3d2.x * vec3d.z - vec3d2.z * vec3d.x;
-                matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation((float)(Math.signum(m) * Math.acos(l))));
+                double n = (vec3d2.x * vec3d.x + vec3d2.z * vec3d.z) / Math.sqrt(d * e);
+                double o = vec3d2.x * vec3d.z - vec3d2.z * vec3d.x;
+                matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation((float)(Math.signum(o) * Math.acos(n))));
             }
-        } else if (i > 0.0F) {
-            super.setupTransforms(human, matrixStack, f, g, h);
-            j = human.isTouchingWater() ? -90.0F - human.getPitch() : -90.0F;
-            k = MathHelper.lerp(i, 0.0F, j);
-            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(k));
-
-            if(human.isInSwimmingPose()) {
+        } else if (j > 0.0F) {
+            super.setupTransforms(human, matrixStack, f, g, h, i);
+            l = human.isTouchingWater() ? -90.0F - k : -90.0F;
+            m = MathHelper.lerp(j, 0.0F, l);
+            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(m));
+            if (human.isInSwimmingPose()) {
                 matrixStack.translate(0.0F, -1.0F, 0.3F);
             }
         } else {
-            super.setupTransforms(human, matrixStack, f, g, h);
+            super.setupTransforms(human, matrixStack, f, g, h, i);
         }
     }
 

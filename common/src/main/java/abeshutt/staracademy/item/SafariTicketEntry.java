@@ -5,14 +5,31 @@ import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.IBitSerializable;
 import abeshutt.staracademy.world.roll.IntRoll;
 import com.google.gson.annotations.Expose;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.dynamic.Codecs;
 
 import java.util.regex.Pattern;
 
 public class SafariTicketEntry implements IBitSerializable {
+
+    public static final Codec<SafariTicketEntry> CODEC = RecordCodecBuilder.create((instance) -> {
+        return instance.group(
+                Codec.STRING.fieldOf("name").forGetter(SafariTicketEntry::getName),
+                Codecs.POSITIVE_INT.fieldOf("color").orElse(0xFFFFFF).forGetter(SafariTicketEntry::getColor),
+                Codecs.ESCAPED_STRING.fieldOf("model").forGetter(SafariTicketEntry::getModel),
+                Adapters.INT_ROLL.codec().fieldOf("model").forGetter(SafariTicketEntry::getModel)
+                .apply(instance, SafariTicketEntry::new));
+    });;
 
     @Expose private String name;
     @Expose private int color;

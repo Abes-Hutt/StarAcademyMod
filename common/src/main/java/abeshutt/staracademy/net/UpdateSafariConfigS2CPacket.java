@@ -1,15 +1,19 @@
 package abeshutt.staracademy.net;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.item.SafariTicketEntry;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.packet.CustomPayload;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateSafariConfigS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
+
+    public static final Id<UpdateSafariConfigS2CPacket> ID = new Id<>(StarAcademyMod.id("update_safari_config_s2c"));
 
     private Map<String, SafariTicketEntry> entries;
 
@@ -24,6 +28,11 @@ public class UpdateSafariConfigS2CPacket extends ModPacket<ClientPlayNetworkHand
     public UpdateSafariConfigS2CPacket(String id, SafariTicketEntry entry) {
         this.entries = new HashMap<>();
         this.entries.put(id, entry);
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     @Override

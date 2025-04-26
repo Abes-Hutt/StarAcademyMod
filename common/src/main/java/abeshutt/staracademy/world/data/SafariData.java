@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -199,7 +200,7 @@ public class SafariData extends WorldData {
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        ModNetwork.CHANNEL.sendToPlayer(player, new UpdateSafariConfigS2CPacket(ModConfigs.SAFARI.getTickets()));
+        NetworkManager.sendToPlayer(player, new UpdateSafariConfigS2CPacket(ModConfigs.SAFARI.getTickets()));
     }
 
     public void onTick(MinecraftServer server) {
@@ -278,14 +279,14 @@ public class SafariData extends WorldData {
 
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             if(dirty.contains(player.getUuid())) {
-                ModNetwork.CHANNEL.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, player.getUuid(), this.entries.get(player.getUuid())));
+                NetworkManager.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, player.getUuid(), this.entries.get(player.getUuid())));
             } else {
-                ModNetwork.CHANNEL.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, new HashMap<>()));
+                NetworkManager.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, new HashMap<>()));
             }
         }
 
         if(this.lastConfig != ModConfigs.SAFARI) {
-            ModNetwork.CHANNEL.sendToPlayers(server.getPlayerManager().getPlayerList(), new UpdateSafariConfigS2CPacket(ModConfigs.SAFARI.getTickets()));
+            NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(), new UpdateSafariConfigS2CPacket(ModConfigs.SAFARI.getTickets()));
             this.lastConfig = ModConfigs.SAFARI;
         }
 

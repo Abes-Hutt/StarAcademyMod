@@ -21,7 +21,7 @@ public class StarBadgeWidget extends ButtonWidget {
     }
 
     @Override
-    protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         context.getMatrices().push();
         context.getMatrices().translate(this.getX(), this.getY(), 300);
         context.drawTexture(TEXTURE, 0, 0, this.hovered ? 13.0F : 0.0F, 51.0F, 13, 13, 256, 256);

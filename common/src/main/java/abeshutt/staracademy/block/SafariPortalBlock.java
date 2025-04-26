@@ -31,6 +31,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 
 public class SafariPortalBlock extends Block implements BlockEntityProvider {
 
@@ -75,7 +76,7 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider {
 
         ProxyEntity proxy = ProxyEntity.of(entity).orElseThrow();
 
-        if(entity instanceof ServerPlayerEntity player && entity.canUsePortals() && !proxy.hasSafariPortalCooldown()
+        if(entity instanceof ServerPlayerEntity player && entity.canUsePortals(false) && !proxy.hasSafariPortalCooldown()
                 && !proxy.isInSafariPortal() && VoxelShapes.matchesAnywhere(
                 VoxelShapes.cuboid(entity.getBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ())),
                 state.getOutlineShape(world, pos),
@@ -129,7 +130,7 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
-    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
         return ItemStack.EMPTY;
     }
 

@@ -13,7 +13,7 @@ import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.starter.StarterChosenEvent;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
-import com.cobblemon.mod.common.api.storage.player.PlayerData;
+//import com.cobblemon.mod.common.api.storage.player.PlayerData;
 import com.cobblemon.mod.common.config.starter.StarterCategory;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.pokemon.Species;
@@ -22,6 +22,7 @@ import com.cobblemon.mod.common.util.LocalizationUtilsKt;
 import com.cobblemon.mod.common.world.gamerules.CobblemonGameRules;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.networking.NetworkManager;
 import kotlin.Unit;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -177,8 +178,8 @@ public class PokemonStarterData extends WorldData {
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             StarterEntry entry = this.getEntries().get(player.getUuid());
             if(entry == null) continue;
-            PlayerData playerData = Cobblemon.playerData.get(player);
-            entry.setAvailable(!playerData.getStarterSelected() && !playerData.getStarterLocked());
+            //PlayerData playerData = Cobblemon.playerData.get(player);
+            //entry.setAvailable(!playerData.getStarterSelected() && !playerData.getStarterLocked());
         }
 
         Map<UUID, StarterEntry> changes = new HashMap<>();
@@ -203,7 +204,7 @@ public class PokemonStarterData extends WorldData {
                     }
                 });
 
-                ModNetwork.CHANNEL.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(null,
+                NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(null,
                         message, this.timeInterval, this.timeLeft, this.mode, this.selectionCooldown));
             }
         }
@@ -226,7 +227,7 @@ public class PokemonStarterData extends WorldData {
             }
         });
 
-        ModNetwork.CHANNEL.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(starters, message,
+        NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(starters, message,
                 this.timeInterval, this.timeLeft, this.mode, this.selectionCooldown));
     }
 
@@ -268,6 +269,7 @@ public class PokemonStarterData extends WorldData {
     }
 
     public boolean giveStarter(ServerPlayerEntity player, Identifier speciesId) {
+        /*
         PlayerData playerData = Cobblemon.playerData.get(player);
 
         if(playerData.getStarterSelected()) {
@@ -278,7 +280,7 @@ public class PokemonStarterData extends WorldData {
             player.sendMessage(LocalizationUtilsKt.lang("ui.starter.cannotchoose")
                     .formatted(Formatting.RED), true);
             return false;
-        }
+        }*/
 
         PokemonProperties properties = null;
 
@@ -302,8 +304,8 @@ public class PokemonStarterData extends WorldData {
         CobblemonEvents.STARTER_CHOSEN.postThen(new StarterChosenEvent(player, properties, pokemon), event -> {
             return Unit.INSTANCE;
         }, event -> {
-            playerData.setStarterSelected(true);
-            playerData.setStarterUUID(pokemon.getUuid());
+            //playerData.setStarterSelected(true);
+            //playerData.setStarterUUID(pokemon.getUuid());
 
             if(player.getWorld().getGameRules().getBoolean(CobblemonGameRules.SHINY_STARTERS)) {
                 pokemon.setShiny(true);
@@ -311,8 +313,8 @@ public class PokemonStarterData extends WorldData {
 
             Cobblemon.INSTANCE.getStorage().getParty(player).add(pokemon);
             CobblemonCriteria.INSTANCE.getPICK_STARTER().trigger(player, pokemon);
-            Cobblemon.playerData.saveSingle(playerData);
-            playerData.sendToPlayer(player);
+            //Cobblemon.playerData.saveSingle(playerData);
+            //playerData.sendToPlayer(player);
             return Unit.INSTANCE;
         });
 

@@ -9,9 +9,25 @@ loom {
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
-    modImplementation("com.cobblemon:mod:1.5.2+1.20.1")
-    implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
+    modCompileOnly "com.cobblemon:fabric:1.6.1+1.21.1"
+}
 
+/*
+architectury {
+    common rootProject.enabled_platforms.split(',')
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/academy-common.accesswidener")
+}*/
+
+dependencies {
+    //modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+    //modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    //modImplementation("com.cobblemon:mod:1.5.2+1.20.1")
+    //implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
+
+    /*
     modImplementation files("jars/Bountiful-6.0.3+1.20.1-fabric.jar")
     modImplementation files("jars/cloud-boots-1.20.1-fabric-3.0.0.jar")
     modImplementation files("jars/GooeyLibs-Fabric-3.0.0+1.20.1.jar")
@@ -33,5 +49,5 @@ dependencies {
     modImplementation files("jars/sophisticatedstorage-1.20.1-0.11.3.1.73.jar")
     modImplementation files("jars/terrastorageicons-1.0.0.jar")
     modImplementation files("jars/YouShallNotSpawn-fabric-1.20.x-2.0.2.jar")
-    modImplementation files("jars/Necronomicon-Fabric-1.6.0+1.20.1.jar")
+    modImplementation files("jars/Necronomicon-Fabric-1.6.0+1.20.1.jar")*/
 }

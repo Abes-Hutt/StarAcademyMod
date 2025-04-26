@@ -7,7 +7,6 @@ import abeshutt.staracademy.data.item.ItemPredicate;
 import abeshutt.staracademy.data.tile.TilePredicate;
 import abeshutt.staracademy.util.ItemUseLogic;
 import abeshutt.staracademy.world.roll.IntRoll;
-import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.item.ItemStack;
@@ -34,7 +33,6 @@ public abstract class Config {
             .registerTypeAdapter(BlockPos.class, Adapters.BLOCK_POS)
             .registerTypeAdapter(Identifier.class, Adapters.IDENTIFIER)
             .registerTypeAdapter(ItemStack.class, Adapters.ITEM_STACK)
-            .registerTypeAdapter(PokemonProperties.class, Adapters.POKEMON_PROPERTIES)
             .registerTypeAdapter(ItemUseLogic.class, Adapters.of(ItemUseLogic::new, false))
             .create();
 

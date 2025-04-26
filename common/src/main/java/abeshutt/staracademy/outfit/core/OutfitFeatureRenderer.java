@@ -32,7 +32,6 @@ public class OutfitFeatureRenderer<
         });
     }
 
-
     protected void renderOutfit(OutfitPiece outfit, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         OutfitModel model = outfit.getModel();
         Identifier texture = outfit.getTexture().getModel();
@@ -40,8 +39,7 @@ public class OutfitFeatureRenderer<
         VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getArmorCutoutNoCull(texture));
 
         this.getContextModel().copyBipedStateTo(model);
-        model.render(matrices, vertices, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+        model.render(matrices, vertices, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
     }
-
 
 }

@@ -39,7 +39,7 @@ public class StructureTemplate implements INbtSerializable<NbtCompound> {
         NbtCompound nbt;
 
         try {
-            nbt = NbtIo.readCompressed(new FileInputStream(path));
+            nbt = NbtIo.readCompressed(new FileInputStream(path), NbtSizeTracker.ofUnlimitedBytes());
         } catch(IOException e) {
             return null;
         }

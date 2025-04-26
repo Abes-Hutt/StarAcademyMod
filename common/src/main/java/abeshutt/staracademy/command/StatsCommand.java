@@ -9,7 +9,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.RegistryEntryArgumentType;
+import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -29,7 +29,7 @@ import net.minecraft.util.WorldSavePath;
 import java.io.File;
 import java.util.*;
 
-import static net.minecraft.command.argument.RegistryEntryArgumentType.registryEntry;
+import static net.minecraft.command.argument.RegistryEntryReferenceArgumentType.registryEntry;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.util.Formatting.GRAY;
@@ -56,7 +56,7 @@ public class StatsCommand extends Command {
     }
 
     private int onPrintStats(StatType type, RegistryKey key, boolean hasTarget, CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        RegistryEntry.Reference entry = RegistryEntryArgumentType.getRegistryEntry(context, "stat", key);
+        RegistryEntry.Reference entry = RegistryEntryReferenceArgumentType.getRegistryEntry(context, "stat", key);
         PlayerProfileData data = ModWorldData.PLAYER_PROFILE.getGlobal(context.getSource().getServer());
 
         Set<UUID> players = new HashSet<>();

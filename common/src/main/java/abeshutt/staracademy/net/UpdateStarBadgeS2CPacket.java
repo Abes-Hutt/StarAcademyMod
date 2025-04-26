@@ -1,16 +1,20 @@
 package abeshutt.staracademy.net;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.world.data.StarBadgeData;
 import abeshutt.staracademy.world.inventory.BaseInventory;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.packet.CustomPayload;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class UpdateStarBadgeS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
+
+    public static final Id<UpdateStarBadgeS2CPacket> ID = new Id<>(StarAcademyMod.id("update_star_badge_s2c"));
 
     private Map<UUID, BaseInventory> inventories;
 
@@ -25,6 +29,11 @@ public class UpdateStarBadgeS2CPacket extends ModPacket<ClientPlayNetworkHandler
     public UpdateStarBadgeS2CPacket(UUID uuid, BaseInventory inventory) {
         this.inventories = new HashMap<>();
         this.inventories.put(uuid, inventory);
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     @Override

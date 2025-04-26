@@ -6,8 +6,10 @@ import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.net.UpdatePlayerProfileS2CPacket;
 import abeshutt.staracademy.util.ProxyGameProfile;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,12 +46,13 @@ public class PlayerProfileData extends WorldData {
 
         if(future == null) {
             future = CompletableFuture.supplyAsync(() -> {
-                GameProfile profile = server.getSessionService().fillProfileProperties(
-                        new GameProfile(uuid, null), true);
+                ProfileResult result = server.getSessionService().fetchProfile(
+                        uuid, true);
+                GameProfile profile = result.profile() == null ? new GameProfile(uuid, null) : result.profile();
                 this.profiles.put(uuid, profile);
                 this.futures.remove(uuid);
                 this.markDirty();
-                ModNetwork.CHANNEL.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
                         new UpdatePlayerProfileS2CPacket(uuid, profile));
                 return profile;
             });
@@ -62,7 +65,7 @@ public class PlayerProfileData extends WorldData {
 
     private void onJoin(ServerPlayerEntity player) {
         this.getProfileAsync(player.getServer(), player.getUuid());
-        ModNetwork.CHANNEL.sendToPlayer(player, new UpdatePlayerProfileS2CPacket(this.profiles));
+        NetworkManager.sendToPlayer(player, new UpdatePlayerProfileS2CPacket(this.profiles));
     }
 
     private void onTick(MinecraftServer server) {
@@ -73,7 +76,7 @@ public class PlayerProfileData extends WorldData {
                 ProxyGameProfile.of(profile).ifPresent(proxy -> {
                     proxy.setName(player.getGameProfile().getName());
                     this.markDirty();
-                    ModNetwork.CHANNEL.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                    NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
                             new UpdatePlayerProfileS2CPacket(player.getUuid(), profile));
                 });
             }

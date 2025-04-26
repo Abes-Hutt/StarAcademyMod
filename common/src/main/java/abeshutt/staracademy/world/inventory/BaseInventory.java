@@ -119,7 +119,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider, INbtSerial
 
         while(var3.hasNext()) {
             ItemStack itemStack = (ItemStack)var3.next();
-            if (itemStack.isEmpty() || ItemStack.canCombine(itemStack, stack) && itemStack.getCount() < itemStack.getMaxCount()) {
+            if (itemStack.isEmpty() || ItemStack.areItemsAndComponentsEqual(itemStack, stack) && itemStack.getCount() < itemStack.getMaxCount()) {
                 bl = true;
                 break;
             }
@@ -224,7 +224,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider, INbtSerial
     private void addToExistingSlot(ItemStack stack) {
         for(int i = 0; i < this.size; ++i) {
             ItemStack itemStack = this.getStack(i);
-            if (ItemStack.canCombine(itemStack, stack)) {
+            if (ItemStack.areItemsAndComponentsEqual(itemStack, stack)) {
                 this.transfer(stack, itemStack);
                 if (stack.isEmpty()) {
                     return;

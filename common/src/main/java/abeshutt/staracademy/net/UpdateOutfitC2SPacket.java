@@ -1,9 +1,11 @@
 package abeshutt.staracademy.net;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.WardrobeData;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -11,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateOutfitC2SPacket extends ModPacket<ServerPlayNetworkHandler> {
+
+    public static final Id<UpdateOutfitC2SPacket> ID = new Id<>(StarAcademyMod.id("update_outfit_c2s"));
 
     private final Map<String, Boolean> equipped;
 
@@ -25,6 +29,11 @@ public class UpdateOutfitC2SPacket extends ModPacket<ServerPlayNetworkHandler> {
     public UpdateOutfitC2SPacket(String id, boolean equipped) {
         this.equipped = new HashMap<>();
         this.equipped.put(id, equipped);
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     @Override

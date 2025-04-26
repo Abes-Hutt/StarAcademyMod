@@ -1,6 +1,7 @@
 package abeshutt.staracademy.block;
 
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.StructureBlockMode;
@@ -33,8 +34,9 @@ public class BetterStructureBlock extends BlockWithEntity implements OperatorBlo
         return new BetterStructureBlockEntity(pos, state);
     }
 
+
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(world.getBlockEntity(pos) instanceof BetterStructureBlockEntity structure) {
             if(world.isClient()) {
                 structure.openScreen();
@@ -51,6 +53,11 @@ public class BetterStructureBlock extends BlockWithEntity implements OperatorBlo
         if(!world.isClient && placer != null && world.getBlockEntity(pos) instanceof BetterStructureBlockEntity structure) {
             structure.setAuthor(placer);
         }
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null;
     }
 
     @Override

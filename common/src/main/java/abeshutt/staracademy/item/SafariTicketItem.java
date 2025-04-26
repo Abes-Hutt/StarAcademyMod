@@ -1,8 +1,7 @@
 package abeshutt.staracademy.item;
 
-import abeshutt.staracademy.config.SafariConfig;
-import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModConfigs;
+import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.renderer.SafariTicketItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
@@ -10,11 +9,11 @@ import abeshutt.staracademy.util.ISpecialItemModel;
 import abeshutt.staracademy.world.data.SafariData;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.roll.IntRoll;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -64,10 +63,10 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, tooltip, type);
 
-        SafariTicketItem.getEntry(stack, world.isClient()).ifPresent(entry -> {
+        SafariTicketItem.getEntry(stack, true).ifPresent(entry -> {
             int min = IntRoll.getMin(entry.getTime());
             int max = IntRoll.getMax(entry.getTime());
 
@@ -76,20 +75,23 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
                         .formatted(Formatting.GRAY));
             } else {
                 tooltip.add(Text.literal("Adds between " + formatTimeString(min) + " and "
-                        + formatTimeString(max) + " to your Safari timer.")
+                                + formatTimeString(max) + " to your Safari timer.")
                         .formatted(Formatting.GRAY));
             }
         });
     }
 
     public static Optional<SafariTicketEntry> getEntry(ItemStack stack, boolean client) {
+        return Optional.ofNullable(stack.get(ModDataComponents.SAFARI_TICKET_ENTRY.get()));
+
+        /*
         if(stack.getNbt() == null) {
             return Optional.empty();
         }
 
         return Adapters.UTF_8.readNbt(stack.getNbt().get("id")).flatMap(id -> {
             return client ? SafariConfig.CLIENT.getTicket(id) : ModConfigs.SAFARI.getTicket(id);
-        });
+        });*/
     }
 
     @Override

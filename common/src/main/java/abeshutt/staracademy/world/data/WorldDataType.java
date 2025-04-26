@@ -1,7 +1,9 @@
 package abeshutt.staracademy.world.data;
 
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
 
 import java.io.File;
@@ -18,11 +20,17 @@ public class WorldDataType<T extends WorldData> {
     }
 
     public T getLocal(ServerWorld world) {
-        return world.getPersistentStateManager().getOrCreate(nbt -> {
+        return world.getPersistentStateManager().getOrCreate(new PersistentState.Type<T>(
+                this.constructor, (nbt, wrapperLookup) -> {
             T data = this.constructor.get();
-            data.readNbt(nbt);
+
+            if(nbt instanceof NbtCompound compound) {
+                data.readNbt(compound);
+            }
+
             return data;
-        }, this.constructor, this.path);
+        }, null
+        ), this.path);
     }
 
     public T getGlobal(MinecraftServer server) {

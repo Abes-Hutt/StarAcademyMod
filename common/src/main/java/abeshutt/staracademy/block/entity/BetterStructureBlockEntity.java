@@ -61,7 +61,7 @@ public class BetterStructureBlockEntity extends BlockEntity {
     }
 
     protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+        //super.writeNbt(nbt);
         nbt.putString("name", this.getTemplateName());
         nbt.putString("author", this.author);
         nbt.putString("metadata", this.metadata);
@@ -83,7 +83,7 @@ public class BetterStructureBlockEntity extends BlockEntity {
     }
 
     public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+        //super.readNbt(nbt);
         this.setTemplateName(nbt.getString("name"));
         this.author = nbt.getString("author");
         this.metadata = nbt.getString("metadata");
@@ -141,10 +141,6 @@ public class BetterStructureBlockEntity extends BlockEntity {
 
     public BlockEntityUpdateS2CPacket toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
-    }
-
-    public NbtCompound toInitialChunkDataNbt() {
-        return this.createNbt();
     }
 
     @Environment(EnvType.CLIENT)

@@ -8,6 +8,7 @@ import abeshutt.staracademy.net.UpdateOutfitC2SPacket;
 import abeshutt.staracademy.outfit.core.OutfitPiece;
 import abeshutt.staracademy.screen.helper.Texture9SliceRegion;
 import abeshutt.staracademy.world.data.WardrobeData;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -52,10 +53,11 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         }).toList();
     }
 
-    @Override
-    public boolean canFocus(FocusSource source) {
-        return false;
-    }
+    //TODO: wth?
+    //@Override
+    //public boolean canFocus(FocusSource source) {
+    //    return false;
+    //}
 
     protected WardrobeData.Entry getWardrobe() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -96,7 +98,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
             if ((x <= pointerX && pointerX <= x + w)
                     && (y <= pointerY && pointerY <= y + h)) {
-                ModNetwork.CHANNEL.sendToServer(new UpdateOutfitC2SPacket(outfitId, !equipped.contains(outfitId)));
+                NetworkManager.sendToServer(new UpdateOutfitC2SPacket(outfitId, !equipped.contains(outfitId)));
                 break;
             }
 
@@ -106,10 +108,9 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         return clicked;
     }
 
-
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.renderWidget(context, mouseX, mouseY, delta);
     }
 
     @Override

@@ -11,16 +11,10 @@ import org.spongepowered.asm.mixin.Shadow;
 public class MixinGameProfile implements ProxyGameProfile {
 
     @Shadow @Final @Mutable private String name;
-    @Shadow private boolean legacy;
 
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public void setLegacy(boolean legacy) {
-        this.legacy = legacy;
     }
 
 }

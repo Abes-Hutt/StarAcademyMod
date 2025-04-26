@@ -3,6 +3,7 @@ package abeshutt.staracademy.world;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.util.ProxyStructureTemplate;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -27,10 +28,11 @@ import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 
 public class SafariChunkGenerator extends NoiseChunkGenerator {
 
-    public static final Codec<SafariChunkGenerator> CODEC = RecordCodecBuilder.create(codec -> {
-        return codec.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
+    public static final MapCodec<NoiseChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
+        return instance.group(
+                BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
                 ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings").forGetter(NoiseChunkGenerator::getSettings))
-                .apply(codec, codec.stable(SafariChunkGenerator::new));
+                .apply(instance, instance.stable(SafariChunkGenerator::new));
     });
 
     public SafariChunkGenerator(BiomeSource source, RegistryEntry<ChunkGeneratorSettings> settings) {
@@ -38,7 +40,7 @@ public class SafariChunkGenerator extends NoiseChunkGenerator {
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> getCodec() {
+    protected MapCodec<? extends ChunkGenerator> getCodec() {
         return CODEC;
     }
 

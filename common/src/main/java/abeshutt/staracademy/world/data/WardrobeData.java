@@ -11,6 +11,7 @@ import abeshutt.staracademy.outfit.core.OutfitPiece;
 import com.google.gson.JsonObject;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -100,7 +101,7 @@ public class WardrobeData extends WorldData {
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        ModNetwork.CHANNEL.sendToPlayer(player, new UpdateOutfitS2CPacket(player.getUuid(), this.getOrCreate(player.getUuid())));
+        NetworkManager.sendToPlayer(player, new UpdateOutfitS2CPacket(player.getUuid(), this.getOrCreate(player.getUuid())));
     }
 
     public void onTick(MinecraftServer server) {
@@ -121,7 +122,7 @@ public class WardrobeData extends WorldData {
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             this.get(player.getUuid()).ifPresent(entry -> {
                 if(!entry.isDirty()) return;
-                ModNetwork.CHANNEL.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
                         new UpdateOutfitS2CPacket(player.getUuid(), entry));
                 entry.setDirty(false);
             });

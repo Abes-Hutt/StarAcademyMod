@@ -1,19 +1,16 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.entity.StarBadgeEntity;
-import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
 import abeshutt.staracademy.world.StarOwnership;
 import abeshutt.staracademy.world.data.PlayerProfileData;
 import com.mojang.authlib.GameProfile;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtElement;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -58,7 +55,8 @@ public class StarBadgeItem extends Item {
         double time = 0.0F;
 
         if(Platform.getEnv() != EnvType.SERVER) {
-            time = ClientScheduler.getTick(MinecraftClient.getInstance().getTickDelta());
+            //TODO:
+            //time = ClientScheduler.getTick(MinecraftClient.getInstance().getTickDelta());
         }
 
         return this.styleText(name, time, 10.0F);
@@ -86,8 +84,8 @@ public class StarBadgeItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, tooltip, type);
         List<StarOwnership> ownership = StarBadgeItem.getOwnership(stack);
 
         if(ownership.isEmpty()) {
@@ -95,36 +93,37 @@ public class StarBadgeItem extends Item {
         }
 
         String original = PlayerProfileData.CLIENT.getProfile(ownership.get(0).getUuid())
-                .map(GameProfile::getName).orElse("Unknown");
+            .map(GameProfile::getName).orElse("Unknown");
 
         tooltip.add(Text.empty()
-                .append(Text.literal("Originally bestowed to ").formatted(Formatting.GRAY, Formatting.ITALIC))
-                .append(Text.literal(original).formatted(Formatting.GRAY, Formatting.ITALIC))
-                .append(Text.literal(".").formatted(Formatting.GRAY, Formatting.ITALIC)));
+            .append(Text.literal("Originally bestowed to ").formatted(Formatting.GRAY, Formatting.ITALIC))
+            .append(Text.literal(original).formatted(Formatting.GRAY, Formatting.ITALIC))
+            .append(Text.literal(".").formatted(Formatting.GRAY, Formatting.ITALIC)));
 
         if(ownership.size() < 2) {
             return;
         }
 
         String surrendered = PlayerProfileData.CLIENT.getProfile(ownership.get(ownership.size() - 2).getUuid())
-                .map(GameProfile::getName).orElse("Unknown");
+            .map(GameProfile::getName).orElse("Unknown");
 
         tooltip.add(Text.empty()
-                .append(Text.literal("Last surrendered by ").formatted(Formatting.GRAY, Formatting.ITALIC))
-                .append(Text.literal(surrendered).formatted(Formatting.GRAY, Formatting.ITALIC))
-                .append(Text.literal(".").formatted(Formatting.GRAY, Formatting.ITALIC)));
+            .append(Text.literal("Last surrendered by ").formatted(Formatting.GRAY, Formatting.ITALIC))
+            .append(Text.literal(surrendered).formatted(Formatting.GRAY, Formatting.ITALIC))
+            .append(Text.literal(".").formatted(Formatting.GRAY, Formatting.ITALIC)));
     }
 
     public static List<StarOwnership> getOwnership(ItemStack stack) {
         List<StarOwnership> ownership = new ArrayList<>();
 
+        /*
         if(stack.getNbt() != null) {
             NbtList list = stack.getNbt().getList("ownership", NbtElement.COMPOUND_TYPE);
 
             for(int i = 0; i < list.size(); i++) {
                 ownership.add(StarOwnership.parseNbt(list.getCompound(i)));
             }
-        }
+        }*/
 
         return ownership;
     }
@@ -132,11 +131,12 @@ public class StarBadgeItem extends Item {
     public static void setOwnership(ItemStack stack, List<StarOwnership> ownership) {
         NbtList list = new NbtList();
 
+        /*
         for(StarOwnership entry : ownership) {
            entry.writeNbt().ifPresent(list::add);
         }
 
-        stack.getOrCreateNbt().put("ownership", list);
+        stack.getOrCreateNbt().put("ownership", list);*/
     }
 
 }

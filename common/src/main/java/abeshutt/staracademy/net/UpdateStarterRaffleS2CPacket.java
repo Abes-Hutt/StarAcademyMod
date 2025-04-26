@@ -1,11 +1,13 @@
 package abeshutt.staracademy.net;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;
 import abeshutt.staracademy.world.data.StarterMode;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
@@ -13,6 +15,8 @@ import java.util.*;
 import static abeshutt.staracademy.data.adapter.basic.EnumAdapter.Mode.NAME;
 
 public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
+
+    public static final Id<UpdateStarterRaffleS2CPacket> ID = new Id<>(StarAcademyMod.id("update_starter_raffle_s2c"));
 
     private Set<Identifier> starters;
     private Map<UUID, StarterEntry> entries;
@@ -33,6 +37,11 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
         this.timeLeft = timeLeft;
         this.mode = mode;
         this.selectionCooldown = selectionCooldown;
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package abeshutt.staracademy.mixin.terrastorage;
 
 import abeshutt.staracademy.compat.terrastorage.TerraStorageCompat;
-import com.bawnorton.mixinsquared.TargetHandler;
+//import com.bawnorton.mixinsquared.TargetHandler;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,20 +13,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = InventoryScreen.class, priority = 15000)
 public class MixinInventoryScreenMixin {
 
-    @TargetHandler(mixin = "me.timvinci.mixin.client.InventoryScreenMixin", name = "onInit")
-    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
+    //@TargetHandler(mixin = "me.timvinci.mixin.client.InventoryScreenMixin", name = "onInit")
+    //@Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
     public void onInit1(CallbackInfo ci) {
-        if(TerraStorageCompat.shouldBlock(this)) {
-            ci.cancel();
-        }
+        //if(TerraStorageCompat.shouldBlock(this)) {
+        //    ci.cancel();
+        //}
     }
 
-    @TargetHandler(mixin = "jakesmythuk.terrastorageicons.mixin.client.InventoryScreenMixin", name = "onInit")
-    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
+    //@TargetHandler(mixin = "jakesmythuk.terrastorageicons.mixin.client.InventoryScreenMixin", name = "onInit")
+    //@Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
     public void onInit2(CallbackInfo ci) {
-        if(TerraStorageCompat.shouldBlock(this)) {
-            ci.cancel();
-        }
+        //if(TerraStorageCompat.shouldBlock(this)) {
+        //    ci.cancel();
+        //}
     }
 
 

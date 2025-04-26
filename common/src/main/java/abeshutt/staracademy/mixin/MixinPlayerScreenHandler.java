@@ -8,6 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -18,7 +20,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = PlayerScreenHandler.class, priority = 0)
-public abstract class MixinPlayerScreenHandler extends AbstractRecipeScreenHandler<RecipeInputInventory> implements ProxyStarBadges {
+public abstract class MixinPlayerScreenHandler<I extends RecipeInput, R extends Recipe<I>>
+        extends AbstractRecipeScreenHandler<I, R> implements ProxyStarBadges {
 
     @Unique private StarBadgeScreenHandler starBadges;
 

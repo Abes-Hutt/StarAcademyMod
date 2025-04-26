@@ -36,9 +36,9 @@ public final class StarAcademyMod {
     public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));
 
     public static void init() {
-        if(Platform.isModLoaded("enhancedcelestials")) {
-            EnhancedCelestialsCompat.init();
-        }
+        //if(Platform.isModLoaded("enhancedcelestials")) {
+        //    EnhancedCelestialsCompat.init();
+        //}
 
         ModRegistries.register();
 
@@ -119,11 +119,11 @@ public final class StarAcademyMod {
     }
 
     public static Identifier id(String path) {
-        return new Identifier(ID, path);
+        return Identifier.of(ID, path);
     }
 
     public static ModelIdentifier mid(String path, String variant) {
-        return new ModelIdentifier(ID, path, variant);
+        return new ModelIdentifier(Identifier.of(ID, variant), path, variant);
     }
 
     public static Text translatableText(String key, Object... args) {

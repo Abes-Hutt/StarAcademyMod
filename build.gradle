@@ -1,10 +1,8 @@
 plugins {
-    id 'java'
     id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
 }
 
 architectury {
@@ -17,16 +15,14 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
-    apply plugin: 'org.jetbrains.kotlin.jvm'
-    apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+    apply plugin: "org.jetbrains.kotlin.jvm"
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-mc$rootProject.minecraft_version-v$rootProject.mod_version${getBuildNumber()}-$project.name"
+        archivesName = "$rootProject.archives_name-mc$rootProject.minecraft_version-v$rootProject.mod_version-$project.name"
     }
 
     repositories {
@@ -35,26 +31,44 @@ subprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
-        maven { url = "https://maven.wispforest.io/" }
-        maven { url = "https://maven.impactdev.net/repository/development/" }
-        maven { url = "https://maven.bawnorton.com/releases" }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = "Modrinth"
-                    url = "https://api.modrinth.com/maven"
-                }
-            }
-            filter {
-                includeGroup "maven.modrinth"
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            url "https://maven.saps.dev/releases"
+            content {
+                includeGroup "dev.latvian.mods"
+                includeGroup "dev.ftb.mods"
             }
         }
+        maven {
+            url "https://maven.saps.dev/snapshots"
+            content {
+                includeGroup "dev.latvian.mods"
+                includeGroup "dev.ftb.mods"
+            }
+        }
+        maven {
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
+        }
+        maven {
+            name = "ModMaven"
+            url = "https://modmaven.dev"
+        }
+        maven { url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
+        maven { url = "https://maven.impactdev.net/repository/development/" }
+        maven { url = "https://cursemaven.com" }
+        maven { url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
     }
 
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         //mappings loom.officialMojangMappings()
-        mappings "net.fabricmc:yarn:1.20.1+build.10:v2"
+        mappings loom.layered {
+            it.mappings("net.fabricmc:yarn:1.21+build.4:v2")
+            it.mappings("dev.architectury:yarn-mappings-patch-neoforge:1.21+build.4")
+        }
     }
 
     java {
@@ -63,16 +77,15 @@ subprojects {
         // If you remove this line, sources will not be generated.
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 17
+        it.options.release = 21
     }
 
     // Configure Maven publishing.
-    /*
     publishing {
         publications {
             mavenJava(MavenPublication) {
@@ -88,7 +101,7 @@ subprojects {
             // The repositories here will be used for publishing your artifact, not for
             // retrieving dependencies.
         }
-    }*/
+    }
 }
 
 static def getBuildNumber() {

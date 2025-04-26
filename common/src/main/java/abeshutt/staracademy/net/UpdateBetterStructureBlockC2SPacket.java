@@ -1,5 +1,6 @@
 package abeshutt.staracademy.net;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity.Action;
 import abeshutt.staracademy.data.adapter.Adapters;
@@ -7,6 +8,7 @@ import abeshutt.staracademy.data.bit.BitBuffer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.StructureBlockMode;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -19,6 +21,8 @@ import static abeshutt.staracademy.block.entity.BetterStructureBlockEntity.Actio
 import static abeshutt.staracademy.data.adapter.basic.EnumAdapter.Mode.ORDINAL;
 
 public class UpdateBetterStructureBlockC2SPacket extends ModPacket<ServerPlayNetworkHandler> {
+
+    public static final Id<UpdateBetterStructureBlockC2SPacket> ID = new Id<>(StarAcademyMod.id("update_better_structure_block_c2s"));
 
     private BlockPos pos;
     private Action action;
@@ -57,6 +61,11 @@ public class UpdateBetterStructureBlockC2SPacket extends ModPacket<ServerPlayNet
         this.showBoundingBox = showBoundingBox;
         this.integrity = integrity;
         this.seed = seed;
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     @Override

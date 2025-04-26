@@ -10,15 +10,15 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.PacketListener;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.thread.ThreadExecutor;
 
-public abstract class ModPacket<T extends PacketListener> implements Packet<T>, IBitSerializable {
+public abstract class ModPacket<T extends PacketListener> implements CustomPayload, IBitSerializable {
 
     public abstract void onReceive(T listener);
 
-    @Override
     public final void write(PacketByteBuf buf) {
         ArrayBitBuffer buffer = ArrayBitBuffer.empty();
         this.writeBits(buffer);
@@ -30,7 +30,6 @@ public abstract class ModPacket<T extends PacketListener> implements Packet<T>, 
         this.readBits(buffer);
     }
 
-    @Override
     public void apply(T listener) {
         ThreadExecutor<?> engine = switch(Platform.getEnvironment()) {
             case CLIENT -> this.getClientEngine(listener);
@@ -47,10 +46,6 @@ public abstract class ModPacket<T extends PacketListener> implements Packet<T>, 
                 try {
                     this.apply(listener);
                 } catch(Exception exception) {
-                    if(listener.shouldCrashOnException()) {
-                        throw exception;
-                    }
-
                     StarAcademyMod.LOGGER.error("Failed to handle packet {}, suppressing error", this, exception);
                 }
             } else {
@@ -67,7 +62,7 @@ public abstract class ModPacket<T extends PacketListener> implements Packet<T>, 
             return MinecraftClient.getInstance();
         }
 
-        //DuelistKingdomMod.LOGGER.error("Failed to handle packet {}, engine {} is unknown", this, listener);
+        StarAcademyMod.LOGGER.error("Failed to handle packet {}, engine {} is unknown", this, listener);
         return null;
     }
 
@@ -77,7 +72,7 @@ public abstract class ModPacket<T extends PacketListener> implements Packet<T>, 
             return handler.player.getServer();
         }
 
-        //DuelistKingdomMod.LOGGER.error("Failed to handle packet {}, engine {} is unknown", this, listener);
+        StarAcademyMod.LOGGER.error("Failed to handle packet {}, engine {} is unknown", this, listener);
         return null;
     }
 

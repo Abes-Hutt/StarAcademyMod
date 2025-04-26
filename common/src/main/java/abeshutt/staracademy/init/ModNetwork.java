@@ -1,14 +1,13 @@
 package abeshutt.staracademy.init;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.net.*;
-import dev.architectury.networking.NetworkChannel;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.listener.PacketListener;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -16,8 +15,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModNetwork extends ModRegistries {
-
-    public static final NetworkChannel CHANNEL = NetworkChannel.create(StarAcademyMod.id("network"));
 
     public static void register() {
         if(Platform.getEnvironment() == Env.CLIENT) {
@@ -32,15 +29,15 @@ public class ModNetwork extends ModRegistries {
         public static final Function<NetworkManager.PacketContext, ServerPlayNetworkHandler> SERVER_PLAY = context -> ((ServerPlayerEntity)context.getPlayer()).networkHandler;
 
         public static void register() {
-            ModNetwork.register(UpdatePlayerProfileS2CPacket.class, UpdatePlayerProfileS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateStarBadgeS2CPacket.class, UpdateStarBadgeS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateStarterRaffleS2CPacket.class, UpdateStarterRaffleS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateSafariS2CPacket.class, UpdateSafariS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateSafariConfigS2CPacket.class, UpdateSafariConfigS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateOutfitS2CPacket.class, UpdateOutfitS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateShootingStarS2CPacket.class, UpdateShootingStarS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(UpdateBetterStructureBlockC2SPacket.class, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
-            ModNetwork.register(UpdateOutfitC2SPacket.class, UpdateOutfitC2SPacket::new, SERVER_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdatePlayerProfileS2CPacket.ID, UpdatePlayerProfileS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateStarBadgeS2CPacket.ID, UpdateStarBadgeS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateStarterRaffleS2CPacket.ID, UpdateStarterRaffleS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateSafariS2CPacket.ID, UpdateSafariS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateSafariConfigS2CPacket.ID, UpdateSafariConfigS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateOutfitS2CPacket.ID, UpdateOutfitS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateShootingStarS2CPacket.ID, UpdateShootingStarS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
+            ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
         }
     }
 
@@ -48,27 +45,27 @@ public class ModNetwork extends ModRegistries {
         public static final Function<NetworkManager.PacketContext, ServerPlayNetworkHandler> SERVER_PLAY = context -> ((ServerPlayerEntity)context.getPlayer()).networkHandler;
 
         public static void register() {
-            ModNetwork.register(UpdatePlayerProfileS2CPacket.class, UpdatePlayerProfileS2CPacket::new, null);
-            ModNetwork.register(UpdateStarBadgeS2CPacket.class, UpdateStarBadgeS2CPacket::new, null);
-            ModNetwork.register(UpdateStarterRaffleS2CPacket.class, UpdateStarterRaffleS2CPacket::new, null);
-            ModNetwork.register(UpdateSafariS2CPacket.class, UpdateSafariS2CPacket::new, null);
-            ModNetwork.register(UpdateSafariConfigS2CPacket.class, UpdateSafariConfigS2CPacket::new, null);
-            ModNetwork.register(UpdateOutfitS2CPacket.class, UpdateOutfitS2CPacket::new, null);
-            ModNetwork.register(UpdateShootingStarS2CPacket.class, UpdateShootingStarS2CPacket::new, null);
-            ModNetwork.register(UpdateBetterStructureBlockC2SPacket.class, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
-            ModNetwork.register(UpdateOutfitC2SPacket.class, UpdateOutfitC2SPacket::new, SERVER_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdatePlayerProfileS2CPacket.ID, UpdatePlayerProfileS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateStarBadgeS2CPacket.ID, UpdateStarBadgeS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateStarterRaffleS2CPacket.ID, UpdateStarterRaffleS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateSafariS2CPacket.ID, UpdateSafariS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateSafariConfigS2CPacket.ID, UpdateSafariConfigS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateOutfitS2CPacket.ID, UpdateOutfitS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateShootingStarS2CPacket.ID, UpdateShootingStarS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
+            ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
         }
     }
 
-    public static <R extends PacketListener, T extends ModPacket<R>> void register(Class<T> type, Supplier<T> packetSupplier,
+    public static <R extends PacketListener, T extends ModPacket<R>> void register(NetworkManager.Side side, CustomPayload.Id<T> id, Supplier<T> packetSupplier,
                                                                                    Function<NetworkManager.PacketContext, R> contextMapper) {
-        CHANNEL.register(type, ModPacket::write, packetByteBuf -> {
+        NetworkManager.registerReceiver(side, id, CustomPayload.codecOf(ModPacket::write, buf -> {
             T packet = packetSupplier.get();
-            packet.read(packetByteBuf);
+            packet.read(buf);
             return packet;
-        }, (packet, contextSupplier) -> {
+        }), (packet, context) -> {
             if(contextMapper != null) {
-                packet.apply(contextMapper.apply(contextSupplier.get()));
+                packet.apply(contextMapper.apply(context));
             }
         });
     }

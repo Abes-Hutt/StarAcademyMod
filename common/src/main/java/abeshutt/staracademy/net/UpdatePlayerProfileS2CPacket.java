@@ -1,16 +1,20 @@
 package abeshutt.staracademy.net;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.world.data.PlayerProfileData;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.packet.CustomPayload;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class UpdatePlayerProfileS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
+
+    public static final Id<UpdatePlayerProfileS2CPacket> ID = new Id<>(StarAcademyMod.id("update_player_profile"));
 
     private Map<UUID, GameProfile> profiles;
 
@@ -25,6 +29,11 @@ public class UpdatePlayerProfileS2CPacket extends ModPacket<ClientPlayNetworkHan
     public UpdatePlayerProfileS2CPacket(UUID uuid, GameProfile profile) {
         this.profiles = new HashMap<>();
         this.profiles.put(uuid, profile);
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 
     @Override

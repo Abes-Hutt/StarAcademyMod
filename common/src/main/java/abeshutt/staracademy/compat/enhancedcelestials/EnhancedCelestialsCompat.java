@@ -1,5 +1,6 @@
 package abeshutt.staracademy.compat.enhancedcelestials;
 
+/*
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModConfigs;
 import com.cobblemon.mod.common.CobblemonItems;
@@ -27,10 +28,11 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NotNull;*/
 
 public class EnhancedCelestialsCompat {
 
+    /*
     public static final RegistryKey<LunarEvent> AURORA_MOON = RegistryKey.of(EnhancedCelestialsRegistry.LUNAR_EVENT_KEY, StarAcademyMod.id("aurora_moon"));
 
     public static void init() {
@@ -129,6 +131,6 @@ public class EnhancedCelestialsCompat {
                 SpawningInfluence.DefaultImpls.affectAction(this, spawnAction);
             }
         });
-    }
+    }*/
 
 }

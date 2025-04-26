@@ -21,14 +21,14 @@ import java.util.Map;
 @Mixin(ModelLoader.class)
 public abstract class MixinModelLoader {
 
-    @Shadow protected abstract void addModel(ModelIdentifier modelId);
+    @Shadow protected abstract void loadItemModel(ModelIdentifier id);
 
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 2, shift = At.Shift.AFTER))
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0, shift = At.Shift.AFTER))
     public void init(BlockColors blockColors, Profiler profiler, Map<Identifier, JsonUnbakedModel> jsonUnbakedModels,
-                     Map<Identifier, List<ModelLoader.SourceTrackedData>> blockStates, CallbackInfo ci) {
+                     Map<Identifier, List<ModelLoader.SpriteGetter>> blockStates, CallbackInfo ci) {
         for(Item item : Registries.ITEM) {
            if(item instanceof ISpecialItemModel loader) {
-               loader.loadModels(this::addModel);
+               loader.loadModels(this::loadItemModel);
            }
         }
     }

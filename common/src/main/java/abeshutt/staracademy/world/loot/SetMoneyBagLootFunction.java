@@ -4,7 +4,7 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModLootFunctionTypes;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.roll.IntRoll;
-import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
+//import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -16,6 +16,8 @@ import net.minecraft.loot.function.ConditionalLootFunction;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.nbt.NbtLongArray;
 
+import java.util.List;
+
 public class SetMoneyBagLootFunction extends ConditionalLootFunction {
 
     private final IntRoll bronze;
@@ -23,7 +25,7 @@ public class SetMoneyBagLootFunction extends ConditionalLootFunction {
     private final IntRoll gold;
     private final boolean combine;
 
-    public SetMoneyBagLootFunction(LootCondition[] conditions, IntRoll bronze, IntRoll silver, IntRoll gold, boolean combine) {
+    public SetMoneyBagLootFunction(List<LootCondition> conditions, IntRoll bronze, IntRoll silver, IntRoll gold, boolean combine) {
         super(conditions);
         this.bronze = bronze;
         this.silver = silver;
@@ -44,15 +46,17 @@ public class SetMoneyBagLootFunction extends ConditionalLootFunction {
             this.gold == null ? 0 : this.gold.get(random)
         };
 
+        /*
         if(this.combine) {
             values = CurrencyResolver.splitValues(CurrencyResolver.combineValues(values));
         }
 
         stack.getOrCreateNbt().put("Values", new NbtLongArray(values));
-        stack.getOrCreateNbt().putBoolean("Combined", this.combine);
+        stack.getOrCreateNbt().putBoolean("Combined", this.combine);*/
         return stack;
     }
 
+    /*
     public static class Serializer extends ConditionalLootFunction.Serializer<SetMoneyBagLootFunction> {
         @Override
         public void toJson(JsonObject json, SetMoneyBagLootFunction function, JsonSerializationContext context) {
@@ -72,6 +76,6 @@ public class SetMoneyBagLootFunction extends ConditionalLootFunction {
                 Adapters.BOOLEAN.readJson(json.get("combine")).orElseThrow(() -> new JsonSyntaxException("Could not parse combine"))
             );
         }
-    }
+    }*/
 }
 

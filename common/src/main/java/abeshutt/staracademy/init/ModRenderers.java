@@ -17,33 +17,33 @@ import java.util.Map;
 
 public class ModRenderers extends ModRegistries {
 
-    public static class ItemModels extends ModRenderers {
-        public static void register() {
-            ProxyModelPredicateProviderRegistry.register(ModItems.DUELING_GLOVE.get(), new Identifier("pull"), (stack, world, entity, seed) -> {
-                if(entity == null) {
-                    return 0.0F;
-                }
-
-                return entity.getActiveItem() != stack ? 0.0F : (float)(stack.getMaxUseTime() - entity.getItemUseTimeLeft()) / 20.0F;
-            });
-
-            ProxyModelPredicateProviderRegistry.register(ModItems.DUELING_GLOVE.get(), new Identifier("pulling"), (stack, world, entity, seed) -> {
-                return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
-            });
-
-            ProxyModelPredicateProviderRegistry.register(ModItems.SLINGSHOT.get(), new Identifier("pull"), (stack, world, entity, seed) -> {
-                if(entity == null) {
-                    return 0.0F;
-                }
-
-                return entity.getActiveItem() != stack ? 0.0F : (float)(stack.getMaxUseTime() - entity.getItemUseTimeLeft()) / 20.0F;
-            });
-
-            ProxyModelPredicateProviderRegistry.register(ModItems.SLINGSHOT.get(), new Identifier("pulling"), (stack, world, entity, seed) -> {
-                return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
-            });
-        }
-    }
+//    public static class ItemModels extends ModRenderers {
+//        public static void register() {
+//            ProxyModelPredicateProviderRegistry.register(ModItems.DUELING_GLOVE.get(), Identifier.of("pull"), (stack, world, entity, seed) -> {
+//                if(entity == null) {
+//                    return 0.0F;
+//                }
+//
+//                return entity.getActiveItem() != stack ? 0.0F : (float)(stack.getMaxUseTime(entity) - entity.getItemUseTimeLeft()) / 20.0F;
+//            });
+//
+//            ProxyModelPredicateProviderRegistry.register(ModItems.DUELING_GLOVE.get(), Identifier.of("pulling"), (stack, world, entity, seed) -> {
+//                return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
+//            });
+//
+//            ProxyModelPredicateProviderRegistry.register(ModItems.SLINGSHOT.get(), Identifier.of("pull"), (stack, world, entity, seed) -> {
+//                if(entity == null) {
+//                    return 0.0F;
+//                }
+//
+//                return entity.getActiveItem() != stack ? 0.0F : (float)(stack.getMaxUseTime(entity) - entity.getItemUseTimeLeft()) / 20.0F;
+//            });
+//
+//            ProxyModelPredicateProviderRegistry.register(ModItems.SLINGSHOT.get(), Identifier.of("pulling"), (stack, world, entity, seed) -> {
+//                return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
+//            });
+//        }
+//    }
 
     public static class Entities extends ModRenderers {
         public static void register() {

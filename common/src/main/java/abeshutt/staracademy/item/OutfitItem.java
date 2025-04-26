@@ -30,9 +30,10 @@ public class OutfitItem extends Item implements ISpecialItemModel {
     }
 
     public static Optional<OutfitEntry> getEntry(ItemStack stack) {
+        /*
         if(stack.getNbt() != null) {
             return Adapters.OUTFIT_ENTRY.readNbt(stack.getNbt().getCompound("entry"));
-        }
+        }*/
 
         return Optional.empty();
     }
@@ -50,7 +51,8 @@ public class OutfitItem extends Item implements ISpecialItemModel {
 
     public static void setEntry(ItemStack stack, OutfitEntry entry) {
         Adapters.OUTFIT_ENTRY.writeNbt(entry).ifPresent(tag -> {
-            stack.getOrCreateNbt().put("entry", tag);
+            /*
+            stack.getOrCreateNbt().put("entry", tag);*/
         });
     }
 

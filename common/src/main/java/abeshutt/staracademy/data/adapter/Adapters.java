@@ -121,7 +121,6 @@ public class Adapters {
     public static final BlockPosAdapter BLOCK_POS = new BlockPosAdapter(false);
     public static final OutfitEntry.Adapter OUTFIT_ENTRY = new OutfitEntry.Adapter();
     public static final Vec3dAdapter VEC_3D = new Vec3dAdapter(false);
-    public static final PokemonPropertiesAdapter POKEMON_PROPERTIES = new PokemonPropertiesAdapter();
 
     public static Lcg.Adapter LCG = new Lcg.Adapter(false);
 

@@ -77,6 +77,7 @@ public class BetterStructureBlockScreen extends Screen {
         this.decimalFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
     }
 
+    /*
     @Override
     public void tick() {
         this.inputName.tick();
@@ -89,7 +90,7 @@ public class BetterStructureBlockScreen extends Screen {
         this.inputIntegrity.tick();
         this.inputSeed.tick();
         this.inputMetadata.tick();
-    }
+    }*/
 
     private void done() {
         if (this.updateStructureBlock(BetterStructureBlockEntity.Action.UPDATE_DATA)) {
@@ -347,6 +348,7 @@ public class BetterStructureBlockScreen extends Screen {
         float f = this.parseFloat(this.inputIntegrity.getText());
         long l = this.parseLong(this.inputSeed.getText());
 
+        /*
         ModNetwork.CHANNEL.sendToServer(new UpdateBetterStructureBlockC2SPacket(
                 this.structureBlock.getPos(),
                 action,
@@ -362,7 +364,7 @@ public class BetterStructureBlockScreen extends Screen {
                 this.structureBlock.shouldShowBoundingBox(),
                 f,
                 l
-        ));
+        ));*/
 
         return true;
     }
@@ -410,7 +412,7 @@ public class BetterStructureBlockScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        //this.renderBackground(context);
         StructureBlockMode structureBlockMode = this.structureBlock.getMode();
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 10, 16777215);
         if (structureBlockMode != StructureBlockMode.DATA) {

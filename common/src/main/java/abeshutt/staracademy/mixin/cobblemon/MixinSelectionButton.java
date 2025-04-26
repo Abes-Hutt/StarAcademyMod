@@ -24,7 +24,7 @@ public class MixinSelectionButton implements ProxySelectionButton {
         this.text = text;
     }
 
-    @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "Lcom/cobblemon/mod/common/util/LocalizationUtilsKt;lang(Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/text/MutableText;"))
+    @Redirect(method = "renderWidget", at = @At(value = "INVOKE", target = "Lcom/cobblemon/mod/common/util/LocalizationUtilsKt;lang(Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/text/MutableText;"))
     private MutableText renderButton(String subKey, Object[] objects) {
         return LocalizationUtilsKt.lang(this.text == null ? subKey : this.text, objects);
     }

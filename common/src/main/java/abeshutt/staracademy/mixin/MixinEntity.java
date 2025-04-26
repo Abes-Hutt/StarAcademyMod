@@ -92,7 +92,7 @@ public abstract class MixinEntity implements ProxyEntity {
         }
     }
 
-    @Inject(method = "tickPortal", at = @At("HEAD"))
+    @Inject(method = "tickPortalCooldown", at = @At("HEAD"))
     public void tickPortal(CallbackInfo ci) {
         if(this.getWorld() instanceof ServerWorld) {
             this.scheduledPortalTicks.forEach(Runnable::run);
@@ -100,6 +100,7 @@ public abstract class MixinEntity implements ProxyEntity {
         }
     }
 
+    /* TODO: fix this
     @Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
     protected void getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> ci) {
         if(destination.getRegistryKey() == StarAcademyMod.SAFARI) {
@@ -112,7 +113,7 @@ public abstract class MixinEntity implements ProxyEntity {
             EntityState state = entry.getLastState();
             ci.setReturnValue(new TeleportTarget(state.getPos(),Vec3d.ZERO, state.getYaw(), state.getPitch()));
         }
-    }
+    }*/
 
     @Inject(method = "writeNbt", at = @At("RETURN"))
     public void writeNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> ci) {

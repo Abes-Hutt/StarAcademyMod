@@ -10,6 +10,7 @@ import abeshutt.staracademy.world.StarOwnership;
 import abeshutt.staracademy.world.inventory.BaseInventory;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -51,7 +52,7 @@ public class StarBadgeData extends WorldData {
         this.markDirty();
 
         if(player.getServer() != null) {
-            ModNetwork.CHANNEL.sendToPlayers(player.getServer().getPlayerManager().getPlayerList(),
+            NetworkManager.sendToPlayers(player.getServer().getPlayerManager().getPlayerList(),
                     new UpdateStarBadgeS2CPacket(player.getUuid(), inventory));
         }
 
@@ -87,15 +88,15 @@ public class StarBadgeData extends WorldData {
 
         if(!changed.isEmpty()) {
             for(UUID uuid : changed) {
-                ModNetwork.CHANNEL.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
                         new UpdateStarBadgeS2CPacket(uuid, this.inventories.get(uuid)));
             }
         }
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        ModNetwork.CHANNEL.sendToPlayer(player, new UpdateStarBadgeS2CPacket(null));
-        ModNetwork.CHANNEL.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.inventories));
+        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(null));
+        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.inventories));
     }
 
     @Override
