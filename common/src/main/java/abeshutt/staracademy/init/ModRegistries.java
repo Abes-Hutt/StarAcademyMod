@@ -40,6 +40,7 @@ public class ModRegistries {
         ModScreenHandlers.register();
         ModNetwork.register();
         ModLootFunctionTypes.register();
+        ModDataComponents.register();
         ModChunkGenerators.register();
         ModOutfits.register();
 

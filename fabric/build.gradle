@@ -10,7 +10,7 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+    accessWidenerPath = file("src/main/resources/academy-fabric.accesswidener")
 }
 
 configurations {
@@ -55,7 +55,7 @@ shadowJar {
 }
 
 remapJar {
-    //injectAccessWidener = true
+    injectAccessWidener = true
     input.set shadowJar.archiveFile
-    //atAccessWideners.add "dailyshop-common.accesswidener"
+    atAccessWideners.add "academy-common.accesswidener"
 }

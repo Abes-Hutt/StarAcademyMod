@@ -1,0 +1,14 @@
+accessWidener   v2  named
+accessible field net/minecraft/client/gui/screen/ingame/HandledScreen x I
+accessible field net/minecraft/client/gui/screen/ingame/HandledScreen y I
+accessible field net/minecraft/client/gui/screen/Screen textRenderer Lnet/minecraft/client/font/TextRenderer;
+accessible field net/minecraft/entity/projectile/thrown/ThrownItemEntity ITEM Lnet/minecraft/entity/data/TrackedData;
+accessible field net/minecraft/client/gui/widget/EntryListWidget$Entry parentList Lnet/minecraft/client/gui/widget/EntryListWidget;
+accessible method net/minecraft/screen/ScreenHandler addSlot (Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;
+accessible method net/minecraft/client/render/entity/EntityRenderers register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/client/render/entity/EntityRendererFactory;)V
+accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
+accessible method net/minecraft/structure/StructureTemplate$PalettedBlockInfoList <init> (Ljava/util/List;)V
+accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/world/level/storage/LevelStorage$Session;
+accessible field net/minecraft/server/MinecraftServer worlds Ljava/util/Map;
+accessible method net/minecraft/entity/LivingEntity playEquipmentBreakEffects (Lnet/minecraft/item/ItemStack;)V
+extendable class net/minecraft/world/gen/chunk/NoiseChunkGenerator
