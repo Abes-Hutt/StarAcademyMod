@@ -170,15 +170,29 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
 
     @Override
     public TeleportTarget createTeleportTarget(ServerWorld world, Entity entity, BlockPos pos) {
+        if(!(entity instanceof ServerPlayerEntity player)) {
+            return null;
+        }
+
+        SafariData data = ModWorldData.SAFARI.getGlobal(world);
+
         if(world.getRegistryKey() == StarAcademyMod.SAFARI) {
-            SafariData.Entry entry = ModWorldData.SAFARI.getGlobal(world).get(entity.getUuid()).orElseThrow();
+            SafariData.Entry entry = data.get(player.getUuid()).orElseThrow();
 
             EntityState state = entry.getLastState();
             ServerWorld destination = world.getServer().getWorld(state.getDimension());
+            player.interactionManager.changeGameMode(entry.getLastState().getGameMode());
+
+            ProxyEntity.of(player).ifPresent(proxy -> {
+                proxy.setSafariPortalCooldown(true);
+            });
+
+            player.setPortalCooldown(20);
 
             return new TeleportTarget(destination, state.getPos(), Vec3d.ZERO,
                     state.getYaw(), state.getPitch(), post -> {});
         } else {
+            data.getOrCreate(player.getUuid()).setLastState(new EntityState(player));
             BlockPos target = ModConfigs.SAFARI.getPlacementOffset().add(ModConfigs.SAFARI.getRelativeSpawnPosition());
             ServerWorld destination = world.getServer().getWorld(StarAcademyMod.SAFARI);
 

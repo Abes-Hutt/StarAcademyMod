@@ -134,7 +134,7 @@ public class SafariData extends WorldData {
         if(entry == null || entry.getLastState() == null) {
             player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
         } else {
-            player.interactionManager.changeGameMode(entry.getLastState().getGameMode());
+            //player.interactionManager.changeGameMode(entry.getLastState().getGameMode());
             player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
 
             /*
@@ -150,11 +150,11 @@ public class SafariData extends WorldData {
             }*/
         }
 
-        ProxyEntity.of(player).ifPresent(proxy -> {
-            proxy.setSafariPortalCooldown(true);
-        });
+        //ProxyEntity.of(player).ifPresent(proxy -> {
+        //    proxy.setSafariPortalCooldown(true);
+        //});
 
-        player.setPortalCooldown(20);
+        //player.setPortalCooldown(20);
     }
 
     public void addPortal(World world, BlockPos pos) {
