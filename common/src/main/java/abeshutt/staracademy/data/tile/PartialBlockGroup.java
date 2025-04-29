@@ -104,7 +104,7 @@ public class PartialBlockGroup implements TilePlacement<PartialBlockGroup> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialBlockGroup.of(new Identifier(string), PartialBlockProperties.parse(reader), PartialCompoundNbt.parse(reader));
+            return PartialBlockGroup.of(Identifier.of(string), PartialBlockProperties.parse(reader), PartialCompoundNbt.parse(reader));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid group identifier '" + string + "' in block group '" + reader.getString() + "'");

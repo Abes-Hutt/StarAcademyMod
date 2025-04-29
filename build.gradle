@@ -2,7 +2,8 @@ plugins {
     id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
 }
 
 architectury {
@@ -15,10 +16,12 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: 'java'
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
     apply plugin: "org.jetbrains.kotlin.jvm"
+    apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.

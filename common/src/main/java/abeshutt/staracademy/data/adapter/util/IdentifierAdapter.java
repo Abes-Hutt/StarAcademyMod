@@ -73,7 +73,7 @@ public class IdentifierAdapter implements ISimpleAdapter<Identifier, NbtElement,
             return Optional.empty();
         }
 
-        return Optional.of(new Identifier(Adapters.UTF_8.readBytes(buffer).orElseThrow()));
+        return Optional.of(Identifier.of(Adapters.UTF_8.readBytes(buffer).orElseThrow()));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class IdentifierAdapter implements ISimpleAdapter<Identifier, NbtElement,
             return Optional.empty();
         }
 
-        return Optional.of(new Identifier(Adapters.UTF_8.readData(data).orElseThrow()));
+        return Optional.of(Identifier.of(Adapters.UTF_8.readData(data).orElseThrow()));
     }
 
     @Override

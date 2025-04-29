@@ -1,12 +1,18 @@
 package abeshutt.staracademy.data.adapter;
 
+import abeshutt.staracademy.data.bit.ArrayBitBuffer;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonSerializationContext;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.*;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.encoding.VarInts;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -116,4 +122,83 @@ public interface ISimpleAdapter<T, N extends NbtElement, J extends JsonElement> 
         return this.readJson((J)json, null).orElse(null);
     }
 
+    @Override
+    default void encode(ByteBuf buf, T value) {
+        ArrayBitBuffer buffer = ArrayBitBuffer.empty();
+        this.writeBits(value, buffer);
+        long[] serialized = buffer.toLongArray();
+        VarInts.write(buf, serialized.length);
+
+        for(long l : serialized) {
+           buf.writeLong(l);
+        }
+    }
+
+    @Override
+    default T decode(ByteBuf buf) {
+        int size = VarInts.read(buf);
+        long[] serialized = new long[size];
+
+        for(int i = 0; i < size; i++) {
+           serialized[i] = buf.readLong();
+        }
+
+        ArrayBitBuffer buffer = ArrayBitBuffer.backing(serialized, 0);
+        return this.readBits(buffer).orElse(null);
+    }
+
+    default Codec<T> codecNbt() {
+        return new Codec<>() {
+            @Override
+            public <T1> DataResult<T1> encode(T input, DynamicOps<T1> ops, T1 prefix) {
+                try {
+                    T1 result = NbtOps.INSTANCE.convertTo(ops, ISimpleAdapter.this.writeNbt(input).orElse(null));
+                    return DataResult.success(result);
+                } catch(Exception e) {
+                    return DataResult.error(e::getMessage);
+                }
+            }
+
+            @Override
+            public <T1> DataResult<Pair<T, T1>> decode(DynamicOps<T1> ops, T1 input) {
+                NbtElement result = ops.convertTo(NbtOps.INSTANCE, input);
+
+                try {
+                    return DataResult.success(new Pair<>(
+                            ISimpleAdapter.this.readNbt((N)result).orElse(null), input));
+                } catch(Exception e) {
+                    return DataResult.error(e::getMessage);
+                }
+            }
+        };
+    }
+
+    default Codec<T> codecJson() {
+        return new Codec<>() {
+            @Override
+            public <T1> DataResult<T1> encode(T input, DynamicOps<T1> ops, T1 prefix) {
+                try {
+                    T1 result = JsonOps.INSTANCE.convertTo(ops, ISimpleAdapter.this.writeJson(input).orElse(null));
+                    return DataResult.success(result);
+                } catch(Exception e) {
+                    return DataResult.error(e::getMessage);
+                }
+            }
+
+            @Override
+            public <T1> DataResult<Pair<T, T1>> decode(DynamicOps<T1> ops, T1 input) {
+                JsonElement result = ops.convertTo(JsonOps.INSTANCE, input);
+
+                try {
+                    return DataResult.success(new Pair<>(
+                            ISimpleAdapter.this.readJson((J)result).orElse(null), input));
+                } catch(Exception e) {
+                    return DataResult.error(e::getMessage);
+                }
+            }
+        };
+    }
+
+
 }
+

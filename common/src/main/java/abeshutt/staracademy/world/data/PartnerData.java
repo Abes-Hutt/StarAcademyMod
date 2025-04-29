@@ -60,11 +60,7 @@ public class PartnerData extends WorldData {
             PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
             PCStore pc;
 
-            try {
-                pc = Cobblemon.INSTANCE.getStorage().getPC(player.getUuid());
-            } catch(NoPokemonStoreException e) {
-                continue;
-            }
+            pc = Cobblemon.INSTANCE.getStorage().getPC(player);
 
             for(int i = 0; i < party.size(); i++) {
                 Pokemon entry = party.get(i);
@@ -77,11 +73,11 @@ public class PartnerData extends WorldData {
                     party.remove(entry);
                     pc.set(target, entry);
                 } else {
-                    if(party.getOverflowPC() == null) continue;
-                    target = party.getOverflowPC().getFirstAvailablePosition();
+                    if(party.getOverflowPC(server.getRegistryManager()) == null) continue;
+                    target = party.getOverflowPC(server.getRegistryManager()).getFirstAvailablePosition();
                     if(target == null) continue;
                     party.remove(entry);
-                    party.getOverflowPC().set(target, entry);
+                    party.getOverflowPC(server.getRegistryManager()).set(target, entry);
                 }
             }
         }

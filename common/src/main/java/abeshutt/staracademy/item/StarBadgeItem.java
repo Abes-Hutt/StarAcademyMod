@@ -1,12 +1,14 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.entity.StarBadgeEntity;
+import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
 import abeshutt.staracademy.world.StarOwnership;
 import abeshutt.staracademy.world.data.PlayerProfileData;
 import com.mojang.authlib.GameProfile;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,8 +57,7 @@ public class StarBadgeItem extends Item {
         double time = 0.0F;
 
         if(Platform.getEnv() != EnvType.SERVER) {
-            //TODO:
-            //time = ClientScheduler.getTick(MinecraftClient.getInstance().getTickDelta());
+            time = ClientScheduler.getTick(MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true));
         }
 
         return this.styleText(name, time, 10.0F);

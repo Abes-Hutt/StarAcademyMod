@@ -123,7 +123,7 @@ public class PartialItemTag implements ItemPlacement<PartialItemTag> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialItemTag.of(new Identifier(string), PartialCompoundNbt.parse(reader));
+            return PartialItemTag.of(Identifier.of(string), PartialCompoundNbt.parse(reader));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid tag identifier '" + string + "' in item tag '" + reader.getString() + "'");

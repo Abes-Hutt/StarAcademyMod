@@ -107,7 +107,7 @@ public class PartialItemGroup implements ItemPlacement<PartialItemGroup> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialItemGroup.of(new Identifier(string), PartialCompoundNbt.parse(reader));
+            return PartialItemGroup.of(Identifier.of(string), PartialCompoundNbt.parse(reader));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid item identifier '" + string + "' in item group '" + reader.getString() + "'");

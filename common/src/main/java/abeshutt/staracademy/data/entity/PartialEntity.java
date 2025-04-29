@@ -140,7 +140,7 @@ public class PartialEntity implements EntityPlacement<PartialEntity> {
 		String string = reader.getString().substring(cursor, reader.getCursor());
 
 		try {
-			return PartialEntity.of(null, null, string.isEmpty() ? null : new Identifier(string), PartialCompoundNbt.parse(reader));
+			return PartialEntity.of(null, null, string.isEmpty() ? null : Identifier.of(string), PartialCompoundNbt.parse(reader));
 		} catch(InvalidIdentifierException e) {
 			reader.setCursor(cursor);
 			throw new IllegalArgumentException("Invalid entity identifier '" + string + "' in entity '" + reader.getString() + "'");

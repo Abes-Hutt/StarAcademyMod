@@ -140,7 +140,7 @@ public class PartialBlock implements TilePlacement<PartialBlock> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialBlock.of(new Identifier(string));
+            return PartialBlock.of(Identifier.of(string));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid block identifier '" + string + "' in tile '" + reader.getString() + "'");

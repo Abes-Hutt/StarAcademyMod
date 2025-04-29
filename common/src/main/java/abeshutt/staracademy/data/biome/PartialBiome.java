@@ -119,7 +119,7 @@ public class PartialBiome implements BiomePlacement<PartialBiome> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialBiome.of(new Identifier(string));
+            return PartialBiome.of(Identifier.of(string));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid biome identifier '" + string + "' in '" + reader.getString() + "'");

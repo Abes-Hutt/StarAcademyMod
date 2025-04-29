@@ -130,7 +130,7 @@ public class PartialItem implements ItemPlacement<PartialItem> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialItem.of(new Identifier(string));
+            return PartialItem.of(Identifier.of(string));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid item identifier '" + string + "' in stack '" + reader.getString() + "'");

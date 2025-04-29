@@ -22,15 +22,6 @@ import java.util.regex.Pattern;
 
 public class SafariTicketEntry implements IBitSerializable {
 
-    public static final Codec<SafariTicketEntry> CODEC = RecordCodecBuilder.create((instance) -> {
-        return instance.group(
-                Codec.STRING.fieldOf("name").forGetter(SafariTicketEntry::getName),
-                Codecs.POSITIVE_INT.fieldOf("color").orElse(0xFFFFFF).forGetter(SafariTicketEntry::getColor),
-                Codecs.ESCAPED_STRING.fieldOf("model").forGetter(SafariTicketEntry::getModel),
-                Adapters.INT_ROLL.codec().fieldOf("model").forGetter(SafariTicketEntry::getModel)
-                .apply(instance, SafariTicketEntry::new));
-    });;
-
     @Expose private String name;
     @Expose private int color;
     @Expose private String model;

@@ -2,8 +2,11 @@ package abeshutt.staracademy.data.item;
 
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
+import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.nbt.PartialCompoundNbt;
+import abeshutt.staracademy.util.ItemUtils;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
@@ -69,7 +72,7 @@ public class PartialStack implements ItemPlacement<PartialStack> {
     @Override
     public Optional<ItemStack> generate(int count) {
         return this.item.generate(count).map(stack -> {
-            stack.setNbt(this.nbt.asWhole().orElse(null));
+            ItemUtils.setNbt(stack, this.nbt.asWhole().orElse(null));
             return stack;
         });
     }
@@ -97,6 +100,28 @@ public class PartialStack implements ItemPlacement<PartialStack> {
 
     public static class Adapter implements ISimpleAdapter<PartialStack, NbtElement, JsonElement> {
         @Override
+        public void writeBits(PartialStack value, BitBuffer buffer) {
+            buffer.writeBoolean(value != null);
+
+            if(value != null) {
+                Adapters.PARTIAL_ITEM.writeBits(value.item, buffer);
+                Adapters.PARTIAL_NBT.writeBits(value.nbt, buffer);
+            }
+        }
+
+        @Override
+        public Optional<PartialStack> readBits(BitBuffer buffer) {
+            if(buffer.readBoolean()) {
+                return Optional.of(new PartialStack(
+                        Adapters.PARTIAL_ITEM.readBits(buffer).orElse(null),
+                        Adapters.PARTIAL_NBT.readBits(buffer).orElse(null)
+                ));
+            }
+
+            return Optional.empty();
+        }
+
+        @Override
         public Optional<NbtElement> writeNbt(PartialStack value) {
             if(value == null) {
                 return Optional.empty();
@@ -104,7 +129,7 @@ public class PartialStack implements ItemPlacement<PartialStack> {
 
             NbtCompound nbt = new NbtCompound();
             Adapters.PARTIAL_ITEM.writeNbt(value.item).ifPresent(tag -> nbt.put("item", tag));
-            Adapters.PARTIAL_BLOCK_ENTITY.writeNbt(value.nbt).ifPresent(tag -> nbt.put("nbt", tag));
+            Adapters.PARTIAL_NBT.writeNbt(value.nbt).ifPresent(tag -> nbt.put("nbt", tag));
             return Optional.of(nbt);
         }
 
@@ -112,7 +137,30 @@ public class PartialStack implements ItemPlacement<PartialStack> {
         public Optional<PartialStack> readNbt(NbtElement nbt) {
             if(nbt instanceof NbtCompound compound) {
                 PartialItem item = Adapters.PARTIAL_ITEM.readNbt(compound.get("item")).orElseThrow();
-                PartialCompoundNbt tag = Adapters.PARTIAL_BLOCK_ENTITY.readNbt(compound.get("nbt")).orElseGet(PartialCompoundNbt::empty);
+                PartialCompoundNbt tag = Adapters.PARTIAL_NBT.readNbt(compound.get("nbt")).orElseGet(PartialCompoundNbt::empty);
+                return Optional.of(PartialStack.of(item, tag));
+            }
+
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<JsonElement> writeJson(PartialStack value) {
+            if(value == null) {
+                return Optional.empty();
+            }
+
+            JsonObject json = new JsonObject();
+            Adapters.PARTIAL_ITEM.writeJson(value.item).ifPresent(tag -> json.add("item", tag));
+            Adapters.PARTIAL_NBT.writeJson(value.nbt).ifPresent(tag -> json.add("nbt", tag));
+            return Optional.of(json);
+        }
+
+        @Override
+        public Optional<PartialStack> readJson(JsonElement json) {
+            if(json instanceof JsonObject object) {
+                PartialItem item = Adapters.PARTIAL_ITEM.readJson(object.get("item")).orElseThrow();
+                PartialCompoundNbt tag = Adapters.PARTIAL_NBT.readJson(object.get("nbt")).orElseGet(PartialCompoundNbt::empty);
                 return Optional.of(PartialStack.of(item, tag));
             }
 

@@ -2,6 +2,7 @@ package abeshutt.staracademy.world.inventory;
 
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.INbtSerializable;
+import abeshutt.staracademy.util.ItemUtils;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -259,7 +260,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider, INbtSerial
                 Adapters.INT.writeNbt(i).ifPresent(tag -> entry.put("index", tag));
                 Adapters.ITEM.writeNbt(stack.getItem()).ifPresent(tag -> entry.put("item", tag));
                 Adapters.INT.writeNbt(stack.getCount()).ifPresent(tag -> entry.put("count", tag));
-                Adapters.COMPOUND_NBT.writeNbt(stack.getNbt()).ifPresent(tag -> entry.put("nbt", tag));
+                Adapters.COMPOUND_NBT.writeNbt(ItemUtils.getNbt(stack)).ifPresent(tag -> entry.put("nbt", tag));
                 items.add(entry);
             }
 
@@ -285,7 +286,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider, INbtSerial
             ItemStack stack = new ItemStack(item, count);
 
             if(compound != null) {
-                stack.setNbt(compound);
+                ItemUtils.setNbt(stack, compound);
             }
 
             if(index >= 0 && index < this.size) {

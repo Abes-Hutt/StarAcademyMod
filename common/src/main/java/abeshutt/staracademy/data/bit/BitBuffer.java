@@ -394,7 +394,7 @@ public abstract class BitBuffer {
 			else             bytes[i] = (byte)(32 | id - 25);
 		}
 
-		return new Identifier(new String(bytes, StandardCharsets.US_ASCII));
+		return Identifier.of(new String(bytes, StandardCharsets.US_ASCII));
 	}
 
 	//==========================================================================================================//

@@ -116,7 +116,7 @@ public class PartialEntityTag implements EntityPlacement<PartialEntityTag> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialEntityTag.of(new Identifier(string), PartialCompoundNbt.parse(reader));
+            return PartialEntityTag.of(Identifier.of(string), PartialCompoundNbt.parse(reader));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid tag identifier '" + string + "' in block tag '" + reader.getString() + "'");

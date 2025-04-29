@@ -27,7 +27,7 @@ public class ShootingStarRenderer extends EntityRenderer<ShootingStarEntity> {
         matrices.push();
         matrices.scale(5.0F, 5.0F, 5.0F);
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(ShootingStarModel.TEXTURE));
-        this.model.render(matrices, vertexConsumer, 0xF000F0, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.render(matrices, vertexConsumer, 0xF000F0, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
         matrices.pop();
 
         DiffuseLighting.disableGuiDepthLighting();

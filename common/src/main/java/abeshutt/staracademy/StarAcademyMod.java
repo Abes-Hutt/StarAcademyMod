@@ -1,6 +1,5 @@
 package abeshutt.staracademy;
 
-import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
@@ -8,10 +7,11 @@ import abeshutt.staracademy.world.random.JavaRandom;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import dev.architectury.platform.Platform;
+import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -29,6 +29,7 @@ import java.util.List;
 public final class StarAcademyMod {
 
     public static final ThreadLocal<Boolean> FORCE_SPAWNING = ThreadLocal.withInitial(() -> false);
+    public static RegistryWrapper.WrapperLookup REGISTRIES;
 
     public static final String ID = "academy";
     public static final Logger LOGGER = LogManager.getLogger(ID);
@@ -36,6 +37,10 @@ public final class StarAcademyMod {
     public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));
 
     public static void init() {
+        LifecycleEvent.SERVER_STARTED.register(instance -> {
+            REGISTRIES = instance.getRegistryManager();
+        });
+
         //if(Platform.isModLoaded("enhancedcelestials")) {
         //    EnhancedCelestialsCompat.init();
         //}
@@ -123,7 +128,7 @@ public final class StarAcademyMod {
     }
 
     public static ModelIdentifier mid(String path, String variant) {
-        return new ModelIdentifier(Identifier.of(ID, variant), path, variant);
+        return new ModelIdentifier(Identifier.of(ID, path), variant);
     }
 
     public static Text translatableText(String key, Object... args) {

@@ -1,9 +1,11 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.init.ModOutfits;
+import abeshutt.staracademy.item.ValueOutfitEntry;
 import abeshutt.staracademy.net.UpdateOutfitC2SPacket;
 import abeshutt.staracademy.outfit.core.OutfitPiece;
 import abeshutt.staracademy.screen.helper.Texture9SliceRegion;
@@ -159,7 +161,8 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         Set<String> equipped = wardrobe.getEquipped();
 
         int i = 0;
-        for (String outfitId : this.unlockedOutfits) {
+
+        for(String outfitId : this.unlockedOutfits) {
             int x = getX() + this.gap;
             int y = getY() + (i + 1) * this.gap + i * this.entryHeight - 2;
             int w = width - 2 * gap + 2;
@@ -172,13 +175,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
             ItemStack outfitStack = outfitStackCache.computeIfAbsent(outfitId, id -> {
                 ItemStack itemStack = new ItemStack(ModItems.OUTFIT.get());
-
-                NbtCompound nbt = itemStack.getOrCreateNbt();
-                NbtCompound entryNbt = new NbtCompound();
-                entryNbt.putString("type", "value");
-                entryNbt.putString("id", outfitId);
-                nbt.put("entry", entryNbt);
-
+                itemStack.set(ModDataComponents.OUTFIT_ENTRY.get(), new ValueOutfitEntry(outfitId));
                 return itemStack;
             });
 
@@ -193,9 +190,8 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
                     0, 0, 0xFF_FFFFFF, false);
             context.getMatrices().pop();
 
-            if (equipped.contains(outfitId)) {
-                context.drawTexture(TEXTURE, x + width - 26, y + 11,
-                        0, 39, 7, 6);
+            if(equipped.contains(outfitId)) {
+                context.drawTexture(TEXTURE, x + width - 26, y + 11, 0, 39, 7, 6);
             }
 
             i++;

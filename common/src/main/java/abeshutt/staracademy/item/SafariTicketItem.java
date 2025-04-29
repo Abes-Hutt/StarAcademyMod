@@ -1,5 +1,6 @@
 package abeshutt.staracademy.item;
 
+import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModWorldData;
@@ -82,16 +83,13 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
     }
 
     public static Optional<SafariTicketEntry> getEntry(ItemStack stack, boolean client) {
-        return Optional.ofNullable(stack.get(ModDataComponents.SAFARI_TICKET_ENTRY.get()));
+        String id = stack.get(ModDataComponents.SAFARI_TICKET_ENTRY.get());
 
-        /*
-        if(stack.getNbt() == null) {
+        if(id == null) {
             return Optional.empty();
         }
 
-        return Adapters.UTF_8.readNbt(stack.getNbt().get("id")).flatMap(id -> {
-            return client ? SafariConfig.CLIENT.getTicket(id) : ModConfigs.SAFARI.getTicket(id);
-        });*/
+        return client ? SafariConfig.CLIENT.getTicket(id) : ModConfigs.SAFARI.getTicket(id);
     }
 
     @Override

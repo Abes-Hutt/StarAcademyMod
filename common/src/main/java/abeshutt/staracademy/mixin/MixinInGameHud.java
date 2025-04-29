@@ -13,6 +13,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,9 +28,9 @@ import static abeshutt.staracademy.world.data.StarterMode.RAFFLE_ENABLED;
 public class MixinInGameHud {
 
     @Inject(method = "render", at = @At("TAIL"))
-    public void render(DrawContext context, float tickDelta, CallbackInfo ci) {
-        this.renderRaffle(context, tickDelta);
-        this.renderSafari(context, tickDelta);
+    public void render(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        this.renderRaffle(context, tickCounter.getTickDelta(true));
+        this.renderSafari(context, tickCounter.getTickDelta(true));
     }
 
     private void renderRaffle(DrawContext context, float tickDelta) {

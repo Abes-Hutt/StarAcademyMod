@@ -21,26 +21,26 @@ public class ModEntities extends ModRegistries {
 
     public static void register() {
         STAR_BADGE = register("star_badge", StarBadgeEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.98F, 0.7F).maxTrackingRange(128));
+                builder -> builder.dimensions(0.98F, 0.7F).maxTrackingRange(128));
 
         DUELING_GLOVE = register("dueling_glove", DuelingGloveEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.98F, 0.7F).maxTrackingRange(128));
+                builder -> builder.dimensions(0.98F, 0.7F).maxTrackingRange(128));
 
         SLINGSHOT = register("slingshot", SlingshotEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.98F, 0.7F).maxTrackingRange(128));
+                builder -> builder.dimensions(0.98F, 0.7F).maxTrackingRange(128));
 
         PARTNER_NPC = register("partner_npc", PartnerNPCEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.6F, 1.8F).maxTrackingRange(128));
+                builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
 
         SAFARI_NPC = register("safari_npc", SafariNPCEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.6F, 1.8F).maxTrackingRange(128));
+                builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
 
         NURSE_NPC = register("nurse_npc", NurseNPCEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.6F, 1.8F).maxTrackingRange(128));
+                builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
 
 
         SHOOTING_STAR = register("shooting_star", ShootingStarEntity::new, SpawnGroup.MISC,
-                builder -> builder.setDimensions(0.5F, 0.5F).maxTrackingRange(4096));
+                builder -> builder.dimensions(0.5F, 0.5F).maxTrackingRange(4096));
     }
 
     public static <V extends Entity> RegistrySupplier<EntityType<V>> register(Identifier id, EntityType.EntityFactory<V> factory,

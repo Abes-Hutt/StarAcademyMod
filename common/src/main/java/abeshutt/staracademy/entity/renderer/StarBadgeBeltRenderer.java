@@ -38,7 +38,7 @@ public class StarBadgeBeltRenderer extends FeatureRenderer<AbstractClientPlayerE
         matrices.translate(0.0D, -0.07D, 0.0D);
 
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(StarBadgeBeltModel.TEXTURE));
-        this.model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180.0F));
 
         BaseInventory inventory = StarBadgeData.CLIENT.getInventories().get(player.getUuid());

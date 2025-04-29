@@ -16,8 +16,6 @@
     "cobblemon.MixinCategoryListEntry",
     "cobblemon.MixinSelectionButton",
     "cobblemon.MixinStarterSelectionScreen",
-    "mousewheelie.MixinContainerScreenHelper",
-    "scout.MixinScoutUtilClient",
     "terrastorage.MixinHandledScreenMixin",
     "terrastorage.MixinInventoryScreenMixin"
   ],
@@ -31,17 +29,7 @@
     "MixinPlayerScreenHandler",
     "MixinServerWorld",
     "MixinStructureTemplate",
-    "bountiful.MixinBountyItem",
-    "cloudboots.MixinGoldenFeatherTrinket",
-    "cobblemon.MixinPokeBallItem",
-    "hunt.MixinCustomPrice",
-    "hunt.MixinSingleHunt",
-    "mythsandlegends.MixinForceSpawningUtils",
-    "mythsandlegends.MixinFormAndAspectUtils",
-    "mythsandlegends.MixinPlayerEvents",
-    "numismaticoverhaul.MixinShopBlock",
-    "scout.MixinBaseBagItem",
-    "terrastorage.MixinPacketRegistry"
+    "cobblemon.MixinPokeBallItem"
   ],
   "injectors": {
     "defaultRequire": 1

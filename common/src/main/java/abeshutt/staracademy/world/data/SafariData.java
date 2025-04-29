@@ -6,6 +6,7 @@ import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
+import abeshutt.staracademy.init.ModBlocks;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.init.ModWorldData;
@@ -19,6 +20,7 @@ import com.google.gson.JsonObject;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -46,6 +48,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+
+import static net.minecraft.entity.Entity.RemovalReason.*;
 
 public class SafariData extends WorldData {
 
@@ -112,9 +116,10 @@ public class SafariData extends WorldData {
         if(destination != null) {
             this.getOrCreate(player.getUuid()).setLastState(new EntityState(player));
             //player.interactionManager.changeGameMode(GameMode.ADVENTURE);
-            ProxyEntity.of(player).ifPresent(proxy -> {
-                proxy.schedulePortalTick(() -> player.moveToWorld(destination));
-            });
+            player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
+            //ProxyEntity.of(player).ifPresent(proxy -> {
+            //    proxy.schedulePortalTick(() -> player.moveToWorld(destination));
+            //});
 
             //TODO: For some reason this causes a CME...
             //player.moveToWorld(destination);
@@ -127,19 +132,22 @@ public class SafariData extends WorldData {
         SafariData.Entry entry = this.get(player.getUuid()).orElse(null);
 
         if(entry == null || entry.getLastState() == null) {
-            player.getServer().getPlayerManager().respawnPlayer(player, false);
+            player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
         } else {
             player.interactionManager.changeGameMode(entry.getLastState().getGameMode());
+            player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
+
+            /*
             RegistryKey<World> dimension = entry.getLastState().getDimension();
             ServerWorld destination = server.getWorld(dimension);
 
             if(destination != null) {
-                //ProxyEntity.of(player).ifPresent(proxy -> {
-                //    proxy.schedulePortalTick(() -> player.moveToWorld(destination));
-                //});
+                ProxyEntity.of(player).ifPresent(proxy -> {
+                    proxy.schedulePortalTick(() -> player.moveToWorld(destination));
+                });
 
                 player.moveToWorld(destination);
-            }
+            }*/
         }
 
         ProxyEntity.of(player).ifPresent(proxy -> {
@@ -328,7 +336,7 @@ public class SafariData extends WorldData {
         this.portals.clear();
 
         for(String s : nbt.getCompound("portals").getKeys()) {
-            RegistryKey<World> key = RegistryKey.of(RegistryKeys.WORLD, new Identifier(s));
+            RegistryKey<World> key = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(s));
             Set<BlockPos> positions = new HashSet<>();
 
             if(nbt.getCompound("portals").get(s) instanceof NbtList entry) {

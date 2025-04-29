@@ -106,7 +106,7 @@ public class PartialBlockTag implements TilePlacement<PartialBlockTag> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialBlockTag.of(new Identifier(string), PartialBlockProperties.parse(reader), PartialCompoundNbt.parse(reader));
+            return PartialBlockTag.of(Identifier.of(string), PartialBlockProperties.parse(reader), PartialCompoundNbt.parse(reader));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid tag identifier '" + string + "' in block tag '" + reader.getString() + "'");

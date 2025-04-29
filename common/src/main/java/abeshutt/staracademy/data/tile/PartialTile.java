@@ -142,7 +142,7 @@ public class PartialTile implements TilePlacement<PartialTile> {
 			}
 
 			Adapters.PARTIAL_BLOCK_STATE.writeNbt(value.state).ifPresent(tag -> nbt.put("state", tag));
-			Adapters.PARTIAL_BLOCK_ENTITY.writeNbt(value.entity).ifPresent(tag -> nbt.put("nbt", tag));
+			Adapters.PARTIAL_NBT.writeNbt(value.entity).ifPresent(tag -> nbt.put("nbt", tag));
 			return Optional.of(nbt);
 		}
 
@@ -150,7 +150,7 @@ public class PartialTile implements TilePlacement<PartialTile> {
 		public Optional<PartialTile> readNbt(NbtElement nbt) {
 			if(nbt instanceof NbtCompound compound) {
 				PartialBlockState state = Adapters.PARTIAL_BLOCK_STATE.readNbt(compound.get("state")).orElseThrow();
-				PartialCompoundNbt entity = Adapters.PARTIAL_BLOCK_ENTITY.readNbt(compound.get("nbt")).orElseGet(PartialCompoundNbt::empty);
+				PartialCompoundNbt entity = Adapters.PARTIAL_NBT.readNbt(compound.get("nbt")).orElseGet(PartialCompoundNbt::empty);
 				BlockPos pos = null;
 
 				if(compound.contains("pos", NbtElement.LIST_TYPE)) {

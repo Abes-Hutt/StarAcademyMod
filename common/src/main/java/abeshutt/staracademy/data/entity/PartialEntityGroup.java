@@ -99,7 +99,7 @@ public class PartialEntityGroup implements EntityPlacement<PartialEntityGroup> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialEntityGroup.of(new Identifier(string), PartialCompoundNbt.parse(reader));
+            return PartialEntityGroup.of(Identifier.of(string), PartialCompoundNbt.parse(reader));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid group identifier '" + string + "' in entity group '" + reader.getString() + "'");

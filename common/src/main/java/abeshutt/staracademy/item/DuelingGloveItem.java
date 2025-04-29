@@ -4,6 +4,7 @@ import abeshutt.staracademy.entity.DuelingGloveEntity;
 import abeshutt.staracademy.init.ModItems;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.sound.SoundCategory;
@@ -13,6 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
@@ -23,9 +25,11 @@ public class DuelingGloveItem extends RangedWeaponItem {
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(user instanceof PlayerEntity player) {
-            float progress = getPullProgress(this.getMaxUseTime(stack) - remainingUseTicks);
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+        if(shooter instanceof PlayerEntity player) {
+            World world = player.getWorld();
+            //float progress = getPullProgress(this.getMaxUseTime(stack) - remainingUseTicks);
+            float progress = speed;
 
             if(progress < 0.1D) {
                 return;
@@ -55,7 +59,7 @@ public class DuelingGloveItem extends RangedWeaponItem {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 72000;
     }
 

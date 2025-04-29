@@ -3,6 +3,7 @@ package abeshutt.staracademy.entity;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.net.UpdateShootingStarS2CPacket;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -56,7 +57,7 @@ public class ShootingStarEntity extends LivingEntity implements IDefaultedAttrib
 
             this.setPosition(pos.x, pos.y, pos.z);
 
-            ModNetwork.CHANNEL.sendToPlayers(this.getServer().getPlayerManager().getPlayerList(),
+            NetworkManager.sendToPlayers(this.getServer().getPlayerManager().getPlayerList(),
                     new UpdateShootingStarS2CPacket(this.getId(), pos));
         }
 

@@ -28,7 +28,7 @@ import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 
 public class SafariChunkGenerator extends NoiseChunkGenerator {
 
-    public static final MapCodec<NoiseChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
+    public static final MapCodec<SafariChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
         return instance.group(
                 BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
                 ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings").forGetter(NoiseChunkGenerator::getSettings))
@@ -83,7 +83,7 @@ public class SafariChunkGenerator extends NoiseChunkGenerator {
                                         BlockEntity blockEntity = region.getBlockEntity(pos);
 
                                         if(blockEntity != null) {
-                                            blockEntity.readNbt(entry.nbt());
+                                            blockEntity.read(entry.nbt(), world.getRegistryManager());
                                         }
                                     }
 

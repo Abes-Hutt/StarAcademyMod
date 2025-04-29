@@ -23,6 +23,10 @@ public class ValueOutfitEntry extends OutfitEntry {
 
     }
 
+    public ValueOutfitEntry(String id) {
+        this.id = id;
+    }
+
     @Override
     public String getNameKey() {
         return this.id;

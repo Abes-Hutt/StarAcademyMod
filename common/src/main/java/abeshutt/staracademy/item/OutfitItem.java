@@ -1,6 +1,7 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.renderer.OutfitItemRenderer;
@@ -35,7 +36,7 @@ public class OutfitItem extends Item implements ISpecialItemModel {
             return Adapters.OUTFIT_ENTRY.readNbt(stack.getNbt().getCompound("entry"));
         }*/
 
-        return Optional.empty();
+        return Optional.ofNullable(stack.get(ModDataComponents.OUTFIT_ENTRY.get()));
     }
 
     @Override

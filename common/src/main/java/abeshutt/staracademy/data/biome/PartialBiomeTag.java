@@ -86,7 +86,7 @@ public class PartialBiomeTag implements BiomePlacement<PartialBiomeTag> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialBiomeTag.of(new Identifier(string));
+            return PartialBiomeTag.of(Identifier.of(string));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid tag identifier '" + string + "' in biome tag '" + reader.getString() + "'");

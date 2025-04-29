@@ -2,11 +2,13 @@ package abeshutt.staracademy.data.nbt;
 
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
+import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.entity.EntityPlacement;
 import abeshutt.staracademy.data.item.ItemPlacement;
 import abeshutt.staracademy.data.item.PartialItem;
 import abeshutt.staracademy.data.tile.PartialBlockState;
 import abeshutt.staracademy.data.tile.TilePlacement;
+import abeshutt.staracademy.util.ItemUtils;
 import com.google.gson.JsonElement;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -51,17 +53,17 @@ public class PartialCompoundNbt implements TilePlacement<PartialCompoundNbt>, En
 
 	public static PartialCompoundNbt of(BlockEntity blockEntity) {
 		if(blockEntity == null) return new PartialCompoundNbt(null);
-		return new PartialCompoundNbt(blockEntity.createNbtWithId());
+		return new PartialCompoundNbt(blockEntity.createNbtWithId(blockEntity.getWorld().getRegistryManager()));
 	}
 
 	public static PartialCompoundNbt at(BlockView world, BlockPos pos) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if(blockEntity == null) return new PartialCompoundNbt(null);
-		return new PartialCompoundNbt(blockEntity.createNbtWithId());
+		return new PartialCompoundNbt(blockEntity.createNbtWithId(blockEntity.getWorld().getRegistryManager()));
 	}
 
 	public static PartialCompoundNbt of(ItemStack stack) {
-		return new PartialCompoundNbt(stack.getNbt());
+		return new PartialCompoundNbt(ItemUtils.getNbt(stack));
 	}
 
 	@Override
@@ -101,7 +103,8 @@ public class PartialCompoundNbt implements TilePlacement<PartialCompoundNbt>, En
 		}
 
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		return blockEntity != null && this.isSubsetOf(PartialCompoundNbt.of(blockEntity.createNbtWithId()));
+		return blockEntity != null && this.isSubsetOf(PartialCompoundNbt.of(blockEntity.createNbtWithId(
+				blockEntity.getWorld().getRegistryManager())));
 	}
 
 	@Override
@@ -146,7 +149,7 @@ public class PartialCompoundNbt implements TilePlacement<PartialCompoundNbt>, En
 		if(this.nbt == null) return;
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if(blockEntity == null) return;
-		blockEntity.readNbt(this.nbt);
+		blockEntity.read(this.nbt, world.getRegistryManager());
 	}
 
 	@Override
@@ -190,6 +193,24 @@ public class PartialCompoundNbt implements TilePlacement<PartialCompoundNbt>, En
 
 	public static class Adapter implements ISimpleAdapter<PartialCompoundNbt, NbtElement, JsonElement> {
 		@Override
+		public void writeBits(PartialCompoundNbt value, BitBuffer buffer) {
+			buffer.writeBoolean(value != null);
+
+			if(value != null) {
+				Adapters.COMPOUND_NBT.asNullable().writeBits(value.nbt, buffer);
+			}
+		}
+
+		@Override
+		public Optional<PartialCompoundNbt> readBits(BitBuffer buffer) {
+			if(buffer.readBoolean()) {
+				return Adapters.COMPOUND_NBT.asNullable().readBits(buffer).map(PartialCompoundNbt::of);
+			}
+
+			return Optional.empty();
+		}
+
+		@Override
 		public Optional<NbtElement> writeNbt(PartialCompoundNbt value) {
 			return value == null ? Optional.empty() : Adapters.COMPOUND_NBT.writeNbt(value.nbt);
 		}
@@ -197,6 +218,16 @@ public class PartialCompoundNbt implements TilePlacement<PartialCompoundNbt>, En
 		@Override
 		public Optional<PartialCompoundNbt> readNbt(NbtElement nbt) {
 			return nbt == null ? Optional.empty() : Adapters.COMPOUND_NBT.readNbt(nbt).map(PartialCompoundNbt::of);
+		}
+
+		@Override
+		public Optional<JsonElement> writeJson(PartialCompoundNbt value) {
+			return value == null ? Optional.empty() : Adapters.COMPOUND_NBT.writeJson(value.nbt);
+		}
+
+		@Override
+		public Optional<PartialCompoundNbt> readJson(JsonElement json) {
+			return json == null ? Optional.empty() : Adapters.COMPOUND_NBT.readJson(json).map(PartialCompoundNbt::of);
 		}
 	}
 

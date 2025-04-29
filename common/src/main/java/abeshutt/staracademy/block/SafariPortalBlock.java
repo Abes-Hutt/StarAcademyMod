@@ -2,8 +2,10 @@ package abeshutt.staracademy.block;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.block.entity.SafariPortalBlockEntity;
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.util.ProxyEntity;
+import abeshutt.staracademy.world.data.EntityState;
 import abeshutt.staracademy.world.data.SafariData;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -25,15 +27,14 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
+import org.jetbrains.annotations.Nullable;
 
-public class SafariPortalBlock extends Block implements BlockEntityProvider {
+public class SafariPortalBlock extends Block implements BlockEntityProvider, Portal {
 
     public static final EnumProperty<Direction.Axis> AXIS = Properties.HORIZONTAL_AXIS;
     protected static final VoxelShape X_SHAPE = Block.createCuboidShape(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
@@ -81,6 +82,8 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider {
                 VoxelShapes.cuboid(entity.getBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ())),
                 state.getOutlineShape(world, pos),
                 BooleanBiFunction.AND)) {
+            entity.tryUsePortal(this, pos);
+
             proxy.setInSafariPortal(true);
 
             SafariData data = ModWorldData.SAFARI.getGlobal(world);
@@ -163,6 +166,25 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider {
                 portal.tick();
             }
         };
+    }
+
+    @Override
+    public TeleportTarget createTeleportTarget(ServerWorld world, Entity entity, BlockPos pos) {
+        if(world.getRegistryKey() == StarAcademyMod.SAFARI) {
+            SafariData.Entry entry = ModWorldData.SAFARI.getGlobal(world).get(entity.getUuid()).orElseThrow();
+
+            EntityState state = entry.getLastState();
+            ServerWorld destination = world.getServer().getWorld(state.getDimension());
+
+            return new TeleportTarget(destination, state.getPos(), Vec3d.ZERO,
+                    state.getYaw(), state.getPitch(), post -> {});
+        } else {
+            BlockPos target = ModConfigs.SAFARI.getPlacementOffset().add(ModConfigs.SAFARI.getRelativeSpawnPosition());
+            ServerWorld destination = world.getServer().getWorld(StarAcademyMod.SAFARI);
+
+            return new TeleportTarget(destination, new Vec3d(target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D), Vec3d.ZERO,
+                    ModConfigs.SAFARI.getSpawnYaw(), ModConfigs.SAFARI.getSpawnPitch(), post -> {});
+        }
     }
 
 }

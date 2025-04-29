@@ -15,6 +15,7 @@ import abeshutt.staracademy.data.item.PartialItem;
 import abeshutt.staracademy.data.nbt.PartialCompoundNbt;
 import abeshutt.staracademy.data.tile.*;
 import abeshutt.staracademy.item.OutfitEntry;
+import abeshutt.staracademy.item.SafariTicketEntry;
 import abeshutt.staracademy.world.random.ChunkRandom;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.random.LcgRandom;
@@ -107,7 +108,7 @@ public class Adapters {
     public static final PartialBlock.Adapter PARTIAL_BLOCK = new PartialBlock.Adapter();
     public static final PartialBlockProperties.Adapter PARTIAL_BLOCK_PROPERTIES = new PartialBlockProperties.Adapter();
     public static final PartialBlockState.Adapter PARTIAL_BLOCK_STATE = new PartialBlockState.Adapter();
-    public static final PartialCompoundNbt.Adapter PARTIAL_BLOCK_ENTITY = new PartialCompoundNbt.Adapter();
+    public static final PartialCompoundNbt.Adapter PARTIAL_NBT = new PartialCompoundNbt.Adapter();
     public static final PartialTile.Adapter PARTIAL_TILE = new PartialTile.Adapter();
     public static final PartialItem.Adapter PARTIAL_ITEM = new PartialItem.Adapter();
     public static final ItemPredicate.Adapter PARTIAL_STACK = new ItemPredicate.Adapter();
@@ -121,6 +122,7 @@ public class Adapters {
     public static final BlockPosAdapter BLOCK_POS = new BlockPosAdapter(false);
     public static final OutfitEntry.Adapter OUTFIT_ENTRY = new OutfitEntry.Adapter();
     public static final Vec3dAdapter VEC_3D = new Vec3dAdapter(false);
+    public static final SerializableAdapter<SafariTicketEntry, ?, ?> SAFARI_TICKET_ENTRY = of(SafariTicketEntry::new, true);
 
     public static Lcg.Adapter LCG = new Lcg.Adapter(false);
 

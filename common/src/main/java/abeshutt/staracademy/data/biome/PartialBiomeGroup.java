@@ -87,7 +87,7 @@ public class PartialBiomeGroup implements BiomePlacement<PartialBiomeGroup> {
         String string = reader.getString().substring(cursor, reader.getCursor());
 
         try {
-            return PartialBiomeGroup.of(new Identifier(string));
+            return PartialBiomeGroup.of(Identifier.of(string));
         } catch(InvalidIdentifierException e) {
             reader.setCursor(cursor);
             throw new IllegalArgumentException("Invalid group identifier '" + string + "' in biome group '" + reader.getString() + "'");

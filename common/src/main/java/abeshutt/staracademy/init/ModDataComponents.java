@@ -1,6 +1,8 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.item.OutfitEntry;
 import abeshutt.staracademy.item.SafariTicketEntry;
 import com.mojang.serialization.Codec;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -13,15 +15,15 @@ import java.util.function.UnaryOperator;
 
 public class ModDataComponents extends ModRegistries {
 
-    public static RegistrySupplier<ComponentType<SafariTicketEntry>> SAFARI_TICKET_ENTRY;
-    public static RegistrySupplier<ComponentType<String>> BIN_MODE;
+    public static RegistrySupplier<ComponentType<String>> SAFARI_TICKET_ENTRY;
+    public static RegistrySupplier<ComponentType<OutfitEntry>> OUTFIT_ENTRY;
 
     public static void register() {
         SAFARI_TICKET_ENTRY = register(StarAcademyMod.id("safari_ticket_entry"), builder -> builder
                 .codec(Codec.STRING).packetCodec(STRING_PACKET_CODEC));
 
-        BIN_MODE = register(StarAcademyMod.id("bin_mode"), builder -> builder
-                .codec(Codec.STRING).packetCodec(STRING_PACKET_CODEC));
+        OUTFIT_ENTRY = register(StarAcademyMod.id("outfit_entry"), builder -> builder
+                .codec(Adapters.OUTFIT_ENTRY.codecNbt()).packetCodec(Adapters.OUTFIT_ENTRY));
     }
 
     public static <T> RegistrySupplier<ComponentType<T>> register(Identifier id, UnaryOperator<ComponentType.Builder<T>> item) {

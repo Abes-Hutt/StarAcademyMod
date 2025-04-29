@@ -13,6 +13,7 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 
@@ -84,10 +85,11 @@ public abstract class SpecialItemRenderer {
                 color = MinecraftClient.getInstance().itemColors.getColor(stack, bakedQuad.getColorIndex());
             }
 
-            float red = (float)(color >> 16 & 0xFF) / 255.0F;
-            float green = (float)(color >> 8 & 0xFF) / 255.0F;
-            float blue = (float)(color & 0xFF) / 255.0F;
-            vertices.quad(entry, bakedQuad, red, green, blue, light, overlay);
+            float alpha = (float)ColorHelper.Argb.getAlpha(color) / 255.0F;
+            float red = (float)ColorHelper.Argb.getRed(color) / 255.0F;
+            float green = (float)ColorHelper.Argb.getGreen(color) / 255.0F;
+            float blue = (float)ColorHelper.Argb.getBlue(color) / 255.0F;
+            vertices.quad(entry, bakedQuad, red, green, blue, alpha, light, overlay);
         }
     }
 
