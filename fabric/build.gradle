@@ -59,3 +59,36 @@ remapJar {
     input.set shadowJar.archiveFile
     atAccessWideners.add "academy-common.accesswidener"
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Abes-Hutt/StarAcademyMod")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = rootProject.maven_group
+            artifactId = rootProject.archives_name.toLowerCase()
+            version = "mc${rootProject.minecraft_version}-v${rootProject.mod_version}${getBuildNumber()}-${project.name}"
+            from components.java
+        }
+    }
+}
+
+tasks.register('printVersion') {
+    println "mc$rootProject.minecraft_version-v$rootProject.mod_version${getBuildNumber()}-fabric"
+}
+
+static def getBuildNumber() {
+    if(System.getenv("GITHUB_RUN_NUMBER") != null) {
+        return "." + System.getenv("GITHUB_RUN_NUMBER").toString()
+    }
+
+    return ""
+}
