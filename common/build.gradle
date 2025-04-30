@@ -10,6 +10,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
     modImplementation "com.cobblemon:mod:1.6.1+1.21.1"
+    modImplementation files("jars/pokeblocks-1.4.0-1.21.1.jar")
+    implementation files("jars/molang-1.1.18.jar")
 }
 
 /*

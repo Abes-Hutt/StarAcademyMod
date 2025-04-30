@@ -12,3 +12,4 @@ accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/wor
 accessible field net/minecraft/server/MinecraftServer worlds Ljava/util/Map;
 accessible method net/minecraft/entity/LivingEntity playEquipmentBreakEffects (Lnet/minecraft/item/ItemStack;)V
 extendable class net/minecraft/world/gen/chunk/NoiseChunkGenerator
+extendable class com/cobblemon/mod/common/client/gui/pokedex/PokedexGUI
