@@ -89,6 +89,7 @@ subprojects {
     }
 
     // Configure Maven publishing.
+    /*
     publishing {
         publications {
             mavenJava(MavenPublication) {
@@ -104,7 +105,7 @@ subprojects {
             // The repositories here will be used for publishing your artifact, not for
             // retrieving dependencies.
         }
-    }
+    }*/
 }
 
 static def getBuildNumber() {
