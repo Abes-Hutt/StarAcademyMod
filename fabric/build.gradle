@@ -76,9 +76,6 @@ publishing {
             groupId = rootProject.maven_group
             artifactId = rootProject.archives_name.toLowerCase()
             version = "mc${rootProject.minecraft_version}-v${rootProject.mod_version}${getBuildNumber()}-${project.name}"
-            println "Group: " + groupId
-            println "Artifact: " + artifactId
-            println "Version: " + version
             from components.java
         }
     }
