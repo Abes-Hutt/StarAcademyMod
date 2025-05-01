@@ -2,6 +2,8 @@ package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.entity.DuelingGloveEntity;
 import abeshutt.staracademy.init.ModItems;
+import abeshutt.staracademy.screen.PokedexScreen;
+import com.cobblemon.mod.common.client.pokedex.PokedexType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -70,6 +72,10 @@ public class DuelingGloveItem extends RangedWeaponItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if(world.isClient) {
+            PokedexScreen.open(PokedexType.BLACK, null, null);
+        }
+
         user.setCurrentHand(hand);
         return TypedActionResult.consume(user.getStackInHand(hand));
     }

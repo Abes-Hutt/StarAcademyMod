@@ -22,8 +22,10 @@ import abeshutt.staracademy.world.random.LcgRandom;
 import abeshutt.staracademy.world.random.RandomSource;
 import abeshutt.staracademy.world.random.lcg.Lcg;
 import abeshutt.staracademy.world.roll.IntRoll;
+import com.google.gson.JsonElement;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.Registries;
 
 import java.nio.charset.StandardCharsets;
@@ -163,7 +165,7 @@ public class Adapters {
         return new OrdinalAdapter<>(mapper, false, array);
     }
 
-    public static <T> SerializableAdapter<T, ?, ?> of(Supplier<T> constructor, boolean nullable) {
+    public static <T, N extends NbtElement, J extends JsonElement> SerializableAdapter<T, N, J> of(Supplier<T> constructor, boolean nullable) {
         return new SerializableAdapter<>(constructor, nullable);
     }
 

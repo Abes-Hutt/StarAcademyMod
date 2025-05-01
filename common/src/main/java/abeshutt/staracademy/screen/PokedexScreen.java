@@ -75,6 +75,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
             cobblemonResource("textures/gui/pokedex/tab_drops.png")
     };
 
+    private final ClientPokedexManager data;
     private final PokedexType type;
     private final Identifier initSpecies;
     private final BlockPos blockPos;
@@ -106,19 +107,26 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
     private Element tabInfoElement;
     private int tabInfoIndex = PokedexGUIConstants.TAB_DESCRIPTION;
 
-    public PokedexScreen(PokedexType type, Identifier initSpecies, BlockPos blockPos) {
+    public PokedexScreen(ClientPokedexManager data, PokedexType type, Identifier initSpecies, BlockPos blockPos) {
         super(Text.translatable("cobblemon.ui.pokedex.title"));
+        this.data = data;
         this.type = type;
         this.initSpecies = initSpecies;
         this.blockPos = blockPos;
 
         this.runtime.getEnvironment().query.addFunction("get_pokedex", params -> {
-            return CobblemonClient.INSTANCE.getClientPokedexData().getStruct();
+            return this.data.getStruct();
         });
     }
 
-    public static void open(ClientPokedexManager pokedex, PokedexType type, Identifier species, BlockPos blockPos) {
-        MinecraftClient.getInstance().setScreen(new PokedexScreen(type, species, blockPos));
+    public static void open(PokedexType type, Identifier species, BlockPos blockPos) {
+        //MinecraftClient.getInstance().setScreen(new PokedexScreen(CobblemonClient.INSTANCE.getClientPokedexData(),
+        //        type, species, blockPos));
+
+        ClientPokedexManager data = new ClientPokedexManager(new HashMap<>());
+        data.getSpeciesRecords().putAll(data.getSpeciesRecords());
+        data.clearCalculatedValues();
+        MinecraftClient.getInstance().setScreen(new PokedexScreen(CobblemonClient.INSTANCE.getClientPokedexData(), type, species, blockPos));
     }
 
     @Override
@@ -126,14 +134,13 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         super.init();
         this.clearChildren();
 
-        ClientPokedexManager pokedex = CobblemonClient.INSTANCE.getClientPokedexData();
         this.availableRegions = new ArrayList<>(Dexes.INSTANCE.getDexEntryMap().keySet());
         this.selectedRegionIndex = 0;
 
-        int ownedAmount = pokedex.getDexCalculatedValue(cobblemonResource("national"), CaughtCount.INSTANCE);
+        int ownedAmount = this.data.getDexCalculatedValue(cobblemonResource("national"), CaughtCount.INSTANCE);
         this.ownedCount = String.format("%04d", ownedAmount);
 
-        int seenAmount = pokedex.getDexCalculatedValue(cobblemonResource("national"), SeenCount.INSTANCE);
+        int seenAmount = this.data.getDexCalculatedValue(cobblemonResource("national"), SeenCount.INSTANCE);
         this.seenCount = String.format("%04d", seenAmount);
 
         int x = (width - BASE_WIDTH) / 2;
@@ -201,6 +208,16 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
     }
 
     @Override
+    protected void applyBlur(float delta) {
+
+    }
+
+    @Override
+    protected void renderDarkening(DrawContext context, int x, int y, int width, int height) {
+
+    }
+
+    @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         MatrixStack matrices = context.getMatrices();
         this.renderBackground(context, mouseX, mouseY, delta);
@@ -208,9 +225,11 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         int x = (width - BASE_WIDTH) / 2;
         int y = (height - BASE_HEIGHT) / 2;
 
-        blitk(matrices, type.getTexturePath(), x, y, BASE_WIDTH, BASE_HEIGHT);
-        blitk(matrices, screenBackground, x, y, width = BASE_WIDTH, height = BASE_HEIGHT);
-        blitk(matrices, globeIcon, (x + 26) / SCALE, (y + 15) / SCALE, 14, 14, SCALE);
+        blitk(matrices, type.getTexturePath(), x, y, BASE_HEIGHT, BASE_WIDTH);
+        blitk(matrices, screenBackground, x, y, BASE_HEIGHT, BASE_WIDTH);
+        blitk(matrices, globeIcon, (x + 26) / SCALE, (y + 15) / SCALE, 14, 14,
+                0, 0, 14, 14, 0, 1, 1, 1, 1,
+                true, SCALE);
 
         // Region label
         RenderHelperKt.drawScaledText(context,
@@ -230,10 +249,14 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         );
 
         // Seen icon
-        blitk(matrices, caughtSeenIcon, (x + 252) / SCALE, (y + 15) / SCALE, 14, 14, 0, 28, SCALE);
+        blitk(matrices, caughtSeenIcon, (x + 252) / SCALE, (y + 15) / SCALE, 14, 14,
+                0, 0, 14, 28, 0, 1, 1, 1, 1,
+                true, SCALE);
 
         // Caught icon
-        blitk(matrices, caughtSeenIcon, (x + 290) / SCALE, (y + 15) / SCALE, 14, 14, 14, 28, SCALE);
+        blitk(matrices, caughtSeenIcon, (x + 290) / SCALE, (y + 15) / SCALE, 14, 14,
+                0, 14, 14, 28, 0, 1, 1, 1, 1,
+                true, SCALE);
 
         // Seen
         RenderHelperKt.drawScaledText(
@@ -270,13 +293,14 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         );
 
         // Show selected tab pointer if selected Pokémon has tab info to be shown
-        if(this.selectedEntry != null && CobblemonClient.INSTANCE.getClientPokedexData()
-                .getCaughtForms(this.selectedEntry).contains(this.selectedForm)) {
+        if(this.selectedEntry != null && this.data.getCaughtForms(this.selectedEntry).contains(this.selectedForm)) {
             // Tab arrow
             blitk(matrices, tabSelectArrow,
                     (x + 198 + (25 * tabInfoIndex)) / SCALE,
                     // (x + 191.5 + (22 * tabInfoIndex)) / SCALE for 6 tabs
-                    (y + 177) / SCALE, 12,  6, SCALE);
+                    (y + 177) / SCALE, 6, 12,
+                    0, 14, 12, 6, 0, 1, 1, 1, 1,
+                    true, SCALE);
         }
 
         super.render(context, mouseX, mouseY, delta);
@@ -369,7 +393,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
     }
 
     public void updateFilters() {
-        this.updateFilters(null);
+        this.updateFilters(false);
     }
 
     public void updateFilters(Boolean init) {
@@ -423,13 +447,13 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
 
     public Collection<EntryFilter> getFilters() {
         List<EntryFilter> filters = new ArrayList<>();
-        filters.add(new SearchFilter(CobblemonClient.INSTANCE.getClientPokedexData(), this.searchWidget.getText(), this.selectedSearchByType));
+        filters.add(new SearchFilter(this.data, this.searchWidget.getText(), this.selectedSearchByType));
         return filters;
     }
 
     public void setSelectedEntry(PokedexEntry newSelectedEntry) {
         this.selectedEntry = newSelectedEntry;
-        List<PokedexForm> forms = CobblemonClient.INSTANCE.getClientPokedexData().getEncounteredForms(newSelectedEntry);
+        List<PokedexForm> forms = this.data.getEncounteredForms(newSelectedEntry);
         this.selectedForm = forms.isEmpty() ? null : forms.getFirst();
         this.pokemonInfoWidget.setDexEntry(this.selectedEntry);
         this.displaytabInfoElement(this.tabInfoIndex);
@@ -472,8 +496,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
     }
 
     public void displaytabInfoElement(Integer tabIndex, Boolean update) {
-        boolean showActiveTab = this.selectedEntry != null && CobblemonClient.INSTANCE.getClientPokedexData()
-                .getCaughtForms(this.selectedEntry).contains(this.selectedForm);
+        boolean showActiveTab = this.selectedEntry != null && this.data.getCaughtForms(this.selectedEntry).contains(this.selectedForm);
 
         if(!this.tabButtons.isEmpty() && this.tabButtons.size() > tabIndex) {
             for(int i = 0; i < this.tabButtons.size(); i++) {
@@ -507,7 +530,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         Element element = this.tabInfoElement;
 
         if(element instanceof Drawable && element instanceof Selectable) {
-            this.addDrawableChild((DrawableElement)element);
+            this.addDrawableChild(cast(element));
         }
 
         if(update) {
@@ -518,7 +541,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
     public void updateTabInfoElement() {
         Species species = this.selectedEntry != null ? PokemonSpecies.INSTANCE.getByIdentifier(this.selectedEntry.getSpeciesId()) : null;
         String formName = this.selectedForm != null ? this.selectedForm.getDisplayForm() : null;
-        boolean canDisplay = this.selectedEntry != null && CobblemonClient.INSTANCE.getClientPokedexData().getCaughtForms(this.selectedEntry).contains(this.selectedForm);
+        boolean canDisplay = this.selectedEntry != null && this.data.getCaughtForms(this.selectedEntry).contains(this.selectedForm);
 
         List<String> textToShowInDescription = new ArrayList<>();
 
@@ -595,7 +618,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
             return false;
         }
 
-        boolean encounteredForm = CobblemonClient.INSTANCE.getClientPokedexData().getEncounteredForms(this.selectedEntry).contains(this.selectedForm);
+        boolean encounteredForm = this.data.getEncounteredForms(this.selectedEntry).contains(this.selectedForm);
         return encounteredForm && (tabIndex != tabInfoIndex);
     }
 
@@ -619,8 +642,8 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(soundEvent, 1.0F));
     }
 
-    public interface DrawableElement extends Element, Drawable, Selectable {
-
+    public <T extends Element & Drawable & Selectable> T cast(Object object) {
+        return (T)object;
     }
 
 }

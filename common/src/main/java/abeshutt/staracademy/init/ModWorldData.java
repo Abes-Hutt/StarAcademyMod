@@ -11,6 +11,7 @@ public class ModWorldData extends ModRegistries {
     public static WorldDataType<SafariData> SAFARI;
     public static WorldDataType<WardrobeData> WARDROBE;
     public static WorldDataType<PartnerData> PARTNER;
+    public static WorldDataType<TeamData> TEAM;
 
     public static void register() {
         PLAYER_PROFILE = new WorldDataType<>(StarAcademyMod.ID + ".player_profile", PlayerProfileData::new);
@@ -19,6 +20,7 @@ public class ModWorldData extends ModRegistries {
         SAFARI = new WorldDataType<>(StarAcademyMod.ID + ".safari", SafariData::new);
         WARDROBE = new WorldDataType<>(StarAcademyMod.ID + ".wardrobe", WardrobeData::new);
         PARTNER = new WorldDataType<>(StarAcademyMod.ID + ".partner", PartnerData::new);
+        TEAM = new WorldDataType<>(StarAcademyMod.ID + ".team", TeamData::new);
 
         PlayerProfileData.init();
         StarBadgeData.init();
