@@ -36,6 +36,7 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), UpdateSafariConfigS2CPacket.ID, UpdateSafariConfigS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateOutfitS2CPacket.ID, UpdateOutfitS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateShootingStarS2CPacket.ID, UpdateShootingStarS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateHousesS2CPacket.ID, UpdateHousesS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
         }
@@ -52,6 +53,7 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), UpdateSafariConfigS2CPacket.ID, UpdateSafariConfigS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateOutfitS2CPacket.ID, UpdateOutfitS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateShootingStarS2CPacket.ID, UpdateShootingStarS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateHousesS2CPacket.ID, UpdateHousesS2CPacket::new, null);
             ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
         }

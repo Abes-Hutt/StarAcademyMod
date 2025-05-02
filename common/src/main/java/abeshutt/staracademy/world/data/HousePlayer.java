@@ -1,6 +1,7 @@
 package abeshutt.staracademy.world.data;
 
 import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
@@ -28,6 +29,18 @@ public class HousePlayer implements ISerializable<NbtCompound, JsonObject> {
 
     public long getJoinTime() {
         return this.joinTime;
+    }
+
+    @Override
+    public void writeBits(BitBuffer buffer) {
+        Adapters.UUID.writeBits(this.uuid, buffer);
+        Adapters.LONG.writeBits(this.joinTime, buffer);
+    }
+
+    @Override
+    public void readBits(BitBuffer buffer) {
+        this.uuid = Adapters.UUID.readBits(buffer).orElseThrow();
+        this.joinTime = Adapters.LONG.readBits(buffer).orElseThrow();
     }
 
     @Override

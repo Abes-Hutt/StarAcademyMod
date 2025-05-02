@@ -6,6 +6,8 @@ import abeshutt.staracademy.net.UpdateHousesS2CPacket;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -38,6 +40,39 @@ public class HouseData extends WorldData {
         return true;
     }
 
+    public Optional<AcademyHouse> get(UUID uuid) {
+        return Optional.ofNullable(this.houses.get(uuid));
+    }
+
+    public AcademyHouse add(String name, int color) {
+        AcademyHouse house = new AcademyHouse();
+        house.setName(name);
+        house.setColor(color);
+        this.houses.put(house.getUuid(), house);
+        this.changes.put(house.getUuid(), house);
+        return house;
+    }
+
+    public AcademyHouse remove(UUID uuid) {
+        AcademyHouse house = this.houses.remove(uuid);
+
+        if(house == null) {
+            this.changes.put(uuid, null);
+        }
+
+        return house;
+    }
+
+    public Optional<AcademyHouse> getFor(UUID uuid) {
+        for(AcademyHouse house : this.houses.values()) {
+            if(house.getPlayers().containsKey(uuid)) {
+                return Optional.of(house);
+            }
+        }
+
+        return Optional.empty();
+    }
+
     private void onJoin(ServerPlayerEntity player) {
         Map<UUID, UpdateHousesS2CPacket.House> changes = new LinkedHashMap<>();
 
@@ -55,6 +90,10 @@ public class HouseData extends WorldData {
         this.houses.forEach((uuid, house) -> {
             house.getChangesPacket().ifPresent(packet -> changes.put(uuid, packet));
         });
+
+        if(changes.isEmpty()) {
+            return;
+        }
 
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             NetworkManager.sendToPlayer(player, new UpdateHousesS2CPacket(changes));

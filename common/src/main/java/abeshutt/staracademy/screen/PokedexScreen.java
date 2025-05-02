@@ -5,9 +5,7 @@ import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.CobblemonSounds;
 import com.cobblemon.mod.common.api.abilities.PotentialAbility;
 import com.cobblemon.mod.common.api.molang.MoLangFunctions;
-import com.cobblemon.mod.common.api.pokedex.CaughtCount;
-import com.cobblemon.mod.common.api.pokedex.Dexes;
-import com.cobblemon.mod.common.api.pokedex.SeenCount;
+import com.cobblemon.mod.common.api.pokedex.*;
 import com.cobblemon.mod.common.api.pokedex.def.PokedexDef;
 import com.cobblemon.mod.common.api.pokedex.entry.PokedexEntry;
 import com.cobblemon.mod.common.api.pokedex.entry.PokedexForm;
@@ -73,7 +71,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
             cobblemonResource("textures/gui/pokedex/tab_drops.png")
     };
 
-    private final ClientPokedexManager data;
+    private final AbstractPokedexManager data;
     private final PokedexType type;
     private final Identifier initSpecies;
     private final BlockPos blockPos;
@@ -105,7 +103,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
     private Element tabInfoElement;
     private int tabInfoIndex = PokedexGUIConstants.TAB_DESCRIPTION;
 
-    public PokedexScreen(ClientPokedexManager data, PokedexType type, Identifier initSpecies, BlockPos blockPos) {
+    public PokedexScreen(AbstractPokedexManager data, PokedexType type, Identifier initSpecies, BlockPos blockPos) {
         super(Text.translatable("cobblemon.ui.pokedex.title"));
         this.data = data;
         this.type = type;
@@ -117,14 +115,11 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         });
     }
 
-    public static void open(PokedexType type, Identifier species, BlockPos blockPos) {
+    public static void open(AbstractPokedexManager manager, PokedexType type, Identifier species, BlockPos blockPos) {
         //MinecraftClient.getInstance().setScreen(new PokedexScreen(CobblemonClient.INSTANCE.getClientPokedexData(),
         //        type, species, blockPos));
 
-        ClientPokedexManager data = new ClientPokedexManager(new HashMap<>());
-        data.getSpeciesRecords().putAll(data.getSpeciesRecords());
-        data.clearCalculatedValues();
-        MinecraftClient.getInstance().setScreen(new PokedexScreen(CobblemonClient.INSTANCE.getClientPokedexData(), type, species, blockPos));
+        MinecraftClient.getInstance().setScreen(new PokedexScreen(manager, type, species, blockPos));
     }
 
     @Override

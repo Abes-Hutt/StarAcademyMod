@@ -16,21 +16,57 @@ import java.util.*;
 public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
 
     private UUID uuid;
+    private String name;
+    private int color;
     private final Map<UUID, HousePlayer> players;
     private HousePokedexManager pokedex;
 
-    private final Map<UUID, HousePlayer> changes;
+    private boolean propertiesDirty;
+    private final Map<UUID, HousePlayer> playerChanges;
 
     public AcademyHouse() {
-        this.uuid = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public AcademyHouse(UUID uuid) {
+        this.uuid = uuid;
         this.players = new LinkedHashMap<>();
         this.pokedex = new HousePokedexManager(this.uuid);
+        this.name = "Unknown";
+        this.color = 0xFFFFFF;
 
-        this.changes = new LinkedHashMap<>();
+        this.propertiesDirty = false;
+        this.playerChanges = new LinkedHashMap<>();
     }
 
     public UUID getUuid() {
         return this.uuid;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public boolean setName(String name) {
+        if(this.name.equals(this.name = name)) {
+            this.propertiesDirty = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    public int getColor() {
+        return this.color;
+    }
+
+    public boolean setColor(int color) {
+        if(this.color == (this.color = color)) {
+            this.propertiesDirty = true;
+            return true;
+        }
+
+        return false;
     }
 
     public Map<UUID, HousePlayer> getPlayers() {
@@ -41,25 +77,25 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
         return this.pokedex;
     }
 
-    public boolean onAdd(PlayerEntity player) {
-        if(this.players.containsKey(player.getUuid())) {
+    public boolean addPlayer(UUID uuid) {
+        if(this.players.containsKey(uuid)) {
             return false;
         }
 
         long time = ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli();
-        HousePlayer housePlayer = new HousePlayer(player.getUuid(), time);
+        HousePlayer housePlayer = new HousePlayer(uuid, time);
         this.players.put(housePlayer.getUuid(), housePlayer);
-        this.changes.put(player.getUuid(), housePlayer);
+        this.playerChanges.put(uuid, housePlayer);
         return true;
     }
 
-    public boolean onRemove(PlayerEntity player) {
-        if(!this.players.containsKey(player.getUuid())) {
+    public boolean removePlayer(UUID uuid) {
+        if(!this.players.containsKey(uuid)) {
             return false;
         }
 
-        this.players.remove(player.getUuid());
-        this.changes.put(player.getUuid(), null);
+        this.players.remove(uuid);
+        this.playerChanges.put(uuid, null);
         return true;
     }
 
@@ -71,18 +107,20 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     }
 
     public Optional<UpdateHousesS2CPacket.House> getChangesPacket() {
-        if(this.changes.isEmpty() && this.pokedex.getChanges().isEmpty()) {
+        if(!this.propertiesDirty && this.playerChanges.isEmpty() && this.pokedex.getChanges().isEmpty()) {
             return Optional.empty();
         }
 
         UpdateHousesS2CPacket.House payload = new UpdateHousesS2CPacket.House();
-        payload.players = new LinkedHashMap<>(this.changes);
+        payload.color = this.color;
+        payload.players = new LinkedHashMap<>(this.playerChanges);
         payload.pokedex = new LinkedHashMap<>(this.pokedex.getChanges());
         return Optional.of(payload);
     }
 
     public void clearChanges() {
-        this.changes.clear();
+        this.propertiesDirty = false;
+        this.playerChanges.clear();
         this.pokedex.clearChanges();
     }
 
@@ -90,6 +128,8 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     public Optional<NbtCompound> writeNbt() {
         return Optional.of(new NbtCompound()).map(nbt -> {
             Adapters.UUID.writeNbt(this.uuid).ifPresent(tag -> nbt.put("uuid", tag));
+            Adapters.UTF_8.writeNbt(this.name).ifPresent(tag -> nbt.put("name", tag));
+            Adapters.INT.writeNbt(this.color).ifPresent(tag -> nbt.put("color", tag));
 
             NbtList players = new NbtList();
 
@@ -110,6 +150,8 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     @Override
     public void readNbt(NbtCompound nbt) {
         this.uuid = Adapters.UUID.readNbt(nbt.get("uuid")).orElseThrow();
+        this.name = Adapters.UTF_8.readNbt(nbt.get("name")).orElseThrow();
+        this.color = Adapters.INT.readNbt(nbt.get("color")).orElseThrow();
 
         this.players.clear();
         NbtList players = nbt.getList("players", NbtElement.COMPOUND_TYPE);
