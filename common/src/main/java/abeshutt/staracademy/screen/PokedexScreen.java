@@ -21,7 +21,6 @@ import com.cobblemon.mod.common.client.ClientMoLangFunctions;
 import com.cobblemon.mod.common.client.CobblemonClient;
 import com.cobblemon.mod.common.client.CobblemonResources;
 import com.cobblemon.mod.common.client.gui.CobblemonRenderable;
-import com.cobblemon.mod.common.client.gui.pokedex.PokedexGUI;
 import com.cobblemon.mod.common.client.gui.pokedex.PokedexGUIConstants;
 import com.cobblemon.mod.common.client.gui.pokedex.ScaledButton;
 import com.cobblemon.mod.common.client.gui.pokedex.widgets.*;
@@ -39,7 +38,6 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.component.Component;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -59,15 +57,15 @@ import static com.cobblemon.mod.common.util.MiscUtilsKt.cobblemonResource;
 
 public class PokedexScreen extends Screen implements CobblemonRenderable {
 
-    private static final Identifier screenBackground = cobblemonResource("textures/gui/pokedex/pokedex_screen.png");
-    private static final Identifier globeIcon = cobblemonResource("textures/gui/pokedex/globe_icon.png");
-    private static final Identifier caughtSeenIcon = cobblemonResource("textures/gui/pokedex/caught_seen_icon.png");
-    private static final Identifier arrowUpIcon = cobblemonResource("textures/gui/pokedex/arrow_up.png");
-    private static final Identifier arrowDownIcon = cobblemonResource("textures/gui/pokedex/arrow_down.png");
-    private static final Identifier tooltipEdge = cobblemonResource("textures/gui/pokedex/tooltip_edge.png");
-    private static final Identifier tooltipBackground = cobblemonResource("textures/gui/pokedex/tooltip_background.png");
-    private static final Identifier tabSelectArrow = cobblemonResource("textures/gui/pokedex/select_arrow.png");
-    private static final Identifier[] tabIcons = new Identifier[] {
+    private static final Identifier BACKGROUND = cobblemonResource("textures/gui/pokedex/pokedex_screen.png");
+    private static final Identifier GLOBE_ICON = cobblemonResource("textures/gui/pokedex/globe_icon.png");
+    private static final Identifier CAUGHT_SEEN_ICON = cobblemonResource("textures/gui/pokedex/caught_seen_icon.png");
+    private static final Identifier ARROW_UP_ICON = cobblemonResource("textures/gui/pokedex/arrow_up.png");
+    private static final Identifier ARROW_DOWN_ICON = cobblemonResource("textures/gui/pokedex/arrow_down.png");
+    private static final Identifier TOOLTIP_EDGE = cobblemonResource("textures/gui/pokedex/tooltip_edge.png");
+    private static final Identifier TOOLTIP_BACKGROUND = cobblemonResource("textures/gui/pokedex/tooltip_background.png");
+    private static final Identifier TAB_SELECT_ARROW = cobblemonResource("textures/gui/pokedex/select_arrow.png");
+    private static final Identifier[] TAB_ICONS = new Identifier[] {
             cobblemonResource("textures/gui/pokedex/tab_info.png"),
             cobblemonResource("textures/gui/pokedex/tab_abilities.png"),
             cobblemonResource("textures/gui/pokedex/tab_size.png"),
@@ -177,7 +175,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         }
 
         this.regionSelectWidgetUp = new ScaledButton((float)(x + 95), (float)(y + 14.5), 8,
-                6, arrowUpIcon, PokedexGUIConstants.SCALE, false, button -> this.updatePokedexRegion(false));
+                6, ARROW_UP_ICON, PokedexGUIConstants.SCALE, false, button -> this.updatePokedexRegion(false));
         this.addDrawableChild(this.regionSelectWidgetUp);
 
         if(this.regionSelectWidgetDown != null) {
@@ -185,7 +183,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         }
 
         this.regionSelectWidgetDown = new ScaledButton((float)(x + 95), (float)(y + 19.5), 8,
-                6, arrowDownIcon, PokedexGUIConstants.SCALE, false, button -> this.updatePokedexRegion(true));
+                6, ARROW_DOWN_ICON, PokedexGUIConstants.SCALE, false, button -> this.updatePokedexRegion(true));
         this.addDrawableChild(this.regionSelectWidgetDown);
 
         if(this.searchByTypeButton != null) {
@@ -226,8 +224,8 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         int y = (height - BASE_HEIGHT) / 2;
 
         blitk(matrices, type.getTexturePath(), x, y, BASE_HEIGHT, BASE_WIDTH);
-        blitk(matrices, screenBackground, x, y, BASE_HEIGHT, BASE_WIDTH);
-        blitk(matrices, globeIcon, (x + 26) / SCALE, (y + 15) / SCALE, 14, 14,
+        blitk(matrices, BACKGROUND, x, y, BASE_HEIGHT, BASE_WIDTH);
+        blitk(matrices, GLOBE_ICON, (x + 26) / SCALE, (y + 15) / SCALE, 14, 14,
                 0, 0, 14, 14, 0, 1, 1, 1, 1,
                 true, SCALE);
 
@@ -249,12 +247,12 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         );
 
         // Seen icon
-        blitk(matrices, caughtSeenIcon, (x + 252) / SCALE, (y + 15) / SCALE, 14, 14,
+        blitk(matrices, CAUGHT_SEEN_ICON, (x + 252) / SCALE, (y + 15) / SCALE, 14, 14,
                 0, 0, 14, 28, 0, 1, 1, 1, 1,
                 true, SCALE);
 
         // Caught icon
-        blitk(matrices, caughtSeenIcon, (x + 290) / SCALE, (y + 15) / SCALE, 14, 14,
+        blitk(matrices, CAUGHT_SEEN_ICON, (x + 290) / SCALE, (y + 15) / SCALE, 14, 14,
                 0, 14, 14, 28, 0, 1, 1, 1, 1,
                 true, SCALE);
 
@@ -295,7 +293,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         // Show selected tab pointer if selected Pokémon has tab info to be shown
         if(this.selectedEntry != null && this.data.getCaughtForms(this.selectedEntry).contains(this.selectedForm)) {
             // Tab arrow
-            blitk(matrices, tabSelectArrow,
+            blitk(matrices, TAB_SELECT_ARROW,
                     (x + 198 + (25 * tabInfoIndex)) / SCALE,
                     // (x + 191.5 + (22 * tabInfoIndex)) / SCALE for 6 tabs
                     (y + 177) / SCALE, 6, 12,
@@ -314,9 +312,9 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
             int searchTypeTextWidth = MinecraftClient.getInstance().textRenderer.getWidth(searchTypeText.setStyle(searchTypeText.getStyle().withFont(CobblemonResources.INSTANCE.getDEFAULT_LARGE())));
             int tooltipWidth = searchTypeTextWidth + 6;
 
-            blitk(matrices, tooltipEdge, x = mouseX - (tooltipWidth / 2) - 1, y = mouseY - 16, width = 1, height = 11);
-            blitk(matrices, tooltipBackground, x = mouseX - (tooltipWidth / 2), y = mouseY - 16, width = tooltipWidth, height = 11);
-            blitk(matrices, tooltipEdge, x = mouseX + (tooltipWidth / 2), y = mouseY - 16, width = 1, height = 11);
+            blitk(matrices, TOOLTIP_EDGE, x = mouseX - (tooltipWidth / 2) - 1, y = mouseY - 16, width = 1, height = 11);
+            blitk(matrices, TOOLTIP_BACKGROUND, x = mouseX - (tooltipWidth / 2), y = mouseY - 16, width = tooltipWidth, height = 11);
+            blitk(matrices, TOOLTIP_EDGE, x = mouseX + (tooltipWidth / 2), y = mouseY - 16, width = 1, height = 11);
             RenderHelperKt.drawScaledText(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(), searchTypeText,
                     mouseX, mouseY - 15, 1.0F,
                     1.0F,
@@ -467,7 +465,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
             this.tabButtons.clear();
         }
 
-        for(int i = 0; i < tabIcons.length; i++) {
+        for(int i = 0; i < TAB_ICONS.length; i++) {
             int finalI = i;
 
             this.tabButtons.add(new ScaledButton(
@@ -475,7 +473,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
                     y + 181.5F,
                     TAB_ICON_SIZE,
                     TAB_ICON_SIZE,
-                    tabIcons[i],
+                    TAB_ICONS[i],
                     0.5F,
                     false,
                     button -> {

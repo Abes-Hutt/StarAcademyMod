@@ -28,6 +28,7 @@
     "MixinLivingEntity",
     "MixinPlayerScreenHandler",
     "MixinServerWorld",
+    "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "cobblemon.MixinPokeBallItem"
   ],

@@ -16,15 +16,21 @@ import abeshutt.staracademy.data.nbt.PartialCompoundNbt;
 import abeshutt.staracademy.data.tile.*;
 import abeshutt.staracademy.item.OutfitEntry;
 import abeshutt.staracademy.item.SafariTicketEntry;
+import abeshutt.staracademy.world.data.AcademyHouse;
+import abeshutt.staracademy.world.data.HousePlayer;
+import abeshutt.staracademy.world.data.HousePokedexManager;
 import abeshutt.staracademy.world.random.ChunkRandom;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.random.LcgRandom;
 import abeshutt.staracademy.world.random.RandomSource;
 import abeshutt.staracademy.world.random.lcg.Lcg;
 import abeshutt.staracademy.world.roll.IntRoll;
+import com.cobblemon.mod.common.pokemon.Gender;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.Registries;
 
@@ -124,7 +130,11 @@ public class Adapters {
     public static final BlockPosAdapter BLOCK_POS = new BlockPosAdapter(false);
     public static final OutfitEntry.Adapter OUTFIT_ENTRY = new OutfitEntry.Adapter();
     public static final Vec3dAdapter VEC_3D = new Vec3dAdapter(false);
-    public static final SerializableAdapter<SafariTicketEntry, ?, ?> SAFARI_TICKET_ENTRY = of(SafariTicketEntry::new, true);
+    public static final SerializableAdapter<AcademyHouse, NbtElement, JsonElement> HOUSE = Adapters.of(AcademyHouse::new, false);
+    public static final SerializableAdapter<HousePlayer, NbtElement, JsonElement> HOUSE_PLAYER = Adapters.of(HousePlayer::new, false);
+    public static final SpeciesDexRecordAdapter SPECIES_DEX_RECORD = new SpeciesDexRecordAdapter(false);
+    public static final FormDexRecordAdapter FORM_DEX_RECORD = new FormDexRecordAdapter();
+    public static final SerializableAdapter<HousePokedexManager, NbtElement, JsonElement> HOUSE_POKEDEX_MANAGER = of(HousePokedexManager::new, false);
 
     public static Lcg.Adapter LCG = new Lcg.Adapter(false);
 
