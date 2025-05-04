@@ -8,8 +8,6 @@ import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.util.Identifier;
 
-import java.util.function.Supplier;
-
 public class ModLootFunctionTypes extends ModRegistries {
 
     public static RegistrySupplier<LootFunctionType<SetMoneyBagLootFunction>> SET_MONEY_BAG;

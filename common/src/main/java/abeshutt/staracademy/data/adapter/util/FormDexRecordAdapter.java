@@ -7,12 +7,10 @@ import abeshutt.staracademy.data.bit.BitBuffer;
 import com.cobblemon.mod.common.api.pokedex.FormDexRecord;
 import com.cobblemon.mod.common.api.pokedex.PokedexEntryProgress;
 import com.cobblemon.mod.common.pokemon.Gender;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 
 import java.util.HashSet;
 import java.util.Optional;

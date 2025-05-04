@@ -8,11 +8,9 @@ import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.init.ModBlocks;
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.net.UpdateSafariConfigS2CPacket;
 import abeshutt.staracademy.net.UpdateSafariS2CPacket;
-import abeshutt.staracademy.util.ProxyEntity;
 import abeshutt.staracademy.world.DummyWorldGenerationProgressListener;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.google.common.collect.ImmutableList;
@@ -20,7 +18,6 @@ import com.google.gson.JsonObject;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -49,7 +46,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-import static net.minecraft.entity.Entity.RemovalReason.*;
+import static net.minecraft.entity.Entity.RemovalReason.CHANGED_DIMENSION;
 
 public class SafariData extends WorldData {
 

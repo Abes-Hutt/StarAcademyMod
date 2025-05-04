@@ -2,9 +2,6 @@ package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.entity.DuelingGloveEntity;
 import abeshutt.staracademy.init.ModItems;
-import abeshutt.staracademy.screen.PokedexScreen;
-import abeshutt.staracademy.world.data.HouseData;
-import com.cobblemon.mod.common.client.pokedex.PokedexType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;

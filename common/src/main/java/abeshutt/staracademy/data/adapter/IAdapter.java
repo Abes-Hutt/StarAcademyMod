@@ -2,16 +2,8 @@ package abeshutt.staracademy.data.adapter;
 
 import abeshutt.staracademy.data.bit.BitBuffer;
 import com.google.gson.JsonElement;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.Encoder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -7,11 +7,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonSerializationContext;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.JsonOps;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.encoding.VarInts;
 
 import java.io.DataInput;

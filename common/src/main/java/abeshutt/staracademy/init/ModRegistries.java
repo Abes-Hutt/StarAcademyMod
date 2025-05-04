@@ -1,7 +1,6 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.StarAcademyMod;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -10,7 +9,6 @@ import dev.architectury.utils.Env;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.loot.function.LootFunctionType;

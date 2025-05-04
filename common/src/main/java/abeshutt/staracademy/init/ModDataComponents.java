@@ -3,7 +3,6 @@ package abeshutt.staracademy.init;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.item.OutfitEntry;
-import abeshutt.staracademy.item.SafariTicketEntry;
 import com.mojang.serialization.Codec;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.ComponentType;

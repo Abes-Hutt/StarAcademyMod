@@ -11,7 +11,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.thread.ThreadExecutor;
 

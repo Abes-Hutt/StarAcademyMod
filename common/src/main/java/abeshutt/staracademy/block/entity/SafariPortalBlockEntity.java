@@ -4,7 +4,6 @@ import abeshutt.staracademy.init.ModBlocks;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.SafariData;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;

@@ -7,17 +7,9 @@ import abeshutt.staracademy.world.roll.IntRoll;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.function.ConditionalLootFunction;
 import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
-import net.minecraft.loot.function.SetNameLootFunction;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
-
-import java.util.List;
-import java.util.Optional;
 
 public class SetMoneyBagLootFunction implements LootFunction {
 

@@ -1,21 +1,15 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.block.SafariPortalBlock;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.util.ProxyEntity;
-import abeshutt.staracademy.world.data.EntityState;
-import abeshutt.staracademy.world.data.SafariData;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

@@ -6,7 +6,6 @@ import abeshutt.staracademy.util.ProxyStarBadges;
 import abeshutt.staracademy.world.data.StarBadgeData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.input.RecipeInput;

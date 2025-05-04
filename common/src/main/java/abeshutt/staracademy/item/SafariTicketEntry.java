@@ -5,18 +5,10 @@ import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.IBitSerializable;
 import abeshutt.staracademy.world.roll.IntRoll;
 import com.google.gson.annotations.Expose;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
 
 import java.util.regex.Pattern;
 

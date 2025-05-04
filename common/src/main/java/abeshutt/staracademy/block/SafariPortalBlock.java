@@ -32,7 +32,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
-import org.jetbrains.annotations.Nullable;
 
 public class SafariPortalBlock extends Block implements BlockEntityProvider, Portal {
 

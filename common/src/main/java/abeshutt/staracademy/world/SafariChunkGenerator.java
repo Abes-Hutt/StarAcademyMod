@@ -2,7 +2,6 @@ package abeshutt.staracademy.world;
 
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.util.ProxyStructureTemplate;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;

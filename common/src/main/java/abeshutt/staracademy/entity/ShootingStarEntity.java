@@ -1,7 +1,6 @@
 package abeshutt.staracademy.entity;
 
 import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.net.UpdateShootingStarS2CPacket;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.entity.EntityType;

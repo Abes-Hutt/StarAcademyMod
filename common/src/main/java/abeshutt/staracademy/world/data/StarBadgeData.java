@@ -2,7 +2,6 @@ package abeshutt.staracademy.world.data;
 
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModItems;
-import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.StarBadgeItem;
 import abeshutt.staracademy.net.UpdateStarBadgeS2CPacket;

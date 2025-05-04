@@ -4,7 +4,6 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModWorldData;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
-import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.api.storage.pc.PCPosition;
 import com.cobblemon.mod.common.api.storage.pc.PCStore;

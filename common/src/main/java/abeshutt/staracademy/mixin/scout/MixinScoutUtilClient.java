@@ -2,9 +2,6 @@ package abeshutt.staracademy.mixin.scout;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //@Mixin(targets = { "pm.c7.scout.client.ScoutUtilClient" }, remap = false)

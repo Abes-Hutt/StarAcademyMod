@@ -3,7 +3,6 @@ package abeshutt.staracademy.world.data;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
-import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.net.UpdateOutfitS2CPacket;

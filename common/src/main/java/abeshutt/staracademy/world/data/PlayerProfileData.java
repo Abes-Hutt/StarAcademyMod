@@ -1,7 +1,6 @@
 package abeshutt.staracademy.world.data;
 
 import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.init.ModNetwork;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.net.UpdatePlayerProfileS2CPacket;
 import abeshutt.staracademy.util.ProxyGameProfile;

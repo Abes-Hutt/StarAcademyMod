@@ -25,7 +25,6 @@ import net.minecraft.util.Formatting;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;

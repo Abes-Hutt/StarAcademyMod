@@ -1,13 +1,10 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.world.SafariChunkGenerator;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-
-import java.util.Map;
 
 public class ModChunkGenerators extends ModRegistries {
 

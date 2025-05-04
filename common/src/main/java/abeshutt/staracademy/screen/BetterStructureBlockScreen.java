@@ -1,8 +1,6 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
-import abeshutt.staracademy.init.ModNetwork;
-import abeshutt.staracademy.net.UpdateBetterStructureBlockC2SPacket;
 import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
