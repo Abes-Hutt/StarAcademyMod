@@ -73,12 +73,6 @@ public class DuelingGloveItem extends RangedWeaponItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(world.isClient) {
-            HouseData.CLIENT.getFor(user.getUuid()).ifPresent(house -> {
-                PokedexScreen.open(house.getPokedex(), PokedexType.BLACK, null, null);
-            });
-        }
-
         user.setCurrentHand(hand);
         return TypedActionResult.consume(user.getStackInHand(hand));
     }

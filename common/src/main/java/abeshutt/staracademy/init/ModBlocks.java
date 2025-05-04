@@ -1,8 +1,10 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.block.BetterStructureBlock;
+import abeshutt.staracademy.block.HousePokedexBlock;
 import abeshutt.staracademy.block.SafariPortalBlock;
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
+import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.block.entity.SafariPortalBlockEntity;
 import com.mojang.datafixers.types.Type;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -28,6 +30,7 @@ public class ModBlocks extends ModRegistries {
     public static RegistrySupplier<BetterStructureBlock> STRUCTURE_BLOCK;
     public static RegistrySupplier<SafariPortalBlock> SAFARI_PORTAL;
     public static RegistrySupplier<Block> SAFARI_PORTAL_FRAME;
+    public static RegistrySupplier<HousePokedexBlock> HOUSE_POKEDEX;
 
     public static void register() {
         ERROR = register("error", () -> new Block(Block.Settings.copy(Blocks.SLIME_BLOCK)),
@@ -42,15 +45,20 @@ public class ModBlocks extends ModRegistries {
         SAFARI_PORTAL_FRAME = register("safari_portal_frame", () -> new Block(AbstractBlock.Settings
                         .create().mapColor(MapColor.STONE_GRAY).requiresTool().strength(2.0F, 6.0F)),
                 block -> new BlockItem(block.get(), new Item.Settings()));
+
+        HOUSE_POKEDEX = register("house_pokedex", HousePokedexBlock::new,
+                block -> new BlockItem(block.get(), new Item.Settings()));
     }
 
     public static class Entities extends ModBlocks {
         public static RegistrySupplier<BlockEntityType<BetterStructureBlockEntity>> STRUCTURE_BLOCK;
         public static RegistrySupplier<BlockEntityType<SafariPortalBlockEntity>> SAFARI_PORTAL;
+        public static RegistrySupplier<BlockEntityType<HousePokedexBlockEntity>> HOUSE_POKEDEX;
 
         public static void register() {
             STRUCTURE_BLOCK = register("structure_block", BetterStructureBlockEntity::new, ModBlocks.STRUCTURE_BLOCK);
             SAFARI_PORTAL = register("safari_portal", SafariPortalBlockEntity::new, ModBlocks.SAFARI_PORTAL);
+            HOUSE_POKEDEX = register("house_pokedex", HousePokedexBlockEntity::new, ModBlocks.HOUSE_POKEDEX);
         }
     }
 

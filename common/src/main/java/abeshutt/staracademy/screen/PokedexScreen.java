@@ -117,6 +117,7 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         //MinecraftClient.getInstance().setScreen(new PokedexScreen(CobblemonClient.INSTANCE.getClientPokedexData(),
         //        type, species, blockPos));
 
+        MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(CobblemonSounds.POKEDEX_OPEN, 1.0F));
         MinecraftClient.getInstance().setScreen(new PokedexScreen(manager, type, species, blockPos));
     }
 
@@ -318,8 +319,8 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
 
     @Override
     public void close() {
-        if(blockPos != null) {
-            new AdjustBlockEntityViewerCountPacket(blockPos, false).sendToServer();
+        if(this.blockPos != null) {
+            new AdjustBlockEntityViewerCountPacket(this.blockPos, false).sendToServer();
         }
 
         this.playSound(CobblemonSounds.POKEDEX_CLOSE);
