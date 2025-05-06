@@ -15,6 +15,7 @@ import abeshutt.staracademy.data.item.PartialItem;
 import abeshutt.staracademy.data.nbt.PartialCompoundNbt;
 import abeshutt.staracademy.data.tile.*;
 import abeshutt.staracademy.item.OutfitEntry;
+import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HousePlayer;
 import abeshutt.staracademy.world.data.HousePokedexManager;
@@ -64,8 +65,8 @@ public class Adapters {
     public static final DoubleAdapter DOUBLE = new DoubleAdapter(false);
 
     public static final BigIntegerAdapter BIG_INTEGER = new BigIntegerAdapter(false);
-
     public static final BigDecimalAdapter BIG_DECIMAL = new BigDecimalAdapter(false);
+    public static final Rational.Adapter RATIONAL = new Rational.Adapter(false);
 
     public static final VoidAdapter<?> VOID = new VoidAdapter<>();
     public static final StringAdapter UTF_8 = new StringAdapter(StandardCharsets.UTF_8, false);
