@@ -5,12 +5,13 @@ import java.util.Iterator;
 
 public class FlatteningIterable<T> implements Iterable<T> {
 
-    private Iterable<Iterable<T>> children;
+    private final Iterable<Iterable<T>> children;
 
     public FlatteningIterable(Iterable<Iterable<T>> children) {
         this.children = children;
     }
 
+    @SafeVarargs
     public FlatteningIterable(Iterable<T>... children) {
         this.children = Arrays.asList(children);
     }

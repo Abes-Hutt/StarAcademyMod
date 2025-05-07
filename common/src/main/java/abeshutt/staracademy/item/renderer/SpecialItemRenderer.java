@@ -26,6 +26,11 @@ public abstract class SpecialItemRenderer {
 
     public void renderModel(ModelIdentifier id, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices,
                             VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        this.renderModel(id, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay, () -> {});
+    }
+
+    public void renderModel(ModelIdentifier id, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices,
+                            VertexConsumerProvider vertexConsumers, int light, int overlay, Runnable action) {
         matrices.push();
         BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(id);
 
@@ -37,8 +42,11 @@ public abstract class SpecialItemRenderer {
         model.getTransformation().getTransformation(mode).apply(leftHanded, matrices);
         matrices.translate(-0.5F, -0.5F, -0.5F);
 
+        action.run();
+
         boolean transparent;
-        if (mode != ModelTransformationMode.GUI && !mode.isFirstPerson() && stack.getItem() instanceof BlockItem) {
+
+        if(mode != ModelTransformationMode.GUI && !mode.isFirstPerson() && stack.getItem() instanceof BlockItem) {
             Block block = ((BlockItem)stack.getItem()).getBlock();
             transparent = !(block instanceof TransparentBlock) && !(block instanceof StainedGlassPaneBlock);
         } else {
@@ -48,7 +56,7 @@ public abstract class SpecialItemRenderer {
         RenderLayer renderLayer = RenderLayers.getItemLayer(stack, transparent);
         VertexConsumer vertexConsumer;
 
-        if (transparent) {
+        if(transparent) {
             vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, renderLayer, true, stack.hasGlint());
         } else {
             vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, renderLayer, true, stack.hasGlint());

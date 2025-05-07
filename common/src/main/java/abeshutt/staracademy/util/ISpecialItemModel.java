@@ -12,6 +12,7 @@ public interface ISpecialItemModel {
     @Environment(EnvType.CLIENT)
     void loadModels(Consumer<ModelIdentifier> consumer);
 
+    @Environment(EnvType.CLIENT)
     SpecialItemRenderer getRenderer();
 
 }

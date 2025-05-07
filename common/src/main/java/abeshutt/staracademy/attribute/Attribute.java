@@ -1,21 +1,24 @@
 package abeshutt.staracademy.attribute;
 
-import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
-import abeshutt.staracademy.math.Rational;
+import abeshutt.staracademy.util.FlatteningIterable;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
 
     protected final Map<Object, List<AttributeReference<T>>> keyedModifiers;
     protected final List<AttributeReference<T>> orderedModifiers;
 
+    protected Attribute<?> parent;
     protected final List<Attribute<?>> children;
 
     public Attribute() {
@@ -110,6 +113,85 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
     public void clear() {
         this.keyedModifiers.clear();
         this.orderedModifiers.clear();
+    }
+
+    public Attribute<?> getParent() {
+        return this.parent;
+    }
+
+    public void setParent(Attribute<?> parent) {
+        this.parent = parent;
+    }
+
+    public List<Attribute<?>> getChildren() {
+        return this.children;
+    }
+
+    public Iterable<Attribute<?>> getSelfAndChildren() {
+        return Iterables.concat(List.of(this), this.children);
+    }
+
+    public <T> Iterable<T> getChildren(Class<T> type) {
+        return Iterables.filter(this.getChildren(), type);
+    }
+
+    public <T> Iterable<T> getSelfAndChildren(Class<T> type) {
+        return Iterables.filter(this.getSelfAndChildren(), type);
+    }
+
+    public Stream<Attribute<?>> streamChildren() {
+        return Streams.stream(this.getChildren());
+    }
+
+    public Stream<Attribute<?>> streamSelfAndChildren() {
+        return Streams.stream(this.getSelfAndChildren());
+    }
+
+    public <T> Stream<T> streamChildren(Class<T> type) {
+        return Streams.stream(this.getChildren(type));
+    }
+
+    public <T> Stream<T> streamSelfAndChildren(Class<T> type) {
+        return Streams.stream(this.getSelfAndChildren(type));
+    }
+
+    public Iterable<Attribute<?>> getDescendants() {
+        List<Attribute<?>> flattened = new ArrayList<>();
+
+        for(Attribute<?> child : this.getChildren()) {
+            flattened.add(child);
+            child.getDescendants().forEach(flattened::add);
+        }
+
+        return flattened;
+    }
+
+    public Iterable<Attribute<?>> getSelfAndDescendants() {
+        return Iterables.concat(Collections.singleton(this), this.getDescendants());
+    }
+
+    public <T> Iterable<T> getDescendants(Class<T> type) {
+        return Iterables.filter(this.getDescendants(), type);
+    }
+
+    public <T> Iterable<T> getSelfAndDescendants(Class<T> type) {
+        return Iterables.filter(this.getSelfAndDescendants(), type);
+    }
+
+    public Stream<Attribute<?>> streamDescendants() {
+        return Streams.stream(this.getDescendants());
+    }
+
+    public Stream<Attribute<?>> streamSelfAndDescendants() {
+        return Streams.stream(this.getSelfAndDescendants());
+    }
+
+    public <T> Stream<T> streamDescendants(Class<T> type) {
+        return Streams.stream(this.getDescendants(type));
+    }
+
+    public <T> Stream<T> streamSelfAndDescendants(Class<T> type) {
+        return Streams.stream(this.getSelfAndDescendants(type));
     }
 
     protected abstract TypeSupplierAdapter<AttributeModifier<T>> getAdapter();
