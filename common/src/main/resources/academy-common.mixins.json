@@ -33,7 +33,8 @@
     "MixinServerWorld",
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
-    "cobblemon.MixinPokeBallItem"
+    "cobblemon.MixinPokeBallItem",
+    "modernfix.MixinLRUMap"
   ],
   "injectors": {
     "defaultRequire": 1
