@@ -1,7 +1,9 @@
 package abeshutt.staracademy.item.renderer;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.StainedGlassPaneBlock;
+import net.minecraft.block.TranslucentBlock;
 import net.minecraft.block.TransparentBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -35,7 +37,7 @@ public abstract class SpecialItemRenderer {
         BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(id);
 
         if(mode == ModelTransformationMode.GUI && !model.isSideLit()) {
-            DiffuseLighting.enableGuiDepthLighting();
+            DiffuseLighting.disableGuiDepthLighting();
         }
 
         matrices.translate(0.5F, 0.5F, 0.5F);
@@ -44,19 +46,19 @@ public abstract class SpecialItemRenderer {
 
         action.run();
 
-        boolean transparent;
+        boolean opaque;
 
         if(mode != ModelTransformationMode.GUI && !mode.isFirstPerson() && stack.getItem() instanceof BlockItem) {
             Block block = ((BlockItem)stack.getItem()).getBlock();
-            transparent = !(block instanceof TransparentBlock) && !(block instanceof StainedGlassPaneBlock);
+            opaque = !(block instanceof TranslucentBlock) && !(block instanceof StainedGlassPaneBlock);
         } else {
-            transparent = true;
+            opaque = true;
         }
 
-        RenderLayer renderLayer = RenderLayers.getItemLayer(stack, transparent);
+        RenderLayer renderLayer = RenderLayers.getItemLayer(stack, opaque);
         VertexConsumer vertexConsumer;
 
-        if(transparent) {
+        if(opaque) {
             vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, renderLayer, true, stack.hasGlint());
         } else {
             vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, renderLayer, true, stack.hasGlint());
@@ -65,7 +67,13 @@ public abstract class SpecialItemRenderer {
         this.renderBakedItemModel(model, stack, light, overlay, matrices, vertexConsumer);
 
         if(mode == ModelTransformationMode.GUI && !model.isSideLit()) {
-            DiffuseLighting.disableGuiDepthLighting();
+            if(vertexConsumers instanceof VertexConsumerProvider.Immediate immediate) {
+                RenderSystem.disableDepthTest();
+                immediate.draw();
+                RenderSystem.enableDepthTest();
+            }
+
+            DiffuseLighting.enableGuiDepthLighting();
         }
 
         matrices.pop();
