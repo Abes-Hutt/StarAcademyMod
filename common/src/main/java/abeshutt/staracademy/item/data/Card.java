@@ -1,7 +1,6 @@
 package abeshutt.staracademy.item.data;
 
 import abeshutt.staracademy.CardRarity;
-import abeshutt.staracademy.attribute.AttributeModifier;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonObject;
 import net.minecraft.client.util.ModelIdentifier;

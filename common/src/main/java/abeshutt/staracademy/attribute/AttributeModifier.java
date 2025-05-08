@@ -1,5 +1,6 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonObject;

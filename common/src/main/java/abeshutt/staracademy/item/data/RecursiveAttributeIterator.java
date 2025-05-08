@@ -1,70 +1,45 @@
 package abeshutt.staracademy.item.data;
 
 import abeshutt.staracademy.attribute.Attribute;
-import abeshutt.staracademy.attribute.NumberAttribute;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Stack;
+import java.util.List;
 
 public class RecursiveAttributeIterator implements Iterator<Attribute<?>> {
 
     private Attribute<?> root;
-    private Stack<Integer> stack;
-
     private Iterator<Attribute<?>> children;
-
-    public static void main(String[] args) {
-        NumberAttribute root = new NumberAttribute();
-        System.out.println(root);
-
-        for(int i = 0; i < 3; i++) {
-            NumberAttribute child = new NumberAttribute();
-            System.out.println(child);
-
-            for(int i1 = 0; i1 < 2; i1++) {
-                NumberAttribute child2 = new NumberAttribute();
-                child.getChildren().add(child2);
-                System.out.println(child2);
-            }
-
-            root.getChildren().add(child);
-        }
-
-        System.out.println("==========================");
-        Iterator<Attribute<?>> iter = new RecursiveAttributeIterator(root);
-
-        while(iter.hasNext()) {
-            System.out.println(iter.next());
-        }
-    }
 
     public RecursiveAttributeIterator(Attribute<?> root) {
         this.root = root;
-        this.stack = new Stack<>();
-        this.stack.push(0);
     }
 
     private void compute() {
         if(this.children == null) {
             this.children = this.root.getChildren().iterator();
-            return;
-        } else if(this.children.hasNext()) {
-            return;
         }
 
-        while(!this.stack.isEmpty()) {
-            int index = this.stack.peek();
+        while(!this.children.hasNext()) {
+            if(this.root.getChildren().isEmpty()) {
+                int index;
 
-            if(index < this.root.getChildren().size()) {
-                this.root = this.root.getChildren().get(index);
-                this.stack.push(0);
-                this.children = null;
-                this.compute();
-                return;
+                do {
+                    if(this.root.getParent() == null) {
+                        return;
+                    }
+
+                    index = this.root.getParent().getIndex();
+                    this.root = this.root.getParent().get();
+                } while(index + 1 >= this.root.getChildren().size());
+
+                List<Attribute<?>> children = new ArrayList<>(this.root.getChildren());
+                this.root = children.get(index + 1);
             } else {
-                this.root = this.root.getParent();
-                this.stack.pop();
+                this.root = this.root.getChildren().iterator().next();
             }
+
+            this.children = this.root.getChildren().iterator();
         }
     }
 

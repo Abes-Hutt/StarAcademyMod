@@ -16,6 +16,7 @@ public class ModDataComponents extends ModRegistries {
 
     public static RegistrySupplier<ComponentType<String>> SAFARI_TICKET_ENTRY;
     public static RegistrySupplier<ComponentType<OutfitEntry>> OUTFIT_ENTRY;
+    public static RegistrySupplier<ComponentType<Integer>> CARD_INDEX;
 
     public static void register() {
         SAFARI_TICKET_ENTRY = register(StarAcademyMod.id("safari_ticket_entry"), builder -> builder
@@ -23,6 +24,9 @@ public class ModDataComponents extends ModRegistries {
 
         OUTFIT_ENTRY = register(StarAcademyMod.id("outfit_entry"), builder -> builder
                 .codec(Adapters.OUTFIT_ENTRY.codecNbt()).packetCodec(Adapters.OUTFIT_ENTRY));
+
+        CARD_INDEX = register(StarAcademyMod.id("card_index"), builder -> builder
+                .codec(Codec.INT).packetCodec(INT_PACKET_CODEC));
     }
 
     public static <T> RegistrySupplier<ComponentType<T>> register(Identifier id, UnaryOperator<ComponentType.Builder<T>> item) {
@@ -38,6 +42,18 @@ public class ModDataComponents extends ModRegistries {
         @Override
         public void encode(RegistryByteBuf buf, String value) {
             buf.writeString(value);
+        }
+    };
+
+    public static final PacketCodec<RegistryByteBuf, Integer> INT_PACKET_CODEC = new PacketCodec<>() {
+        @Override
+        public Integer decode(RegistryByteBuf buf) {
+            return buf.readInt();
+        }
+
+        @Override
+        public void encode(RegistryByteBuf buf, Integer value) {
+            buf.writeInt(value);
         }
     };
 

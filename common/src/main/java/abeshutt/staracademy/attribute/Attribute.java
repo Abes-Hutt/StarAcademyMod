@@ -1,8 +1,9 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.attribute.path.*;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
-import abeshutt.staracademy.util.FlatteningIterable;
+import abeshutt.staracademy.item.data.RecursiveAttributeIterator;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.google.gson.JsonArray;
@@ -18,14 +19,14 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
     protected final Map<Object, List<AttributeReference<T>>> keyedModifiers;
     protected final List<AttributeReference<T>> orderedModifiers;
 
-    protected Attribute<?> parent;
-    protected final List<Attribute<?>> children;
+    protected AttributeParent parent;
+    protected final Map<String, Attribute<?>> children;
 
     public Attribute() {
         this.keyedModifiers = new HashMap<>();
         this.orderedModifiers = new ArrayList<>();
 
-        this.children = new ArrayList<>();
+        this.children = new HashMap<>();
     }
 
     public Option<T> get(AttributeContext context) {
@@ -66,23 +67,47 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         return this.keyedModifiers.containsKey(owner);
     }
 
-    public AttributeReference<T> add(AttributeModifier<T> modifier) {
-        return this.add(new AttributeReference<T>(null, 0).set(modifier));
+    public AttributeReference<T> add(AttributeModifier<T> modifier, AttributeContext context) {
+        return this.add(new AttributeReference<T>(null, 0, AttributePath.EMPTY).set(modifier), context);
     }
 
-    public AttributeReference<T> add(Object owner, AttributeModifier<T> modifier) {
-        return this.add(new AttributeReference<T>(owner, 0).set(modifier));
+    public AttributeReference<T> add(Object owner, AttributeModifier<T> modifier, AttributeContext context) {
+        return this.add(new AttributeReference<T>(owner, 0, AttributePath.EMPTY).set(modifier), context);
     }
 
-    public AttributeReference<T> add(AttributeModifier<T> modifier, int order) {
-        return this.add(new AttributeReference<T>(null, order).set(modifier));
+    public AttributeReference<T> add(AttributeModifier<T> modifier, int order, AttributeContext context) {
+        return this.add(new AttributeReference<T>(null, order, AttributePath.EMPTY).set(modifier), context);
     }
 
-    public AttributeReference<T> add(Object owner, AttributeModifier<T> modifier, int order) {
-        return this.add(new AttributeReference<T>(owner, order).set(modifier));
+    public AttributeReference<T> add(Object owner, AttributeModifier<T> modifier, int order, AttributeContext context) {
+        return this.add(new AttributeReference<T>(owner, order, AttributePath.EMPTY).set(modifier), context);
     }
 
-    public AttributeReference<T> add(AttributeReference<T> modifier) {
+    public <U> AttributeReference<U> add(AttributeReference<?> modifier, AttributeContext context) {
+        this.addInternal(modifier, modifier.getPath(), context);
+        return (AttributeReference<U>)modifier;
+    }
+
+    protected void addInternal(AttributeReference modifier, AttributePath path, AttributeContext context) {
+        if(path.isAbsolute()) {
+            context.getRoot().addInternal(modifier, path.toRelative(), context);
+            return;
+        }
+
+        if(!path.isEmpty()) {
+            path.split((part, remainder) -> {
+                if(part.equals("..")) {
+                    this.getParent().get().addInternal(modifier, remainder, context);
+                } else if(part.equals(".")) {
+                    this.addInternal(modifier, remainder, context);
+                } else {
+                    this.children.get(part).addInternal(modifier, remainder, context);
+                }
+            });
+
+            return;
+        }
+
         List<AttributeReference<T>> keyed = this.keyedModifiers.computeIfAbsent(modifier.getOwner(),
                 key -> new ArrayList<>());
         keyed.add(modifier);
@@ -101,7 +126,6 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         }
 
         ordered.add(index, modifier);
-        return modifier;
     }
 
     public void remove(Object owner) {
@@ -115,20 +139,25 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         this.orderedModifiers.clear();
     }
 
-    public Attribute<?> getParent() {
+    public AttributeParent getParent() {
         return this.parent;
     }
 
-    public void setParent(Attribute<?> parent) {
+    public void setParent(AttributeParent parent) {
         this.parent = parent;
     }
 
-    public List<Attribute<?>> getChildren() {
-        return this.children;
+    public Collection<Attribute<?>> getChildren() {
+        return this.children.values();
+    }
+
+    public void addChild(String name, Attribute<?> child) {
+        child.setParent(new AttributeParent(this, this.children.size()));
+        this.children.put(name, child);
     }
 
     public Iterable<Attribute<?>> getSelfAndChildren() {
-        return Iterables.concat(List.of(this), this.children);
+        return Iterables.concat(List.of(this), this.getChildren());
     }
 
     public <T> Iterable<T> getChildren(Class<T> type) {
@@ -156,14 +185,7 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
     }
 
     public Iterable<Attribute<?>> getDescendants() {
-        List<Attribute<?>> flattened = new ArrayList<>();
-
-        for(Attribute<?> child : this.getChildren()) {
-            flattened.add(child);
-            child.getDescendants().forEach(flattened::add);
-        }
-
-        return flattened;
+        return () -> new RecursiveAttributeIterator(this);
     }
 
     public Iterable<Attribute<?>> getSelfAndDescendants() {

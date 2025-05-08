@@ -1,5 +1,6 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import com.google.gson.JsonObject;
@@ -12,11 +13,13 @@ public class AttributeReference<T> {
     private final Object owner;
     private final int order;
     private AttributeModifier<T> modifier;
+    private final AttributePath path;
     private boolean removed;
 
-    public AttributeReference(Object owner, int order) {
+    public AttributeReference(Object owner, int order, AttributePath path) {
         this.owner = owner;
         this.order = order;
+        this.path = path;
         this.removed = false;
     }
 
@@ -26,6 +29,10 @@ public class AttributeReference<T> {
 
     public int getOrder() {
         return this.order;
+    }
+
+    public AttributePath getPath() {
+        return this.path;
     }
 
     public boolean isRemoved() {

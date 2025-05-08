@@ -1,6 +1,8 @@
 package abeshutt.staracademy.item.data;
 
 import abeshutt.staracademy.attribute.Attribute;
+import abeshutt.staracademy.attribute.AttributeContext;
+import abeshutt.staracademy.attribute.AttributeModifier;
 import abeshutt.staracademy.attribute.NumberAttribute;
 import abeshutt.staracademy.math.Rational;
 
@@ -15,12 +17,13 @@ public class CardAlbum {
         this.cards = new Card[25];
     }
 
-    public void update(Attribute<?> root) {
+    public void update(AttributeContext context) {
+        Attribute<?> root = context.getRoot();
         root.remove(this.uuid);
 
         for(Card card : this.cards) {
             for(CardModifier modifier : card.getModifiers()) {
-                //root.add(this.uuid, modifier.get());
+                root.add(modifier.get(), context);
             }
         }
     }
