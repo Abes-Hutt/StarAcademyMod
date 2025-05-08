@@ -1,14 +1,18 @@
 package abeshutt.staracademy.attribute;
 
 import abeshutt.staracademy.attribute.path.*;
+import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.item.data.RecursiveAttributeIterator;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -16,8 +20,8 @@ import java.util.stream.Stream;
 
 public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
 
-    protected final Map<Object, List<AttributeReference<T>>> keyedModifiers;
-    protected final List<AttributeReference<T>> orderedModifiers;
+    protected final Map<Object, List<AttributeModifierInstance<T>>> keyedModifiers;
+    protected final List<AttributeModifierInstance<T>> orderedModifiers;
 
     protected AttributeParent parent;
     protected final Map<String, Attribute<?>> children;
@@ -32,7 +36,7 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
     public Option<T> get(AttributeContext context) {
         Option<T> value = Option.absent();
 
-        for(AttributeReference<T> modifier : this.orderedModifiers) {
+        for(AttributeModifierInstance<T> modifier : this.orderedModifiers) {
             value = modifier.get().apply(value, context);
         }
 
@@ -59,60 +63,71 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         return value.get();
     }
 
-    protected int compare(AttributeReference<T> a, AttributeReference<T> b) {
-        return Integer.compare(a.getOrder(), b.getOrder());
+    public <U> Attribute<U> root() {
+        Attribute<?> current = this;
+
+        while(current.getParent() != null) {
+            current = current.getParent().get();
+        }
+
+        return (Attribute<U>)current;
     }
 
-    public boolean has(Object owner) {
-        return this.keyedModifiers.containsKey(owner);
-    }
-
-    public AttributeReference<T> add(AttributeModifier<T> modifier, AttributeContext context) {
-        return this.add(new AttributeReference<T>(null, 0, AttributePath.EMPTY).set(modifier), context);
-    }
-
-    public AttributeReference<T> add(Object owner, AttributeModifier<T> modifier, AttributeContext context) {
-        return this.add(new AttributeReference<T>(owner, 0, AttributePath.EMPTY).set(modifier), context);
-    }
-
-    public AttributeReference<T> add(AttributeModifier<T> modifier, int order, AttributeContext context) {
-        return this.add(new AttributeReference<T>(null, order, AttributePath.EMPTY).set(modifier), context);
-    }
-
-    public AttributeReference<T> add(Object owner, AttributeModifier<T> modifier, int order, AttributeContext context) {
-        return this.add(new AttributeReference<T>(owner, order, AttributePath.EMPTY).set(modifier), context);
-    }
-
-    public <U> AttributeReference<U> add(AttributeReference<?> modifier, AttributeContext context) {
-        this.addInternal(modifier, modifier.getPath(), context);
-        return (AttributeReference<U>)modifier;
-    }
-
-    protected void addInternal(AttributeReference modifier, AttributePath path, AttributeContext context) {
+    public <U> Attribute<U> path(AttributePath<U> path) {
         if(path.isAbsolute()) {
-            context.getRoot().addInternal(modifier, path.toRelative(), context);
-            return;
+            return this.root().path(path.toRelative());
         }
 
         if(!path.isEmpty()) {
-            path.split((part, remainder) -> {
+            return path.split((part, remainder) -> {
                 if(part.equals("..")) {
-                    this.getParent().get().addInternal(modifier, remainder, context);
+                    return this.getParent().get().path(remainder);
                 } else if(part.equals(".")) {
-                    this.addInternal(modifier, remainder, context);
+                    return this.path(remainder);
                 } else {
-                    this.children.get(part).addInternal(modifier, remainder, context);
+                    return this.children.get(part).path(remainder);
                 }
             });
-
-            return;
         }
 
-        List<AttributeReference<T>> keyed = this.keyedModifiers.computeIfAbsent(modifier.getOwner(),
+        return (Attribute<U>)this;
+    }
+
+    public AttributeModifierInstance<T> add(AttributeModifier<T> modifier) {
+        return this.add(null, AttributeModifierInstance.of(modifier));
+    }
+
+    public AttributeModifierInstance<T> add(Object owner, AttributeModifier<T> modifier) {
+        return this.add(owner, AttributeModifierInstance.of(modifier));
+    }
+
+    public AttributeModifierInstance<T> add(AttributeModifier<T> modifier, int order) {
+        return this.add(null, AttributeModifierInstance.of(order, modifier));
+    }
+
+    public AttributeModifierInstance<T> add(Object owner, AttributeModifier<T> modifier, int order) {
+        return this.add(owner, AttributeModifierInstance.of(order, modifier));
+    }
+
+    public <U> AttributeModifierInstance<U> add(AttributeModifierInstance<U> modifier) {
+        return this.add(null, modifier);
+    }
+
+    public <U> AttributeModifierInstance<U> add(Object owner, AttributeModifierInstance<U> modifier) {
+        this.path(modifier.getPath()).addInternal(owner, modifier);
+        return modifier;
+    }
+
+    protected int compare(AttributeModifierInstance <T> a, AttributeModifierInstance<T> b) {
+        return Integer.compare(a.getOrder(), b.getOrder());
+    }
+
+    protected void addInternal(Object owner, AttributeModifierInstance modifier) {
+        List<AttributeModifierInstance<T>> keyed = this.keyedModifiers.computeIfAbsent(owner,
                 key -> new ArrayList<>());
         keyed.add(modifier);
 
-        List<AttributeReference<T>> ordered = this.orderedModifiers;
+        List<AttributeModifierInstance<T>> ordered = this.orderedModifiers;
         int index = Collections.binarySearch(ordered, modifier, this::compare);
 
         if(index >= 0) {
@@ -129,7 +144,7 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
     }
 
     public void remove(Object owner) {
-        List<AttributeReference<T>> listeners = this.keyedModifiers.remove(owner);
+        List<AttributeModifierInstance<T>> listeners = this.keyedModifiers.remove(owner);
         if(listeners == null || listeners.isEmpty()) return;
         this.orderedModifiers.removeAll(new HashSet<>(listeners));
     }
@@ -216,17 +231,23 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         return Streams.stream(this.getSelfAndDescendants(type));
     }
 
-    protected abstract TypeSupplierAdapter<AttributeModifier<T>> getAdapter();
+    protected abstract TypeSupplierAdapter<AttributeModifier<T>> getModifierAdapter();
 
     @Override
     public Optional<JsonObject> writeJson() {
         return Optional.of(new JsonObject()).map(json -> {
             JsonArray modifiers = new JsonArray();
+            AttributeModifierInstance.Adapter<T> adapter = AttributeModifierInstance.adapter(this.getModifierAdapter());
 
             this.orderedModifiers.forEach(modifier -> {
-
+                adapter.writeJson(modifier).ifPresent(modifiers::add);
             });
 
+            json.add("modifiers", modifiers);
+
+            this.children.forEach((name, attribute) -> {
+
+            });
             return json;
         });
     }
@@ -248,6 +269,16 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
             }
 
             return super.getType(value);
+        }
+
+        public void register(Supplier<AttributeModifier<T>> modifier) {
+            AttributeModifier<T> value = modifier.get();
+
+            if(value instanceof NaryAttributeModifier<T> nary) {
+                this.register(nary.getType(), null, modifier);
+            }
+
+            throw new UnsupportedOperationException("Modifier must be n-ary");
         }
     }
 

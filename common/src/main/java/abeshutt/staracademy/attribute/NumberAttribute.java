@@ -49,7 +49,7 @@ public class NumberAttribute extends Attribute<Rational> {
     }
 
     @Override
-    protected TypeSupplierAdapter<AttributeModifier<Rational>> getAdapter() {
+    protected TypeSupplierAdapter<AttributeModifier<Rational>> getModifierAdapter() {
         return ModifierAdapter.INSTANCE;
     }
 
@@ -57,14 +57,14 @@ public class NumberAttribute extends Attribute<Rational> {
         protected static final ModifierAdapter INSTANCE = new ModifierAdapter();
 
         public ModifierAdapter() {
-            this.register("assign", () -> NumberAttribute.assign(0));
-            this.register("invert", NumberAttribute::invert);
-            this.register("add", () -> NumberAttribute.add(0));
-            this.register("subtract", () -> NumberAttribute.subtract(0));
-            this.register("multiply", () -> NumberAttribute.multiply(0));
-            this.register("divide", () -> NumberAttribute.divide(0));
-            this.register("power", () -> NumberAttribute.power(0));
-            this.register("clamp", () -> NumberAttribute.clamp(0, 0));
+            this.register(() -> NumberAttribute.assign(0));
+            this.register(NumberAttribute::invert);
+            this.register(() -> NumberAttribute.add(0));
+            this.register(() -> NumberAttribute.subtract(0));
+            this.register(() -> NumberAttribute.multiply(0));
+            this.register(() -> NumberAttribute.divide(0));
+            this.register(() -> NumberAttribute.power(0));
+            this.register(() -> NumberAttribute.clamp(0, 0));
         }
     }
 

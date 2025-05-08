@@ -23,7 +23,7 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> UBER_SHINY_INCENSE;
     public static RegistrySupplier<Item> CARD;
     public static RegistrySupplier<Item> BOOSTER_PACK;
-    public static RegistrySupplier<Item> CARD_ALBUM;
+    public static RegistrySupplier<Item> ALBUM;
 
     public static void register() {
         STAR_BADGE = register("star_badge", StarBadgeItem::new);
@@ -40,7 +40,7 @@ public class ModItems extends ModRegistries {
         UBER_SHINY_INCENSE = register("uber_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         CARD = register("card", CardItem::new);
         BOOSTER_PACK = register("booster_pack", BoosterPackItem::new);
-        CARD_ALBUM = register("card_album", CardAlbumItem::new);
+        ALBUM = register("album", AlbumItem::new);
     }
 
     public static <V extends Item> RegistrySupplier<V> register(Identifier id, Supplier<V> item) {

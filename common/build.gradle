@@ -12,7 +12,8 @@ dependencies {
     modImplementation "com.cobblemon:mod:1.6.1+1.21.1"
     modImplementation files("jars/pokeblocks-1.4.0-1.21.1.jar")
     implementation files("jars/molang-1.1.18.jar")
-    implementation files("jars/TropiWiki-1.2.2r.jar")
+    modImplementation files("jars/TropiWiki-1.2.2r.jar")
+    modImplementation files("jars/itemzoomer-1.1.0-1.21.1.jar")
 }
 
 /*

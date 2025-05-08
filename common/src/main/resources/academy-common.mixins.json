@@ -16,6 +16,7 @@
     "cobblemon.MixinCategoryListEntry",
     "cobblemon.MixinSelectionButton",
     "cobblemon.MixinStarterSelectionScreen",
+    "itemzoomer.MixinZoomRenderer",
     "terrastorage.MixinHandledScreenMixin",
     "terrastorage.MixinInventoryScreenMixin"
   ],

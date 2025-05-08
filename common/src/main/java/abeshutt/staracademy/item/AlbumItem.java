@@ -1,6 +1,6 @@
 package abeshutt.staracademy.item;
 
-import abeshutt.staracademy.item.renderer.CardAlbumItemRenderer;
+import abeshutt.staracademy.item.renderer.AlbumItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.util.ISpecialItemModel;
 import net.minecraft.client.util.ModelIdentifier;
@@ -8,9 +8,9 @@ import net.minecraft.item.Item;
 
 import java.util.function.Consumer;
 
-public class CardAlbumItem extends Item implements ISpecialItemModel {
+public class AlbumItem extends Item implements ISpecialItemModel {
 
-    public CardAlbumItem() {
+    public AlbumItem() {
         super(new Settings().fireproof());
     }
 
@@ -21,7 +21,7 @@ public class CardAlbumItem extends Item implements ISpecialItemModel {
 
     @Override
     public SpecialItemRenderer getRenderer() {
-        return CardAlbumItemRenderer.INSTANCE;
+        return AlbumItemRenderer.INSTANCE;
     }
 
 }

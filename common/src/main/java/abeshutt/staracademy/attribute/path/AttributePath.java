@@ -9,43 +9,62 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
-public class AttributePath implements ISerializable<NbtElement, JsonElement> {
-
-    public static final AttributePath EMPTY = new AttributePath(false);
+public class AttributePath<U> implements ISerializable<NbtElement, JsonElement> {
 
     private boolean absolute;
     private final List<String> parts;
 
-    public AttributePath(boolean absolute, String... parts) {
+    protected AttributePath() {
+        this.absolute = false;
+        this.parts = new ArrayList<>();
+    }
+
+    protected AttributePath(boolean absolute, String... parts) {
         this.absolute = absolute;
         this.parts = new ArrayList<>(Arrays.asList(parts));
     }
 
-    public AttributePath(boolean absolute, List<String> folder) {
+    protected AttributePath(boolean absolute, List<String> folder) {
         this.absolute = absolute;
         this.parts = folder;
+    }
+
+    public static <T> AttributePath<T> empty() {
+        return new AttributePath<>(false);
+    }
+
+    public static <T> AttributePath<T> absolute(String... parts) {
+        return new AttributePath<>(true, parts);
+    }
+
+    public static <T> AttributePath<T> relative(String... parts) {
+        return new AttributePath<>(false, parts);
     }
 
     public boolean isAbsolute() {
         return this.absolute;
     }
 
-    public AttributePath toRelative() {
-        return new AttributePath(false, this.parts);
+    public AttributePath<U> toRelative() {
+        return new AttributePath<>(false, this.parts);
     }
 
     public boolean isEmpty() {
         return this.parts.isEmpty();
     }
 
-    public void split(BiConsumer<String, AttributePath> action) {
-        action.accept(this.parts.getFirst(), new AttributePath(false, this.parts.subList(1, this.parts.size() - 1)));
+    public <T> T split(BiFunction<String, AttributePath<U>, T> action) {
+        return action.apply(this.parts.getFirst(), new AttributePath<>(false, this.parts.subList(1, this.parts.size() - 1)));
     }
 
     @Override
     public Optional<JsonElement> writeJson() {
+        if(!this.absolute && this.parts.isEmpty()) {
+            return Optional.empty();
+        }
+
         StringBuilder builder = new StringBuilder(this.absolute ? "/" : "");
 
         for(String folder : this.parts) {

@@ -1,6 +1,9 @@
 package abeshutt.staracademy.data.adapter;
 
+import abeshutt.staracademy.attribute.Attribute;
+import abeshutt.staracademy.attribute.AttributeModifierInstance;
 import abeshutt.staracademy.attribute.path.AttributeFolder;
+import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.adapter.array.ArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.ByteArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.IntArrayAdapter;
@@ -133,6 +136,8 @@ public class Adapters {
     public static final SpeciesDexRecordAdapter SPECIES_DEX_RECORD = new SpeciesDexRecordAdapter(false);
     public static final FormDexRecordAdapter FORM_DEX_RECORD = new FormDexRecordAdapter();
     public static final SerializableAdapter<HousePokedexManager, NbtElement, JsonElement> HOUSE_POKEDEX_MANAGER = of(HousePokedexManager::new, false);
+
+    public static final SerializableAdapter<AttributePath, NbtElement, JsonElement> ATTRIBUTE_PATH = of(AttributePath::empty, false);
 
     public static Lcg.Adapter LCG = new Lcg.Adapter(false);
 

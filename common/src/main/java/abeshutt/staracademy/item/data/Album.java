@@ -2,18 +2,15 @@ package abeshutt.staracademy.item.data;
 
 import abeshutt.staracademy.attribute.Attribute;
 import abeshutt.staracademy.attribute.AttributeContext;
-import abeshutt.staracademy.attribute.AttributeModifier;
-import abeshutt.staracademy.attribute.NumberAttribute;
-import abeshutt.staracademy.math.Rational;
 
 import java.util.UUID;
 
-public class CardAlbum {
+public class Album {
 
     private UUID uuid;
     private Card[] cards;
 
-    public CardAlbum() {
+    public Album() {
         this.cards = new Card[25];
     }
 
@@ -23,7 +20,7 @@ public class CardAlbum {
 
         for(Card card : this.cards) {
             for(CardModifier modifier : card.getModifiers()) {
-                root.add(modifier.get(), context);
+                root.add(modifier.get());
             }
         }
     }

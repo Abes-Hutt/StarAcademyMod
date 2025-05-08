@@ -6,9 +6,9 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
-public class CardAlbumItemRenderer extends SpecialItemRenderer {
+public class AlbumItemRenderer extends SpecialItemRenderer {
 
-    public static final CardAlbumItemRenderer INSTANCE = new CardAlbumItemRenderer();
+    public static final AlbumItemRenderer INSTANCE = new AlbumItemRenderer();
 
     @Override
     public void render(ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices,
