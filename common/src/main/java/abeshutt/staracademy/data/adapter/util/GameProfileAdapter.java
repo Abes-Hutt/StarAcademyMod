@@ -54,8 +54,8 @@ public class GameProfileAdapter implements ISimpleAdapter<GameProfile, NbtElemen
         }
 
         GameProfile profile = new GameProfile(
-            Adapters.UUID.asNullable().readBits(buffer).orElseThrow(),
-            Adapters.UTF_8.asNullable().readBits(buffer).orElseThrow()
+            Adapters.UUID.readBits(buffer).orElseThrow(),
+            Adapters.UTF_8.readBits(buffer).orElseThrow()
         );
 
         int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
