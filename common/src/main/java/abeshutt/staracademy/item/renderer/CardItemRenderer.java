@@ -46,7 +46,7 @@ public class CardItemRenderer extends SpecialItemRenderer {
         this.renderModel(frame, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay);
 
         this.renderModel(icon, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay, () -> {
-            matrices.translate(0.0F, 0.0F, -0.01F);
+            //matrices.translate(0.0F, 0.0F, -0.002F);
         });
     }
 

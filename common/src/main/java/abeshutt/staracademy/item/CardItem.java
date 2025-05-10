@@ -7,12 +7,14 @@ import abeshutt.staracademy.item.renderer.CardItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.util.ISpecialItemModel;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.function.Consumer;
 
-public class CardItem extends Item implements ISpecialItemModel {
+public class CardItem extends Item implements ISpecialItemModel, Equipment {
 
     public CardItem() {
         super(new Settings().maxCount(1).fireproof());
@@ -39,6 +41,11 @@ public class CardItem extends Item implements ISpecialItemModel {
     public static int getIndex(ItemStack stack) {
         Integer value = stack.get(ModDataComponents.CARD_INDEX.get());
         return value == null ? 0 : value;
+    }
+
+    @Override
+    public EquipmentSlot getSlotType() {
+        return EquipmentSlot.HEAD;
     }
 
 }
