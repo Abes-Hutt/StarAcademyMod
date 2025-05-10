@@ -8,6 +8,7 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.RotationAxis;
 
 public class CardItemRenderer extends SpecialItemRenderer {
 
@@ -42,12 +43,10 @@ public class CardItemRenderer extends SpecialItemRenderer {
 
         ModelIdentifier frame = StarAcademyMod.mid("card/frame/" + rarity.asString(), "inventory");
 
-
         this.renderModel(frame, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay);
 
         this.renderModel(icon, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay, () -> {
-            matrices.scale(0.5F, 0.5F, 1.0F);
-            matrices.translate(0.5F, 0.8F, 0.001F);
+            matrices.translate(0.0F, 0.0F, -0.01F);
         });
     }
 

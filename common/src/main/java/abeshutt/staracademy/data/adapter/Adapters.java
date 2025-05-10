@@ -1,8 +1,5 @@
 package abeshutt.staracademy.data.adapter;
 
-import abeshutt.staracademy.attribute.Attribute;
-import abeshutt.staracademy.attribute.AttributeModifierInstance;
-import abeshutt.staracademy.attribute.path.AttributeFolder;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.adapter.array.ArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.ByteArrayAdapter;

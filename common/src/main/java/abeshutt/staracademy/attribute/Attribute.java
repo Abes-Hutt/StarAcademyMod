@@ -1,18 +1,14 @@
 package abeshutt.staracademy.attribute;
 
-import abeshutt.staracademy.attribute.path.*;
-import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.data.adapter.ISimpleAdapter;
+import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.item.data.RecursiveAttributeIterator;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 
 import java.util.*;
 import java.util.function.Supplier;

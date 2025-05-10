@@ -1,7 +1,6 @@
 package abeshutt.staracademy.mixin.itemzoomer;
 
 import abeshutt.staracademy.item.CardItem;
-import com.imeetake.itemzoomer.render.ZoomRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

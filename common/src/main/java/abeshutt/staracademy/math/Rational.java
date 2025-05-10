@@ -1,10 +1,7 @@
 package abeshutt.staracademy.math;
 
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
-import abeshutt.staracademy.data.adapter.number.BigDecimalAdapter;
-import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.NbtElement;
 

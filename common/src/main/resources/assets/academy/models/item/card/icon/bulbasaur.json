@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "academy:item/card/icon",
   "textures": {
-    "layer0": "academy:item/card/icon/bulbasaur"
+    "0": "academy:item/card/icon/bulbasaur",
+    "particle": "academy:item/card/icon/bulbasaur"
   }
 }

@@ -7,7 +7,6 @@ import abeshutt.staracademy.item.renderer.CardItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.util.ISpecialItemModel;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

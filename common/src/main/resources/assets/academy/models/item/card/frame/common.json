@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "academy:item/card/frame",
   "textures": {
-    "layer0": "academy:item/card/frame/common"
+    "0": "academy:item/card/frame/common",
+    "particle": "academy:item/card/frame/common"
   }
 }

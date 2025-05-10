@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "academy:item/card/frame",
   "textures": {
-    "layer0": "academy:item/card/frame/legendary"
+    "0": "academy:item/card/frame/legendary",
+    "particle": "academy:item/card/frame/legendary"
   }
 }
