@@ -305,14 +305,14 @@ public class PokedexScreen extends Screen implements CobblemonRenderable {
         if (searchByTypeButton.isButtonHovered(mouseX, mouseY)) {
             matrices.push();
             matrices.translate(0.0, 0.0, 1000.0);
-            MutableText searchTypeText = lang("ui.pokedex.search.search_by", lang("ui.pokedex.search.type.${selectedSearchByType.name.lowercase()}"));
+            MutableText searchTypeText = lang("ui.pokedex.search.search_by", lang("ui.pokedex.search.type." + selectedSearchByType.name().toLowerCase()));
             searchTypeText.setStyle(searchTypeText.getStyle().withBold(true));
             int searchTypeTextWidth = MinecraftClient.getInstance().textRenderer.getWidth(searchTypeText.setStyle(searchTypeText.getStyle().withFont(CobblemonResources.INSTANCE.getDEFAULT_LARGE())));
             int tooltipWidth = searchTypeTextWidth + 6;
 
-            blitk(matrices, TOOLTIP_EDGE, x = mouseX - (tooltipWidth / 2) - 1, y = mouseY - 16, width = 1, height = 11);
-            blitk(matrices, TOOLTIP_BACKGROUND, x = mouseX - (tooltipWidth / 2), y = mouseY - 16, width = tooltipWidth, height = 11);
-            blitk(matrices, TOOLTIP_EDGE, x = mouseX + (tooltipWidth / 2), y = mouseY - 16, width = 1, height = 11);
+            blitk(matrices, TOOLTIP_EDGE, mouseX - (tooltipWidth / 2) - 1, mouseY - 16, 11, 1);
+            blitk(matrices, TOOLTIP_BACKGROUND, mouseX - (tooltipWidth / 2), mouseY - 16, 11, tooltipWidth);
+            blitk(matrices, TOOLTIP_EDGE, mouseX + (tooltipWidth / 2), mouseY - 16, 11, 1);
             RenderHelperKt.drawScaledText(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(), searchTypeText,
                     mouseX, mouseY - 15, 1.0F,
                     1.0F,
