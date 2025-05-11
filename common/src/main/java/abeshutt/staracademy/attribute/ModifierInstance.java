@@ -10,45 +10,45 @@ import net.minecraft.nbt.NbtElement;
 
 import java.util.Optional;
 
-public class AttributeModifierInstance<T> {
+public class ModifierInstance<T> {
 
     private final int order;
-    private AttributeModifier<T> modifier;
+    private Modifier<T> modifier;
     private final AttributePath<T> path;
     private boolean removed;
 
-    protected AttributeModifierInstance(int order, AttributeModifier<T> modifier, AttributePath<T> path, boolean removed) {
+    protected ModifierInstance(int order, Modifier<T> modifier, AttributePath<T> path, boolean removed) {
         this.order = order;
         this.modifier = modifier;
         this.path = path;
         this.removed = removed;
     }
 
-    public static <T> AttributeModifierInstance<T> empty(int order, AttributePath<T> path) {
-        return new AttributeModifierInstance<>(order, null, path, false);
+    public static <T> ModifierInstance<T> empty(int order, AttributePath<T> path) {
+        return new ModifierInstance<>(order, null, path, false);
     }
 
-    public static <T> AttributeModifierInstance<T> empty(int order) {
-        return new AttributeModifierInstance<>(order, null, AttributePath.empty(), false);
+    public static <T> ModifierInstance<T> empty(int order) {
+        return new ModifierInstance<>(order, null, AttributePath.empty(), false);
     }
 
-    public static <T> AttributeModifierInstance<T> empty() {
-        return new AttributeModifierInstance<>(0, null, AttributePath.empty(), false);
+    public static <T> ModifierInstance<T> empty() {
+        return new ModifierInstance<>(0, null, AttributePath.empty(), false);
     }
 
-    public static <T> AttributeModifierInstance<T> of(int order, AttributeModifier<T> modifier, AttributePath<T> path) {
-        return new AttributeModifierInstance<>(order, modifier, path, false);
+    public static <T> ModifierInstance<T> of(int order, Modifier<T> modifier, AttributePath<T> path) {
+        return new ModifierInstance<>(order, modifier, path, false);
     }
 
-    public static <T> AttributeModifierInstance<T> of(int order, AttributeModifier<T> modifier) {
-        return new AttributeModifierInstance<>(order, modifier, AttributePath.empty(), false);
+    public static <T> ModifierInstance<T> of(int order, Modifier<T> modifier) {
+        return new ModifierInstance<>(order, modifier, AttributePath.empty(), false);
     }
 
-    public static <T> AttributeModifierInstance<T> of(AttributeModifier<T> modifier) {
-        return new AttributeModifierInstance<>(0, modifier, AttributePath.empty(), false);
+    public static <T> ModifierInstance<T> of(Modifier<T> modifier) {
+        return new ModifierInstance<>(0, modifier, AttributePath.empty(), false);
     }
 
-    public static <T> Adapter<T> adapter(IAdapter<AttributeModifier<T>, ?, ?, ?> modifierAdapter) {
+    public static <T> Adapter<T> adapter(IAdapter<Modifier<T>, ?, ?, ?> modifierAdapter) {
         return new Adapter<>(modifierAdapter);
     }
 
@@ -56,11 +56,11 @@ public class AttributeModifierInstance<T> {
         return this.order;
     }
 
-    public AttributeModifier<T> get() {
+    public Modifier<T> get() {
         return this.modifier;
     }
 
-    public AttributeModifierInstance<T> set(AttributeModifier<T> modifier) {
+    public ModifierInstance<T> set(Modifier<T> modifier) {
         this.modifier = modifier;
         return this;
     }
@@ -77,15 +77,15 @@ public class AttributeModifierInstance<T> {
         this.removed = true;
     }
 
-    public static class Adapter<T> implements ISimpleAdapter<AttributeModifierInstance<T>, NbtElement, JsonElement> {
-        private final IAdapter<AttributeModifier<T>, NbtElement, JsonElement, ?> modifierAdapter;
+    public static class Adapter<T> implements ISimpleAdapter<ModifierInstance<T>, NbtElement, JsonElement> {
+        private final IAdapter<Modifier<T>, NbtElement, JsonElement, ?> modifierAdapter;
 
-        protected Adapter(IAdapter<AttributeModifier<T>, ?, ?, ?> modifierAdapter) {
+        protected Adapter(IAdapter<Modifier<T>, ?, ?, ?> modifierAdapter) {
             this.modifierAdapter = (IAdapter)modifierAdapter;
         }
 
         @Override
-        public Optional<JsonElement> writeJson(AttributeModifierInstance<T> value) {
+        public Optional<JsonElement> writeJson(ModifierInstance<T> value) {
             if(value == null) {
                 return Optional.empty();
             }
@@ -107,9 +107,9 @@ public class AttributeModifierInstance<T> {
         }
 
         @Override
-        public Optional<AttributeModifierInstance<T>> readJson(JsonElement json) {
+        public Optional<ModifierInstance<T>> readJson(JsonElement json) {
             if(json instanceof JsonObject object) {
-                return Optional.of(new AttributeModifierInstance<T>(
+                return Optional.of(new ModifierInstance<T>(
                         Adapters.INT.readJson(object.get("order")).orElse(0),
                         this.modifierAdapter.readJson(object.get("modifier"), null).orElse(null),
                         Adapters.ATTRIBUTE_PATH.readJson(object.get("path")).orElse(AttributePath.empty()),

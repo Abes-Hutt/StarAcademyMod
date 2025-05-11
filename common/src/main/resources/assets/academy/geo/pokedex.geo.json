@@ -1,0 +1,41 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.pokedex - Converted",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "pokedex",
+					"pivot": [0, 8, 0]
+				},
+				{
+					"name": "frame_left",
+					"parent": "pokedex",
+					"pivot": [0.14478, 1.79039, 0],
+					"cubes": [
+						{"origin": [0, 0, -5], "size": [8, 1, 10], "pivot": [0, 0, 0], "rotation": [0, 0, -22.5], "uv": [0, 0]},
+						{"origin": [0, 1, -5], "size": [1, 0, 10], "pivot": [0, 0, 0], "rotation": [0, 0, -22.5], "uv": [4, 27]},
+						{"origin": [0, 1, -4], "size": [7, 0, 8], "pivot": [0, 0, 0], "rotation": [0, 0, -22.5], "uv": [8, 29]}
+					]
+				},
+				{
+					"name": "frame_right",
+					"parent": "pokedex",
+					"pivot": [-0.23716, 1.82866, 0],
+					"cubes": [
+						{"origin": [-8, 0, -5], "size": [8, 1, 10], "pivot": [0, 0, 0], "rotation": [0, 0, 22.5], "uv": [0, 11]},
+						{"origin": [-1.4, 1, -5], "size": [1, 0, 10], "pivot": [0, 0, 0], "rotation": [0, 0, 22.5], "uv": [27, 27]},
+						{"origin": [-6.4, 1, -4], "size": [6, 0, 8], "pivot": [0, 0, 0], "rotation": [0, 0, 22.5], "uv": [9, 40]}
+					]
+				}
+			]
+		}
+	]
+}

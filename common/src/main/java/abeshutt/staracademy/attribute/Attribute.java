@@ -14,10 +14,10 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
+public abstract class Attribute<T> extends Modifier<T> implements ISerializable<NbtCompound, JsonObject> {
 
-    protected final Map<Object, List<AttributeModifierInstance<T>>> keyedModifiers;
-    protected final List<AttributeModifierInstance<T>> orderedModifiers;
+    protected final Map<Object, List<ModifierInstance<T>>> keyedModifiers;
+    protected final List<ModifierInstance<T>> orderedModifiers;
 
     protected AttributeParent parent;
     protected final Map<String, Attribute<?>> children;
@@ -29,18 +29,21 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         this.children = new HashMap<>();
     }
 
-    public Option<T> get(AttributeContext context) {
-        Option<T> value = Option.absent();
-
-        for(AttributeModifierInstance<T> modifier : this.orderedModifiers) {
-            value = modifier.get().apply(value, context);
+    @Override
+    public Option<T> apply(Option<T> value) {
+        for(ModifierInstance<T> modifier : this.orderedModifiers) {
+            value = modifier.get().apply(value);
         }
 
         return value;
     }
 
-    public T getOr(T other, AttributeContext context) {
-        Option<T> value = this.get(context);
+    public Option<T> get() {
+        return this.apply(Option.absent());
+    }
+
+    public T getOr(T other) {
+        Option<T> value = this.get();
 
         if(value.isAbsent()) {
             return other;
@@ -49,8 +52,8 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         return value.get();
     }
 
-    public T getOr(Supplier<T> other, AttributeContext context) {
-        Option<T> value = this.get(context);
+    public T getOr(Supplier<T> other) {
+        Option<T> value = this.get();
 
         if(value.isAbsent()) {
             return other.get();
@@ -89,41 +92,41 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         return (Attribute<U>)this;
     }
 
-    public AttributeModifierInstance<T> add(AttributeModifier<T> modifier) {
-        return this.add(null, AttributeModifierInstance.of(modifier));
+    public ModifierInstance<T> add(Modifier<T> modifier) {
+        return this.add(null, ModifierInstance.of(modifier));
     }
 
-    public AttributeModifierInstance<T> add(Object owner, AttributeModifier<T> modifier) {
-        return this.add(owner, AttributeModifierInstance.of(modifier));
+    public ModifierInstance<T> add(Object owner, Modifier<T> modifier) {
+        return this.add(owner, ModifierInstance.of(modifier));
     }
 
-    public AttributeModifierInstance<T> add(AttributeModifier<T> modifier, int order) {
-        return this.add(null, AttributeModifierInstance.of(order, modifier));
+    public ModifierInstance<T> add(Modifier<T> modifier, int order) {
+        return this.add(null, ModifierInstance.of(order, modifier));
     }
 
-    public AttributeModifierInstance<T> add(Object owner, AttributeModifier<T> modifier, int order) {
-        return this.add(owner, AttributeModifierInstance.of(order, modifier));
+    public ModifierInstance<T> add(Object owner, Modifier<T> modifier, int order) {
+        return this.add(owner, ModifierInstance.of(order, modifier));
     }
 
-    public <U> AttributeModifierInstance<U> add(AttributeModifierInstance<U> modifier) {
+    public <U> ModifierInstance<U> add(ModifierInstance<U> modifier) {
         return this.add(null, modifier);
     }
 
-    public <U> AttributeModifierInstance<U> add(Object owner, AttributeModifierInstance<U> modifier) {
+    public <U> ModifierInstance<U> add(Object owner, ModifierInstance<U> modifier) {
         this.path(modifier.getPath()).addInternal(owner, modifier);
         return modifier;
     }
 
-    protected int compare(AttributeModifierInstance <T> a, AttributeModifierInstance<T> b) {
+    protected int compare(ModifierInstance<T> a, ModifierInstance<T> b) {
         return Integer.compare(a.getOrder(), b.getOrder());
     }
 
-    protected void addInternal(Object owner, AttributeModifierInstance modifier) {
-        List<AttributeModifierInstance<T>> keyed = this.keyedModifiers.computeIfAbsent(owner,
+    protected void addInternal(Object owner, ModifierInstance modifier) {
+        List<ModifierInstance<T>> keyed = this.keyedModifiers.computeIfAbsent(owner,
                 key -> new ArrayList<>());
         keyed.add(modifier);
 
-        List<AttributeModifierInstance<T>> ordered = this.orderedModifiers;
+        List<ModifierInstance<T>> ordered = this.orderedModifiers;
         int index = Collections.binarySearch(ordered, modifier, this::compare);
 
         if(index >= 0) {
@@ -140,7 +143,7 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
     }
 
     public void remove(Object owner) {
-        List<AttributeModifierInstance<T>> listeners = this.keyedModifiers.remove(owner);
+        List<ModifierInstance<T>> listeners = this.keyedModifiers.remove(owner);
         if(listeners == null || listeners.isEmpty()) return;
         this.orderedModifiers.removeAll(new HashSet<>(listeners));
     }
@@ -227,13 +230,13 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
         return Streams.stream(this.getSelfAndDescendants(type));
     }
 
-    protected abstract TypeSupplierAdapter<AttributeModifier<T>> getModifierAdapter();
+    protected abstract TypeSupplierAdapter<Modifier<T>> getModifierAdapter();
 
     @Override
     public Optional<JsonObject> writeJson() {
         return Optional.of(new JsonObject()).map(json -> {
             JsonArray modifiers = new JsonArray();
-            AttributeModifierInstance.Adapter<T> adapter = AttributeModifierInstance.adapter(this.getModifierAdapter());
+            ModifierInstance.Adapter<T> adapter = ModifierInstance.adapter(this.getModifierAdapter());
 
             this.orderedModifiers.forEach(modifier -> {
                 adapter.writeJson(modifier).ifPresent(modifiers::add);
@@ -250,27 +253,27 @@ public abstract class Attribute<T> implements ISerializable<NbtCompound, JsonObj
 
     @Override
     public void readJson(JsonObject json) {
-        ISerializable.super.readJson(json);
+
     }
 
-    protected static class ModifierAdapter<T> extends TypeSupplierAdapter<AttributeModifier<T>> {
+    protected static class ModifierAdapter<T> extends TypeSupplierAdapter<Modifier<T>> {
         public ModifierAdapter() {
             super("type", false);
         }
 
         @Override
-        public String getType(AttributeModifier<T> value) {
-            if(value instanceof NaryAttributeModifier<?> nary) {
+        public String getType(Modifier<T> value) {
+            if(value instanceof NaryModifier<?> nary) {
                 return nary.getType();
             }
 
             return super.getType(value);
         }
 
-        public void register(Supplier<AttributeModifier<T>> modifier) {
-            AttributeModifier<T> value = modifier.get();
+        public void register(Supplier<Modifier<T>> modifier) {
+            Modifier<T> value = modifier.get();
 
-            if(value instanceof NaryAttributeModifier<T> nary) {
+            if(value instanceof NaryModifier<T> nary) {
                 this.register(nary.getType(), null, modifier);
             }
 

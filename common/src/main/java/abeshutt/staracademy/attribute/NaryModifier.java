@@ -10,12 +10,12 @@ import net.minecraft.nbt.NbtElement;
 
 import java.util.Optional;
 
-public class NaryAttributeModifier<T> extends AttributeModifier<T> {
+public class NaryModifier<T> extends Modifier<T> {
     private final String type;
     private final Operation<T> operation;
     private final Argument<?>[] arguments;
 
-    protected NaryAttributeModifier(String type, Operation<T> operation, Argument<?>... arguments) {
+    protected NaryModifier(String type, Operation<T> operation, Argument<?>... arguments) {
         this.type = type;
         this.operation = operation;
         this.arguments = arguments;
@@ -34,11 +34,11 @@ public class NaryAttributeModifier<T> extends AttributeModifier<T> {
     }
 
     @Override
-    public Option<T> apply(Option<T> value, AttributeContext context) {
+    public Option<T> apply(Option<T> value) {
         Option<?>[] args = new Option[this.arguments.length];
 
         for(int i = 0; i < args.length; i++) {
-           args[i] = this.arguments[i].get(context);
+           args[i] = this.arguments[i].get();
         }
 
         return this.operation.apply(value, args);
@@ -87,7 +87,7 @@ public class NaryAttributeModifier<T> extends AttributeModifier<T> {
             return this.name;
         }
 
-        public abstract Option<T> get(AttributeContext context);
+        public abstract Option<T> get();
     }
 
     protected static class ConstantArgument<T> extends Argument<T> {
@@ -101,7 +101,7 @@ public class NaryAttributeModifier<T> extends AttributeModifier<T> {
         }
 
         @Override
-        public Option<T> get(AttributeContext context) {
+        public Option<T> get() {
             return this.value;
         }
 
@@ -126,7 +126,7 @@ public class NaryAttributeModifier<T> extends AttributeModifier<T> {
         }
 
         @Override
-        public Option<T> get(AttributeContext context) {
+        public Option<T> get() {
             return null; //TODO
         }
 

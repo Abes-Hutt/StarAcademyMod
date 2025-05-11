@@ -7,9 +7,9 @@ import net.minecraft.nbt.NbtCompound;
 
 import java.util.Optional;
 
-public abstract class AttributeModifier<T> implements ISerializable<NbtCompound, JsonObject> {
+public abstract class Modifier<T> implements ISerializable<NbtCompound, JsonObject> {
 
-    public abstract Option<T> apply(Option<T> value, AttributeContext context);
+    public abstract Option<T> apply(Option<T> value);
 
     @Override
     public void writeBits(BitBuffer buffer) {

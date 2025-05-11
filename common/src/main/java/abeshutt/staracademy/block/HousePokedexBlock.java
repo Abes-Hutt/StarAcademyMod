@@ -4,6 +4,7 @@ import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.screen.PokedexScreen;
 import abeshutt.staracademy.world.data.HouseData;
 import com.cobblemon.mod.common.client.pokedex.PokedexType;
+import com.cobblemon.mod.common.particle.CobblemonParticles;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -51,6 +52,12 @@ public class HousePokedexBlock extends BlockWithEntity {
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         super.randomDisplayTick(state, world, pos, random);
+        PlayerEntity player = world.getClosestPlayer((double)pos.getX() + 0.5,
+                (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, 3.0, false);
+
+        if(player == null) {
+            return;
+        }
 
         for(int i = 0; i < 10; i++) {
             if(random.nextInt(16) == 0) {

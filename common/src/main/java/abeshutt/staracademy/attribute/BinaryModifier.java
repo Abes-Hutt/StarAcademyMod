@@ -2,19 +2,19 @@ package abeshutt.staracademy.attribute;
 
 import org.apache.commons.lang3.function.TriFunction;
 
-public class BinaryAttributeModifier<T, A, B> extends NaryAttributeModifier<T> {
+public class BinaryModifier<T, A, B> extends NaryModifier<T> {
 
-    protected BinaryAttributeModifier(String type, Operation<T, A, B> operation, Argument<A> argument1, Argument<B> argument2) {
+    protected BinaryModifier(String type, Operation<T, A, B> operation, Argument<A> argument1, Argument<B> argument2) {
         super(type, (value, args) -> {
             return operation.apply(value, (Option<A>)args[0], (Option<B>)args[1]);
         }, argument1, argument2);
     }
 
-    public static <T, A, B> BinaryAttributeModifier<T, A, B> operation(String type, Operation<T, A, B> operation, Argument<A> argument1, Argument<B> argument2) {
-        return new BinaryAttributeModifier<>(type, operation, argument1, argument2);
+    public static <T, A, B> BinaryModifier<T, A, B> operation(String type, Operation<T, A, B> operation, Argument<A> argument1, Argument<B> argument2) {
+        return new BinaryModifier<>(type, operation, argument1, argument2);
     }
 
-    public static <T, A, B> BinaryAttributeModifier<T, A, B> arithmetic(String type, TriFunction<T, A, B, T> operation, Argument<A> argument1, Argument<B> argument2) {
+    public static <T, A, B> BinaryModifier<T, A, B> arithmetic(String type, TriFunction<T, A, B, T> operation, Argument<A> argument1, Argument<B> argument2) {
         return operation(type, (value, operand1, operand2) -> {
             if(value.isAbsent() || operand1.isAbsent() || operand2.isAbsent()) {
                 return Option.absent();

@@ -4,52 +4,52 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.math.Rational;
 
-import static abeshutt.staracademy.attribute.NaryAttributeModifier.constant;
+import static abeshutt.staracademy.attribute.NaryModifier.constant;
 
 public class NumberAttribute extends Attribute<Rational> {
 
-    public static AttributeModifier<Rational> assign(Number value) {
-        return UnaryAttributeModifier.projection("assign",
+    public static Modifier<Rational> assign(Number value) {
+        return UnaryModifier.projection("assign",
                 constant("value", Rational.of(value), Adapters.RATIONAL));
     }
 
-    public static AttributeModifier<Rational> invert() {
-        return NullaryAttributeModifier.arithmetic("invert", Rational::invert);
+    public static Modifier<Rational> invert() {
+        return NullaryModifier.arithmetic("invert", Rational::invert);
     }
 
-    public static AttributeModifier<Rational> add(Number value) {
-        return UnaryAttributeModifier.arithmetic("add", Rational::add,
+    public static Modifier<Rational> add(Number value) {
+        return UnaryModifier.arithmetic("add", Rational::add,
                 constant("value", Rational.of(value), Adapters.RATIONAL));
     }
 
-    public static AttributeModifier<Rational> subtract(Number value) {
-        return UnaryAttributeModifier.arithmetic("subtract", Rational::subtract,
+    public static Modifier<Rational> subtract(Number value) {
+        return UnaryModifier.arithmetic("subtract", Rational::subtract,
                 constant("value", Rational.of(value), Adapters.RATIONAL));
     }
 
-    public static AttributeModifier<Rational> multiply(Number value) {
-        return UnaryAttributeModifier.arithmetic("multiply", Rational::multiply,
+    public static Modifier<Rational> multiply(Number value) {
+        return UnaryModifier.arithmetic("multiply", Rational::multiply,
                 constant("value", Rational.of(value), Adapters.RATIONAL));
     }
 
-    public static AttributeModifier<Rational> divide(Number value) {
-        return UnaryAttributeModifier.arithmetic("divide", Rational::divide,
+    public static Modifier<Rational> divide(Number value) {
+        return UnaryModifier.arithmetic("divide", Rational::divide,
                 constant("value", Rational.of(value), Adapters.RATIONAL));
     }
 
-    public static AttributeModifier<Rational> power(int value) {
-        return UnaryAttributeModifier.arithmetic("power", Rational::pow,
+    public static Modifier<Rational> power(int value) {
+        return UnaryModifier.arithmetic("power", Rational::pow,
                 constant("value", value, Adapters.INT));
     }
 
-    public static AttributeModifier<Rational> clamp(Number min, Number max) {
-        return BinaryAttributeModifier.arithmetic("clamp", Rational::clamp,
+    public static Modifier<Rational> clamp(Number min, Number max) {
+        return BinaryModifier.arithmetic("clamp", Rational::clamp,
                 constant("min", Rational.of(min), Adapters.RATIONAL),
                 constant("max", Rational.of(max), Adapters.RATIONAL));
     }
 
     @Override
-    protected TypeSupplierAdapter<AttributeModifier<Rational>> getModifierAdapter() {
+    protected TypeSupplierAdapter<Modifier<Rational>> getModifierAdapter() {
         return ModifierAdapter.INSTANCE;
     }
 
