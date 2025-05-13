@@ -1,23 +1,25 @@
 package abeshutt.staracademy.attribute;
 
 import abeshutt.staracademy.attribute.path.AttributePath;
+import abeshutt.staracademy.attribute.type.AttributeType;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtElement;
+import org.w3c.dom.Attr;
 
 import java.util.Optional;
 
 public class ModifierInstance<T> {
 
     private final int order;
-    private Modifier<T> modifier;
+    private Attribute<T> modifier;
     private final AttributePath<T> path;
     private boolean removed;
 
-    protected ModifierInstance(int order, Modifier<T> modifier, AttributePath<T> path, boolean removed) {
+    protected ModifierInstance(int order, Attribute<T> modifier, AttributePath<T> path, boolean removed) {
         this.order = order;
         this.modifier = modifier;
         this.path = path;
@@ -36,19 +38,19 @@ public class ModifierInstance<T> {
         return new ModifierInstance<>(0, null, AttributePath.empty(), false);
     }
 
-    public static <T> ModifierInstance<T> of(int order, Modifier<T> modifier, AttributePath<T> path) {
+    public static <T> ModifierInstance<T> of(int order, Attribute<T> modifier, AttributePath<T> path) {
         return new ModifierInstance<>(order, modifier, path, false);
     }
 
-    public static <T> ModifierInstance<T> of(int order, Modifier<T> modifier) {
+    public static <T> ModifierInstance<T> of(int order, Attribute<T> modifier) {
         return new ModifierInstance<>(order, modifier, AttributePath.empty(), false);
     }
 
-    public static <T> ModifierInstance<T> of(Modifier<T> modifier) {
+    public static <T> ModifierInstance<T> of(Attribute<T> modifier) {
         return new ModifierInstance<>(0, modifier, AttributePath.empty(), false);
     }
 
-    public static <T> Adapter<T> adapter(IAdapter<Modifier<T>, ?, ?, ?> modifierAdapter) {
+    public static <T> Adapter<T> adapter(IAdapter<Attribute<T>, ?, ?, ?> modifierAdapter) {
         return new Adapter<>(modifierAdapter);
     }
 
@@ -56,11 +58,11 @@ public class ModifierInstance<T> {
         return this.order;
     }
 
-    public Modifier<T> get() {
+    public Attribute<T> get() {
         return this.modifier;
     }
 
-    public ModifierInstance<T> set(Modifier<T> modifier) {
+    public ModifierInstance<T> set(Attribute<T> modifier) {
         this.modifier = modifier;
         return this;
     }
@@ -78,9 +80,9 @@ public class ModifierInstance<T> {
     }
 
     public static class Adapter<T> implements ISimpleAdapter<ModifierInstance<T>, NbtElement, JsonElement> {
-        private final IAdapter<Modifier<T>, NbtElement, JsonElement, ?> modifierAdapter;
+        private final IAdapter<Attribute<T>, NbtElement, JsonElement, ?> modifierAdapter;
 
-        protected Adapter(IAdapter<Modifier<T>, ?, ?, ?> modifierAdapter) {
+        protected Adapter(IAdapter<Attribute<T>, ?, ?, ?> modifierAdapter) {
             this.modifierAdapter = (IAdapter)modifierAdapter;
         }
 

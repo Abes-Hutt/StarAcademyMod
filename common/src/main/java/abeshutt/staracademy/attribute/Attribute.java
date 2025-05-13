@@ -1,6 +1,7 @@
 package abeshutt.staracademy.attribute;
 
 import abeshutt.staracademy.attribute.path.AttributePath;
+import abeshutt.staracademy.attribute.type.AttributeType;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.item.data.RecursiveAttributeIterator;
@@ -14,52 +15,36 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public abstract class Attribute<T> extends Modifier<T> implements ISerializable<NbtCompound, JsonObject> {
+public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
 
+    protected AttributeType<T> type;
+    protected AttributeParent parent;
+    protected final Map<String, Attribute<?>> children;
     protected final Map<Object, List<ModifierInstance<T>>> keyedModifiers;
     protected final List<ModifierInstance<T>> orderedModifiers;
 
-    protected AttributeParent parent;
-    protected final Map<String, Attribute<?>> children;
-
-    public Attribute() {
+    protected Attribute(AttributeType<T> type) {
+        this.type = type;
+        this.parent = null;
+        this.children = new HashMap<>();
         this.keyedModifiers = new HashMap<>();
         this.orderedModifiers = new ArrayList<>();
-
-        this.children = new HashMap<>();
-    }
-
-    @Override
-    public Option<T> apply(Option<T> value) {
-        for(ModifierInstance<T> modifier : this.orderedModifiers) {
-            value = modifier.get().apply(value);
-        }
-
-        return value;
     }
 
     public Option<T> get() {
-        return this.apply(Option.absent());
+        return this.get(Option.absent());
     }
 
-    public T getOr(T other) {
-        Option<T> value = this.get();
-
-        if(value.isAbsent()) {
-            return other;
-        }
-
-        return value.get();
+    public Option<T> get(T value) {
+        return this.get(Option.present(value));
     }
 
-    public T getOr(Supplier<T> other) {
-        Option<T> value = this.get();
-
-        if(value.isAbsent()) {
-            return other.get();
+    public Option<T> get(Option<T> value) {
+        for(ModifierInstance<T> modifier : this.orderedModifiers) {
+            value = modifier.get().get(value);
         }
 
-        return value.get();
+        return value;
     }
 
     public <U> Attribute<U> root() {
@@ -92,19 +77,19 @@ public abstract class Attribute<T> extends Modifier<T> implements ISerializable<
         return (Attribute<U>)this;
     }
 
-    public ModifierInstance<T> add(Modifier<T> modifier) {
+    public ModifierInstance<T> add(Attribute<T> modifier) {
         return this.add(null, ModifierInstance.of(modifier));
     }
 
-    public ModifierInstance<T> add(Object owner, Modifier<T> modifier) {
+    public ModifierInstance<T> add(Object owner, Attribute<T> modifier) {
         return this.add(owner, ModifierInstance.of(modifier));
     }
 
-    public ModifierInstance<T> add(Modifier<T> modifier, int order) {
+    public ModifierInstance<T> add(Attribute<T> modifier, int order) {
         return this.add(null, ModifierInstance.of(order, modifier));
     }
 
-    public ModifierInstance<T> add(Object owner, Modifier<T> modifier, int order) {
+    public ModifierInstance<T> add(Object owner, Attribute<T> modifier, int order) {
         return this.add(owner, ModifierInstance.of(order, modifier));
     }
 
@@ -230,13 +215,11 @@ public abstract class Attribute<T> extends Modifier<T> implements ISerializable<
         return Streams.stream(this.getSelfAndDescendants(type));
     }
 
-    protected abstract TypeSupplierAdapter<Modifier<T>> getModifierAdapter();
-
     @Override
     public Optional<JsonObject> writeJson() {
         return Optional.of(new JsonObject()).map(json -> {
             JsonArray modifiers = new JsonArray();
-            ModifierInstance.Adapter<T> adapter = ModifierInstance.adapter(this.getModifierAdapter());
+            ModifierInstance.Adapter<T> adapter = ModifierInstance.adapter(this.type.getModifierAdapter());
 
             this.orderedModifiers.forEach(modifier -> {
                 adapter.writeJson(modifier).ifPresent(modifiers::add);

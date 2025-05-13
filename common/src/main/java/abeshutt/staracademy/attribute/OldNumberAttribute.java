@@ -1,12 +1,17 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.attribute.type.AttributeType;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.math.Rational;
 
 import static abeshutt.staracademy.attribute.NaryModifier.constant;
 
-public class NumberAttribute extends Attribute<Rational> {
+public class OldNumberAttribute extends Attribute<Rational> {
+
+    protected OldNumberAttribute(AttributeType<Rational> type) {
+        super(type);
+    }
 
     public static Modifier<Rational> assign(Number value) {
         return UnaryModifier.projection("assign",
@@ -48,8 +53,8 @@ public class NumberAttribute extends Attribute<Rational> {
                 constant("max", Rational.of(max), Adapters.RATIONAL));
     }
 
-    @Override
-    protected TypeSupplierAdapter<Modifier<Rational>> getModifierAdapter() {
+    /*
+    protected TypeSupplierAdapter<Attribute<Rational>> getModifierAdapter() {
         return ModifierAdapter.INSTANCE;
     }
 
@@ -57,15 +62,15 @@ public class NumberAttribute extends Attribute<Rational> {
         protected static final ModifierAdapter INSTANCE = new ModifierAdapter();
 
         public ModifierAdapter() {
-            this.register(() -> NumberAttribute.assign(0));
-            this.register(NumberAttribute::invert);
-            this.register(() -> NumberAttribute.add(0));
-            this.register(() -> NumberAttribute.subtract(0));
-            this.register(() -> NumberAttribute.multiply(0));
-            this.register(() -> NumberAttribute.divide(0));
-            this.register(() -> NumberAttribute.power(0));
-            this.register(() -> NumberAttribute.clamp(0, 0));
+            this.register(() -> OldNumberAttribute.assign(0));
+            this.register(OldNumberAttribute::invert);
+            this.register(() -> OldNumberAttribute.add(0));
+            this.register(() -> OldNumberAttribute.subtract(0));
+            this.register(() -> OldNumberAttribute.multiply(0));
+            this.register(() -> OldNumberAttribute.divide(0));
+            this.register(() -> OldNumberAttribute.power(0));
+            this.register(() -> OldNumberAttribute.clamp(0, 0));
         }
-    }
+    }*/
 
 }
