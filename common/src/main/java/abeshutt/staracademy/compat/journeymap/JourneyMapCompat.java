@@ -11,7 +11,7 @@ public class JourneyMapCompat {
     ));
 
     public static boolean shouldLogIconData() {
-        return false;
+        return true;
     }
 
     public static boolean isCobblemonLike(String id) {
