@@ -34,6 +34,7 @@
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "cobblemon.MixinPokeBallItem",
+    "journeymap.MixinEntityHelper",
     "modernfix.MixinLRUMap"
   ],
   "injectors": {
