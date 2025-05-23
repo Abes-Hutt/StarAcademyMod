@@ -7,7 +7,7 @@ import java.util.Set;
 public class JourneyMapCompat {
 
     private static final Set<String> MOD_IDS = new HashSet<>(Arrays.asList(
-            "wavimons", "genomons"
+            "wavimons", "genomons", "cobblemon_reanimodel"
     ));
 
     public static boolean shouldLogIconData() {
