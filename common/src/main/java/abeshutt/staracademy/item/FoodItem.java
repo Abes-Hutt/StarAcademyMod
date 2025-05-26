@@ -2,11 +2,12 @@ package abeshutt.staracademy.item;
 
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.item.Item;
+import net.minecraft.util.Rarity;
 
-public class RoastedBerryItem extends Item {
+public class FoodItem extends Item {
 
-    public RoastedBerryItem(int nutrition, float saturationModifier, boolean snack, boolean alwaysEdible, FoodComponent.StatusEffectEntry... effects) {
-        super(new Item.Settings().food(construct(nutrition, saturationModifier, snack, alwaysEdible, effects)));
+    public FoodItem(Rarity rarity, int nutrition, float saturationModifier, boolean snack, boolean alwaysEdible, FoodComponent.StatusEffectEntry... effects) {
+        super(new Item.Settings().rarity(rarity).food(construct(nutrition, saturationModifier, snack, alwaysEdible, effects)));
     }
 
     private static FoodComponent construct(int nutrition, float saturationModifier, boolean snack, boolean alwaysEdible, FoodComponent.StatusEffectEntry[] effects) {
