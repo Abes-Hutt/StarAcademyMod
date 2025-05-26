@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "academy:item/smoked_apricorn/smoked_pink_apricorn"
+  }
+}

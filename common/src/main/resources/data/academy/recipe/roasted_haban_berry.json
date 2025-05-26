@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "cobblemon:haban_berry"
+  },
+  "result": {
+    "id": "academy:roasted_haban_berry"
+  }
+}

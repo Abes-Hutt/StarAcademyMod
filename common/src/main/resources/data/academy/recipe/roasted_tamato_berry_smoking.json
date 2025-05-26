@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "cobblemon:tamato_berry"
+  },
+  "result": {
+    "id": "academy:roasted_tamato_berry"
+  }
+}

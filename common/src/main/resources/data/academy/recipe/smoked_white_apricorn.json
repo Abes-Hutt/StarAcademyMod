@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 80,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "cobblemon:white_apricorn"
+  },
+  "result": {
+    "id": "academy:smoked_white_apricorn"
+  }
+}
