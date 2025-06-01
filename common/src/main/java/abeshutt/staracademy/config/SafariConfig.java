@@ -101,13 +101,13 @@ public class SafariConfig extends FileConfig {
         this.tickets = new LinkedHashMap<>();
 
         this.tickets.put("base", new SafariTicketEntry("Safari Ticket", 0xFFFFFF,
-                IntRoll.ofConstant(20 * 60), "academy:safari_ticket/base#inventory"));
+                IntRoll.ofConstant(20 * 60 * 10), "academy:safari_ticket/base#inventory"));
 
         this.tickets.put("great", new SafariTicketEntry("Great Safari Ticket", 0xAC3C34,
-                IntRoll.ofConstant(20 * 60 * 5), "academy:safari_ticket/great#inventory"));
+                IntRoll.ofConstant(20 * 60 * 25), "academy:safari_ticket/great#inventory"));
 
         this.tickets.put("golden", new SafariTicketEntry("Golden Safari Ticket", 0xD4841C,
-                IntRoll.ofUniform(20 * 60 * 10, 20 * 60 * 20), "academy:safari_ticket/base#inventory"));
+                IntRoll.ofUniform(20 * 60 * 40, 20 * 60 * 60), "academy:safari_ticket/golden#inventory"));
     }
 
 }
