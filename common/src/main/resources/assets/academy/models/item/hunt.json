@@ -1,5 +1,6 @@
 {
   "credit": "Made with Blockbench",
+  "gui_light": "front",
   "textures": {
     "0": "academy:item/hunt",
     "particle": "academy:item/hunt"
