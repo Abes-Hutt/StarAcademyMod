@@ -1,13 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " g ",
+    "gag",
+    " g "
+  ],
+  "key": {
+    "i": {
       "item": "minecraft:gold_ingot"
     },
-    {
+    "a": {
       "item": "academy:iron_smoked_pink_apricorn"
     }
-  ],
+  },
   "result": {
     "id": "academy:golden_smoked_pink_apricorn",
     "count": 1

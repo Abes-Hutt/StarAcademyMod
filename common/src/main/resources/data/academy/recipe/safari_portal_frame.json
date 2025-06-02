@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " o ",
+    "omo",
+    " o "
+  ],
+  "key": {
+    "o": {
+      "item": "minecraft:oak_planks"
+    },
+    "m": {
+      "item": "minecraft:mossy_cobblestone"
+    }
+  },
+  "result": {
+    "id": "academy:safari_portal_frame",
+    "count": 2
+  }
+}
