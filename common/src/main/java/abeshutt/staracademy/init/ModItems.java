@@ -136,7 +136,8 @@ public class ModItems extends ModRegistries {
         register("golden_smoked_yellow_apricorn", () -> new FoodItem(Rarity.UNCOMMON, 4, 1.2f, true, true, new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.HASTE, 2400, 1, false, false, true), 1.0F)));
         register("lootbag_mythsandlegends", () -> new LootBagItem(0xBC7BFF, new Item.Settings().maxCount(1)));
         register("lootbag_megastone", () -> new LootBagItem(0x80272A, new Item.Settings().maxCount(1)));
-        register("lootbag_shinyplushie", () -> new LootBagItem(0xFFAEFF, new Item.Settings().maxCount(1)));
+        register("lootbag_shinyplushie", () -> new LootBagItem(0xAAFFA0, new Item.Settings().maxCount(1)));
+        register("lootbag_plushie", () -> new LootBagItem(0xFFAEFF, new Item.Settings().maxCount(1)));
     }
 
     public static <V extends Item> RegistrySupplier<V> register(Identifier id, Supplier<V> item) {
