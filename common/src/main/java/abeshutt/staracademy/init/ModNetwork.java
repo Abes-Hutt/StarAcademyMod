@@ -6,6 +6,8 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -61,12 +63,22 @@ public class ModNetwork extends ModRegistries {
 
     public static <R extends PacketListener, T extends ModPacket<R>> void register(NetworkManager.Side side, CustomPayload.Id<T> id, Supplier<T> packetSupplier,
                                                                                    Function<NetworkManager.PacketContext, R> contextMapper) {
+        if(Platform.getEnvironment() == Env.SERVER && side == NetworkManager.s2c()) {
+            NetworkManager.registerS2CPayloadType(id, CustomPayload.codecOf(ModPacket::write, buf -> {
+                T packet = packetSupplier.get();
+                packet.read(buf);
+                return packet;
+            }));
+
+            return;
+        }
+
         NetworkManager.registerReceiver(side, id, CustomPayload.codecOf(ModPacket::write, buf -> {
             T packet = packetSupplier.get();
             packet.read(buf);
             return packet;
         }), (packet, context) -> {
-            if(contextMapper != null) {
+            if (contextMapper != null) {
                 packet.apply(contextMapper.apply(context));
             }
         });
