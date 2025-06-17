@@ -1,6 +1,7 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
+import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.item.renderer.OutfitItemRenderer;
 import abeshutt.staracademy.world.random.RandomSource;
@@ -28,6 +29,16 @@ public abstract class OutfitEntry implements ISerializable<NbtCompound, JsonObje
 
     public abstract void render(OutfitItemRenderer renderer, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices,
                                 VertexConsumerProvider vertexConsumers, int light, int overlay);
+
+    @Override
+    public void writeBits(BitBuffer buffer) {
+
+    }
+
+    @Override
+    public void readBits(BitBuffer buffer) {
+
+    }
 
     @Override
     public Optional<NbtCompound> writeNbt() {

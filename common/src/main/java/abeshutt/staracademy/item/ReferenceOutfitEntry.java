@@ -1,6 +1,7 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.item.renderer.OutfitItemRenderer;
 import abeshutt.staracademy.world.random.RandomSource;
@@ -35,6 +36,18 @@ public class ReferenceOutfitEntry extends OutfitEntry {
     @Override
     public void render(OutfitItemRenderer renderer, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
+    }
+
+    @Override
+    public void writeBits(BitBuffer buffer) {
+        super.writeBits(buffer);
+        Adapters.UTF_8.asNullable().writeBits(this.id, buffer);
+    }
+
+    @Override
+    public void readBits(BitBuffer buffer) {
+        super.readBits(buffer);
+        this.id = Adapters.UTF_8.asNullable().readBits(buffer).orElse(null);
     }
 
     @Override
