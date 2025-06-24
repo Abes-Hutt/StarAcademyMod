@@ -21,7 +21,7 @@ public class ShopConfig extends FileConfig {
     }
 
     public Optional<List<ShopOffer>> parseOffers(String id) {
-        if(this.offers.containsKey(id)) {
+        if(!this.offers.containsKey(id)) {
             return Optional.empty();
         }
 
