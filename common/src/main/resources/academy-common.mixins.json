@@ -34,8 +34,11 @@
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "cobblemon.MixinPokeBallItem",
+    "fixes.MixinPlacedFeature",
     "journeymap.MixinEntityHelper",
-    "modernfix.MixinLRUMap"
+    "modernfix.MixinLRUMap",
+    "numismaticoverhaul.MixinShopBlock",
+    "numismaticoverhaul.MixinShopBlockEntity"
   ],
   "injectors": {
     "defaultRequire": 1
