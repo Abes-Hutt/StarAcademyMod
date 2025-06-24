@@ -31,6 +31,8 @@ public class ShopConfig extends FileConfig {
             SerializationContext ctx = SerializationContext.empty();
 
             Adapters.COMPOUND_NBT.readJson(offer).ifPresent(nbt -> {
+                nbt.putLong("price", nbt.getLong("price"));
+
                 offers.add(ShopOffer.ENDEC.decodeFully(ctx
                                 .withAttributes(SerializationAttributes.HUMAN_READABLE),
                         NbtDeserializer::of, nbt));
