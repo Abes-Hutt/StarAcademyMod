@@ -1,5 +1,6 @@
 package abeshutt.staracademy.config;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import com.glisco.numismaticoverhaul.block.ShopOffer;
 import com.google.gson.JsonElement;
@@ -8,6 +9,8 @@ import com.google.gson.annotations.Expose;
 import io.wispforest.endec.SerializationAttributes;
 import io.wispforest.endec.SerializationContext;
 import io.wispforest.owo.serialization.format.nbt.NbtDeserializer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryWrapper;
 
 import java.util.*;
 
@@ -20,7 +23,7 @@ public class ShopConfig extends FileConfig {
         return "shop";
     }
 
-    public Optional<List<ShopOffer>> parseOffers(String id) {
+    public Optional<List<ShopOffer>> parseOffers(String id, RegistryWrapper.WrapperLookup registries) {
         if(!this.offers.containsKey(id)) {
             return Optional.empty();
         }
@@ -28,14 +31,11 @@ public class ShopConfig extends FileConfig {
         List<ShopOffer> offers = new ArrayList<>();
 
         for(JsonElement offer : this.offers.get(id)) {
-            SerializationContext ctx = SerializationContext.empty();
-
-            Adapters.COMPOUND_NBT.readJson(offer).ifPresent(nbt -> {
-                nbt.putLong("price", nbt.getLong("price"));
-
-                offers.add(ShopOffer.ENDEC.decodeFully(ctx
-                                .withAttributes(SerializationAttributes.HUMAN_READABLE),
-                        NbtDeserializer::of, nbt));
+            Adapters.COMPOUND_NBT.readJson(offer).ifPresentOrElse(nbt -> {
+                ItemStack.fromNbt(registries, nbt.get("sell")).ifPresent(stack -> offers.add(new ShopOffer(stack,
+                        Adapters.LONG.readNbt(nbt.get("price")).orElse(1L))));
+            }, () -> {
+                StarAcademyMod.LOGGER.error("Failed to parse offer: {}", offer);
             });
         }
 

@@ -34,7 +34,8 @@ public abstract class MixinShopBlockEntity {
         }
 
         if (this.reference != null && this.lastConfig != ModConfigs.SHOP) {
-            this.offers = ModConfigs.SHOP.parseOffers(this.reference).orElse(this.offers);
+            this.offers = ModConfigs.SHOP.parseOffers(this.reference, world.getRegistryManager())
+                    .orElse(this.offers);
             this.lastConfig = ModConfigs.SHOP;
             this.markDirty();
         }
