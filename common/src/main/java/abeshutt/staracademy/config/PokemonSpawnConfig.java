@@ -38,7 +38,7 @@ public class PokemonSpawnConfig extends FileConfig {
 
     @Override
     protected void reset() {
-        this.spawnProtectionDistance = 100.0D;
+        this.spawnProtectionDistance = 1.0D;
         this.distanceToLevel = new LinkedHashMap<>();
         this.distanceToLevel.put(0.0D, IntRoll.ofUniform(0, 10));
         this.distanceToLevel.put(800.0D, IntRoll.ofUniform(0, 15));

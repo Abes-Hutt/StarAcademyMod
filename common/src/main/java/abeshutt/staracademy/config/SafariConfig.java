@@ -93,8 +93,8 @@ public class SafariConfig extends FileConfig {
         this.spawnYaw = -90.0F;
         this.spawnPitch = 0.0F;
         this.playerDuration = 30 * 60 * 20;
-        this.providedSafariBalls = 16;
-        this.startEpoch = 0;
+        this.providedSafariBalls = 32;
+        this.startEpoch = 25200000;
         this.restartDelay = 1000 * 60 * 60 * 24;
         this.paused = false;
 

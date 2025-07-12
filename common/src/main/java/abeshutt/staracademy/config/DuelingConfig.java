@@ -17,7 +17,7 @@ public class DuelingConfig extends FileConfig {
 
     @Override
     protected void reset() {
-        this.cooldownTicks = 20 * 60 * 60;
+        this.cooldownTicks = 20 * 60 * 10;
     }
 
 }

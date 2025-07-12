@@ -1,7 +1,0 @@
-{
-  "parent": "academy:item/card/icon",
-  "textures": {
-    "0": "academy:item/card/icon/ivysaur",
-    "particle": "academy:item/card/icon/ivysaur"
-  }
-}

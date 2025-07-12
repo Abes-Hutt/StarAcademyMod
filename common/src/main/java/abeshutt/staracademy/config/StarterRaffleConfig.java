@@ -29,7 +29,7 @@ public class StarterRaffleConfig extends FileConfig {
     @Override
     protected void reset() {
         this.timeInterval = 20 * 60 * 2;
-        this.mode = StarterMode.RAFFLE_ENABLED;
+        this.mode = StarterMode.DEFAULT;
         this.selectionCooldown = 2;
     }
 

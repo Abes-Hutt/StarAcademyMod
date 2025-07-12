@@ -1,0 +1,7 @@
+{
+  "parent": "academy:item/card/icon",
+  "textures": {
+    "0": "academy:item/card/icon/057primeapeshiny",
+    "particle": "academy:item/card/icon/057primeapeshiny"
+  }
+}

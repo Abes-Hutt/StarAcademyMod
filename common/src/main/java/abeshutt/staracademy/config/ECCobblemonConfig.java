@@ -32,9 +32,9 @@ public class ECCobblemonConfig extends FileConfig {
 
     @Override
     protected void reset() {
-        this.blueMoonShinyMultiplier = 1.5F;
-        this.bloodMoonIVsMultiplier = 1.5F;
-        this.harvestMoonExpShareMultiplier = 1.5F;
-        this.auroraMoonRarePokemonSpawnMultiplier = 2F;
+        this.blueMoonShinyMultiplier = 1.0F;
+        this.bloodMoonIVsMultiplier = 1.0F;
+        this.harvestMoonExpShareMultiplier = 1.0F;
+        this.auroraMoonRarePokemonSpawnMultiplier = 4F;
     }
 }
