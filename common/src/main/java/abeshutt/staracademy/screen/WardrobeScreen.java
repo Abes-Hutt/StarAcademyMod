@@ -65,22 +65,21 @@ public class WardrobeScreen extends Screen {
 
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderDarkening(context);
-    }
-
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
+        super.renderBackground(context, mouseX, mouseY, delta);
         OUTFITS_BG.draw(context, TEXTURE,
                 this.x + (int) (this.backgroundWidth * 0.5f) / 2 + 4, this.y,
                 this.backgroundWidth, this.backgroundHeight);
-
         int padding = 6;
         PREVIEW_BG.draw(context, TEXTURE, this.x - 50, this.y,
                 (int) (this.backgroundWidth * 0.55f), this.backgroundHeight);
         PREVIEW_INNER.draw(context, TEXTURE, this.x + padding - 50, this.y + padding,
                 (int) (this.backgroundWidth * 0.55f) - 2 * padding, this.backgroundHeight - 2 * padding);
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         int playerHeight = 50;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -89,8 +88,6 @@ public class WardrobeScreen extends Screen {
                     (float) (this.x + 51) - mouseX,
                     (float) (this.y + 75 - 50) - mouseY, player);
         }
-
-        super.render(context, mouseX, mouseY, delta);
 
         context.drawText(textRenderer, this.getTitle(), this.x - 48, this.y - 10, 0xFF_FFFFFF, true);
     }
