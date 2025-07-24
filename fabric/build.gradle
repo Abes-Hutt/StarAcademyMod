@@ -34,6 +34,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+
     modImplementation "com.cobblemon:fabric:1.6.1+1.21.1"
     modImplementation "net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0"
 
