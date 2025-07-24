@@ -7,17 +7,23 @@ loom {
 }
 
 dependencies {
-    modCompileOnly "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-    modCompileOnly "dev.architectury:architectury:$rootProject.architectury_api_version"
+    modCompileOnly("net.fabricmc:fabric-loader:$rootProject.fabric_loader_version")
+    modCompileOnly("dev.architectury:architectury:$rootProject.architectury_api_version")
 
-    modCompileOnly "com.cobblemon:mod:1.6.1+1.21.1"
-    modCompileOnly files("jars/molang-1.1.18.jar")
+    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1")
+    modCompileOnly(files("jars/molang-1.1.18.jar"))
 
     modCompileOnly("maven.modrinth:numismatic-overhaul:0.3.4+1.21")
-    modCompileOnly include("io.wispforest:owo-sentinel:0.12.15.4+1.21")
-    modCompileOnly annotationProcessor("io.wispforest:owo-lib:0.12.15.4+1.21")
+    modCompileOnly(include("io.wispforest:owo-sentinel:0.12.15.4+1.21"))
+    modCompileOnly(annotationProcessor("io.wispforest:owo-lib:0.12.15.4+1.21"))
 
-    modCompileOnly "software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1"
+    modCompileOnly("maven.modrinth:enhanced-celestials:6.0.2.0-fabric")
+    modCompileOnly("maven.modrinth:corgilib:1.21.1-5.0.0.6-Fabric")
+    modCompileOnly("maven.modrinth:data-anchor:2.0.0.12-fabric")
+
+    modCompileOnly("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
+
+    modCompileOnly("maven.modrinth:eternal-starlight:0.5.1+1.21.1+fabric")
 
     modCompileOnly("maven.modrinth:itemzoomer:1.1.0-1.21.1")
 

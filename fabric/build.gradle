@@ -31,14 +31,20 @@ configurations {
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
-    modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+    modImplementation("net.fabricmc:fabric-loader:$rootProject.fabric_loader_version")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version")
+    modImplementation("dev.architectury:architectury-fabric:$rootProject.architectury_api_version")
 
-    modImplementation "com.cobblemon:fabric:1.6.1+1.21.1"
-    modImplementation "net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0"
+    modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0")
 
-    modImplementation "software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1"
+    modImplementation("maven.modrinth:enhanced-celestials:6.0.2.0-fabric")
+    modImplementation("maven.modrinth:corgilib:1.21.1-5.0.0.6-Fabric")
+    modImplementation("maven.modrinth:data-anchor:2.0.0.12-fabric")
+
+    modImplementation("maven.modrinth:eternal-starlight:0.5.1+1.21.1+fabric")
+
+    modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
