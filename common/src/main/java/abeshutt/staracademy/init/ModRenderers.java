@@ -4,10 +4,13 @@ import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
 import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.block.entity.renderer.BetterStructureBlockEntityRenderer;
 import abeshutt.staracademy.block.entity.renderer.HousePokedexBlockEntityRenderer;
+import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
+import abeshutt.staracademy.compat.enhancedcelestials.client.EnhancedCelestialsCompatClient;
 import abeshutt.staracademy.entity.renderer.HumanEntityRenderer;
 import abeshutt.staracademy.entity.renderer.ShootingStarRenderer;
 import abeshutt.staracademy.mixin.ProxyModelPredicateProviderRegistry;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.platform.Platform;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -69,10 +72,16 @@ public class ModRenderers extends ModRegistries {
             try {
                 STRUCTURE_BLOCK = register(registry, ModBlocks.Entities.STRUCTURE_BLOCK.get(), BetterStructureBlockEntityRenderer::new);
                 HOUSE_POKEDEX = register(registry, ModBlocks.Entities.HOUSE_POKEDEX.get(), HousePokedexBlockEntityRenderer::new);
+                if(Platform.isModLoaded("enhancedcelestials")) {
+                    EnhancedCelestialsCompatClient.registerBlockEntityRenderers(registry);
+                }
             } catch(Exception e) {
                 ClientLifecycleEvent.CLIENT_SETUP.register(minecraft -> {
                     STRUCTURE_BLOCK = register(registry, ModBlocks.Entities.STRUCTURE_BLOCK.get(), BetterStructureBlockEntityRenderer::new);
                     HOUSE_POKEDEX = register(registry, ModBlocks.Entities.HOUSE_POKEDEX.get(), HousePokedexBlockEntityRenderer::new);
+                    if(Platform.isModLoaded("enhancedcelestials")) {
+                        EnhancedCelestialsCompatClient.registerBlockEntityRenderers(registry);
+                    }
                 });
             }
         }
