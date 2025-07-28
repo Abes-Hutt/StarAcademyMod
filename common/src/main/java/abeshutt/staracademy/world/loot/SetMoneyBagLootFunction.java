@@ -16,14 +16,17 @@ import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.nbt.NbtLongArray;
 
+import java.util.Optional;
+
 public class SetMoneyBagLootFunction implements LootFunction {
 
     public static final MapCodec<SetMoneyBagLootFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Adapters.INT_ROLL.codecJson().fieldOf("bronze").forGetter(SetMoneyBagLootFunction::getBronze),
-            Adapters.INT_ROLL.codecJson().fieldOf("silver").forGetter(SetMoneyBagLootFunction::getSilver),
-            Adapters.INT_ROLL.codecJson().fieldOf("gold").forGetter(SetMoneyBagLootFunction::getGold),
+            Adapters.INT_ROLL.codecJson().optionalFieldOf("bronze").forGetter(SetMoneyBagLootFunction::getBronze),
+            Adapters.INT_ROLL.codecJson().optionalFieldOf("silver").forGetter(SetMoneyBagLootFunction::getSilver),
+            Adapters.INT_ROLL.codecJson().optionalFieldOf("gold").forGetter(SetMoneyBagLootFunction::getGold),
             Adapters.BOOLEAN.codecJson().fieldOf("combine").forGetter(SetMoneyBagLootFunction::isCombine)
-        ).apply(instance, SetMoneyBagLootFunction::new));
+        ).apply(instance, (bronze, silver, gold, combine) -> new SetMoneyBagLootFunction(
+                bronze.orElse(null), silver.orElse(null), gold.orElse(null), combine)));
 
     private final IntRoll bronze;
     private final IntRoll silver;
@@ -37,16 +40,16 @@ public class SetMoneyBagLootFunction implements LootFunction {
         this.combine = combine;
     }
 
-    public IntRoll getBronze() {
-        return this.bronze;
+    public Optional<IntRoll> getBronze() {
+        return Optional.ofNullable(this.bronze);
     }
 
-    public IntRoll getSilver() {
-        return this.silver;
+    public Optional<IntRoll> getSilver() {
+        return Optional.ofNullable(this.silver);
     }
 
-    public IntRoll getGold() {
-        return this.gold;
+    public Optional<IntRoll> getGold() {
+        return Optional.ofNullable(this.gold);
     }
 
     public boolean isCombine() {
