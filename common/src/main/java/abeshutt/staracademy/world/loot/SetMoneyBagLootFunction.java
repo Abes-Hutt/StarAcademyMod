@@ -4,12 +4,17 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModLootFunctionTypes;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.roll.IntRoll;
+import com.glisco.numismaticoverhaul.NumismaticOverhaul;
+import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
+import com.glisco.numismaticoverhaul.item.MoneyBagComponent;
+import com.glisco.numismaticoverhaul.item.MoneyBagItem;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
+import net.minecraft.nbt.NbtLongArray;
 
 public class SetMoneyBagLootFunction implements LootFunction {
 
@@ -63,13 +68,11 @@ public class SetMoneyBagLootFunction implements LootFunction {
                 this.gold == null ? 0 : this.gold.get(random)
         };
 
-        /*
         if(this.combine) {
             values = CurrencyResolver.splitValues(CurrencyResolver.combineValues(values));
         }
 
-        stack.getOrCreateNbt().put("Values", new NbtLongArray(values));
-        stack.getOrCreateNbt().putBoolean("Combined", this.combine);*/
+        stack.set(NumismaticOverhaul.MONEY_BAG_COMPONENT, MoneyBagComponent.of(values));
         return stack;
     }
 
