@@ -51,7 +51,7 @@ public class DynamicResourcePack extends AbstractFileResourcePack {
                                 .getTickDelta(true));
                     }
 
-                    return styleText("Academy Runtime Pack", time, 10.0F);
+                    return styleText("˗ˏˋ꒰✨ Academy Codex ✨꒱ˎˊ˗", time, 10.0F);
                 }
             };
 
@@ -76,9 +76,9 @@ public class DynamicResourcePack extends AbstractFileResourcePack {
     }
 
     public static Integer getColor(double time) {
-        ColorBlender blender = new ColorBlender(1.0F)
-                .add(0xE3A335, 60.0F)
-                .add(0xB76D32, 60.0F);
+        ColorBlender blender = new ColorBlender(1.5F)
+                .add(0xf48396, 250.0F)
+                .add(0x86c5fb, 250.0F);
         return blender.getColor(time);
     }
 

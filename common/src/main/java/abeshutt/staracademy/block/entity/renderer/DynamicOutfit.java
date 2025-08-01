@@ -2,7 +2,6 @@ package abeshutt.staracademy.block.entity.renderer;
 
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
-import abeshutt.staracademy.outfit.core.OutfitModel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.api.EnvType;
