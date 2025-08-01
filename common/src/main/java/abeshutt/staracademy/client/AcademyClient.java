@@ -21,7 +21,7 @@ public class AcademyClient {
     public AcademyClient(MinecraftClient minecraft) {
         this.minecraft = minecraft;
 
-        this.socket = new WebSocketClient("wss://echo.websocket.events", message -> {
+        this.socket = new WebSocketClient("wss://cobblemon.academy/live", message -> {
             try {
                 JsonElement json = JsonParser.parseString(message);
 
@@ -71,7 +71,7 @@ public class AcademyClient {
         this.auth.setAuthed(null);
         this.outfits.getTracked().clear();
         this.socket.close();
-        this.timeout = 20 + new Random().nextInt(380);
+        this.timeout = 20 * 60 * 5 + new Random().nextInt(380);
     }
 
     public void tick() {
