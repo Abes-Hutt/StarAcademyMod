@@ -5,6 +5,9 @@ import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.client.model.ModelCuboidData;
+import net.minecraft.client.model.ModelPartData;
+import net.minecraft.client.model.ModelTransform;
 import net.minecraft.nbt.NbtElement;
 import org.joml.Vector3f;
 
@@ -24,6 +27,25 @@ public class DynamicBone {
         this.rotation = rotation;
         this.pivot = pivot;
         this.children = children;
+    }
+
+    public ModelPartData build() {
+        List<ModelCuboidData> vanillaCuboids = new ArrayList<>();
+
+        for(DynamicCuboid cuboid : this.cuboids) {
+            vanillaCuboids.add(cuboid.build());
+        }
+
+        ModelTransform vanillaTransform = ModelTransform.of(this.pivot.x, this.pivot.y,
+                this.pivot.z, this.rotation.x, this.rotation.y, this.rotation.z);
+
+        ModelPartData vanillaBone = new ModelPartData(vanillaCuboids, vanillaTransform);
+
+        this.children.forEach((name, child) -> {
+            vanillaBone.children.put(name, child.build());
+        });
+
+        return vanillaBone;
     }
 
     public static class Adapter implements ISimpleAdapter<DynamicBone, NbtElement, JsonElement> {

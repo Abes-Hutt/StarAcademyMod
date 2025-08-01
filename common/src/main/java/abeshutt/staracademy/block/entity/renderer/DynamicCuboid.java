@@ -7,6 +7,7 @@ import abeshutt.staracademy.data.adapter.basic.EnumAdapter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.model.Dilation;
+import net.minecraft.client.model.ModelCuboidData;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.math.Direction;
@@ -14,6 +15,7 @@ import org.joml.Vector3f;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 public class DynamicCuboid {
 
@@ -37,6 +39,14 @@ public class DynamicCuboid {
         this.textureUV = textureUV;
         this.textureScale = textureScale;
         this.textureFaces = textureFaces;
+    }
+
+    public ModelCuboidData build() {
+        return new ModelCuboidData(null, this.textureUV.getX(), this.textureUV.getY(),
+                this.offset.x, this.offset.y, this.offset.z,
+                this.size.x, this.size.y, this.size.z, this.dilation, this.mirror,
+                this.textureScale.getX(), this.textureScale.getY(),
+                Set.of(this.textureFaces));
     }
 
     public static class Adapter implements ISimpleAdapter<DynamicCuboid, NbtElement, JsonElement> {

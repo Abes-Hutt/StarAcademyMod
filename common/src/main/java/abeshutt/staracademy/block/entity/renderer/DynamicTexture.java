@@ -4,22 +4,16 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.channels.Channels;
-import java.nio.channels.WritableByteChannel;
-import java.util.Base64;
 import java.util.Optional;
 
 public class DynamicTexture {
 
-    private final Identifier id;
-    private final int width;
-    private final int height;
+    public final Identifier id;
+    public final int width;
+    public final int height;
 
     public DynamicTexture(Identifier id, int width, int height) {
         this.id = id;
