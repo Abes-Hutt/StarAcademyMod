@@ -46,6 +46,8 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }

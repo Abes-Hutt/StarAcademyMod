@@ -9,6 +9,7 @@
     "MixinClientWorld",
     "MixinInGameHud",
     "MixinInventoryScreen",
+    "MixinMinecraftClient",
     "MixinModelLoader",
     "MixinPlayerEntityRenderer",
     "MixinRenderLayers",
