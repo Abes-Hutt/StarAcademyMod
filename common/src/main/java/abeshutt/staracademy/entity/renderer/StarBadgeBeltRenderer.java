@@ -32,7 +32,9 @@ public class StarBadgeBeltRenderer extends FeatureRenderer<AbstractClientPlayerE
     @Override
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player,
                        float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if(player.isInvisible()) return;
+        if(player.isInvisible() || !StarBadgeData.CLIENT.isEnabled()) {
+            return;
+        }
 
         matrices.push();
         matrices.translate(0.0D, -0.07D, 0.0D);

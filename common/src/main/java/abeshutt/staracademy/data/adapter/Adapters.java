@@ -21,6 +21,7 @@ import abeshutt.staracademy.data.nbt.PartialCompoundNbt;
 import abeshutt.staracademy.data.tile.*;
 import abeshutt.staracademy.item.OutfitEntry;
 import abeshutt.staracademy.math.Rational;
+import abeshutt.staracademy.world.StarOwnership;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HousePlayer;
 import abeshutt.staracademy.world.data.HousePokedexManager;
@@ -115,6 +116,7 @@ public class Adapters {
     public static final ModelIdentifierAdapter MODEL_IDENTIFIER = new ModelIdentifierAdapter(false);
     public static final ItemStackAdapter ITEM_STACK = new ItemStackAdapter(false);
     public static final GameProfileAdapter GAME_PROFILE = new GameProfileAdapter(false);
+    public static final SerializableAdapter<StarOwnership, NbtElement, JsonElement> STAR_OWNERSHIP = Adapters.of(StarOwnership::new, false);
 
     public static final PartialBlock.Adapter PARTIAL_BLOCK = new PartialBlock.Adapter();
     public static final PartialBlockProperties.Adapter PARTIAL_BLOCK_PROPERTIES = new PartialBlockProperties.Adapter();

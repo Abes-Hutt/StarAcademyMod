@@ -44,8 +44,6 @@ dependencies {
 
     modImplementation("maven.modrinth:eternal-starlight:0.5.1+1.21.1+fabric")
 
-    modImplementation("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
-
     modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
 
     implementation(shadowBundle("com.squareup.okhttp3:okhttp:4.12.0"))

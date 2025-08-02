@@ -22,10 +22,19 @@ public class StarBadgeData extends WorldData {
 
     public static final StarBadgeData CLIENT = new StarBadgeData();
 
+    private boolean enabled;
     private final Map<UUID, BaseInventory> inventories;
 
     public StarBadgeData() {
         this.inventories = new LinkedHashMap<>();
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Map<UUID, BaseInventory> getInventories() {
@@ -52,7 +61,7 @@ public class StarBadgeData extends WorldData {
 
         if(player.getServer() != null) {
             NetworkManager.sendToPlayers(player.getServer().getPlayerManager().getPlayerList(),
-                    new UpdateStarBadgeS2CPacket(player.getUuid(), inventory));
+                    new UpdateStarBadgeS2CPacket(this.enabled, player.getUuid(), inventory));
         }
 
         return inventory;
@@ -69,10 +78,11 @@ public class StarBadgeData extends WorldData {
             for(int slot = 0; slot < inventory.size(); slot++) {
                 ItemStack stack = inventory.getStack(slot);
                 if(!stack.isOf(ModItems.STAR_BADGE.get())) continue;
-                List<StarOwnership> ownership = StarBadgeItem.getOwnership(stack);
+                StarOwnership ownership = StarBadgeItem.getOwnership(stack);
+                List<StarOwnership.Entry> entries = ownership.getEntries();
 
-                if(ownership.isEmpty() || !ownership.get(ownership.size() - 1).getUuid().equals(uuid)) {
-                    ownership.add(StarOwnership.ofNow(uuid));
+                if(entries.isEmpty() || !entries.getLast().getUuid().equals(uuid)) {
+                    entries.add(StarOwnership.ofNow(uuid));
                     StarBadgeItem.setOwnership(stack, ownership);
                     inventory.setStack(slot, stack);
                     changed.add(uuid);
@@ -88,14 +98,21 @@ public class StarBadgeData extends WorldData {
         if(!changed.isEmpty()) {
             for(UUID uuid : changed) {
                 NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
-                        new UpdateStarBadgeS2CPacket(uuid, this.inventories.get(uuid)));
+                        new UpdateStarBadgeS2CPacket(this.enabled, uuid, this.inventories.get(uuid)));
             }
+        }
+
+        if(ModConfigs.STAR_BADGE.isEnabled() != this.enabled) {
+            this.enabled = ModConfigs.STAR_BADGE.isEnabled();
+
+            NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                    new UpdateStarBadgeS2CPacket(this.enabled, new HashMap<>()));
         }
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(null));
-        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.inventories));
+        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.enabled, null));
+        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.enabled, this.inventories));
     }
 
     @Override

@@ -41,13 +41,16 @@ public class PlayerProfileData extends WorldData {
     }
 
     public synchronized CompletableFuture<GameProfile> getProfileAsync(MinecraftServer server, UUID uuid) {
+        if(this.profiles.containsKey(uuid)) {
+            return CompletableFuture.completedFuture(this.profiles.get(uuid));
+        }
+
         CompletableFuture<GameProfile> future = this.futures.get(uuid);
 
         if(future == null) {
             future = CompletableFuture.supplyAsync(() -> {
-                ProfileResult result = server.getSessionService().fetchProfile(
-                        uuid, true);
-                GameProfile profile = result.profile() == null ? new GameProfile(uuid, null) : result.profile();
+                ProfileResult result = server.getSessionService().fetchProfile(uuid, true);
+                GameProfile profile = result == null ? new GameProfile(uuid, "Unknown") : result.profile();
                 this.profiles.put(uuid, profile);
                 this.futures.remove(uuid);
                 this.markDirty();
@@ -63,6 +66,7 @@ public class PlayerProfileData extends WorldData {
     }
 
     private void onJoin(ServerPlayerEntity player) {
+        this.profiles.remove(player.getUuid());
         this.getProfileAsync(player.getServer(), player.getUuid());
         NetworkManager.sendToPlayer(player, new UpdatePlayerProfileS2CPacket(this.profiles));
     }
@@ -71,7 +75,7 @@ public class PlayerProfileData extends WorldData {
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             GameProfile profile = this.profiles.get(player.getUuid());
 
-            if(profile != null && profile.getName() == null) {
+            if(profile != null && profile.getName().equals("Unknown")) {
                 ProxyGameProfile.of(profile).ifPresent(proxy -> {
                     proxy.setName(player.getGameProfile().getName());
                     this.markDirty();

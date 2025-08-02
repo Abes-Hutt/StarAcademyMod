@@ -5,6 +5,7 @@ import abeshutt.staracademy.screen.StarBadgeWidget;
 import abeshutt.staracademy.screen.WardrobeScreen;
 import abeshutt.staracademy.screen.WardrobeWidget;
 import abeshutt.staracademy.util.ProxyStarBadges;
+import abeshutt.staracademy.world.data.StarBadgeData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
@@ -51,7 +52,14 @@ public abstract class MixinInventoryScreen extends AbstractInventoryScreen<Playe
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if(!StarBadgeData.CLIENT.isEnabled()) {
+            ProxyStarBadges.of(this.handler).ifPresent(proxy -> {
+                proxy.getHandler().setEnabled(false);
+            });
+        }
+
         if(this.starBadgeButton != null) {
+            this.starBadgeButton.visible = StarBadgeData.CLIENT.isEnabled();
             this.starBadgeButton.setPosition(this.x + 160 - 14, this.y + 5);
         }
 
