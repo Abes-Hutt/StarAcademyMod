@@ -37,7 +37,6 @@
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "cobblemon.MixinPokeBallItem",
-    "fixes.MixinPlacedFeature",
     "journeymap.MixinEntityHelper",
     "modernfix.MixinLRUMap",
     "numismaticoverhaul.MixinShopBlock",
