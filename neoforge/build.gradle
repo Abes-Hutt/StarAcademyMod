@@ -50,6 +50,8 @@ dependencies {
 
     modImplementation("maven.modrinth:eternal-starlight:0.5.1+1.21.1+neoforge")
 
+    modImplementation("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2-Hotfix")
+
     modImplementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7.5.1")
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")

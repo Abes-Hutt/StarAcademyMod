@@ -19,9 +19,7 @@
     "cobblemon.MixinSelectionButton",
     "cobblemon.MixinStarterSelectionScreen",
     "display.MixinBlockFrameBlockRenderer",
-    "itemzoomer.MixinZoomRenderer",
-    "terrastorage.MixinHandledScreenMixin",
-    "terrastorage.MixinInventoryScreenMixin"
+    "itemzoomer.MixinZoomRenderer"
   ],
   "mixins": [
     "MixinAbstractFireBlock",
@@ -39,6 +37,7 @@
     "cobblemon.MixinPokeBallItem",
     "journeymap.MixinEntityHelper",
     "modernfix.MixinLRUMap",
+    "mythsandlegends.MixinForceSpawningUtils",
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity"
   ],
