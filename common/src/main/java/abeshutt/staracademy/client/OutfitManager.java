@@ -33,6 +33,14 @@ public class OutfitManager {
         return this.tracked;
     }
 
+    public Set<String> getEquipped(UUID uuid) {
+        if(this.entries.containsKey(uuid)) {
+            return this.entries.get(uuid).equipped;
+        }
+
+        return new HashSet<>();
+    }
+
     public void tick(AcademyClient client) {
         if(client.getMinecraft().world == null) {
             if(!this.tracked.isEmpty()) {

@@ -45,6 +45,10 @@ public class AcademyClient {
         return this.minecraft;
     }
 
+    public OutfitManager getOutfits() {
+        return this.outfits;
+    }
+
     public void connect() {
         this.disconnect();
         this.socket.connect();

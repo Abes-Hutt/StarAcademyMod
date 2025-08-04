@@ -12,6 +12,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
@@ -37,6 +38,10 @@ public class DynamicOutfit {
         this.classicMesh = classicMesh;
         this.slimTexture = slimTexture;
         this.slimMesh = slimMesh;
+    }
+
+    public Identifier getTexture(boolean slim) {
+        return slim ? this.slimTexture.id : this.classicTexture.id;
     }
 
     @Environment(EnvType.CLIENT)
