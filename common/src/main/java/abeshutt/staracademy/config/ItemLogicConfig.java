@@ -41,6 +41,8 @@ public class ItemLogicConfig extends FileConfig {
         this.use.add(new ItemUseLogic("academy:lootbag_megastone", true, SERVER, "/lootables random ${user_name} lootables:megastones"));
         this.use.add(new ItemUseLogic("academy:lootbag_shinyplushie", true, SERVER, "/lootables random ${user_name} lootables:pokeblocks_shiny"));
         this.use.add(new ItemUseLogic("academy:lootbag_plushie", true, SERVER, "/lootables random ${user_name} lootables:pokeblocks 3"));
+        this.use.add(new ItemUseLogic("academy:lootbag_academybiomeblend", true, SERVER, "/lootables random ${user_name} lootables:biomeblendsacademy"));
+        this.use.add(new ItemUseLogic("academy:lootbag_gymkey", true, SERVER, "/lootables random ${user_name} lootables:gymkeys"));
     }
 
 }
