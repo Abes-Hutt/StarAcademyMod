@@ -14,6 +14,7 @@
     "MixinPlayerEntityRenderer",
     "MixinRenderLayers",
     "MixinResourcePackEntry",
+    "MixinSplashOverlay",
     "ProxyModelPredicateProviderRegistry",
     "cobblemon.MixinCategoryListEntry",
     "cobblemon.MixinSelectionButton",
