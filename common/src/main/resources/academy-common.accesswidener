@@ -8,9 +8,13 @@ accessible method net/minecraft/screen/ScreenHandler addSlot (Lnet/minecraft/scr
 accessible method net/minecraft/client/render/entity/EntityRenderers register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/client/render/entity/EntityRendererFactory;)V
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
 accessible method net/minecraft/structure/StructureTemplate$PalettedBlockInfoList <init> (Ljava/util/List;)V
+accessible method net/minecraft/client/texture/NativeImage write (Ljava/nio/channels/WritableByteChannel;)Z
 accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/world/level/storage/LevelStorage$Session;
 accessible field net/minecraft/server/MinecraftServer worlds Ljava/util/Map;
 accessible method net/minecraft/entity/LivingEntity playEquipmentBreakEffects (Lnet/minecraft/item/ItemStack;)V
 extendable class net/minecraft/world/gen/chunk/NoiseChunkGenerator
-
 accessible field net/minecraft/client/render/WorldRenderer MOON_PHASES Lnet/minecraft/util/Identifier;
+
+extendable class net/minecraft/resource/ResourcePackInfo
+accessible method net/minecraft/client/model/ModelPartData <init> (Ljava/util/List;Lnet/minecraft/client/model/ModelTransform;)V
+accessible method net/minecraft/client/model/ModelCuboidData <init> (Ljava/lang/String;FFFFFFFFLnet/minecraft/client/model/Dilation;ZFFLjava/util/Set;)V

@@ -1,4 +1,4 @@
-name: Build Star Academy Mod
+name: Build Academy Mod
 
 on:
   push:
@@ -61,7 +61,7 @@ jobs:
             const gh = ${{ toJSON(github) }};
 
             core.setOutput('EMBED_TITLE', "[" + gh.event.repository.name + ":" + gh.ref_name +"] New Build [${{steps.get_version.outputs.VERSION_NAME}}]");
-            core.setOutput('EMBED_URL', "https://github.com/Abes-Hutt/StarAcademyMod/packages/2338941?version=${{steps.get_version.outputs.VERSION_NAME}}");
+            core.setOutput('EMBED_URL', "https://github.com/Abes-Hutt/StarAcademyMod/packages/2603833?version=${{steps.get_version.outputs.VERSION_NAME}}");
             core.setOutput('EMBED_AUTHOR_NAME', gh.event.sender.login);
             core.setOutput('EMBED_AUTHOR_ICON_URL', gh.event.sender.avatar_url);
 
@@ -94,6 +94,6 @@ jobs:
       - name: Cleanup Old Artifacts
         uses: actions/delete-package-versions@v5
         with:
-          package-name: "abeshutt.staracademy"
+          package-name: "abeshutt.academy"
           min-versions-to-keep: 10
           package-type: 'maven'

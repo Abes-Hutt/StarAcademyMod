@@ -10,12 +10,17 @@ import java.util.List;
 
 public class StarBadgeConfig extends FileConfig {
 
+    @Expose private boolean enabled;
     @Expose private List<ItemStack> startItems;
     @Expose private List<ItemPredicate> validItems;
 
     @Override
     public String getPath() {
         return "star_badge";
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     public List<ItemStack> getStartItems() {
@@ -34,6 +39,7 @@ public class StarBadgeConfig extends FileConfig {
 
     @Override
     protected void reset() {
+        this.enabled = false;
         this.startItems = new ArrayList<>();
 
         for(int i = 0; i < 5; i++) {

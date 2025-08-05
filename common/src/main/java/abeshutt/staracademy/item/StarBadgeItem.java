@@ -1,6 +1,7 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.entity.StarBadgeEntity;
+import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
 import abeshutt.staracademy.world.StarOwnership;
@@ -87,13 +88,14 @@ public class StarBadgeItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         super.appendTooltip(stack, context, tooltip, type);
-        List<StarOwnership> ownership = StarBadgeItem.getOwnership(stack);
+        StarOwnership ownership = StarBadgeItem.getOwnership(stack);
+        List<StarOwnership.Entry> entries = ownership.getEntries();
 
-        if(ownership.isEmpty()) {
+        if(entries.isEmpty()) {
             return;
         }
 
-        String original = PlayerProfileData.CLIENT.getProfile(ownership.get(0).getUuid())
+        String original = PlayerProfileData.CLIENT.getProfile(entries.getFirst().getUuid())
             .map(GameProfile::getName).orElse("Unknown");
 
         tooltip.add(Text.empty()
@@ -101,11 +103,11 @@ public class StarBadgeItem extends Item {
             .append(Text.literal(original).formatted(Formatting.GRAY, Formatting.ITALIC))
             .append(Text.literal(".").formatted(Formatting.GRAY, Formatting.ITALIC)));
 
-        if(ownership.size() < 2) {
+        if(entries.size() < 2) {
             return;
         }
 
-        String surrendered = PlayerProfileData.CLIENT.getProfile(ownership.get(ownership.size() - 2).getUuid())
+        String surrendered = PlayerProfileData.CLIENT.getProfile(entries.get(entries.size() - 2).getUuid())
             .map(GameProfile::getName).orElse("Unknown");
 
         tooltip.add(Text.empty()
@@ -114,30 +116,12 @@ public class StarBadgeItem extends Item {
             .append(Text.literal(".").formatted(Formatting.GRAY, Formatting.ITALIC)));
     }
 
-    public static List<StarOwnership> getOwnership(ItemStack stack) {
-        List<StarOwnership> ownership = new ArrayList<>();
-
-        /*
-        if(stack.getNbt() != null) {
-            NbtList list = stack.getNbt().getList("ownership", NbtElement.COMPOUND_TYPE);
-
-            for(int i = 0; i < list.size(); i++) {
-                ownership.add(StarOwnership.parseNbt(list.getCompound(i)));
-            }
-        }*/
-
-        return ownership;
+    public static StarOwnership getOwnership(ItemStack stack) {
+        return stack.getOrDefault(ModDataComponents.STAR_OWNERSHIP.get(), new StarOwnership());
     }
 
-    public static void setOwnership(ItemStack stack, List<StarOwnership> ownership) {
-        NbtList list = new NbtList();
-
-        /*
-        for(StarOwnership entry : ownership) {
-           entry.writeNbt().ifPresent(list::add);
-        }
-
-        stack.getOrCreateNbt().put("ownership", list);*/
+    public static void setOwnership(ItemStack stack, StarOwnership ownership) {
+        stack.set(ModDataComponents.STAR_OWNERSHIP.get(), ownership);
     }
 
 }

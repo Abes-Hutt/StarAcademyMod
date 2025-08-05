@@ -3,6 +3,7 @@ package abeshutt.staracademy.init;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.item.OutfitEntry;
+import abeshutt.staracademy.world.StarOwnership;
 import com.mojang.serialization.Codec;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.ComponentType;
@@ -17,6 +18,7 @@ public class ModDataComponents extends ModRegistries {
     public static RegistrySupplier<ComponentType<String>> SAFARI_TICKET_ENTRY;
     public static RegistrySupplier<ComponentType<OutfitEntry>> OUTFIT_ENTRY;
     public static RegistrySupplier<ComponentType<Integer>> CARD_INDEX;
+    public static RegistrySupplier<ComponentType<StarOwnership>> STAR_OWNERSHIP;
 
     public static void register() {
         SAFARI_TICKET_ENTRY = register(StarAcademyMod.id("safari_ticket_entry"), builder -> builder
@@ -27,6 +29,9 @@ public class ModDataComponents extends ModRegistries {
 
         CARD_INDEX = register(StarAcademyMod.id("card_index"), builder -> builder
                 .codec(Codec.INT).packetCodec(INT_PACKET_CODEC));
+
+        STAR_OWNERSHIP = register(StarAcademyMod.id("star_ownership"), builder -> builder
+                .codec(Adapters.STAR_OWNERSHIP.codecNbt()).packetCodec(Adapters.STAR_OWNERSHIP));
     }
 
     public static <T> RegistrySupplier<ComponentType<T>> register(Identifier id, UnaryOperator<ComponentType.Builder<T>> item) {
