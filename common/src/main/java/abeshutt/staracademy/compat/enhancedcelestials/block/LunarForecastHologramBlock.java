@@ -1,9 +1,12 @@
 package abeshutt.staracademy.compat.enhancedcelestials.block;
 
+import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.compat.enhancedcelestials.block.entity.LunarForecastHologramBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -20,20 +23,21 @@ import org.jetbrains.annotations.Nullable;
 public class LunarForecastHologramBlock extends BlockWithEntity {
 
     private static final VoxelShape SHAPE = VoxelShapes.union(
-            VoxelShapes.cuboid(1/16.0, 7/16.0, 1/16.0, 15/16.0, 11/16.0, 15/16.0),
-            VoxelShapes.cuboid(5/16.0, 3/16.0, 1/16.0, 11/16.0, 7/16.0, 2/16.0),
-            VoxelShapes.cuboid(14/16.0, 3/16.0, 5/16.0, 15/16.0, 7/16.0, 11/16.0),
-            VoxelShapes.cuboid(1/16.0, 3/16.0, 5/16.0, 2/16.0, 7/16.0, 11/16.0),
-            VoxelShapes.cuboid(5/16.0, 3/16.0, 14/16.0, 11/16.0, 7/16.0, 15/16.0),
-            VoxelShapes.cuboid(5/16.0, 11/16.0, 5/16.0, 11/16.0, 13/16.0, 11/16.0),
-            VoxelShapes.cuboid(1/16.0, 0/16.0, 1/16.0, 15/16.0, 3/16.0, 15/16.0),
-            VoxelShapes.cuboid(2/16.0, 3/16.0, 2/16.0, 14/16.0, 7/16.0, 14/16.0)
+            VoxelShapes.cuboid(1 / 16.0, 7 / 16.0, 1 / 16.0, 15 / 16.0, 11 / 16.0, 15 / 16.0),
+            VoxelShapes.cuboid(5 / 16.0, 3 / 16.0, 1 / 16.0, 11 / 16.0, 7 / 16.0, 2 / 16.0),
+            VoxelShapes.cuboid(14 / 16.0, 3 / 16.0, 5 / 16.0, 15 / 16.0, 7 / 16.0, 11 / 16.0),
+            VoxelShapes.cuboid(1 / 16.0, 3 / 16.0, 5 / 16.0, 2 / 16.0, 7 / 16.0, 11 / 16.0),
+            VoxelShapes.cuboid(5 / 16.0, 3 / 16.0, 14 / 16.0, 11 / 16.0, 7 / 16.0, 15 / 16.0),
+            VoxelShapes.cuboid(5 / 16.0, 11 / 16.0, 5 / 16.0, 11 / 16.0, 13 / 16.0, 11 / 16.0),
+            VoxelShapes.cuboid(1 / 16.0, 0 / 16.0, 1 / 16.0, 15 / 16.0, 3 / 16.0, 15 / 16.0),
+            VoxelShapes.cuboid(2 / 16.0, 3 / 16.0, 2 / 16.0, 14 / 16.0, 7 / 16.0, 14 / 16.0)
     );
 
     public static final MapCodec<LunarForecastHologramBlock> CODEC = createCodec(LunarForecastHologramBlock::new);
 
 
     public static final BooleanProperty LIT = Properties.LIT;
+
     public LunarForecastHologramBlock(Settings settings) {
         super(settings);
     }
@@ -64,6 +68,14 @@ public class LunarForecastHologramBlock extends BlockWithEntity {
     }
 
     @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (!world.isClient) {
+            return validateTicker(type, EnhancedCelestialsCompat.LUNAR_FORECAST_HOLOGRAM_BLOCK_ENTITY.get(), LunarForecastHologramBlockEntity::serverTick);
+        }
+        return super.getTicker(world, state, type);
+    }
+
+    @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (state.get(LIT)) {
             if (player.isSneaking()) {
@@ -71,7 +83,7 @@ public class LunarForecastHologramBlock extends BlockWithEntity {
                 return ActionResult.SUCCESS;
             } else {
                 if (world.getBlockEntity(pos) instanceof LunarForecastHologramBlockEntity hologram) {
-                    hologram.rightClick();
+                    hologram.next();
                     return ActionResult.SUCCESS;
                 } else {
                     return ActionResult.PASS;

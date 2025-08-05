@@ -9,6 +9,9 @@ public class ECCobblemonConfig extends FileConfig {
     @Expose private double harvestMoonExpShareMultiplier;
     @Expose private float auroraMoonRarePokemonSpawnMultiplier;
 
+    @Expose private int forecastDayView = 10;
+    @Expose private int hologramSwitchTime = 5 * 20; // 5 seconds in ticks
+
     @Override
     public String getPath() {
         return "ec_cobblemon";
@@ -28,6 +31,14 @@ public class ECCobblemonConfig extends FileConfig {
 
     public float getAuroraMoonRarePokemonSpawnMultiplier() {
         return auroraMoonRarePokemonSpawnMultiplier;
+    }
+
+    public int getForecastDayView() {
+        return forecastDayView;
+    }
+
+    public int getHologramSwitchTime() {
+        return hologramSwitchTime;
     }
 
     @Override

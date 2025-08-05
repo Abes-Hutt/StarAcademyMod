@@ -1,8 +1,10 @@
 package abeshutt.staracademy.compat.enhancedcelestials.block.entity;
 
 import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
+import abeshutt.staracademy.compat.enhancedcelestials.block.LunarForecastHologramBlock;
+import abeshutt.staracademy.init.ModConfigs;
 import dev.corgitaco.enhancedcelestials.EnhancedCelestials;
-import net.minecraft.block.Block;
+import dev.corgitaco.enhancedcelestials.lunarevent.LunarEventInstance;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -10,9 +12,13 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class LunarForecastHologramBlockEntity extends BlockEntity {
     private int idx;
+    private int ticks;
 
     public LunarForecastHologramBlockEntity(BlockPos pos, BlockState state) {
         super(EnhancedCelestialsCompat.LUNAR_FORECAST_HOLOGRAM_BLOCK_ENTITY.get(), pos, state);
@@ -41,17 +47,53 @@ public class LunarForecastHologramBlockEntity extends BlockEntity {
         return createNbt(registryLookup);
     }
 
-    public void rightClick() {
+    public static void serverTick(World world, BlockPos pos, BlockState state, LunarForecastHologramBlockEntity hologramBlockEntity) {
+        if (world.isClient || state.get(LunarForecastHologramBlock.LIT)) {
+            return;
+        }
+        hologramBlockEntity.ticks++;
+
+        if (hologramBlockEntity.ticks % ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getHologramSwitchTime() == 0) {
+            hologramBlockEntity.next();
+        }
+    }
+
+
+    public void next() {
         if (world == null) return;
         if (world.isClient) return;
 
         EnhancedCelestials.lunarForecastWorldData(world).ifPresent(enhancedCelestialsLunarForecastWorldData -> {
             int size = enhancedCelestialsLunarForecastWorldData.getForecast().size();
-            this.idx = (this.idx + 1) % (size - 1);
-            if(world instanceof ServerWorld serverWorld) {
-                serverWorld.getChunkManager().markForUpdate(getPos());
+
+            List<LunarEventInstance> forecast = enhancedCelestialsLunarForecastWorldData.getForecast();
+            if (forecast.isEmpty()) {
+                this.idx = -1;
+                sync();
+                return;
+            }
+
+            if (forecast.getFirst().getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) >= ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getForecastDayView()) {
+                this.idx = -1;
+                sync();
+                return;
+            }
+
+            LunarEventInstance lunarEventInstance = forecast.get(this.idx);
+            if (lunarEventInstance.getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) <= ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getForecastDayView()) {
+                this.idx = (this.idx + 1) % (size - 1);
+                sync();
+            } else {
+                this.idx = 0;
+                sync();
             }
         });
+    }
+
+    private void sync() {
+        if (world instanceof ServerWorld serverWorld) {
+            serverWorld.getChunkManager().markForUpdate(getPos());
+        }
     }
 
     public int getIdx() {
