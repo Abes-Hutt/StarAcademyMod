@@ -1,5 +1,6 @@
 package abeshutt.staracademy;
 
+import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
@@ -8,6 +9,7 @@ import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.platform.Platform;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -41,9 +43,9 @@ public final class StarAcademyMod {
             REGISTRIES = instance.getRegistryManager();
         });
 
-        //if(Platform.isModLoaded("enhancedcelestials")) {
-        //    EnhancedCelestialsCompat.init();
-        //}
+        if(Platform.isModLoaded("enhancedcelestials")) {
+            EnhancedCelestialsCompat.init();
+        }
 
         ModRegistries.register();
 

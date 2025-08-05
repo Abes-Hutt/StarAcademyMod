@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "abeshutt.staracademy.fabric.StarAcademyFabricMod"
+    ],
+    "client": [
+      "abeshutt.staracademy.fabric.client.StarAcademyFabricModClient"
     ]
   },
   "mixins": [

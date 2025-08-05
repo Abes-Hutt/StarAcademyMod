@@ -13,6 +13,7 @@ accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/wor
 accessible field net/minecraft/server/MinecraftServer worlds Ljava/util/Map;
 accessible method net/minecraft/entity/LivingEntity playEquipmentBreakEffects (Lnet/minecraft/item/ItemStack;)V
 extendable class net/minecraft/world/gen/chunk/NoiseChunkGenerator
+accessible field net/minecraft/client/render/WorldRenderer MOON_PHASES Lnet/minecraft/util/Identifier;
 extendable class net/minecraft/resource/ResourcePackInfo
 accessible method net/minecraft/client/model/ModelPartData <init> (Ljava/util/List;Lnet/minecraft/client/model/ModelTransform;)V
 accessible method net/minecraft/client/model/ModelCuboidData <init> (Ljava/lang/String;FFFFFFFFLnet/minecraft/client/model/Dilation;ZFFLjava/util/Set;)V
