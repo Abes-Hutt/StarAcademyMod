@@ -48,38 +48,33 @@ public class LunarForecastHologramBlockEntityRenderer implements BlockEntityRend
         }
 
         LunarEventInstance lunarEventInstance = lunarEventInstance(entity);
-        if (lunarEventInstance == null) {
-            return;
-        }
+
 
         RegistryEntry<LunarEvent> lunarEventRegistryEntry = getEvent(entity, lunarEventInstance);
-        LunarEvent nextLunarEvent = lunarEventRegistryEntry.value();
 
-        LunarEventClientSettings clientSettings = lunarEventRegistryEntry.value().getClientSettings();
-        Identifier moonTexture = clientSettings.moonTextureLocation();
-
-        renderHologram(matrices, vertexConsumers, overlay, moonTexture, clientSettings);
+        renderHologram(matrices, vertexConsumers, overlay, lunarEventRegistryEntry == null ? null : lunarEventRegistryEntry.value().getClientSettings());
         renderMoon(entity, matrices, vertexConsumers, overlay);
-        renderText(matrices, vertexConsumers, nextLunarEvent, lunarEventInstance, data.getCurrentDay(), entity.getWorld());
+        renderText(matrices, vertexConsumers, lunarEventRegistryEntry == null ? null : lunarEventRegistryEntry.value(), lunarEventInstance, data.getCurrentDay(), entity.getWorld());
 
     }
 
-    private static void renderHologram(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int overlay, Identifier moonTexture, LunarEventClientSettings clientSettings) {
-        float r = 255;
-        float g = 255;
-        float b = 255;
-        if (moonTexture.equals(WorldRenderer.MOON_PHASES)) {
+    private static void renderHologram(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int overlay, @Nullable LunarEventClientSettings clientSettings) {
+        float r = 0F;
+        float g = 0F;
+        float b = 0F;
+        if (clientSettings != null) {
             r = clientSettings.colorSettings().getGLMoonColor().x;
             g = clientSettings.colorSettings().getGLMoonColor().y;
             b = clientSettings.colorSettings().getGLMoonColor().z;
         }
+
         renderCameraOrientedQuad(matrices, LightmapTextureManager.MAX_LIGHT_COORDINATE, overlay, r, g, b, 1.0F, vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(StarAcademyMod.id("textures/block/hologram.png"), true)), stack -> {
             stack.translate(0.5, 2.2, 0.5);
             stack.scale(3.0f, 3.0f, 3.0f);
         });
     }
 
-    private static void renderText(MatrixStack matrices, VertexConsumerProvider vertexConsumers, LunarEvent nextLunarEvent, LunarEventInstance lunarEventInstance, long currentDay, World world) {
+    private static void renderText(MatrixStack matrices, VertexConsumerProvider vertexConsumers, @Nullable LunarEvent nextLunarEvent, @Nullable LunarEventInstance lunarEventInstance, long currentDay, World world) {
         matrices.push();
         matrices.translate(0.5, 2.6, 0.5);
         matrices.scale(0.025F, -0.025F, 0.025F);
@@ -91,14 +86,24 @@ public class LunarForecastHologramBlockEntityRenderer implements BlockEntityRend
 
         Matrix4f matrix4f = matrices.peek().getPositionMatrix();
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        Text moonName = nextLunarEvent.getTextComponents().name().getComponent();
+        Text moonName = nextLunarEvent == null ? Text.literal("???") : nextLunarEvent.getTextComponents().name().getComponent();
         int moonNameWidth = textRenderer.getWidth(moonName);
         float moonNameHalfWidth = (float) (-moonNameWidth / 2);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 
-        long daysUntil = lunarEventInstance.getDaysUntil(currentDay);
+        long daysUntil = lunarEventInstance == null ? Long.MIN_VALUE : lunarEventInstance.getDaysUntil(currentDay);
 
-        Text timeUntil = daysUntil <= 0 ? (world.isDay() ? Text.literal("Tonight") : Text.literal("Now")) : Text.literal("In %d days".formatted(daysUntil));
+        Text timeUntil;
+        if (daysUntil == Long.MIN_VALUE) {
+            timeUntil = Text.literal("No Upcoming Lunar Events");
+        } else if (daysUntil == 0) {
+            timeUntil = world.isDay() ? Text.literal("Tonight") : Text.literal("Now");
+        } else if (daysUntil == 1) {
+            timeUntil = Text.literal("Tomorrow");
+        } else {
+            timeUntil = Text.literal("In %d days".formatted(daysUntil));
+        }
+
         float timeUntilWith = (float) (-textRenderer.getWidth(timeUntil) / 2);
 
 
@@ -116,7 +121,11 @@ public class LunarForecastHologramBlockEntityRenderer implements BlockEntityRend
         matrices.pop();
     }
 
-    private static RegistryEntry<LunarEvent> getEvent(LunarForecastHologramBlockEntity entity, LunarEventInstance lunarEventInstance) {
+    @Nullable
+    private static RegistryEntry<LunarEvent> getEvent(LunarForecastHologramBlockEntity entity, @Nullable LunarEventInstance lunarEventInstance) {
+        if (lunarEventInstance == null) {
+            return null;
+        }
         return lunarEventInstance.getEvent(entity.getWorld().getRegistryManager().get(EnhancedCelestialsRegistry.LUNAR_EVENT_KEY));
     }
 
