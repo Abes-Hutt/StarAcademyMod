@@ -48,7 +48,7 @@ public class LunarForecastHologramBlockEntity extends BlockEntity {
     }
 
     public static void serverTick(World world, BlockPos pos, BlockState state, LunarForecastHologramBlockEntity hologramBlockEntity) {
-        if (world.isClient) {
+        if (world.isClient || state.get(LunarForecastHologramBlock.LIT)) {
             return;
         }
         hologramBlockEntity.ticks++;
