@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "lit=false": {
+      "model": "academy:block/lunar_forecast_hologram"
+    },
+    "lit=true": {
       "model": "academy:block/lunar_forecast_hologram"
     }
   }

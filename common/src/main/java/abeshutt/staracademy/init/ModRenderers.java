@@ -11,14 +11,17 @@ import abeshutt.staracademy.entity.renderer.ShootingStarRenderer;
 import abeshutt.staracademy.mixin.ProxyModelPredicateProviderRegistry;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.platform.Platform;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.entity.EntityRenderers;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.util.Identifier;
 
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ModRenderers extends ModRegistries {
 
@@ -83,6 +86,14 @@ public class ModRenderers extends ModRegistries {
                         EnhancedCelestialsCompatClient.registerBlockEntityRenderers(registry);
                     }
                 });
+            }
+        }
+    }
+
+    public static class Blocks extends ModRenderers {
+        public static void register(BiConsumer<Block, RenderLayer> consumer) {
+            if(Platform.isModLoaded("enhancedcelestials")) {
+                EnhancedCelestialsCompatClient.registerBlockModelRenderers(consumer);
             }
         }
     }
