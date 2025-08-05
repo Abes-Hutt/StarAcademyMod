@@ -39,6 +39,7 @@
     "journeymap.MixinEntityHelper",
     "modernfix.MixinLRUMap",
     "mythsandlegends.MixinForceSpawningUtils",
+    "mythsandlegends.MixinFormAndAspectUtils",
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity"
   ],

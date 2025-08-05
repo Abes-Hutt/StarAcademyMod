@@ -1,9 +1,7 @@
 package abeshutt.staracademy.outfit.core;
 
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
-import abeshutt.staracademy.client.AcademyClient;
 import abeshutt.staracademy.client.OutfitManager;
-import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.util.ProxyAcademyClient;
 import abeshutt.staracademy.world.data.WardrobeData;
 import net.minecraft.client.MinecraftClient;

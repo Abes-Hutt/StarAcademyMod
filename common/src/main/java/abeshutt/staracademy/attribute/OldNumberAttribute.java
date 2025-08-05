@@ -2,7 +2,6 @@ package abeshutt.staracademy.attribute;
 
 import abeshutt.staracademy.attribute.type.AttributeType;
 import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.math.Rational;
 
 import static abeshutt.staracademy.attribute.NaryModifier.constant;

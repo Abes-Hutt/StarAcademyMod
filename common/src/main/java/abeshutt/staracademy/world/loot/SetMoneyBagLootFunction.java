@@ -7,14 +7,12 @@ import abeshutt.staracademy.world.roll.IntRoll;
 import com.glisco.numismaticoverhaul.NumismaticOverhaul;
 import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
 import com.glisco.numismaticoverhaul.item.MoneyBagComponent;
-import com.glisco.numismaticoverhaul.item.MoneyBagItem;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
-import net.minecraft.nbt.NbtLongArray;
 
 import java.util.Optional;
 

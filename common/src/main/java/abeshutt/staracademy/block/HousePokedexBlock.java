@@ -4,7 +4,6 @@ import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.screen.PokedexScreen;
 import abeshutt.staracademy.world.data.HouseData;
 import com.cobblemon.mod.common.client.pokedex.PokedexType;
-import com.cobblemon.mod.common.particle.CobblemonParticles;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

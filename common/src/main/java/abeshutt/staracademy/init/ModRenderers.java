@@ -4,7 +4,6 @@ import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
 import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.block.entity.renderer.BetterStructureBlockEntityRenderer;
 import abeshutt.staracademy.block.entity.renderer.HousePokedexBlockEntityRenderer;
-import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.compat.enhancedcelestials.client.EnhancedCelestialsCompatClient;
 import abeshutt.staracademy.entity.renderer.HumanEntityRenderer;
 import abeshutt.staracademy.entity.renderer.ShootingStarRenderer;

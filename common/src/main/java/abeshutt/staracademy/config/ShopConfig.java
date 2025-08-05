@@ -6,9 +6,6 @@ import com.glisco.numismaticoverhaul.block.ShopOffer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.Expose;
-import io.wispforest.endec.SerializationAttributes;
-import io.wispforest.endec.SerializationContext;
-import io.wispforest.owo.serialization.format.nbt.NbtDeserializer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryWrapper;
 

@@ -1,14 +1,12 @@
 package abeshutt.staracademy.attribute;
 
 import abeshutt.staracademy.attribute.path.AttributePath;
-import abeshutt.staracademy.attribute.type.AttributeType;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtElement;
-import org.w3c.dom.Attr;
 
 import java.util.Optional;
 

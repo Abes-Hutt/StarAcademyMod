@@ -3,12 +3,10 @@ package abeshutt.staracademy.data.adapter.util;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.nbt.AbstractNbtList;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.util.Identifier;
@@ -18,8 +16,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import static net.minecraft.util.Identifier.DEFAULT_NAMESPACE;
 
 public class ModelIdentifierAdapter implements ISimpleAdapter<ModelIdentifier, NbtElement, JsonElement> {
 
