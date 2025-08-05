@@ -6,7 +6,7 @@ license = "All Rights Reserved"
 [[mods]]
 modId = "academy"
 version = "${version}"
-displayName = "Star Academy"
+displayName = "Academy"
 authors = "KaptainWutax"
 description = '''
 

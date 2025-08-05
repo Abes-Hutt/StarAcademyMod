@@ -32,4 +32,8 @@ dependencies {
     modCompileOnly("maven.modrinth:modernfix:5.24.3+mc1.21.1")
 
     modCompileOnly("maven.modrinth:displayed:1.0.2-fabric-1.21.1")
+
+    modCompileOnly("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
+
+    modCompileOnly("com.squareup.okhttp3:okhttp:4.12.0")
 }

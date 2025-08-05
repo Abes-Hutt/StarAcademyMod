@@ -1,45 +1,59 @@
 package abeshutt.staracademy.outfit.core;
 
+import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
+import abeshutt.staracademy.client.AcademyClient;
+import abeshutt.staracademy.client.OutfitManager;
 import abeshutt.staracademy.init.ModOutfits;
+import abeshutt.staracademy.util.ProxyAcademyClient;
 import abeshutt.staracademy.world.data.WardrobeData;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-public class OutfitFeatureRenderer<
-        M extends PlayerEntityModel<AbstractClientPlayerEntity>
-        > extends FeatureRenderer<AbstractClientPlayerEntity, M> {
+import java.util.HashSet;
+import java.util.Set;
 
-    public OutfitFeatureRenderer(FeatureRendererContext<AbstractClientPlayerEntity, M> context) {
-        super(context);
+public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPlayerEntity>> extends FeatureRenderer<AbstractClientPlayerEntity, M> {
+
+    private final EntityRendererFactory.Context ctx;
+    private final boolean slim;
+
+    public OutfitFeatureRenderer(FeatureRendererContext<AbstractClientPlayerEntity, M> renderer,
+                                 EntityRendererFactory.Context ctx, boolean slim) {
+        super(renderer);
+        this.ctx = ctx;
+        this.slim = slim;
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
+                       AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta,
+                       float animationProgress, float headYaw, float headPitch) {
+        OutfitManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getOutfits();
+        Set<String> equipped = new HashSet<>(outfits.getEquipped(entity.getUuid()));
+
         WardrobeData.CLIENT.get(entity.getUuid()).ifPresent(entry -> {
-            for (String id : entry.getEquipped()) {
-                OutfitPiece outfit = ModOutfits.REGISTRY.get(id);
-                if (outfit == null) continue;
-                renderOutfit(outfit, matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
-            }
+            equipped.addAll(entry.getEquipped());
         });
-    }
 
-    protected void renderOutfit(OutfitPiece outfit, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        OutfitModel model = outfit.getModel();
-        Identifier texture = outfit.getTexture().getModel();
-
-        VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getArmorCutoutNoCull(texture));
-
-        this.getContextModel().copyBipedStateTo(model);
-        model.render(matrices, vertices, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+        for(String id : equipped) {
+            DynamicOutfit outfit = outfits.getRegistry().get(id);
+            if(outfit == null) continue;
+            Identifier texture = outfit.getTexture(this.slim);
+            PlayerEntityModel<AbstractClientPlayerEntity> model = outfit.getModel(this.ctx, this.slim);
+            this.getContextModel().copyBipedStateTo(model);
+            VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getArmorCutoutNoCull(texture));
+            model.render(matrices, vertices, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+        }
     }
 
 }

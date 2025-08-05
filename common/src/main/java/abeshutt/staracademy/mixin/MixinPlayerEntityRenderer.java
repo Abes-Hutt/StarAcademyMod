@@ -22,7 +22,7 @@ public abstract class MixinPlayerEntityRenderer extends LivingEntityRenderer<Abs
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(EntityRendererFactory.Context ctx, boolean slim, CallbackInfo ci) {
         this.addFeature(new StarBadgeBeltRenderer(this));
-        this.addFeature(new OutfitFeatureRenderer<>(this));
+        this.addFeature(new OutfitFeatureRenderer<>(this, ctx, slim));
     }
 
 }

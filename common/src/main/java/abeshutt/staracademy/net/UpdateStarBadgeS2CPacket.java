@@ -16,17 +16,20 @@ public class UpdateStarBadgeS2CPacket extends ModPacket<ClientPlayNetworkHandler
 
     public static final Id<UpdateStarBadgeS2CPacket> ID = new Id<>(StarAcademyMod.id("update_star_badge_s2c"));
 
+    private boolean enabled;
     private Map<UUID, BaseInventory> inventories;
 
     public UpdateStarBadgeS2CPacket() {
 
     }
 
-    public UpdateStarBadgeS2CPacket(Map<UUID, BaseInventory> profiles) {
+    public UpdateStarBadgeS2CPacket(boolean enabled, Map<UUID, BaseInventory> profiles) {
+        this.enabled = enabled;
         this.inventories = profiles;
     }
 
-    public UpdateStarBadgeS2CPacket(UUID uuid, BaseInventory inventory) {
+    public UpdateStarBadgeS2CPacket(boolean enabled, UUID uuid, BaseInventory inventory) {
+        this.enabled = enabled;
         this.inventories = new HashMap<>();
         this.inventories.put(uuid, inventory);
     }
@@ -38,6 +41,7 @@ public class UpdateStarBadgeS2CPacket extends ModPacket<ClientPlayNetworkHandler
 
     @Override
     public void onReceive(ClientPlayNetworkHandler listener) {
+        StarBadgeData.CLIENT.setEnabled(this.enabled);
         Map<UUID, BaseInventory> profiles = StarBadgeData.CLIENT.getInventories();
 
         if(this.inventories == null) {
@@ -55,6 +59,7 @@ public class UpdateStarBadgeS2CPacket extends ModPacket<ClientPlayNetworkHandler
 
     @Override
     public void writeBits(BitBuffer buffer) {
+        Adapters.BOOLEAN.writeBits(this.enabled, buffer);
         Adapters.BOOLEAN.writeBits(this.inventories == null, buffer);
 
         if(this.inventories != null) {
@@ -70,6 +75,8 @@ public class UpdateStarBadgeS2CPacket extends ModPacket<ClientPlayNetworkHandler
 
     @Override
     public void readBits(BitBuffer buffer) {
+        this.enabled = Adapters.BOOLEAN.readBits(buffer).orElseThrow();
+
         if(Adapters.BOOLEAN.readBits(buffer).orElseThrow()) {
             this.inventories = null;
         } else {

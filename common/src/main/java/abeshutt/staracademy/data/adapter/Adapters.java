@@ -1,6 +1,10 @@
 package abeshutt.staracademy.data.adapter;
 
 import abeshutt.staracademy.attribute.path.AttributePath;
+import abeshutt.staracademy.block.entity.renderer.DynamicBone;
+import abeshutt.staracademy.block.entity.renderer.DynamicCuboid;
+import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
+import abeshutt.staracademy.block.entity.renderer.DynamicTexture;
 import abeshutt.staracademy.data.adapter.array.ArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.ByteArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.IntArrayAdapter;
@@ -17,6 +21,7 @@ import abeshutt.staracademy.data.nbt.PartialCompoundNbt;
 import abeshutt.staracademy.data.tile.*;
 import abeshutt.staracademy.item.OutfitEntry;
 import abeshutt.staracademy.math.Rational;
+import abeshutt.staracademy.world.StarOwnership;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HousePlayer;
 import abeshutt.staracademy.world.data.HousePokedexManager;
@@ -108,8 +113,10 @@ public class Adapters {
     public static final GenericNbtAdapter GENERIC_NBT = new GenericNbtAdapter(false);
 
     public static final IdentifierAdapter IDENTIFIER = new IdentifierAdapter(false);
+    public static final ModelIdentifierAdapter MODEL_IDENTIFIER = new ModelIdentifierAdapter(false);
     public static final ItemStackAdapter ITEM_STACK = new ItemStackAdapter(false);
     public static final GameProfileAdapter GAME_PROFILE = new GameProfileAdapter(false);
+    public static final SerializableAdapter<StarOwnership, NbtElement, JsonElement> STAR_OWNERSHIP = Adapters.of(StarOwnership::new, false);
 
     public static final PartialBlock.Adapter PARTIAL_BLOCK = new PartialBlock.Adapter();
     public static final PartialBlockProperties.Adapter PARTIAL_BLOCK_PROPERTIES = new PartialBlockProperties.Adapter();
@@ -127,7 +134,14 @@ public class Adapters {
     public static final RegistryAdapter<Item> ITEM = new RegistryAdapter<>(() -> Registries.ITEM, false);
     public static final BlockPosAdapter BLOCK_POS = new BlockPosAdapter(false);
     public static final OutfitEntry.Adapter OUTFIT_ENTRY = new OutfitEntry.Adapter();
+    public static final Vec2fAdapter VEC_2F = new Vec2fAdapter(false);
+    public static final Vec3fAdapter VEC_3F = new Vec3fAdapter(false);
     public static final Vec3dAdapter VEC_3D = new Vec3dAdapter(false);
+    public static final DilationAdapter DILATION = new DilationAdapter(false);
+    public static final DynamicCuboid.Adapter DYNAMIC_CUBOID = new DynamicCuboid.Adapter();
+    public static final DynamicBone.Adapter DYNAMIC_BONE = new DynamicBone.Adapter();
+    public static final DynamicTexture.Adapter DYNAMIC_TEXTURE = new DynamicTexture.Adapter();
+    public static final DynamicOutfit.Adapter DYNAMIC_OUTFIT = new DynamicOutfit.Adapter();
     public static final SerializableAdapter<AcademyHouse, NbtElement, JsonElement> HOUSE = Adapters.of(AcademyHouse::new, false);
     public static final SerializableAdapter<HousePlayer, NbtElement, JsonElement> HOUSE_PLAYER = Adapters.of(HousePlayer::new, false);
     public static final SpeciesDexRecordAdapter SPECIES_DEX_RECORD = new SpeciesDexRecordAdapter(false);
