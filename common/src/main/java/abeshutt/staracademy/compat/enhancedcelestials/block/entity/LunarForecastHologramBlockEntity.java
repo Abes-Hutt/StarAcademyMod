@@ -65,6 +65,7 @@ public class LunarForecastHologramBlockEntity extends BlockEntity {
 
         EnhancedCelestials.lunarForecastWorldData(world).ifPresent(enhancedCelestialsLunarForecastWorldData -> {
             int size = enhancedCelestialsLunarForecastWorldData.getForecast().size();
+            int nextIdx = (this.idx + 1) % (size - 1);
 
             List<LunarEventInstance> forecast = enhancedCelestialsLunarForecastWorldData.getForecast();
             if (forecast.isEmpty()) {
@@ -79,9 +80,9 @@ public class LunarForecastHologramBlockEntity extends BlockEntity {
                 return;
             }
 
-            LunarEventInstance lunarEventInstance = forecast.get(this.idx);
+            LunarEventInstance lunarEventInstance = forecast.get(nextIdx);
             if (lunarEventInstance.getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) <= ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getForecastDayView()) {
-                this.idx = (this.idx + 1) % (size - 1);
+                this.idx = nextIdx;
                 sync();
             } else {
                 this.idx = 0;
