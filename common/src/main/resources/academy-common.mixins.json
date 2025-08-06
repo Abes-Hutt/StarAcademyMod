@@ -41,6 +41,7 @@
     "modernfix.MixinLRUMap",
     "mythsandlegends.MixinForceSpawningUtils",
     "mythsandlegends.MixinFormAndAspectUtils",
+    "mythsandlegends.MixinPlayerEvents",
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity"
   ],
