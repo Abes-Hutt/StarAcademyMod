@@ -28,21 +28,21 @@ public abstract class MixinItemStack {
             ItemUseLogic logic = ModConfigs.ITEM_LOGIC.getUseLogic((ItemStack)(Object)this).orElse(null);
             if(logic == null) return;
 
+            this.getItem().use(world, user, hand);
+
+            if(logic.isConsumable() && !user.isCreative()) {
+                user.getStackInHand(hand).decrement(1);
+            }
+
             for(String command : logic.getCommands()) {
                 command = command.replace("${user_uuid}", user.getUuid().toString())
-                            .replace("${user_name}", user.getGameProfile().getName());
+                        .replace("${user_name}", user.getGameProfile().getName());
 
                 if(logic.getContext() == PLAYER) {
                     user.getServer().getCommandManager().executeWithPrefix(user.getCommandSource(), command);
                 } else if(logic.getContext() == SERVER) {
                     user.getServer().getCommandManager().executeWithPrefix(user.getServer().getCommandSource(), command);
                 }
-            }
-
-            this.getItem().use(world, user, hand);
-
-            if(logic.isConsumable() && !user.isCreative()) {
-                user.getStackInHand(hand).decrement(1);
             }
 
             ci.setReturnValue(TypedActionResult.success(user.getStackInHand(hand)));
