@@ -89,6 +89,7 @@ public final class StarAcademyMod {
             if(server == null) return;
             Pokemon pokemon = event.getEntity().getPokemon();
 
+            /*
             if(FORCE_SPAWNING.get()) {
                 List<String> prefixes = new ArrayList<>();
                 if(pokemon.getShiny()) prefixes.add("Shiny");
@@ -121,7 +122,7 @@ public final class StarAcademyMod {
                         player.sendMessage(message);
                     }
                 }
-            }
+            }*/
         }, Priority.LOWEST);
     }
 
