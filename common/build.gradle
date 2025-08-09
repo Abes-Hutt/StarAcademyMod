@@ -35,5 +35,7 @@ dependencies {
 
     modCompileOnly("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
 
+    modCompileOnly("maven.modrinth:rad-gyms:0.2-alpha.2")
+
     modCompileOnly("com.squareup.okhttp3:okhttp:4.12.0")
 }

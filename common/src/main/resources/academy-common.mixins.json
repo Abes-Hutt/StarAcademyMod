@@ -8,6 +8,7 @@
     "MixinBuiltinModelItemRenderer",
     "MixinClientWorld",
     "MixinCreativeInventoryScreen",
+    "MixinDiscreteSliderComponent",
     "MixinInGameHud",
     "MixinInventoryScreen",
     "MixinMinecraftClient",
