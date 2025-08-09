@@ -79,9 +79,10 @@ public final class StarAcademyMod {
                 return;
             }
 
+            /*
             ModConfigs.POKEMON_SPAWN.getLevel(distance).ifPresent(roll -> {
                 event.getEntity().getPokemon().setLevel(roll.get(JavaRandom.ofNanoTime()));
-            });
+            });*/
         }, Priority.HIGHEST);
 
         CommonEvents.POKEMON_ENTITY_SPAWN.register(event -> {

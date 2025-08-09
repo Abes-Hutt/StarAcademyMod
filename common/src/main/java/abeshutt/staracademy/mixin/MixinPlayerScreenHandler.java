@@ -18,9 +18,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+// Inject as early as possible since the trinkets mod is too sensitive to slot ids changing.
 @Mixin(value = PlayerScreenHandler.class, priority = 0)
-public abstract class MixinPlayerScreenHandler<I extends RecipeInput, R extends Recipe<I>>
-        extends AbstractRecipeScreenHandler<I, R> implements ProxyStarBadges {
+public abstract class MixinPlayerScreenHandler<I extends RecipeInput, R extends Recipe<I>> extends AbstractRecipeScreenHandler<I, R> implements ProxyStarBadges {
 
     @Unique private StarBadgeScreenHandler starBadges;
 

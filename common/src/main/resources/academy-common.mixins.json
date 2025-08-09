@@ -7,7 +7,7 @@
     "MixinBlockEntityRendererFactories",
     "MixinBuiltinModelItemRenderer",
     "MixinClientWorld",
-    "MixinDrawContext",
+    "MixinCreativeInventoryScreen",
     "MixinInGameHud",
     "MixinInventoryScreen",
     "MixinMinecraftClient",
