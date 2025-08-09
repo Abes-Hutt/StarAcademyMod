@@ -21,6 +21,10 @@ public abstract class MixinFileResourcePackProvider {
 
     @Inject(method = "register", at = @At("RETURN"))
     public void register(Consumer<ResourcePackProfile> profileAdder, CallbackInfo ci) {
+        if(this.type == ResourceType.SERVER_DATA) {
+            return;
+        }
+
         DynamicResourcePack.open(this.type, this.source, (path, packFactory, info) -> {
             ResourcePackProfile resourcePackProfile = ResourcePackProfile.create(info, packFactory, this.type,
                     new ResourcePackPosition(true, TOP, true));
