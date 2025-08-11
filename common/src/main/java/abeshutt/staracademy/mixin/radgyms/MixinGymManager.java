@@ -4,7 +4,9 @@ import abeshutt.staracademy.init.ModConfigs;
 import lol.gito.radgyms.RadGyms;
 import lol.gito.radgyms.gym.GymManager;
 import lol.gito.radgyms.gym.GymTemplate;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextParameterSet;
@@ -13,6 +15,10 @@ import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -20,7 +26,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.cobblemon.mod.common.util.MiscUtilsKt.cobblemonResource;
 import static net.minecraft.component.DataComponentTypes.CONTAINER;
+import static net.minecraft.text.Text.translatable;
 
 @Mixin(GymManager.class)
 public class MixinGymManager {
@@ -49,7 +57,6 @@ public class MixinGymManager {
                     .get(RegistryKeys.LOOT_TABLE)
                     .get(table.getId());
 
-
             if(registryLootTable == null) {
                 return;
             }
@@ -65,6 +72,29 @@ public class MixinGymManager {
 
         if(item.contains(CONTAINER)) {
             item.set(CONTAINER, ContainerComponent.fromStacks(loot));
+        }
+
+        MutableText styledLevel = MutableText.of(Text.literal(level + "").getContent()).formatted(Formatting.GOLD);
+        MutableText styledType = translatable(cobblemonResource("type." + type.toLowerCase()).toTranslationKey())
+                .setStyle(
+                        Style.EMPTY.withColor(Formatting.GREEN).withItalic(true)
+                );
+
+        item.set(
+                DataComponentTypes.CUSTOM_NAME,
+                translatable(
+                        RadGyms.INSTANCE.modId("gym_reward").toTranslationKey("item"),
+                        styledLevel, styledType
+                )
+        );
+
+        if(!serverPlayer.giveItemStack(item)) {
+            serverPlayer.getWorld().spawnEntity(new ItemEntity(
+                    serverPlayer.getWorld(),
+                    serverPlayer.getPos().x,
+                    serverPlayer.getPos().y,
+                    serverPlayer.getPos().z,
+                    item));
         }
     }
 
