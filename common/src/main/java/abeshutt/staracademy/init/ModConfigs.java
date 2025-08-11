@@ -26,6 +26,7 @@ public class ModConfigs extends ModRegistries {
     public static StarBadgeConfig STAR_BADGE;
     public static EntityYeeterConfig ENTITY_YEETER;
     public static ShopConfig SHOP;
+    public static LegendaryItemsConfig LEGENDARY_ITEMS;
 
     public static void register(boolean initialization) {
         TILE_GROUPS = new TileGroupsConfig().read();
@@ -44,6 +45,7 @@ public class ModConfigs extends ModRegistries {
         STAR_BADGE = new StarBadgeConfig().read();
         ENTITY_YEETER = new EntityYeeterConfig().read();
         SHOP = new ShopConfig().read();
+        LEGENDARY_ITEMS = new LegendaryItemsConfig().read();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);
