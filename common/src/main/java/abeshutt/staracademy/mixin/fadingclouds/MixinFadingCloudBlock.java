@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(targets = { "me.lemo.fading_clouds.block.FadingCloudBlock" }, remap = false)
+@Mixin(targets = { "me.lemo.fading_clouds.block.FadingCloudBlock" })
 public abstract class MixinFadingCloudBlock extends TransparentBlock {
 
     public MixinFadingCloudBlock(Settings settings) {
@@ -21,7 +21,7 @@ public abstract class MixinFadingCloudBlock extends TransparentBlock {
     @Redirect(method = {
             "fading_clouds$computeFallDamage",
             "onEntityLand"
-    }, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;setBaseValue(D)V"))
+    }, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;setBaseValue(D)V"), remap = false)
     private void onAttributeChange(EntityAttributeInstance instance, double baseValue) {
         // Cancel this
     }
