@@ -1,7 +1,6 @@
 package abeshutt.staracademy.mixin;
 
 import com.cobblemon.mod.common.Cobblemon;
-import io.wispforest.owo.ui.component.SliderComponent;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.inject.ComponentStub;
 import lol.gito.radgyms.client.gui.GymGuiIdentifiers;
@@ -12,15 +11,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = { "io.wispforest.owo.ui.component.DiscreteSliderComponent" }, remap = false)
-public abstract class MixinDiscreteSliderComponent extends SliderComponent {
+public abstract class MixinDiscreteSliderComponent {
 
     @Shadow protected double max;
 
-    protected MixinDiscreteSliderComponent(Sizing horizontalSizing) {
-        super(horizontalSizing);
-    }
-
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lio/wispforest/owo/ui/component/DiscreteSliderComponent;updateMessage()V", shift = At.Shift.BEFORE), remap = false)
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lio/wispforest/owo/ui/component/DiscreteSliderComponent;updateMessage()V", shift = At.Shift.BEFORE))
     private void init(Sizing horizontalSizing, double min, double max, CallbackInfo ci) {
         if(this instanceof ComponentStub stub) {
             if(GymGuiIdentifiers.ID_GYM_SLIDER.equals(stub.id())) {
