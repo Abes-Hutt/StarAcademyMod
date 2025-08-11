@@ -18,12 +18,14 @@ public abstract class MixinFadingCloudBlock extends TransparentBlock {
         super(settings);
     }
 
-    @Redirect(method = {
-            "fading_clouds$computeFallDamage",
-            "onEntityLand"
-    }, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;setBaseValue(D)V"), remap = false)
-    private void onAttributeChange(EntityAttributeInstance instance, double baseValue) {
-        // Cancel this
+    @Redirect(method = "fading_clouds$computeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;setBaseValue(D)V"), remap = false)
+    private void computeFallDamage(EntityAttributeInstance instance, double baseValue) {
+
+    }
+
+    @Redirect(method = "onEntityLand", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/EntityAttributeInstance;setBaseValue(D)V"))
+    private void onEntityLand(EntityAttributeInstance instance, double baseValue) {
+
     }
 
     @Override

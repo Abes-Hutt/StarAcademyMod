@@ -46,6 +46,8 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:4.7.5.1")
 
+    modImplementation("maven.modrinth:fading-clouds:1.1.0")
+
     implementation(shadowBundle("com.squareup.okhttp3:okhttp:4.12.0"))
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
