@@ -38,6 +38,7 @@
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "cobblemon.MixinPokeBallItem",
+    "fadingclouds.MixinFadingCloudBlock",
     "journeymap.MixinEntityHelper",
     "modernfix.MixinLRUMap",
     "mythsandlegends.MixinForceSpawningUtils",

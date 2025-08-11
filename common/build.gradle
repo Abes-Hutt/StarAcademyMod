@@ -37,5 +37,7 @@ dependencies {
 
     modCompileOnly("maven.modrinth:rad-gyms:0.2-alpha.2")
 
+    modCompileOnly("maven.modrinth:fading-clouds:1.1.0")
+
     modCompileOnly("com.squareup.okhttp3:okhttp:4.12.0")
 }

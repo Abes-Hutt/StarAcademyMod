@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mixin(Items.class)
+@Mixin(targets = { "com.github.d0ctorleon.mythsandlegends.items.Items" }, remap = false)
 public class MixinItems {
 
     @Shadow @Mutable @Final private static List<String> ITEM_NAMES;
