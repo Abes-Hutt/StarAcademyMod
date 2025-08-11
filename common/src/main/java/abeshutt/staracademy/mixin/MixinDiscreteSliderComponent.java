@@ -15,6 +15,7 @@ public abstract class MixinDiscreteSliderComponent {
 
     @Shadow protected double max;
 
+    /*
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lio/wispforest/owo/ui/component/DiscreteSliderComponent;updateMessage()V", shift = At.Shift.BEFORE))
     private void init(Sizing horizontalSizing, double min, double max, CallbackInfo ci) {
         if(this instanceof ComponentStub stub) {
@@ -22,6 +23,6 @@ public abstract class MixinDiscreteSliderComponent {
                 this.max = Cobblemon.config.getMaxPokemonLevel();
             }
         }
-    }
+    }*/
 
 }
