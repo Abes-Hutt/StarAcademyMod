@@ -27,6 +27,7 @@ public class ModConfigs extends ModRegistries {
     public static EntityYeeterConfig ENTITY_YEETER;
     public static ShopConfig SHOP;
     public static LegendaryItemsConfig LEGENDARY_ITEMS;
+    public static GymCachesConfig GYM_CACHES;
 
     public static void register(boolean initialization) {
         TILE_GROUPS = new TileGroupsConfig().read();
@@ -46,6 +47,7 @@ public class ModConfigs extends ModRegistries {
         ENTITY_YEETER = new EntityYeeterConfig().read();
         SHOP = new ShopConfig().read();
         LEGENDARY_ITEMS = new LegendaryItemsConfig().read();
+        GYM_CACHES = new GymCachesConfig().read();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);

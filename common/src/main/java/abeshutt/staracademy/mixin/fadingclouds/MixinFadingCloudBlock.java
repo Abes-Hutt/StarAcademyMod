@@ -1,6 +1,5 @@
 package abeshutt.staracademy.mixin.fadingclouds;
 
-import me.lemo.fading_clouds.block.FadingCloudBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TransparentBlock;
 import net.minecraft.entity.Entity;
