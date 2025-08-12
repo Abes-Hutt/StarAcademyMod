@@ -25,7 +25,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.cobblemon.mod.common.util.MiscUtilsKt.cobblemonResource;
@@ -33,7 +32,7 @@ import static net.minecraft.component.DataComponentTypes.CONTAINER;
 import static net.minecraft.text.Text.translatable;
 
 @Mixin(GymManager.class)
-public class MixinGymManager {
+public class MixinManager {
 
     /**
      * @author StarAcademyMod

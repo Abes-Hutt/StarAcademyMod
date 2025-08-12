@@ -47,7 +47,8 @@
     "mythsandlegends.MixinPlayerEvents",
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
-    "radgyms.MixinGymManager"
+    "radgyms.MixinEventManager",
+    "radgyms.MixinManager"
   ],
   "injectors": {
     "defaultRequire": 1
