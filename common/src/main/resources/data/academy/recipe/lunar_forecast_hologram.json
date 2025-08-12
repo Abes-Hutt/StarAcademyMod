@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "idi",
+    "ono",
+    "iii"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_block"
+    },
+    "d": {
+      "item": "minecraft:diamond_block"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "result": {
+    "id": "academy:lunar_forecast_hologram",
+    "count": 1
+  }
+}

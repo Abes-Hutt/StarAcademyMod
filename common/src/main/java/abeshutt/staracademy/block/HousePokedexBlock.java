@@ -12,6 +12,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +31,8 @@ public class HousePokedexBlock extends BlockWithEntity {
                 .mapColor(MapColor.RED)
                 .requiresTool()
                 .luminance((state) -> 7)
-                .strength(5.0F, 1200.0F));
+                .strength(-1.0F, 3600000.0F)
+                .dropsNothing().sounds(BlockSoundGroup.METAL));
     }
 
     @Override

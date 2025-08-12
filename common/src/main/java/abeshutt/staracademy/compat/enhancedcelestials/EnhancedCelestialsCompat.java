@@ -134,7 +134,7 @@ public class EnhancedCelestialsCompat {
 
     public static final RegistrySupplier<LunarForecastHologramBlock> LUNAR_FORECAST_HOLOGRAM_BLOCK = ModBlocks.register(
             "lunar_forecast_hologram",
-            () -> new LunarForecastHologramBlock(AbstractBlock.Settings.copy(Blocks.ANVIL).luminance(value -> value.get(LunarForecastHologramBlock.LIT) ? 5 : 0)),
+            () -> new LunarForecastHologramBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK).luminance(value -> value.get(LunarForecastHologramBlock.LIT) ? 5 : 0)),
             b -> new BlockItem(b.get(), new Item.Settings())
     );
     public static final RegistrySupplier<BlockEntityType<LunarForecastHologramBlockEntity>> LUNAR_FORECAST_HOLOGRAM_BLOCK_ENTITY = ModBlocks.Entities.register(

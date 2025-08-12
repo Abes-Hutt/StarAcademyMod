@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "lbl",
+    "   "
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:leather"
+    },
+    "b": {
+      "item": "minecraft:black_wool"
+    }
+  },
+  "result": {
+    "id": "academy:album",
+    "count": 1
+  }
+}
