@@ -1,5 +1,6 @@
 package abeshutt.staracademy.mixin.radgyms;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModConfigs;
 import lol.gito.radgyms.RadGyms;
 import lol.gito.radgyms.gym.GymManager;
@@ -24,6 +25,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.cobblemon.mod.common.util.MiscUtilsKt.cobblemonResource;
@@ -39,10 +41,13 @@ public class MixinGymManager {
      */
     @Overwrite
     public final void handleLootDistribution(ServerPlayerEntity serverPlayer, GymTemplate template, int level, String type) {
+        StarAcademyMod.LOGGER.debug("Handing loot distribution for {} at level {}", type, level);
         Identifier itemId = ModConfigs.GYM_CACHES.getItemId(type);
+        StarAcademyMod.LOGGER.debug("Picked item {}", itemId);
         if(itemId == null) return;
         ItemStack item = new ItemStack(Registries.ITEM.get(itemId));
         List<ItemStack> loot = new ArrayList<>();
+        StarAcademyMod.LOGGER.debug("Generating loot...");
 
         template.getLootTables().stream().filter(table -> {
             return level >= table.getLevels().getFirst() && level <= table.getLevels().getSecond();
@@ -66,9 +71,10 @@ public class MixinGymManager {
                     .add(LootContextParameters.ORIGIN, serverPlayer.getPos())
                     .build(LootContextTypes.GIFT);
 
-
             loot.addAll(registryLootTable.generateLoot(lootContextParameterSet));
         });
+
+        StarAcademyMod.LOGGER.debug("Generated loot {}", loot);
 
         if(item.contains(CONTAINER)) {
             item.set(CONTAINER, ContainerComponent.fromStacks(loot));
@@ -88,7 +94,11 @@ public class MixinGymManager {
                 )
         );
 
+        StarAcademyMod.LOGGER.debug("Giving to player.");
+
         if(!serverPlayer.giveItemStack(item)) {
+            StarAcademyMod.LOGGER.debug("Failed. Throwing on the floor instead.");
+
             serverPlayer.getWorld().spawnEntity(new ItemEntity(
                     serverPlayer.getWorld(),
                     serverPlayer.getPos().x,
