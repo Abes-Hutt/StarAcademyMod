@@ -2,7 +2,6 @@ package abeshutt.staracademy.mixin.mythsandlegends;
 
 import abeshutt.staracademy.config.LegendaryItemsConfig;
 import abeshutt.staracademy.init.ModConfigs;
-import com.github.d0ctorleon.mythsandlegends.items.Items;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;

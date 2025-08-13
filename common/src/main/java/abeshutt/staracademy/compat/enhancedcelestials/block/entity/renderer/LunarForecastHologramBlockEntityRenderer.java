@@ -28,8 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 import org.joml.Matrix4f;
 
-import java.util.function.Consumer;
-
 public class LunarForecastHologramBlockEntityRenderer implements BlockEntityRenderer<LunarForecastHologramBlockEntity> {
 
     public LunarForecastHologramBlockEntityRenderer(BlockEntityRendererFactory.Context context) {

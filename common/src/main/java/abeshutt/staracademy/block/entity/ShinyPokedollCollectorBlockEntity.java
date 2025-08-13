@@ -2,7 +2,6 @@ package abeshutt.staracademy.block.entity;
 
 import abeshutt.staracademy.init.ModBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
