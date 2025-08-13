@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "academy:block/shiny_pokedoll_collector"
+    },
+    "lit=true": {
+      "model": "academy:block/shiny_pokedoll_collector"
+    }
+  }
+}

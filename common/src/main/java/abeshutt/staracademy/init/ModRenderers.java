@@ -2,8 +2,10 @@ package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
 import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
+import abeshutt.staracademy.block.entity.ShinyPokedollCollectorBlockEntity;
 import abeshutt.staracademy.block.entity.renderer.BetterStructureBlockEntityRenderer;
 import abeshutt.staracademy.block.entity.renderer.HousePokedexBlockEntityRenderer;
+import abeshutt.staracademy.block.entity.renderer.ShinyPokedollCollectorBlockEntityRenderer;
 import abeshutt.staracademy.compat.enhancedcelestials.client.EnhancedCelestialsCompatClient;
 import abeshutt.staracademy.entity.renderer.HumanEntityRenderer;
 import abeshutt.staracademy.entity.renderer.ShootingStarRenderer;
@@ -69,11 +71,13 @@ public class ModRenderers extends ModRegistries {
     public static class BlockEntities extends ModRenderers {
         public static BlockEntityRendererFactory<BetterStructureBlockEntity> STRUCTURE_BLOCK;
         public static BlockEntityRendererFactory<HousePokedexBlockEntity> HOUSE_POKEDEX;
+        public static BlockEntityRendererFactory<ShinyPokedollCollectorBlockEntity> SHINY_POKEDEX;
 
         public static void register(Map<BlockEntityType<?>, BlockEntityRendererFactory<?>> registry) {
             try {
                 STRUCTURE_BLOCK = register(registry, ModBlocks.Entities.STRUCTURE_BLOCK.get(), BetterStructureBlockEntityRenderer::new);
                 HOUSE_POKEDEX = register(registry, ModBlocks.Entities.HOUSE_POKEDEX.get(), HousePokedexBlockEntityRenderer::new);
+                SHINY_POKEDEX = register(registry, ModBlocks.Entities.SHINY_POKEDOLL_COLLECTOR.get(), ShinyPokedollCollectorBlockEntityRenderer::new);
                 if(Platform.isModLoaded("enhancedcelestials")) {
                     EnhancedCelestialsCompatClient.registerBlockEntityRenderers(registry);
                 }

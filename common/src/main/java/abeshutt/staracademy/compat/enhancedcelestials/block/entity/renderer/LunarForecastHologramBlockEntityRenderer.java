@@ -1,6 +1,7 @@
 package abeshutt.staracademy.compat.enhancedcelestials.block.entity.renderer;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.client.RenderUtil;
 import abeshutt.staracademy.compat.enhancedcelestials.block.LunarForecastHologramBlock;
 import abeshutt.staracademy.compat.enhancedcelestials.block.entity.LunarForecastHologramBlockEntity;
 import dev.corgitaco.enhancedcelestials.EnhancedCelestials;
@@ -52,27 +53,22 @@ public class LunarForecastHologramBlockEntityRenderer implements BlockEntityRend
 
         RegistryEntry<LunarEvent> lunarEventRegistryEntry = getEvent(entity, lunarEventInstance);
 
-        renderHologram(matrices, vertexConsumers, overlay, lunarEventRegistryEntry == null ? null : lunarEventRegistryEntry.value().getClientSettings());
-        renderMoon(entity, matrices, vertexConsumers, overlay);
-        renderText(matrices, vertexConsumers, lunarEventRegistryEntry == null ? null : lunarEventRegistryEntry.value(), lunarEventInstance, data.getCurrentDay(), entity.getWorld());
-
-    }
-
-    private static void renderHologram(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int overlay, @Nullable LunarEventClientSettings clientSettings) {
         float r = 0F;
         float g = 0F;
         float b = 0F;
-        if (clientSettings != null) {
+        if (lunarEventRegistryEntry != null) {
+            LunarEventClientSettings clientSettings = lunarEventRegistryEntry.value().getClientSettings();
             r = clientSettings.colorSettings().getGLMoonColor().x;
             g = clientSettings.colorSettings().getGLMoonColor().y;
             b = clientSettings.colorSettings().getGLMoonColor().z;
         }
 
-        renderCameraOrientedQuad(matrices, LightmapTextureManager.MAX_LIGHT_COORDINATE, overlay, r, g, b, 1.0F, vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(StarAcademyMod.id("textures/block/hologram.png"), true)), stack -> {
-            stack.translate(0.5, 2.2, 0.5);
-            stack.scale(3.0f, 3.0f, 3.0f);
-        });
+        RenderUtil.renderHologram(matrices, vertexConsumers, overlay, r, g, b);
+        renderMoon(entity, matrices, vertexConsumers, overlay);
+        renderText(matrices, vertexConsumers, lunarEventRegistryEntry == null ? null : lunarEventRegistryEntry.value(), lunarEventInstance, data.getCurrentDay(), entity.getWorld());
     }
+
+
 
     private static void renderText(MatrixStack matrices, VertexConsumerProvider vertexConsumers, @Nullable LunarEvent nextLunarEvent, @Nullable LunarEventInstance lunarEventInstance, long currentDay, World world) {
         matrices.push();
@@ -154,29 +150,10 @@ public class LunarForecastHologramBlockEntityRenderer implements BlockEntityRend
             b = clientSettings.colorSettings().getGLMoonColor().z;
         }
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(moonTexture, true));
-        renderCameraOrientedQuad(matrices, LightmapTextureManager.MAX_LIGHT_COORDINATE, overlay, r, g, b, 0.8F, consumer, stack -> {
+       RenderUtil. renderCameraOrientedQuad(matrices, LightmapTextureManager.MAX_LIGHT_COORDINATE, overlay, r, g, b, 0.8F, consumer, stack -> {
             stack.translate(0.5, 3.15, 0.5);
             stack.scale(1, 1, 1);
         });
-    }
-
-    private static void renderCameraOrientedQuad(MatrixStack matrices, int light, int overlay, float r, float g, float b, float a, VertexConsumer consumer, Consumer<MatrixStack> matricesTransforms) {
-        matrices.push();
-        matricesTransforms.accept(matrices);
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        float cameraYaw = client.getEntityRenderDispatcher().camera.getYaw();
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-cameraYaw));
-
-        MatrixStack.Entry peek = matrices.peek();
-        Matrix4f positionMatrix = peek.getPositionMatrix();
-
-        matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(-90.0f));
-        consumer.vertex(positionMatrix, -0.5f, 0.0f, -0.5f).color(r, g, b, a).texture(0, 0).light(light).normal(peek, 0.0F, 1.0F, 0.0F).overlay(overlay);
-        consumer.vertex(positionMatrix, 0.5f, 0.0f, -0.5f).color(r, g, b, a).texture(1, 0).light(light).normal(peek, 0.0F, 1.0F, 0.0F).overlay(overlay);
-        consumer.vertex(positionMatrix, 0.5f, 0.0f, 0.5f).color(r, g, b, a).texture(1, 1).light(light).normal(peek, 0.0F, 1.0F, 0.0F).overlay(overlay);
-        consumer.vertex(positionMatrix, -0.5f, 0.0f, 0.5f).color(r, g, b, a).texture(0, 1).light(light).normal(peek, 0.0F, 1.0F, 0.0F).overlay(overlay);
-        matrices.pop();
     }
 
     @Nullable
