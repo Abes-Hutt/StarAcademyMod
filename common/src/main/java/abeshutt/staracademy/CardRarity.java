@@ -2,34 +2,32 @@ package abeshutt.staracademy;
 
 import net.minecraft.util.StringIdentifiable;
 
-import java.util.Optional;
-
 public enum CardRarity implements StringIdentifiable {
-    COMMON("common"),
-    UNCOMMON("uncommon"),
-    RARE("rare"),
-    EPIC("epic"),
-    LEGENDARY("legendary"),
-    SHINY("shiny");
+    COMMON("common", 0xFFFFFF),
+    UNCOMMON("uncommon", 0xFFFFFF),
+    RARE("rare", 0xFFFFFF),
+    EPIC("epic", 0xFFFFFF),
+    LEGENDARY("legendary", 0xFFFFFF),
+    SHINY("shiny", 0xFFFFFF);
 
-    private final String name;
+    private final String id;
+    private final int color;
 
-    CardRarity(String name) {
-        this.name = name;
+    CardRarity(String id, int color) {
+        this.id = id;
+        this.color = color;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public int getColor() {
+        return this.color;
     }
 
     @Override
     public String asString() {
-        return this.name;
-    }
-
-    public static Optional<CardRarity> fromName(String name) {
-        for(CardRarity rarity : CardRarity.values()) {
-            if(rarity.name.equals(name)) {
-                return Optional.of(rarity);
-            }
-        }
-
-        return Optional.empty();
+        return this.id;
     }
 }

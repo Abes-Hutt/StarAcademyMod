@@ -33,8 +33,6 @@ public abstract class MixinEntity implements ProxyEntity {
     @Shadow public abstract World getWorld();
     @Shadow public abstract UUID getUuid();
 
-    @Shadow protected abstract void checkBlockCollision();
-
     @Shadow public abstract boolean hasPortalCooldown();
 
     @Shadow public abstract Box getBoundingBox();

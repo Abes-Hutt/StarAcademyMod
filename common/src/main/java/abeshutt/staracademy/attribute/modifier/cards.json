@@ -1,0 +1,18 @@
+{
+  "some_card": {
+    "icon": "@gen1",
+    "rarity": ,
+    "modifiers": [
+      {
+        "type": "add",
+        "path": "/shiny_chance",
+        "value": {
+          "type": "uniform",
+          "minimum_inclusive": 0.01,
+          "maximum_inclusive": 0.05,
+          "resolution": 0.01
+        }
+      }
+    ]
+  }
+}

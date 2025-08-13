@@ -1,5 +1,8 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.attribute.parent.AttributeParent;
+import abeshutt.staracademy.attribute.parent.ModifierAttributeParent;
+import abeshutt.staracademy.attribute.parent.StructuralAttributeParent;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.attribute.type.AttributeType;
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
@@ -16,12 +19,14 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
-
+    
     protected AttributeType<T> type;
     protected AttributeParent parent;
     protected final Map<String, Attribute<?>> children;
     protected final Map<Object, List<ModifierInstance<T>>> keyedModifiers;
     protected final List<ModifierInstance<T>> orderedModifiers;
+
+    protected Option<T> cache;
 
     protected Attribute(AttributeType<T> type) {
         this.type = type;
@@ -29,6 +34,22 @@ public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
         this.children = new HashMap<>();
         this.keyedModifiers = new HashMap<>();
         this.orderedModifiers = new ArrayList<>();
+    }
+
+    public void invalidate() {
+        this.cache = null;
+
+        if(this.parent != null) {
+            this.parent.get().invalidate();
+        }
+    }
+
+    public AttributeType<T> getType() {
+        return this.type;
+    }
+
+    public List<Attribute<T>> getModifiers() {
+        return this.orderedModifiers.stream().map(ModifierInstance::get).toList();
     }
 
     public Option<T> get() {
@@ -40,8 +61,28 @@ public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
     }
 
     public Option<T> get(Option<T> value) {
-        for(ModifierInstance<T> modifier : this.orderedModifiers) {
-            value = modifier.get().get(value);
+        boolean shortcut = value.isAbsent();
+
+        if(shortcut && this.cache != null) {
+            return this.cache;
+        }
+
+        Iterator<ModifierInstance<T>> iterator = this.orderedModifiers.iterator();
+
+        while(iterator.hasNext()) {
+            ModifierInstance<T> modifier = iterator.next();
+
+            if(modifier.isRemoved()) {
+                modifier.dispose();
+                this.keyedModifiers.get(modifier.getOwner()).remove(modifier);
+                iterator.remove();
+            } else {
+                value = modifier.get().get(value);
+            }
+        }
+
+        if(shortcut && this.cache == null) {
+            this.cache = value;
         }
 
         return value;
@@ -77,45 +118,47 @@ public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
         return (Attribute<U>)this;
     }
 
-    public ModifierInstance<T> add(Attribute<T> modifier) {
-        return this.add(null, ModifierInstance.of(modifier));
+    public ModifierReference<T> add(Attribute<T> modifier) {
+        return this.add(null, ModifierReference.of(modifier));
     }
 
-    public ModifierInstance<T> add(Object owner, Attribute<T> modifier) {
-        return this.add(owner, ModifierInstance.of(modifier));
+    public ModifierReference<T> add(Object owner, Attribute<T> modifier) {
+        return this.add(owner, ModifierReference.of(modifier));
     }
 
-    public ModifierInstance<T> add(Attribute<T> modifier, int order) {
-        return this.add(null, ModifierInstance.of(order, modifier));
+    public ModifierReference<T> add(Attribute<T> modifier, int order) {
+        return this.add(null, ModifierReference.of(order, modifier));
     }
 
-    public ModifierInstance<T> add(Object owner, Attribute<T> modifier, int order) {
-        return this.add(owner, ModifierInstance.of(order, modifier));
+    public ModifierReference<T> add(Object owner, Attribute<T> modifier, int order) {
+        return this.add(owner, ModifierReference.of(order, modifier));
     }
 
-    public <U> ModifierInstance<U> add(ModifierInstance<U> modifier) {
+    public <U> ModifierReference<U> add(ModifierReference<U> modifier) {
         return this.add(null, modifier);
     }
 
-    public <U> ModifierInstance<U> add(Object owner, ModifierInstance<U> modifier) {
+    public <U> ModifierReference<U> add(Object owner, ModifierReference<U> modifier) {
         this.path(modifier.getPath()).addInternal(owner, modifier);
         return modifier;
     }
 
     protected int compare(ModifierInstance<T> a, ModifierInstance<T> b) {
-        return Integer.compare(a.getOrder(), b.getOrder());
+        return Integer.compare(a.getReference().getOrder(), b.getReference().getOrder());
     }
 
-    protected void addInternal(Object owner, ModifierInstance modifier) {
+    protected void addInternal(Object owner, ModifierReference modifier) {
+        ModifierInstance<T> instance = new ModifierInstance<T>(this, owner, modifier);
+
         List<ModifierInstance<T>> keyed = this.keyedModifiers.computeIfAbsent(owner,
                 key -> new ArrayList<>());
-        keyed.add(modifier);
+        keyed.add(instance);
 
         List<ModifierInstance<T>> ordered = this.orderedModifiers;
-        int index = Collections.binarySearch(ordered, modifier, this::compare);
+        int index = Collections.binarySearch(ordered, instance, this::compare);
 
         if(index >= 0) {
-            while(index < ordered.size() - 1 && this.compare(ordered.get(index + 1), modifier) == 0) {
+            while(index < ordered.size() - 1 && this.compare(ordered.get(index + 1), instance) == 0) {
                 index++;
             }
 
@@ -124,18 +167,31 @@ public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
             index = -index - 1;
         }
 
-        ordered.add(index, modifier);
+        ordered.add(index, instance);
+
+        for(int i = index; i < ordered.size(); i++) {
+            ordered.get(i).get().setParent(new ModifierAttributeParent(this, i));
+        }
     }
 
     public void remove(Object owner) {
         List<ModifierInstance<T>> listeners = this.keyedModifiers.remove(owner);
         if(listeners == null || listeners.isEmpty()) return;
         this.orderedModifiers.removeAll(new HashSet<>(listeners));
+        listeners.forEach(ModifierInstance::dispose);
+        this.invalidate();
     }
 
     public void clear() {
+        if(this.orderedModifiers.isEmpty()) return;
         this.keyedModifiers.clear();
+        this.orderedModifiers.forEach(ModifierInstance::dispose);
         this.orderedModifiers.clear();
+        this.invalidate();
+    }
+
+    public <A extends Attribute<T>> A copy() {
+        return (A)this;
     }
 
     public AttributeParent getParent() {
@@ -150,8 +206,8 @@ public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
         return this.children.values();
     }
 
-    public void addChild(String name, Attribute<?> child) {
-        child.setParent(new AttributeParent(this, this.children.size()));
+    public void putChild(String name, Attribute<?> child) {
+        child.setParent(new StructuralAttributeParent(this, name));
         this.children.put(name, child);
     }
 
@@ -219,10 +275,10 @@ public class Attribute<T> implements ISerializable<NbtCompound, JsonObject> {
     public Optional<JsonObject> writeJson() {
         return Optional.of(new JsonObject()).map(json -> {
             JsonArray modifiers = new JsonArray();
-            ModifierInstance.Adapter<T> adapter = ModifierInstance.adapter(this.type.getModifierAdapter());
+            ModifierReference.Adapter<T> adapter = ModifierReference.adapter(this.type.getModifiers());
 
             this.orderedModifiers.forEach(modifier -> {
-                adapter.writeJson(modifier).ifPresent(modifiers::add);
+                //adapter.writeJson(modifier).ifPresent(orderedModifiers::add);
             });
 
             json.add("modifiers", modifiers);

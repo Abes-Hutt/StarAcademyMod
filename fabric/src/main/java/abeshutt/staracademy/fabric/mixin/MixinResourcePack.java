@@ -14,6 +14,8 @@ public class MixinResourcePack {
     @Inject(method = "setSource", at = @At("HEAD"))
     private static void setSource(ResourcePack pack, ResourcePackSource source, CallbackInfo ci) {
         System.out.println("Loading " + pack.getId() + ", " + pack.getInfo().title());
+        //int a = 5 +/8 3;
+        //int b = 5 +/8 3;
     }
 
 }

@@ -1,6 +1,5 @@
 package abeshutt.staracademy.item;
 
-import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.init.ModWorldData;
@@ -18,25 +17,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class OutfitItem extends Item implements ISpecialItemModel {
 
     public OutfitItem() {
         super(new Settings());
-    }
-
-    public static Optional<OutfitEntry> getEntry(ItemStack stack) {
-        /*
-        if(stack.getNbt() != null) {
-            return Adapters.OUTFIT_ENTRY.readNbt(stack.getNbt().getCompound("entry"));
-        }*/
-
-        return Optional.ofNullable(stack.get(ModDataComponents.OUTFIT_ENTRY.get()));
     }
 
     @Override
@@ -50,11 +42,12 @@ public class OutfitItem extends Item implements ISpecialItemModel {
         }).orElseGet(() -> super.getName(stack));
     }
 
+    public static Optional<OutfitEntry> getEntry(ItemStack stack) {
+        return Optional.ofNullable(stack.get(ModDataComponents.OUTFIT_ENTRY.get()));
+    }
+
     public static void setEntry(ItemStack stack, OutfitEntry entry) {
-        Adapters.OUTFIT_ENTRY.writeNbt(entry).ifPresent(tag -> {
-            /*
-            stack.getOrCreateNbt().put("entry", tag);*/
-        });
+        stack.set(ModDataComponents.OUTFIT_ENTRY.get(), entry);
     }
 
     @Override
@@ -88,9 +81,9 @@ public class OutfitItem extends Item implements ISpecialItemModel {
     }
 
     @Override
-    public void loadModels(Consumer<ModelIdentifier> consumer) {
+    public void loadModels(Stream<Identifier> unbakedModels, Consumer<ModelIdentifier> loader) {
         for(OutfitPiece outfit : ModOutfits.REGISTRY.values()) {
-           consumer.accept(outfit.getTexture().getIcon());
+            loader.accept(outfit.getTexture().getIcon());
         }
     }
 

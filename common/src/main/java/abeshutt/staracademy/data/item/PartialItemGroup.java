@@ -94,7 +94,7 @@ public class PartialItemGroup implements ItemPlacement<PartialItemGroup> {
 
     public static PartialItemGroup parse(StringReader reader) throws CommandSyntaxException {
         if(reader.peek() != '@') {
-            throw new IllegalArgumentException("Invalid item group '" + reader.getString() + "' does not start with @");
+            throw new IllegalArgumentException("Invalid item group '" + reader.getString() + "' does not modeMinimum with @");
         }
 
         reader.skip();

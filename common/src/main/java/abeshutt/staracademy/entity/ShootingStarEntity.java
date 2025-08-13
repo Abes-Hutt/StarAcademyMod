@@ -98,18 +98,18 @@ public class ShootingStarEntity extends LivingEntity implements IDefaultedAttrib
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        Adapters.VEC_3D.writeNbt(this.start).ifPresent(tag -> nbt.put("start", tag));
+        Adapters.VEC_3D.writeNbt(this.start).ifPresent(tag -> nbt.put("modeMinimum", tag));
         Adapters.VEC_3D.writeNbt(this.mid).ifPresent(tag -> nbt.put("mid", tag));
-        Adapters.VEC_3D.writeNbt(this.end).ifPresent(tag -> nbt.put("end", tag));
+        Adapters.VEC_3D.writeNbt(this.end).ifPresent(tag -> nbt.put("modeMaximum", tag));
         Adapters.INT.writeNbt(this.tick).ifPresent(tag -> nbt.put("tick", tag));
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.start = Adapters.VEC_3D.readNbt(nbt.get("start")).orElse(Vec3d.ZERO);
+        this.start = Adapters.VEC_3D.readNbt(nbt.get("modeMinimum")).orElse(Vec3d.ZERO);
         this.mid = Adapters.VEC_3D.readNbt(nbt.get("mid")).orElse(Vec3d.ZERO);
-        this.end = Adapters.VEC_3D.readNbt(nbt.get("end")).orElse(Vec3d.ZERO);
+        this.end = Adapters.VEC_3D.readNbt(nbt.get("modeMaximum")).orElse(Vec3d.ZERO);
         this.tick = Adapters.INT.readNbt(nbt.get("tick")).orElse(0);
     }
 

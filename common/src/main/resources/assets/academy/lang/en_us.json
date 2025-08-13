@@ -159,5 +159,17 @@
   "entity.academy.partner_npc": "Partner NPC",
   "entity.academy.safari_npc": "Safari NPC",
   "entity.academy.nurse_npc": "Nurse NPC",
-  "stat_type.minecraft.custom": "Custom"
+  "stat_type.minecraft.custom": "Custom",
+
+  "trinkets.slot.legs.card_album": "Card Album",
+  "item.academy.booster_pack.base": "Base Booster Pack",
+  "item.academy.card_album.base": "Base Card Album",
+  "text.academy.card.rarity": "Rarity",
+  "text.academy.card.rarity.common": "Common",
+  "text.academy.card.rarity.uncommon": "Uncommon",
+  "text.academy.card.rarity.rare": "Rare",
+  "text.academy.card.rarity.epic": "Epic",
+  "text.academy.card.rarity.legendary": "Legendary",
+  "text.academy.card.rarity.shiny": "Shiny",
+  "text.academy.card.grade": "Grade"
 }

@@ -19,12 +19,14 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class SafariTicketItem extends Item implements ISpecialItemModel {
 
@@ -93,9 +95,9 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
     }
 
     @Override
-    public void loadModels(Consumer<ModelIdentifier> consumer) {
+    public void loadModels(Stream<Identifier> unbakedModels, Consumer<ModelIdentifier> loader) {
         ModConfigs.SAFARI.getTickets().forEach((id, entry) -> {
-            consumer.accept(entry.getModelId());
+            loader.accept(entry.getModelId());
         });
     }
 

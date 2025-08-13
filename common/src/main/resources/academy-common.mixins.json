@@ -9,6 +9,7 @@
     "MixinClientWorld",
     "MixinCreativeInventoryScreen",
     "MixinDiscreteSliderComponent",
+    "MixinHandledScreen",
     "MixinInGameHud",
     "MixinInventoryScreen",
     "MixinMinecraftClient",

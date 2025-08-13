@@ -122,29 +122,29 @@ public interface IntRoll extends ISerializable<NbtCompound, JsonObject> {
         @Override
         public Optional<NbtCompound> writeNbt() {
             NbtCompound nbt = new NbtCompound();
-            Adapters.INT.writeNbt(this.min).ifPresent(tag -> nbt.put("min", tag));
-            Adapters.INT.writeNbt(this.max).ifPresent(tag -> nbt.put("max", tag));
+            Adapters.INT.writeNbt(this.min).ifPresent(tag -> nbt.put("minimum", tag));
+            Adapters.INT.writeNbt(this.max).ifPresent(tag -> nbt.put("maximum", tag));
             return Optional.of(nbt);
         }
 
         @Override
         public void readNbt(NbtCompound nbt) {
-            Adapters.INT.readNbt(nbt.get("min")).ifPresent(value -> this.min = value);
-            Adapters.INT.readNbt(nbt.get("max")).ifPresent(value -> this.max = value);
+            Adapters.INT.readNbt(nbt.get("minimum")).ifPresent(value -> this.min = value);
+            Adapters.INT.readNbt(nbt.get("maximum")).ifPresent(value -> this.max = value);
         }
 
         @Override
         public Optional<JsonObject> writeJson() {
             JsonObject json = new JsonObject();
-            Adapters.INT.writeJson(this.min).ifPresent(tag -> json.add("min", tag));
-            Adapters.INT.writeJson(this.max).ifPresent(tag -> json.add("max", tag));
+            Adapters.INT.writeJson(this.min).ifPresent(tag -> json.add("minimum", tag));
+            Adapters.INT.writeJson(this.max).ifPresent(tag -> json.add("maximum", tag));
             return Optional.of(json);
         }
 
         @Override
         public void readJson(JsonObject json) {
-            Adapters.INT.readJson(json.get("min")).ifPresent(value -> this.min = value);
-            Adapters.INT.readJson(json.get("max")).ifPresent(value -> this.max = value);
+            Adapters.INT.readJson(json.get("minimum")).ifPresent(value -> this.min = value);
+            Adapters.INT.readJson(json.get("maximum")).ifPresent(value -> this.max = value);
         }
     }
 

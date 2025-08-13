@@ -31,6 +31,7 @@ public class ModRegistries {
     public static DeferredRegister<MapCodec<? extends ChunkGenerator>> CHUNK_GENERATORS = DeferredRegister.create(StarAcademyMod.ID, RegistryKeys.CHUNK_GENERATOR);
 
     public static void register() {
+        ModDataComponents.register();
         ModItems.register();
         ModBlocks.register();
         ModBlocks.Entities.register();
@@ -38,17 +39,16 @@ public class ModRegistries {
         ModScreenHandlers.register();
         ModNetwork.register();
         ModLootFunctionTypes.register();
-        ModDataComponents.register();
         ModChunkGenerators.register();
         ModOutfits.register();
 
+        DATA_COMPONENTS.register();
         BLOCKS.register();
         ITEMS.register();
         ENTITIES.register();
         BLOCK_ENTITY_TYPES.register();
         SCREEN_HANDLERS.register();
         LOOT_FUNCTION_TYPES.register();
-        DATA_COMPONENTS.register();
         CHUNK_GENERATORS.register();
 
         if(Platform.getEnvironment() == Env.CLIENT) {

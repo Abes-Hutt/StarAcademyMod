@@ -34,4 +34,14 @@ public class PresentOption<T> extends Option<T> {
         return Option.present(mapper.apply(this.value));
     }
 
+    @Override
+    public <U> Option<U> mapFlat(Function<? super T, ? extends Option<U>> mapper) {
+        return mapper.apply(this.value);
+    }
+
+    @Override
+    public T orElse(T other) {
+        return this.value;
+    }
+
 }

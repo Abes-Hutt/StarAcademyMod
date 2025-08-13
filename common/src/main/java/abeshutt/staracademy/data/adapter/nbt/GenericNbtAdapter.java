@@ -58,25 +58,21 @@ public class GenericNbtAdapter extends NbtAdapter<NbtElement> {
     protected NbtElement readTagData(DataInput data) throws IOException {
         return (NbtElement)Adapters.NBT[NBT_ID.readData(data).orElseThrow()].readData(data).orElseThrow();
     }
-
     
     @Override
     protected NbtElement writeTagNbt(NbtElement value) {
         return (NbtElement)Adapters.NBT[value.getType()].writeNbt(value).orElse(null);
     }
 
-    
     @Override
     protected NbtElement readTagNbt(NbtElement nbt) {
         return (NbtElement)Adapters.NBT[nbt.getType()].readNbt(nbt).orElse(null);
     }
 
-    
     @Override
     protected JsonElement writeTagJson(NbtElement value) {
         return (JsonElement)Adapters.NBT[value.getType()].writeJson(value).orElse(null);
     }
-
     
     @Override
     protected NbtElement readTagJson(JsonElement json) {

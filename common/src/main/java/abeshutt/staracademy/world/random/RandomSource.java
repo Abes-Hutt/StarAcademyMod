@@ -4,6 +4,8 @@ import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
 
+import java.math.BigInteger;
+
 public interface RandomSource extends ISerializable<NbtCompound, JsonObject> {
 
 	default boolean nextBoolean() {
@@ -167,6 +169,46 @@ public interface RandomSource extends ISerializable<NbtCompound, JsonObject> {
 		return value;
 	}
 
+	default BigInteger nextBigInteger(int bitLength) {
+		if (bitLength < 0) {
+			throw new IllegalArgumentException("bitLength must be non-negative");
+		}
+
+		int byteLength = (int)(((long)bitLength + 7) / 8); // avoid overflow
+		byte[] result = new byte[byteLength];
+
+		if(byteLength > 0) {
+			this.nextBytes(result);
+			int excessBits = 8 * byteLength - bitLength;
+			result[0] &= (byte)((1 << (8 - excessBits)) - 1);
+		}
+
+		return new BigInteger(1, result);
+	}
+
+	default BigInteger nextBigInteger(BigInteger bound) {
+		if(bound.compareTo(BigInteger.ZERO) <= 0) {
+			throw new IllegalArgumentException("bound must be positive");
+		}
+
+		BigInteger m = bound.subtract(BigInteger.ONE);
+		BigInteger value = this.nextBigInteger(m.bitLength());
+
+		if(bound.and(m).equals(BigInteger.ZERO)) {
+			return value;
+		}
+
+		for(BigInteger u = value;
+			u.add(m).subtract(value = u.mod(bound)).compareTo(BigInteger.ZERO) < 0;
+			u = this.nextBigInteger(m.bitLength()));
+
+		return value;
+	}
+
+	default BigInteger nextBigInteger(BigInteger min, BigInteger max) {
+		return this.nextBigInteger(max.subtract(min)).add(min);
+	}
+
 	default double nextGaussian() {
 		long u1 = this.nextLong();
 		long i = u1 & DoubleZigguratTables.normalLayerMask;
@@ -201,7 +243,7 @@ public interface RandomSource extends ISerializable<NbtCompound, JsonObject> {
 				double y = (Y[j] * 0x1.0p63D) + ((Y[j] - Y[j-1]) * (double)U2);
 				if (y <= Math.exp(-0.5D * x * x)) break;
 			}
-		} else if (j == 0) {
+		} else if(j == 0) {
 			do {
 				x = (1.0 / DoubleZigguratTables.normalX0) * this.nextExponential();
 			} while(this.nextExponential() < 0.5*x*x);

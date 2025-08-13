@@ -201,7 +201,6 @@ public class BaseInventory implements Inventory, RecipeInputProvider, INbtSerial
             ItemStack itemStack = (ItemStack)var2.next();
             finder.addInput(itemStack);
         }
-
     }
 
     @Override

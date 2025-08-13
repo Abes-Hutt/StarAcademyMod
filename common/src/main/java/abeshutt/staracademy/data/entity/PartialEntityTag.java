@@ -103,7 +103,7 @@ public class PartialEntityTag implements EntityPlacement<PartialEntityTag> {
 
     public static PartialEntityTag parse(StringReader reader) throws CommandSyntaxException {
         if(reader.peek() != '#') {
-            throw new IllegalArgumentException("Invalid entity tag '" + reader.getString() + "' does not start with #");
+            throw new IllegalArgumentException("Invalid entity tag '" + reader.getString() + "' does not modeMinimum with #");
         }
 
         reader.skip();

@@ -1,10 +1,13 @@
 package abeshutt.staracademy.item.renderer;
 
+import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.item.BoosterPackItem;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 
 public class BoosterPackItemRenderer extends SpecialItemRenderer {
 
@@ -13,8 +16,10 @@ public class BoosterPackItemRenderer extends SpecialItemRenderer {
     @Override
     public void render(ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        ModelIdentifier model = null;
-        this.renderModel(model, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay);
+        BoosterPackItem.get(stack, true).ifPresent(entry -> {
+            Identifier model = stack.contains(DataComponentTypes.CONTAINER) ? entry.getModelRipped() : entry.getModelBase();
+            this.renderModel(StarAcademyMod.mid(model, "inventory"), stack, mode, leftHanded, matrices, vertexConsumers, light, overlay);
+        });
     }
 
 }

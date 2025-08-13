@@ -4,29 +4,24 @@ import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
-import abeshutt.staracademy.world.random.JavaRandom;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class StarAcademyMod {
 
@@ -51,7 +46,7 @@ public final class StarAcademyMod {
 
         CommonEvents.POKEMON_CATCH_RATE.register(event -> {
             if(event.getThrower().getWorld().getRegistryKey() == SAFARI) {
-                if (event.getPokeBallEntity().getPokeBall().item() != CobblemonItems.SAFARI_BALL) {
+                if(event.getPokeBallEntity().getPokeBall().item() != CobblemonItems.SAFARI_BALL) {
                     event.setCatchRate(0.0F);
                 }
             }
@@ -131,8 +126,14 @@ public final class StarAcademyMod {
         return Identifier.of(ID, path);
     }
 
-    public static ModelIdentifier mid(String path, String variant) {
-        return new ModelIdentifier(Identifier.of(ID, path), variant);
+    @Environment(EnvType.CLIENT)
+    public static ModelIdentifier mid(Identifier id, String variant) {
+        return new ModelIdentifier(id, variant);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static ModelIdentifier mid(String name, String variant) {
+        return StarAcademyMod.mid(StarAcademyMod.id(name), variant);
     }
 
     public static Text translatableText(String key, Object... args) {

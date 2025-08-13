@@ -1,0 +1,8 @@
+{
+  "entities": [
+    "player"
+  ],
+  "slots": [
+    "legs/card_album"
+  ]
+}

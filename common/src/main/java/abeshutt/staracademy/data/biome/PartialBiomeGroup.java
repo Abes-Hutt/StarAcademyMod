@@ -74,7 +74,7 @@ public class PartialBiomeGroup implements BiomePlacement<PartialBiomeGroup> {
 
     public static PartialBiomeGroup parse(StringReader reader) throws CommandSyntaxException {
         if(reader.peek() != '@') {
-            throw new IllegalArgumentException("Invalid biome group '" + reader.getString() + "' does not start with @");
+            throw new IllegalArgumentException("Invalid biome group '" + reader.getString() + "' does not modeMinimum with @");
         }
 
         reader.skip();

@@ -1,6 +1,7 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.config.*;
+import abeshutt.staracademy.config.card.*;
 import dev.architectury.event.events.common.LifecycleEvent;
 
 import java.util.ArrayList;
@@ -29,6 +30,14 @@ public class ModConfigs extends ModRegistries {
     public static LegendaryItemsConfig LEGENDARY_ITEMS;
     public static GymCachesConfig GYM_CACHES;
 
+    public static CardIconsConfig CARD_ICONS;
+    public static CardRaritiesConfig CARD_RARITIES;
+    public static CardModifiersConfig CARD_MODIFIERS;
+    public static CardScalarsConfig CARD_SCALARS;
+    public static CardEntriesConfig CARD_ENTRIES;
+    public static CardBoosterPacksConfig CARD_BOOSTERS;
+    public static CardAlbumsConfig CARD_ALBUMS;
+
     public static void register(boolean initialization) {
         TILE_GROUPS = new TileGroupsConfig().read();
         ENTITY_GROUPS = new EntityGroupsConfig().read();
@@ -48,6 +57,14 @@ public class ModConfigs extends ModRegistries {
         SHOP = new ShopConfig().read();
         LEGENDARY_ITEMS = new LegendaryItemsConfig().read();
         GYM_CACHES = new GymCachesConfig().read();
+
+        CARD_ICONS = new CardIconsConfig().read();
+        CARD_RARITIES = new CardRaritiesConfig().read();
+        CARD_MODIFIERS = new CardModifiersConfig().read();
+        CARD_SCALARS = new CardScalarsConfig().read();
+        CARD_ENTRIES = new CardEntriesConfig().read();
+        CARD_BOOSTERS = new CardBoosterPacksConfig().read();
+        CARD_ALBUMS = new CardAlbumsConfig().read();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);

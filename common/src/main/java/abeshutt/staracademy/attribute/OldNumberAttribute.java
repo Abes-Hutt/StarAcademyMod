@@ -48,8 +48,8 @@ public class OldNumberAttribute extends Attribute<Rational> {
 
     public static Modifier<Rational> clamp(Number min, Number max) {
         return BinaryModifier.arithmetic("clamp", Rational::clamp,
-                constant("min", Rational.of(min), Adapters.RATIONAL),
-                constant("max", Rational.of(max), Adapters.RATIONAL));
+                constant("minimum", Rational.of(min), Adapters.RATIONAL),
+                constant("maximum", Rational.of(max), Adapters.RATIONAL));
     }
 
     /*

@@ -7,17 +7,18 @@
     ]
   },
   "effect_avoidance": {
+    "type": "list<effect>",
     "modifiers": [
-      { "type": "set", "value": [] },
-      { "type": "append", "value": "minecraft:poison" },
-      { "type": "append", "value": "minecraft:wither" },
-      { "type": "remove", "value": "minecraft:wither" },
+      { "type": "assign", ".value": [] },
+      { "type": "append", ".value": "minecraft:poison" },
+      { "type": "append", ".value": "minecraft:wither" },
+      { "type": "remove", ".value": "minecraft:wither" },
       { "type": "clear" }
     ]
   },
   "effect_avoidance_non_flat": {
     "modifiers": [
-      { "type": "set", "value": [] },
+      { "type": "assign", "value": [] },
       { "type": "append", "value": "minecraft:poison" },
       { "type": "append", "value": "minecraft:wither" },
       { "type": "remove", "value": "minecraft:wither" },
@@ -25,11 +26,16 @@
     ]
   },
   "resistance": {
+    "type": "number",
     "modifiers": [
-      { "type": "set", "value": 7 },
+      { "type": "assign", "value": 7 },
       { "type": "multiply", "value": "./base_multiplier" },
       { "type": "multiply", "value": "./total_multiplier" }
     ],
+    "/test": {
+      "type": "multiply",
+      "value": 5
+    },
     "/base_multiplier": {
       "modifiers": [
         { "type": "set", "value": 1 }
@@ -48,13 +54,13 @@
   },
   "resistance_capped": {
     "modifiers": [
-      { "type": "set", "value": "/resistance" },
+      { "type": "assign", "value": "/resistance" },
       { "type": "clamp", "max": "/resistance_cap" }
     ]
   },
   "god_affinity": {
     "modifiers": [
-      { "type": "set", "value": {} },
+      { "type": "assign", "value": {} },
       { "type": "put", "key": "tenos", "value": "./tenos" },
       { "type": "put", "key": "wendarr", "value": "./wendarr" },
       { "type": "put", "key": "velara", "value": "./velara" },
@@ -62,22 +68,22 @@
     ],
     "/tenos": {
       "modifiers": [
-        { "type": "set", "value": 0.5 }
+        { "type": "assign", "value": 0.5 }
       ]
     },
     "/wendarr": {
       "modifiers": [
-        { "type": "set", "value": 0.5 }
+        { "type": "assign", "value": 0.5 }
       ]
     },
     "/velara": {
       "modifiers": [
-        { "type": "set", "value": 0.5 }
+        { "type": "assign", "value": 0.5 }
       ]
     },
     "/idona": {
       "modifiers": [
-        { "type": "set", "value": 0.5 }
+        { "type": "assign", "value": 0.5 }
       ]
     }
   }

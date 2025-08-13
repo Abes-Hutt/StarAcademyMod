@@ -74,12 +74,12 @@ public class BigDecimalAdapter extends NumberAdapter<BigDecimal> {
     @Override
     protected BigDecimal readNumberNbt(NbtElement nbt) {
         if(nbt instanceof AbstractNbtNumber numeric) {
-            return BigDecimal.valueOf(numeric.longValue());
+            return new BigDecimal(numeric.numberValue().toString());
         } else if(nbt instanceof NbtList list && list.size() == 1) {
-            return this.readNumberNbt(list.get(0));
+            return this.readNumberNbt(list.getFirst());
         } else if(nbt instanceof NbtString string) {
             return parse(string.asString()).map(number -> {
-                return number instanceof BigDecimal value ? value : BigDecimal.valueOf(number.doubleValue());
+                return number instanceof BigDecimal value ? value : new BigDecimal(number.toString());
             }).orElse(null);
         }
 
@@ -91,7 +91,6 @@ public class BigDecimalAdapter extends NumberAdapter<BigDecimal> {
         return new JsonPrimitive(value);
     }
 
-    
     @Override
     protected BigDecimal readNumberJson(JsonElement json) {
         if(json instanceof JsonObject) {
@@ -103,7 +102,7 @@ public class BigDecimalAdapter extends NumberAdapter<BigDecimal> {
                 return primitive.getAsBigDecimal();
             } else if(primitive.isString()) {
                 return parse(primitive.getAsString()).map(number -> {
-                    return number instanceof BigDecimal value ? value : BigDecimal.valueOf(number.doubleValue());
+                    return number instanceof BigDecimal value ? value : new BigDecimal(number.toString());
                 }).orElse(null);
             }
         }

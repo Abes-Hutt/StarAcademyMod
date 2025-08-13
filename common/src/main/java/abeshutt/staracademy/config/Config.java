@@ -1,10 +1,16 @@
 package abeshutt.staracademy.config;
 
+import abeshutt.staracademy.attribute.again.Attribute;
+import abeshutt.staracademy.card.BoosterPackEntry;
+import abeshutt.staracademy.card.CardAlbumEntry;
+import abeshutt.staracademy.card.CardEntry;
+import abeshutt.staracademy.card.CardModifierEntry;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.biome.BiomePredicate;
 import abeshutt.staracademy.data.entity.EntityPredicate;
 import abeshutt.staracademy.data.item.ItemPredicate;
 import abeshutt.staracademy.data.tile.TilePredicate;
+import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.util.ItemUseLogic;
 import abeshutt.staracademy.world.roll.IntRoll;
 import com.google.gson.Gson;
@@ -34,6 +40,12 @@ public abstract class Config {
             .registerTypeAdapter(Identifier.class, Adapters.IDENTIFIER)
             .registerTypeAdapter(ItemStack.class, Adapters.ITEM_STACK)
             .registerTypeAdapter(ItemUseLogic.class, Adapters.of(ItemUseLogic::new, false))
+            .registerTypeAdapter(CardEntry.class, Adapters.CARD_ENTRY)
+            .registerTypeAdapter(Rational.class, Adapters.RATIONAL)
+            .registerTypeAdapter(CardModifierEntry.class, Adapters.CARD_MODIFIER_ENTRY)
+            .registerTypeAdapter(BoosterPackEntry.class, Adapters.CARD_BOOSTER_ENTRY)
+            .registerTypeAdapter(CardAlbumEntry.class, Adapters.CARD_ALBUM_ENTRY)
+            .registerTypeAdapter(Attribute.class, Adapters.ATTRIBUTE)
             .create();
 
     public abstract void write() throws IOException;

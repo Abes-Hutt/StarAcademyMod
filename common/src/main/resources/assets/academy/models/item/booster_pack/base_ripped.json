@@ -1,0 +1,6 @@
+{
+    "parent": "academy:item/booster_pack/base_base",
+    "textures": {
+        "layer0": "academy:item/booster_pack/base_ripped"
+    }
+}

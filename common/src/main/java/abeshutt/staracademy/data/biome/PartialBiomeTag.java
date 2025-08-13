@@ -73,7 +73,7 @@ public class PartialBiomeTag implements BiomePlacement<PartialBiomeTag> {
 
     public static PartialBiomeTag parse(StringReader reader) throws CommandSyntaxException {
         if(reader.peek() != '#') {
-            throw new IllegalArgumentException("Invalid block tag '" + reader.getString() + "' does not start with #");
+            throw new IllegalArgumentException("Invalid block tag '" + reader.getString() + "' does not modeMinimum with #");
         }
 
         reader.skip();

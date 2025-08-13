@@ -110,10 +110,16 @@ public class CompoundNbtAdapter extends NbtAdapter<NbtCompound> {
 
     @Override
     protected JsonElement writeTagJson(NbtCompound value) {
-        return new JsonPrimitive(value.asString());
+        JsonObject json = new JsonObject();
+
+        for(String key : value.getKeys()) {
+            NbtElement element = value.get(key);
+            Adapters.GENERIC_NBT.writeJson(element).ifPresent(tag -> json.add(key, tag));
+        }
+
+        return json;
     }
 
-    
     @Override
     protected NbtCompound readTagJson(JsonElement json) {
         if(json instanceof JsonPrimitive primitive && primitive.isString()) {

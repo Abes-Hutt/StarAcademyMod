@@ -20,4 +20,8 @@ public abstract class Option<T> {
 
     public abstract <U> Option<U> map(Function<? super T, ? extends U> mapper);
 
+    public abstract <U> Option<U> mapFlat(Function<? super T, ? extends Option<U>> mapper);
+
+    public abstract T orElse(T other);
+
 }

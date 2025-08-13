@@ -1,12 +1,12 @@
 package abeshutt.staracademy.item.data;
 
-import abeshutt.staracademy.attribute.ModifierInstance;
+import abeshutt.staracademy.attribute.ModifierReference;
 
 public class CardModifier {
 
-    private ModifierInstance<?> modifier;
+    private ModifierReference<?> modifier;
 
-    public ModifierInstance<?> get() {
+    public ModifierReference<?> get() {
         return this.modifier;
     }
 

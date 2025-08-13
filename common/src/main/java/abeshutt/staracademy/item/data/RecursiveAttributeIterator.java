@@ -1,6 +1,7 @@
 package abeshutt.staracademy.item.data;
 
 import abeshutt.staracademy.attribute.Attribute;
+import abeshutt.staracademy.attribute.parent.ModifierAttributeParent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,7 +30,7 @@ public class RecursiveAttributeIterator implements Iterator<Attribute<?>> {
                         return;
                     }
 
-                    index = this.root.getParent().getIndex();
+                    index = ((ModifierAttributeParent)this.root.getParent()).getIndex();
                     this.root = this.root.getParent().get();
                 } while(index + 1 >= this.root.getChildren().size());
 

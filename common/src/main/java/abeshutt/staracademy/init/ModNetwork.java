@@ -39,6 +39,7 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), UpdateHousesS2CPacket.ID, UpdateHousesS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
+            ModNetwork.register(NetworkManager.c2s(), SelectBoosterPackC2SPacket.ID, SelectBoosterPackC2SPacket::new, SERVER_PLAY);
         }
     }
 
@@ -56,6 +57,7 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), UpdateHousesS2CPacket.ID, UpdateHousesS2CPacket::new, null);
             ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
+            ModNetwork.register(NetworkManager.c2s(), SelectBoosterPackC2SPacket.ID, SelectBoosterPackC2SPacket::new, SERVER_PLAY);
         }
     }
 

@@ -67,9 +67,13 @@ public class AttributePath<U> implements ISerializable<NbtElement, JsonElement> 
 
         StringBuilder builder = new StringBuilder(this.absolute ? "/" : "");
 
-        for(String folder : this.parts) {
+        for(int i = 0; i < this.parts.size(); i++) {
+            String folder = this.parts.get(i);
             builder.append(folder);
-            builder.append("/");
+
+            if(i != this.parts.size() - 1) {
+                builder.append("/");
+            }
         }
 
         return Optional.of(new JsonPrimitive(builder.toString()));
@@ -77,6 +81,8 @@ public class AttributePath<U> implements ISerializable<NbtElement, JsonElement> 
 
     @Override
     public void readJson(JsonElement json) {
+        this.parts.clear();
+
         if(json instanceof JsonPrimitive primitive && primitive.isString()) {
             String path = primitive.getAsString();
 
@@ -87,7 +93,6 @@ public class AttributePath<U> implements ISerializable<NbtElement, JsonElement> 
                 this.absolute = false;
             }
 
-            this.parts.clear();
             String[] parts = path.split("/");
             this.parts.addAll(Arrays.asList(parts));
         }

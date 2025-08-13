@@ -86,7 +86,7 @@ public class PartialEntityGroup implements EntityPlacement<PartialEntityGroup> {
 
     public static PartialEntityGroup parse(StringReader reader) throws CommandSyntaxException {
         if(reader.peek() != '@') {
-            throw new IllegalArgumentException("Invalid entity group '" + reader.getString() + "' does not start with @");
+            throw new IllegalArgumentException("Invalid entity group '" + reader.getString() + "' does not modeMinimum with @");
         }
 
         reader.skip();

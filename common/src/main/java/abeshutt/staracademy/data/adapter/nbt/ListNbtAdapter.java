@@ -8,6 +8,7 @@ import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
@@ -134,7 +135,10 @@ public class ListNbtAdapter extends NbtAdapter<NbtList> {
     @Override
     protected JsonElement writeTagJson(NbtList value) {
         JsonArray array = new JsonArray();
-        array.add(KEY_TO_ID.getInt(value.getHeldType()));
+
+        if(!value.stream().allMatch(element -> element instanceof NbtCompound)) {
+            array.add(KEY_TO_ID.getInt(value.getHeldType()));
+        }
 
         for(NbtElement tag : value) {
             Adapters.NBT[value.getHeldType()].writeJson(tag).ifPresent(o -> array.add((JsonElement)o));

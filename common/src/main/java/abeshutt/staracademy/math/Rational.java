@@ -1,9 +1,11 @@
 package abeshutt.staracademy.math;
 
+import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtString;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,6 +21,9 @@ public class Rational extends Number implements Comparable<Rational> {
     public static final Rational ZERO = Rational.of(0, 1);
     public static final Rational HALF = Rational.of(1, 2);
     public static final Rational ONE = Rational.of(1, 1);
+    public static final Rational TWO = Rational.of(2, 1);
+    public static final Rational FLOAT_EPSILON = Rational.of(1, 1 << 24);
+    public static final Rational DOUBLE_EPSILON = Rational.of(1, 1L << 53);
 
     protected BigInteger numerator;
     protected BigInteger denominator;
@@ -44,7 +49,7 @@ public class Rational extends Number implements Comparable<Rational> {
         return this.denominator;
     }
 
-    protected Rational simplify() {
+    public Rational simplify() {
         if(this.numerator.signum() == 0) {
             this.denominator = BigInteger.ONE;
             return this;
@@ -194,21 +199,43 @@ public class Rational extends Number implements Comparable<Rational> {
     }
 
     public Rational floor() {
-        if(this.getDenominator().equals(BigInteger.ONE)) return this;
-        BigInteger a = this.getNumerator().divide(this.getDenominator());
-        if(this.getNumerator().signum() < 0)a = a.subtract(BigInteger.ONE);
-        return Rational.of(a);
+        if(this.getDenominator().equals(BigInteger.ONE)) {
+            return this;
+        }
+
+        BigInteger[] divMod = this.getNumerator().divideAndRemainder(this.getDenominator());
+        BigInteger quotient = divMod[0];
+        BigInteger remainder = divMod[1];
+
+        if(!remainder.equals(BigInteger.ZERO) && this.signum() < 0) {
+            quotient = quotient.subtract(BigInteger.ONE);
+        }
+
+        return Rational.of(quotient);
     }
 
     public Rational ceil() {
-        if(this.getDenominator().equals(BigInteger.ONE)) return this;
-        BigInteger a = this.getNumerator().divide(this.getDenominator());
-        if(this.getNumerator().signum() < 0)a = a.add(BigInteger.ONE);
-        return Rational.of(a);
+        if(this.getDenominator().equals(BigInteger.ONE)) {
+            return this;
+        }
+
+        BigInteger[] divMod = this.getNumerator().divideAndRemainder(this.getDenominator());
+        BigInteger quotient = divMod[0];
+        BigInteger remainder = divMod[1];
+
+        if(!remainder.equals(BigInteger.ZERO) && this.signum() > 0) {
+            quotient = quotient.add(BigInteger.ONE);
+        }
+
+        return Rational.of(quotient);
     }
 
     public Rational round() {
-        return this.add(HALF).floor();
+        if(this.getNumerator().signum() >= 0) {
+            return this.add(HALF).floor();
+        } else {
+            return this.subtract(HALF).ceil();
+        }
     }
 
     @Override
@@ -278,21 +305,16 @@ public class Rational extends Number implements Comparable<Rational> {
         return new Rational(numerator, denominator);
     }
 
-    public static Rational of(long numerator, long denominator) {
-        return of(BigInteger.valueOf(numerator), BigInteger.valueOf(denominator));
-    }
-
-    public static Rational of(BigInteger numerator, long denominator) {
-        return of(numerator, BigInteger.valueOf(denominator));
-    }
-
-    public static Rational of(long numerator, BigInteger denominator) {
-        return of(BigInteger.valueOf(numerator), denominator);
+    public static Rational of(Number numerator, Number denominator) {
+        return Rational.of(numerator).divide(Rational.of(denominator));
     }
 
     public static Rational of(BigDecimal value) {
         value = value.stripTrailingZeros();
-        return of(value.movePointRight(value.scale()).toBigIntegerExact(), BigInteger.TEN.pow(value.scale()));
+        int scale = value.scale();
+        BigInteger numerator = value.scaleByPowerOfTen(Math.abs(scale)).toBigIntegerExact();
+        BigInteger denominator = (scale > 0) ? BigInteger.TEN.pow(scale) : BigInteger.ONE;
+        return of(numerator, denominator);
     }
 
     public static Rational of(BigInteger value) {
@@ -333,7 +355,7 @@ public class Rational extends Number implements Comparable<Rational> {
     }
 
     public static Rational of(long value) {
-        return of(value, 1);
+        return of(BigInteger.valueOf(value), BigInteger.ONE);
     }
 
     public static Rational of(Number number) {
@@ -342,9 +364,9 @@ public class Rational extends Number implements Comparable<Rational> {
         } else if(number instanceof BigInteger integer) {
             return of(integer);
         } else if(number instanceof Float || number instanceof Double) {
-            return of((double)number);
+            return of(number.doubleValue());
         } else if(number instanceof Byte || number instanceof Short || number instanceof Integer || number instanceof Long) {
-            return of((long)number);
+            return of(number.longValue());
         } else if(number instanceof Rational rational) {
             return rational;
         }
@@ -376,11 +398,11 @@ public class Rational extends Number implements Comparable<Rational> {
         }
 
         @Override
-        public Optional<JsonElement> writeJson(Rational value) {
+        public Optional<NbtElement> writeNbt(Rational value) {
             Rational reduced = value.simplify();
 
             if(reduced.getDenominator().compareTo(BigInteger.ONE) == 0) {
-                return Optional.of(new JsonPrimitive(reduced.getNumerator()));
+                return Adapters.BIG_INTEGER.writeNbt(reduced.getNumerator());
             }
 
             BigInteger remainder = reduced.getDenominator();
@@ -395,11 +417,57 @@ public class Rational extends Number implements Comparable<Rational> {
             if(remainder.compareTo(BigInteger.ONE) == 0) {
                 BigDecimal decimal = new BigDecimal(reduced.getNumerator())
                         .divide(new BigDecimal(reduced.getDenominator()), MathContext.UNLIMITED);
-                return Optional.of(new JsonPrimitive(decimal));
+                return Adapters.BIG_DECIMAL.writeNbt(decimal);
             }
 
-            return Optional.of(new JsonPrimitive(reduced.getNumerator().toString()
-                    + " / " + reduced.getDenominator().toString()));
+            return Adapters.UTF_8.writeNbt(reduced.getNumerator().toString()
+                    + " / " + reduced.getDenominator().toString());
+        }
+
+        @Override
+        public Optional<Rational> readNbt(NbtElement nbt) {
+            if(nbt instanceof NbtString string) {
+                String[] parts = string.asString().split(Pattern.quote("/"));
+
+                if(parts.length == 1) {
+                    return Optional.of(Rational.of(
+                            new BigInteger(parts[0].strip()),
+                            BigInteger.ONE));
+                } else if(parts.length == 2) {
+                    return Optional.of(Rational.of(
+                            new BigInteger(parts[0].strip()),
+                            new BigInteger(parts[1].strip())));
+                }
+            }
+
+            return Adapters.BIG_DECIMAL.readNbt(nbt).map(Rational::of);
+        }
+
+        @Override
+        public Optional<JsonElement> writeJson(Rational value) {
+            Rational reduced = value.simplify();
+
+            if(reduced.getDenominator().compareTo(BigInteger.ONE) == 0) {
+                return Adapters.BIG_INTEGER.writeJson(reduced.getNumerator());
+            }
+
+            BigInteger remainder = reduced.getDenominator();
+            remainder = remainder.shiftRight(remainder.getLowestSetBit());
+
+            BigInteger five = BigInteger.valueOf(5);
+
+            while(remainder.mod(five).equals(BigInteger.ZERO)) {
+                remainder = remainder.divide(BigInteger.valueOf(5));
+            }
+
+            if(remainder.compareTo(BigInteger.ONE) == 0) {
+                BigDecimal decimal = new BigDecimal(reduced.getNumerator())
+                        .divide(new BigDecimal(reduced.getDenominator()), MathContext.UNLIMITED);
+                return Adapters.BIG_DECIMAL.writeJson(decimal);
+            }
+
+            return Adapters.UTF_8.writeJson(reduced.getNumerator().toString()
+                    + " / " + reduced.getDenominator().toString());
         }
 
         @Override
@@ -411,11 +479,11 @@ public class Rational extends Number implements Comparable<Rational> {
                     String[] parts = primitive.getAsString().split(Pattern.quote("/"));
 
                     if(parts.length == 1) {
-                        return Optional.of(Rational.of(new BigDecimal(parts[0])));
+                        return Optional.of(Rational.of(new BigDecimal(parts[0].strip())));
                     } else if(parts.length == 2) {
                         return Optional.of(Rational.of(
-                                new BigInteger(parts[0]),
-                                new BigInteger(parts[1])));
+                                new BigInteger(parts[0].strip()),
+                                new BigInteger(parts[1].strip())));
                     }
                 }
             }

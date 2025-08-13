@@ -1,10 +1,14 @@
 package abeshutt.staracademy.data.adapter;
 
+import abeshutt.staracademy.CardRarity;
+import abeshutt.staracademy.attribute.again.Attribute;
+import abeshutt.staracademy.attribute.again.WeightedList;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.block.entity.renderer.DynamicBone;
 import abeshutt.staracademy.block.entity.renderer.DynamicCuboid;
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
 import abeshutt.staracademy.block.entity.renderer.DynamicTexture;
+import abeshutt.staracademy.card.*;
 import abeshutt.staracademy.data.adapter.array.ArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.ByteArrayAdapter;
 import abeshutt.staracademy.data.adapter.array.IntArrayAdapter;
@@ -31,9 +35,12 @@ import abeshutt.staracademy.world.random.LcgRandom;
 import abeshutt.staracademy.world.random.RandomSource;
 import abeshutt.staracademy.world.random.lcg.Lcg;
 import abeshutt.staracademy.world.roll.IntRoll;
+import abeshutt.staracademy.world.roll.NumberRoll;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.Registries;
 
@@ -71,8 +78,11 @@ public class Adapters {
     public static final DoubleAdapter DOUBLE = new DoubleAdapter(false);
 
     public static final BigIntegerAdapter BIG_INTEGER = new BigIntegerAdapter(false);
+
     public static final BigDecimalAdapter BIG_DECIMAL = new BigDecimalAdapter(false);
+
     public static final Rational.Adapter RATIONAL = new Rational.Adapter(false);
+    public static final NumberRoll.Adapter NUMBER_ROLL = new NumberRoll.Adapter(false);
 
     public static final VoidAdapter<?> VOID = new VoidAdapter<>();
     public static final StringAdapter UTF_8 = new StringAdapter(StandardCharsets.UTF_8, false);
@@ -146,9 +156,16 @@ public class Adapters {
     public static final SerializableAdapter<HousePlayer, NbtElement, JsonElement> HOUSE_PLAYER = Adapters.of(HousePlayer::new, false);
     public static final SpeciesDexRecordAdapter SPECIES_DEX_RECORD = new SpeciesDexRecordAdapter(false);
     public static final FormDexRecordAdapter FORM_DEX_RECORD = new FormDexRecordAdapter();
-    public static final SerializableAdapter<HousePokedexManager, NbtElement, JsonElement> HOUSE_POKEDEX_MANAGER = of(HousePokedexManager::new, false);
+    public static final SerializableAdapter<HousePokedexManager, NbtElement, JsonElement> HOUSE_POKEDEX_MANAGER = Adapters.of(HousePokedexManager::new, false);
 
-    public static final SerializableAdapter<AttributePath, NbtElement, JsonElement> ATTRIBUTE_PATH = of(AttributePath::empty, false);
+    public static final SerializableAdapter<AttributePath, NbtElement, JsonElement> ATTRIBUTE_PATH = Adapters.of(AttributePath::empty, false);
+    public static final Attribute.Adapter ATTRIBUTE = new Attribute.Adapter();
+    public static final EnumAdapter<CardRarity> CARD_RARITY = Adapters.ofEnum(CardRarity.class, EnumAdapter.Mode.NAME);
+    public static final SerializableAdapter<CardData, NbtCompound, JsonObject> CARD = Adapters.of(CardData::new, false);
+    public static final SerializableAdapter<CardEntry, NbtCompound, JsonObject> CARD_ENTRY = Adapters.of(CardEntry::new, false);
+    public static final SerializableAdapter<CardModifierEntry, NbtCompound, JsonObject> CARD_MODIFIER_ENTRY = Adapters.of(CardModifierEntry::new, false);
+    public static final SerializableAdapter<BoosterPackEntry, NbtCompound, JsonObject> CARD_BOOSTER_ENTRY = Adapters.of(BoosterPackEntry::new, false);
+    public static final SerializableAdapter<CardAlbumEntry, NbtCompound, JsonObject> CARD_ALBUM_ENTRY = Adapters.of(CardAlbumEntry::new, false);
 
     public static Lcg.Adapter LCG = new Lcg.Adapter(false);
 
@@ -175,6 +192,10 @@ public class Adapters {
 
     public static <T> ArrayAdapter<T> ofArray(IntFunction<T[]> constructor, Object elementAdapter) {
         return new ArrayAdapter<>(constructor, elementAdapter, () -> null, false);
+    }
+
+    public static <T> WeightedList.Adapter<T> ofWeightedList(IAdapter<T, ?, ?, ?> element) {
+        return new WeightedList.Adapter<>(element, false);
     }
 
     public static <T> VoidAdapter<T> ofVoid() {

@@ -12,6 +12,7 @@ import net.minecraft.util.Rarity;
 import java.util.function.Supplier;
 
 public class ModItems extends ModRegistries {
+
     public static RegistrySupplier<Item> STAR_BADGE;
     public static RegistrySupplier<Item> HUNT;
     public static RegistrySupplier<DuelingGloveItem> DUELING_GLOVE;
@@ -26,7 +27,7 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> UBER_SHINY_INCENSE;
     public static RegistrySupplier<Item> CARD;
     public static RegistrySupplier<Item> BOOSTER_PACK;
-    public static RegistrySupplier<Item> ALBUM;
+    public static RegistrySupplier<Item> CARD_ALBUM;
 
     public static void register() {
         STAR_BADGE = register("star_badge", StarBadgeItem::new);
@@ -43,7 +44,7 @@ public class ModItems extends ModRegistries {
         UBER_SHINY_INCENSE = register("uber_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         CARD = register("card", CardItem::new);
         BOOSTER_PACK = register("booster_pack", BoosterPackItem::new);
-        ALBUM = register("album", AlbumItem::new);
+        CARD_ALBUM = register("card_album", CardAlbumItem::new);
         register("roasted_aguav_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_apicot_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_aspear_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));

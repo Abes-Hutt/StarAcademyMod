@@ -35,4 +35,14 @@ public class AbsentOption<T> extends Option<T> {
         return Option.absent();
     }
 
+    @Override
+    public <U> Option<U> mapFlat(Function<? super T, ? extends Option<U>> mapper) {
+        return Option.absent();
+    }
+
+    @Override
+    public T orElse(T other) {
+        return other;
+    }
+
 }

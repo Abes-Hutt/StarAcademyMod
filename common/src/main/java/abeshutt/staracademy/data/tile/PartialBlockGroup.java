@@ -91,7 +91,7 @@ public class PartialBlockGroup implements TilePlacement<PartialBlockGroup> {
 
     public static PartialBlockGroup parse(StringReader reader) throws CommandSyntaxException {
         if(reader.peek() != '@') {
-            throw new IllegalArgumentException("Invalid block group '" + reader.getString() + "' does not start with @");
+            throw new IllegalArgumentException("Invalid block group '" + reader.getString() + "' does not modeMinimum with @");
         }
 
         reader.skip();
