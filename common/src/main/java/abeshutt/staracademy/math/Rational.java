@@ -312,8 +312,16 @@ public class Rational extends Number implements Comparable<Rational> {
     public static Rational of(BigDecimal value) {
         value = value.stripTrailingZeros();
         int scale = value.scale();
-        BigInteger numerator = value.scaleByPowerOfTen(Math.abs(scale)).toBigIntegerExact();
-        BigInteger denominator = (scale > 0) ? BigInteger.TEN.pow(scale) : BigInteger.ONE;
+        BigInteger numerator = value.unscaledValue();
+        BigInteger denominator;
+
+        if(scale >= 0) {
+            denominator = BigInteger.TEN.pow(scale);
+        } else {
+            numerator = numerator.multiply(BigInteger.TEN.pow(-scale));
+            denominator = BigInteger.ONE;
+        }
+
         return of(numerator, denominator);
     }
 
