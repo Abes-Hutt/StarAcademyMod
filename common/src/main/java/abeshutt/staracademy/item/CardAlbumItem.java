@@ -70,29 +70,33 @@ public class CardAlbumItem extends TrinketItem implements ISpecialItemModel {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(user instanceof ServerPlayerEntity player && hand == Hand.MAIN_HAND) {
+        if(hand == Hand.MAIN_HAND && !user.isSneaking()) {
             ItemStack stack = user.getStackInHand(hand);
 
-            if(!stack.contains(ModDataComponents.CARD_ALBUM_CONTAINER.get())) {
-                stack.set(ModDataComponents.CARD_ALBUM_CONTAINER.get(), new CardAlbumInventory());
+            if(user instanceof ServerPlayerEntity player) {
+                if(!stack.contains(ModDataComponents.CARD_ALBUM_CONTAINER.get())) {
+                    stack.set(ModDataComponents.CARD_ALBUM_CONTAINER.get(), new CardAlbumInventory());
+                }
+
+                MenuRegistry.openExtendedMenu(player, new ExtendedMenuProvider() {
+                    @Override
+                    public void saveExtraData(PacketByteBuf buf) {
+
+                    }
+
+                    @Override
+                    public Text getDisplayName() {
+                        return Text.empty();
+                    }
+
+                    @Override
+                    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity _player) {
+                        return new CardAlbumScreenHandler(syncId, player, stack.get(ModDataComponents.CARD_ALBUM_CONTAINER.get()));
+                    }
+                });
             }
 
-            MenuRegistry.openExtendedMenu(player, new ExtendedMenuProvider() {
-                @Override
-                public void saveExtraData(PacketByteBuf buf) {
-
-                }
-
-                @Override
-                public Text getDisplayName() {
-                    return Text.empty();
-                }
-
-                @Override
-                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity _player) {
-                    return new CardAlbumScreenHandler(syncId, player, stack.get(ModDataComponents.CARD_ALBUM_CONTAINER.get()));
-                }
-            });
+            return TypedActionResult.success(stack, false);
         }
 
         return super.use(world, user, hand);

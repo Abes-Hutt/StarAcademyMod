@@ -3,6 +3,7 @@ package abeshutt.staracademy.screen.handler;
 import abeshutt.staracademy.data.component.CardAlbumInventory;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModScreenHandlers;
+import abeshutt.staracademy.item.CardItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -115,6 +116,11 @@ public class CardAlbumScreenHandler extends ScreenHandler {
         @Override
         public boolean canBeHighlighted() {
             return false;
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            return stack.getItem() instanceof CardItem;
         }
     }
 
