@@ -17,17 +17,19 @@ public class CardAlbumScreenHandler extends ScreenHandler {
 
     private final PlayerEntity player;
     private final CardAlbumInventory inventory;
+    private final ItemStack stack;
     private final int slot;
     private final InventoryChangedListener listener;
 
     public CardAlbumScreenHandler(int id, PlayerInventory inventory, PacketByteBuf buf) {
-        this(id, inventory.player, new CardAlbumInventory());
+        this(id, inventory.player, ItemStack.EMPTY, new CardAlbumInventory());
     }
 
-    public CardAlbumScreenHandler(int syncId, PlayerEntity player, CardAlbumInventory inventory) {
+    public CardAlbumScreenHandler(int syncId, PlayerEntity player, ItemStack stack, CardAlbumInventory inventory) {
         super(ModScreenHandlers.CARD_ALBUM.get(), syncId);
         this.player = player;
         this.inventory = inventory;
+        this.stack = stack;
         this.slot = this.player.getInventory().selectedSlot;
 
         this.listener = sender -> {
@@ -58,7 +60,7 @@ public class CardAlbumScreenHandler extends ScreenHandler {
 
                     @Override
                     public boolean canInsert(ItemStack stack) {
-                        return this.getIndex() != CardAlbumScreenHandler.this.slot;
+                        return this.getIndex() != CardAlbumScreenHandler.this.slot && stack != CardAlbumScreenHandler.this.stack;
                     }
                 });
             }
@@ -73,7 +75,7 @@ public class CardAlbumScreenHandler extends ScreenHandler {
 
                 @Override
                 public boolean canInsert(ItemStack stack) {
-                    return this.getIndex() != CardAlbumScreenHandler.this.slot;
+                    return this.getIndex() != CardAlbumScreenHandler.this.slot && stack != CardAlbumScreenHandler.this.stack;
                 }
             });
         }

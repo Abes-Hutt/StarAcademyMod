@@ -296,4 +296,17 @@ public class BaseInventory implements Inventory, RecipeInputProvider, INbtSerial
         this.markDirty();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+
+        if(o instanceof BaseInventory other) {
+            return ItemStack.stacksEqual(this.stacks, other.stacks);
+        }
+
+        return false;
+    }
+
 }
