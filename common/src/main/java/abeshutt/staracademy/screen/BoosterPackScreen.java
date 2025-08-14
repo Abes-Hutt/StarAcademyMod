@@ -109,6 +109,10 @@ public class BoosterPackScreen extends Screen {
             context.drawItem(this.stack, 0, 0, 0);
             context.getMatrices().pop();
             RenderSystem.enableDepthTest();
+
+            if(this.isHovered() && BoosterPackScreen.this.selected.contains(this.index)) {
+                context.drawItemTooltip(MinecraftClient.getInstance().textRenderer, this.stack, mouseX, mouseY);
+            }
         }
 
         @Override
