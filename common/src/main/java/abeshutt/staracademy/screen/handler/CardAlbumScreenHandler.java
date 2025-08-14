@@ -55,6 +55,11 @@ public class CardAlbumScreenHandler extends ScreenHandler {
                     public boolean canTakeItems(PlayerEntity playerEntity) {
                         return this.getIndex() != CardAlbumScreenHandler.this.slot;
                     }
+
+                    @Override
+                    public boolean canInsert(ItemStack stack) {
+                        return this.getIndex() != CardAlbumScreenHandler.this.slot;
+                    }
                 });
             }
         }
@@ -63,6 +68,11 @@ public class CardAlbumScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(this.player.getInventory(), j, 8 + 40 + j * 18, 161 + 48 + i) {
                 @Override
                 public boolean canTakeItems(PlayerEntity playerEntity) {
+                    return this.getIndex() != CardAlbumScreenHandler.this.slot;
+                }
+
+                @Override
+                public boolean canInsert(ItemStack stack) {
                     return this.getIndex() != CardAlbumScreenHandler.this.slot;
                 }
             });
@@ -91,7 +101,7 @@ public class CardAlbumScreenHandler extends ScreenHandler {
                 return ItemStack.EMPTY;
             }
 
-            if (itemStack2.isEmpty()) {
+            if(itemStack2.isEmpty()) {
                 slot2.setStack(ItemStack.EMPTY);
             } else {
                 slot2.markDirty();
