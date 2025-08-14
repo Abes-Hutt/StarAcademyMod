@@ -24,7 +24,10 @@ public class CardItemRenderer extends SpecialItemRenderer {
             return;
         }
 
-        Identifier icon = ModConfigs.CARD_ICONS.get(card.getIcon()).orElse(null);
+        Identifier icon = ModConfigs.CARD_ICONS.get(card.getIcon())
+                .flatMap(entry -> entry.getModel(card.getRarity()))
+                .orElse(null);
+
         ModelIdentifier frame = StarAcademyMod.mid("card/frame/" + card.getRarity().asString(), "inventory");
 
         this.renderModel(frame, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay);

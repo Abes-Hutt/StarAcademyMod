@@ -164,6 +164,8 @@
   "trinkets.slot.legs.card_album": "Card Album",
   "item.academy.booster_pack.base": "Base Booster Pack",
   "item.academy.card_album.base": "Base Card Album",
+  "text.academy.card.name.prefix": "",
+  "text.academy.card.name.suffix": " Card",
   "text.academy.card.rarity": "Rarity",
   "text.academy.card.rarity.common": "Common",
   "text.academy.card.rarity.uncommon": "Uncommon",

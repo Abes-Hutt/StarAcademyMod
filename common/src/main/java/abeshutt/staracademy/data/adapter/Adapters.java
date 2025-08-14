@@ -163,6 +163,7 @@ public class Adapters {
     public static final EnumAdapter<CardRarity> CARD_RARITY = Adapters.ofEnum(CardRarity.class, EnumAdapter.Mode.NAME);
     public static final SerializableAdapter<CardData, NbtCompound, JsonObject> CARD = Adapters.of(CardData::new, false);
     public static final SerializableAdapter<CardEntry, NbtCompound, JsonObject> CARD_ENTRY = Adapters.of(CardEntry::new, false);
+    public static final SerializableAdapter<CardIconEntry, NbtCompound, JsonObject> CARD_ICON_ENTRY = Adapters.of(CardIconEntry::new, false);
     public static final SerializableAdapter<CardModifierEntry, NbtCompound, JsonObject> CARD_MODIFIER_ENTRY = Adapters.of(CardModifierEntry::new, false);
     public static final SerializableAdapter<BoosterPackEntry, NbtCompound, JsonObject> CARD_BOOSTER_ENTRY = Adapters.of(BoosterPackEntry::new, false);
     public static final SerializableAdapter<CardAlbumEntry, NbtCompound, JsonObject> CARD_ALBUM_ENTRY = Adapters.of(CardAlbumEntry::new, false);
