@@ -1,5 +1,6 @@
 package abeshutt.staracademy.attribute.again;
 
+import abeshutt.staracademy.CardRarity;
 import abeshutt.staracademy.attribute.Option;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.IAdapter;
@@ -7,6 +8,7 @@ import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.math.Rational;
+import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.random.RandomSource;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,10 +19,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Pair;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -46,6 +45,26 @@ public class WeightedList<T> implements ISerializable<NbtElement, JsonElement> {
 
     public static <T> WeightedList<T> build(Consumer<BiConsumer<T, Rational>> consumer) {
         return new WeightedList<T>().add(consumer);
+    }
+
+    public static void main(String[] args) {
+        WeightedList<CardRarity> list = WeightedList.of(Map.of(
+                CardRarity.COMMON, Rational.of(24),
+                CardRarity.UNCOMMON, Rational.of(16),
+                CardRarity.RARE, Rational.of(10),
+                CardRarity.EPIC, Rational.of(4),
+                CardRarity.LEGENDARY, Rational.of(2),
+                CardRarity.SHINY, Rational.ONE));
+
+        Map<CardRarity, Integer> freq = new LinkedHashMap<>();
+        RandomSource random = JavaRandom.ofNanoTime();
+
+        for(int i = 0; i < 5700000; i++) {
+            CardRarity result = list.getRandom(random).get();
+            freq.put(result, freq.getOrDefault(result, 0) + 1);
+        }
+
+        System.out.println(freq);
     }
 
     public WeightedList<T> add(T value, Rational weight) {
@@ -86,7 +105,7 @@ public class WeightedList<T> implements ISerializable<NbtElement, JsonElement> {
 
         consumer.accept((value, weight) -> {
             if(weight.compareTo(Rational.ZERO) > 0) {
-                added.add(new Pair<>(value, weight));
+                added.add(new Pair<>(value, weight.simplify()));
             }
         });
 

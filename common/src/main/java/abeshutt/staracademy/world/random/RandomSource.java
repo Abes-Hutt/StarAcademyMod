@@ -192,17 +192,21 @@ public interface RandomSource extends ISerializable<NbtCompound, JsonObject> {
 		}
 
 		BigInteger m = bound.subtract(BigInteger.ONE);
-		BigInteger value = this.nextBigInteger(m.bitLength());
+		int bitLength = m.bitLength();
 
-		if(bound.and(m).equals(BigInteger.ZERO)) {
-			return value;
+		if(bound.and(m).signum() == 0) {
+			return this.nextBigInteger(bitLength);
 		}
 
-		for(BigInteger u = value;
-			u.add(m).subtract(value = u.mod(bound)).compareTo(BigInteger.ZERO) < 0;
-			u = this.nextBigInteger(m.bitLength()));
+		BigInteger range = BigInteger.ONE.shiftLeft(bitLength);
+		BigInteger cutoff = range.subtract(range.mod(bound));
+		BigInteger result;
 
-		return value;
+		do {
+			result = this.nextBigInteger(bitLength);
+		} while (result.compareTo(cutoff) >= 0);
+
+		return result.mod(bound);
 	}
 
 	default BigInteger nextBigInteger(BigInteger min, BigInteger max) {
