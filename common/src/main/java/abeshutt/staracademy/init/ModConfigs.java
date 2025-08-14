@@ -1,5 +1,6 @@
 package abeshutt.staracademy.init;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.config.*;
 import abeshutt.staracademy.config.card.*;
 import dev.architectury.event.events.common.LifecycleEvent;
@@ -39,6 +40,15 @@ public class ModConfigs extends ModRegistries {
     public static CardAlbumsConfig CARD_ALBUMS;
 
     public static void register(boolean initialization) {
+        try {
+            registerInternal(initialization);
+        } catch(Exception e) {
+            StarAcademyMod.LOGGER.error("Failed to load configs", e);
+            throw e;
+        }
+    }
+
+    private static void registerInternal(boolean initialization) {
         TILE_GROUPS = new TileGroupsConfig().read();
         ENTITY_GROUPS = new EntityGroupsConfig().read();
         ITEM_GROUPS = new ItemGroupsConfig().read();

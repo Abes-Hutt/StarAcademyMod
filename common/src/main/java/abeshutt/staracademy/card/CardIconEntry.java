@@ -65,9 +65,10 @@ public class CardIconEntry implements ISerializable<NbtCompound, JsonObject> {
         this.entries.clear();
 
         for(String key : json.keySet()) {
-           Entry entry = new Entry();
-           entry.readJson(json.get(key).getAsJsonObject());
-           this.entries.put(key, entry);
+            if(key.equals("name")) continue;
+            Entry entry = new Entry();
+            entry.readJson(json.get(key).getAsJsonObject());
+            this.entries.put(key, entry);
         }
     }
 
