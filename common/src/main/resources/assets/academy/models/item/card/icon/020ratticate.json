@@ -1,7 +1,0 @@
-{
-  "parent": "academy:item/card/icon",
-  "textures": {
-    "0": "academy:item/card/icon/020ratticate",
-    "particle": "academy:item/card/icon/020ratticate"
-  }
-}
