@@ -95,9 +95,14 @@ public class ModRenderers extends ModRegistries {
 
     public static class Blocks extends ModRenderers {
         public static void register(BiConsumer<Block, RenderLayer> consumer) {
+            registerBlockModelRenderers(consumer);
             if(Platform.isModLoaded("enhancedcelestials")) {
                 EnhancedCelestialsCompatClient.registerBlockModelRenderers(consumer);
             }
+        }
+
+        public static void registerBlockModelRenderers(BiConsumer<Block, RenderLayer> consumer) {
+            consumer.accept(ModBlocks.SHINY_POKEDOLL_COLLECTOR.get(), RenderLayer.getCutout());
         }
     }
 

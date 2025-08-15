@@ -38,6 +38,7 @@ public class ModConfigs extends ModRegistries {
     public static CardEntriesConfig CARD_ENTRIES;
     public static CardBoosterPacksConfig CARD_BOOSTERS;
     public static CardAlbumsConfig CARD_ALBUMS;
+    public static PokedollConfig POKEDOLLS;
 
     public static void register(boolean initialization) {
         try {
@@ -75,6 +76,7 @@ public class ModConfigs extends ModRegistries {
         CARD_ENTRIES = new CardEntriesConfig().read();
         CARD_BOOSTERS = new CardBoosterPacksConfig().read();
         CARD_ALBUMS = new CardAlbumsConfig().read();
+        POKEDOLLS = new PokedollConfig().read();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);
