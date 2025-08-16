@@ -7,6 +7,7 @@ import abeshutt.staracademy.world.data.StarBadgeData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
@@ -39,7 +40,12 @@ public abstract class MixinPlayerScreenHandler<I extends RecipeInput, R extends 
             StarBadgeData data = ModWorldData.STAR_BADGE.getGlobal(owner.getServer());
             this.starBadges = new StarBadgeScreenHandler(this, data.getOrCreate(owner));
         } else {
-            this.starBadges = new StarBadgeScreenHandler(this, new SimpleInventory(10));
+            this.starBadges = new StarBadgeScreenHandler(this, new SimpleInventory(10) {
+                @Override
+                public ItemStack getStack(int slot) {
+                    return StarBadgeData.CLIENT.isEnabled() ? super.getStack(slot) : ItemStack.EMPTY;
+                }
+            });
         }
     }
 
