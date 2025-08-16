@@ -122,7 +122,7 @@ public class PartnerNPCEntity extends HumanEntity {
     static {
         CommonEvents.POKEMON_SENT_POST.register(event -> {
             World world = event.getPokemonEntity().getWorld();
-            if(world.isClient() || world.getServer() == null) return;
+            if(world.isClient() || world.getServer() == null || event.getPokemonEntity().getOwnerUuid() == null) return;
             UUID owner = event.getPokemonEntity().getOwnerUuid();
             ServerPlayerEntity player = world.getServer().getPlayerManager().getPlayer(owner);
             if(player == null) return;
