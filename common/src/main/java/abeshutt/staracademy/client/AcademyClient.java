@@ -17,6 +17,7 @@ public class AcademyClient {
     private final AuthManager auth;
     private final CodexManager codex;
     private final OutfitManager outfits;
+    private boolean connecting;
 
     public AcademyClient(MinecraftClient minecraft) {
         this.minecraft = minecraft;
@@ -39,6 +40,7 @@ public class AcademyClient {
         this.auth = new AuthManager();
         this.codex = new CodexManager();
         this.outfits = new OutfitManager();
+        this.connecting = false;
     }
 
     public MinecraftClient getMinecraft() {
@@ -49,7 +51,12 @@ public class AcademyClient {
         return this.outfits;
     }
 
+    public CodexManager getCodex() {
+        return this.codex;
+    }
+
     public void connect() {
+        this.connecting = true;
         this.disconnect();
         this.socket.connect();
         this.auth.start(this);
@@ -59,6 +66,7 @@ public class AcademyClient {
                 break;
             } else if(Boolean.FALSE.equals(this.auth.getAuthed())) {
                 this.disconnect();
+                this.connecting = false;
                 return;
             }
 
@@ -69,6 +77,8 @@ public class AcademyClient {
         if(!this.codex.isComplete()) {
             this.codex.check(this);
         }
+
+        this.connecting = false;
     }
 
     public void disconnect() {
@@ -79,9 +89,13 @@ public class AcademyClient {
     }
 
     public void tick() {
+        if(this.connecting) {
+            return;
+        }
+
         if(!this.socket.isConnected()) {
             if(this.timeout <= 0) {
-                this.connect();
+                new Thread(this::connect).start();
             } else {
                 this.timeout--;
             }
