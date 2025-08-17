@@ -58,7 +58,6 @@ public class BigIntegerAdapter extends NumberAdapter<BigInteger> {
     protected NbtElement writeNumberNbt(BigInteger value) {
         return wrap(reduce(value));
     }
-
     
     @Override
     protected BigInteger readNumberNbt(NbtElement nbt) {

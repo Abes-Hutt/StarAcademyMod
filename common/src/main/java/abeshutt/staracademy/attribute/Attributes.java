@@ -5,6 +5,10 @@ import abeshutt.staracademy.math.Rational;
 
 public class Attributes {
 
-    public static final AttributePath<Rational> RESISTANCE = AttributePath.absolute("resistance");
+    public static final AttributePath<Rational> SHINY_CHANCE = AttributePath.absolute("shiny_chance");
+
+    public static AttributePath<Rational> ofBucketWeight(String name) {
+        return AttributePath.absolute("bucket_weight/" + name);
+    }
 
 }
