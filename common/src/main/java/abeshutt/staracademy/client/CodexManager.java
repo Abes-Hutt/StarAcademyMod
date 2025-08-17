@@ -24,6 +24,10 @@ public class CodexManager {
         return this.complete;
     }
 
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
     public void check(AcademyClient client) {
         Path cache;
         Integer assetsChecksum;
