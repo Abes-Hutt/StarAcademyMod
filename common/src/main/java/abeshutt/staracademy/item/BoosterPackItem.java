@@ -81,10 +81,15 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
         }
 
         if(world.isClient()) {
-            MinecraftClient.getInstance().setScreen(new BoosterPackScreen());
+            this.openScreen();
         }
 
         return TypedActionResult.consume(stack);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void openScreen() {
+        MinecraftClient.getInstance().setScreen(new BoosterPackScreen());
     }
 
     @Override
