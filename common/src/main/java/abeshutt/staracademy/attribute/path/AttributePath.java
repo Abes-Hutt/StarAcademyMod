@@ -56,6 +56,10 @@ public class AttributePath<U> implements ISerializable<NbtElement, JsonElement> 
     }
 
     public <T> T split(BiFunction<String, AttributePath<U>, T> action) {
+        if(this.parts.size() == 1) {
+            return action.apply(this.parts.getFirst(), empty());
+        }
+
         return action.apply(this.parts.getFirst(), new AttributePath<>(false, this.parts.subList(1, this.parts.size() - 1)));
     }
 

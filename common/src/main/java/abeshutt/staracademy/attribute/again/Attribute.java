@@ -67,7 +67,7 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
     }
 
 
-    public <U> Attribute<U> path(AttributePath<U> path) {
+    public <U> Optional<Attribute<U>> path(AttributePath<U> path) {
         if(path.isAbsolute()) {
             return this.root().path(path.toRelative());
         }
@@ -79,12 +79,12 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
                 } else if(part.equals(".")) {
                     return this.path(remainder);
                 } else {
-                    return this.getChildren().get(part).path(remainder);
+                    return Optional.ofNullable(this.getChildren().get(part)).flatMap(a -> a.path(remainder));
                 }
             });
         }
 
-        return (Attribute<U>)this;
+        return Optional.of((Attribute<U>)this);
     }
 
     @Override

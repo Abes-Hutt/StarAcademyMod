@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static abeshutt.staracademy.attribute.Attributes.ofBucketWeight;
+
 @Mixin(ShinyChanceCalculationEvent.class)
 public class MixinShinyCalculationEvent {
 
@@ -20,10 +22,11 @@ public class MixinShinyCalculationEvent {
     private void calculate(ServerPlayerEntity player, CallbackInfoReturnable<Float> ci) {
         if(player != null) {
             Float chance = ci.getReturnValue();
-            Attribute<Rational> attribute = AttributeHolder.getRoot(player).path(Attributes.SHINY_CHANCE);
-            Option<Rational> result = attribute.get(Option.present(Rational.of(chance)), AttributeContext.random());
-            chance = result.isPresent() ? result.get().floatValue() : chance;
-            ci.setReturnValue(chance);
+            ci.setReturnValue(AttributeHolder.getRoot(player).path(Attributes.SHINY_CHANCE).map(attribute -> {
+                Option<Rational> result = attribute.get(Option.present(Rational.of(chance)),
+                        AttributeContext.random());
+                return result.isPresent() ? result.get().floatValue() : chance;
+            }).orElse(chance));
         }
     }
 

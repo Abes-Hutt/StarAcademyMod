@@ -14,7 +14,8 @@ public class ReferenceAttribute<T> extends ValueAttribute<T, AttributePath<T>, A
 
     @Override
     protected Option<T> compute(Option<T> value, AttributeContext context) {
-        return this.value == null ? Option.absent() : this.path(this.value).get(value, context);
+        //return this.value == null ? Option.absent() : this.path(this.value).get(value, context);
+        return Option.absent();
     }
 
     @Override
