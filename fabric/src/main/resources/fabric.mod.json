@@ -3,14 +3,16 @@
   "id": "academy",
   "version": "${version}",
   "name": "Academy",
-  "description": "",
+  "description": "Integration mod for the Cobblemon Academy modpack.",
   "authors": [
     "KaptainWutax"
   ],
   "contact": {
-    "homepage": ""
+    "homepage": "https://cobblemon.academy/",
+    "sources": "https://github.com/Abes-Hutt/StarAcademyMod/",
+    "issues": "https://github.com/Abes-Hutt/StarAcademyMod/issues"
   },
-  "license": "All-Rights-Reserved",
+  "license": "GPL-3.0-only",
   "icon": "assets/academy/icon.png",
   "environment": "*",
   "entrypoints": {
