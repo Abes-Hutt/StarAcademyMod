@@ -51,6 +51,7 @@ public class MixinPokemonBattle {
                     }).orElse(yield));
         }
 
+        evs.entrySet().removeIf(entry -> entry.getValue() == 0);
         return evs;
     }
 
