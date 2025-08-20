@@ -72,6 +72,15 @@ public class EnhancedCelestialsCompat {
 
             @Override
             public float affectBucketWeight(@NotNull SpawnBucket spawnBucket, float v) {
+                Optional<EnhancedCelestialsLunarForecastWorldData> enhancedCelestialsLunarForecastWorldData = EnhancedCelestials.lunarForecastWorldData(serverPlayerEntity.getWorld());
+                EnhancedCelestialsLunarForecastWorldData worldData = enhancedCelestialsLunarForecastWorldData.orElseThrow();
+
+                if (spawnBucket.getName().equals("uncommon") || spawnBucket.getName().equals("rare") || spawnBucket.getName().equals("ultra-rare")) {
+                    if (worldData.currentLunarEventHolder().matchesKey(AURORA_MOON)) {
+                        return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getAuroraMoonRarePokemonSpawnMultiplier();
+                    }
+                }
+
                 return SpawningInfluence.DefaultImpls.affectBucketWeight(this, spawnBucket, v);
             }
 
@@ -102,12 +111,6 @@ public class EnhancedCelestialsCompat {
                     if (ivs != null && !ivs.getAcceptableRange().isEmpty()) {
                         if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.BLOOD_MOON)) {
                             return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getBloodMoonIVsMultiplier();
-                        }
-                    }
-
-                    if (spawnDetail.getBucket().getWeight() < 5) {
-                        if (worldData.currentLunarEventHolder().matchesKey(AURORA_MOON)) {
-                            return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getAuroraMoonRarePokemonSpawnMultiplier();
                         }
                     }
                 }
