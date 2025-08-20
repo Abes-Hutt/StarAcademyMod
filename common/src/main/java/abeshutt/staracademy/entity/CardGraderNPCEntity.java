@@ -111,7 +111,7 @@ public class CardGraderNPCEntity extends HumanEntity {
                     player.sendMessage(Text.empty().append(Text.literal(REQUEST_IMPATIENT.apply(random))
                             .formatted(Formatting.GRAY)));
                 }
-            } else if(stack.getItem() instanceof CardItem && CardItem.get(stack).map(card -> card.getGrade() > 0).orElse(false)) {
+            } else if(stack.getItem() instanceof CardItem && CardItem.get(stack).map(card -> card.getGrade() == 0).orElse(false)) {
                 data.add(player.getUuid(), stack.copy());
                 player.setStackInHand(hand, ItemStack.EMPTY);
 
