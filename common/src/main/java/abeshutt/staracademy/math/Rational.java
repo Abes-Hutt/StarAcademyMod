@@ -267,8 +267,8 @@ public class Rational extends Number implements Comparable<Rational> {
     }
 
     public BigDecimal toBigDecimal(int scale, RoundingMode roundingMode) {
-        return new BigDecimal(this.getNumerator()).setScale(scale, roundingMode)
-                .divide(new BigDecimal(this.getDenominator()), roundingMode);
+        return new BigDecimal(this.getNumerator())
+                .divide(new BigDecimal(this.getDenominator()), scale, roundingMode);
     }
 
     @Override

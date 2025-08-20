@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerSpawnerFactory.class)
 public class MixinPlayerSpawnerFactory {
 
-    @Inject(method = "create", at = @At("RETURN"))
+    @Inject(method = "create", at = @At("RETURN"), remap = false)
     private void create(SpawnerManager spawnerManager, ServerPlayerEntity player, CallbackInfoReturnable<PlayerSpawner> ci) {
         PlayerSpawner spawner = ci.getReturnValue();
         spawner.getInfluences().add(new AttributePlayerInfluence(player));

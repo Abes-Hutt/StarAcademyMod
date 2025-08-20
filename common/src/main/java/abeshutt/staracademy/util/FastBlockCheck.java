@@ -53,9 +53,9 @@ public class FastBlockCheck {
                     if (section == null || section.isEmpty()) {
                         continue;
                     }
-                    if (!section.hasAny(stateTest)) {
-                        continue;
-                    }
+                    //if (!section.hasAny(stateTest)) {
+                    //    continue;
+                    //}
 
                     for (int x = 0; x < 16; x++) {
                         for (int y = 0; y < 16; y++) {

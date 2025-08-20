@@ -17,6 +17,7 @@ public class ModEntities extends ModRegistries {
     public static RegistrySupplier<EntityType<PartnerNPCEntity>> PARTNER_NPC;
     public static RegistrySupplier<EntityType<SafariNPCEntity>> SAFARI_NPC;
     public static RegistrySupplier<EntityType<NurseNPCEntity>> NURSE_NPC;
+    public static RegistrySupplier<EntityType<CardGraderNPCEntity>> CARD_GRADER_NPC;
     public static RegistrySupplier<EntityType<ShootingStarEntity>> SHOOTING_STAR;
 
     public static void register() {
@@ -38,6 +39,8 @@ public class ModEntities extends ModRegistries {
         NURSE_NPC = register("nurse_npc", NurseNPCEntity::new, SpawnGroup.MISC,
                 builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
 
+        CARD_GRADER_NPC = register("card_grader_npc", CardGraderNPCEntity::new, SpawnGroup.MISC,
+                builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
 
         SHOOTING_STAR = register("shooting_star", ShootingStarEntity::new, SpawnGroup.MISC,
                 builder -> builder.dimensions(0.5F, 0.5F).maxTrackingRange(4096));

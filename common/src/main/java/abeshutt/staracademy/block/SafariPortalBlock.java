@@ -33,6 +33,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
 
+import static net.minecraft.entity.Entity.RemovalReason.CHANGED_DIMENSION;
+
 public class SafariPortalBlock extends Block implements BlockEntityProvider, Portal {
 
     public static final EnumProperty<Direction.Axis> AXIS = Properties.HORIZONTAL_AXIS;
@@ -81,30 +83,8 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
                 VoxelShapes.cuboid(entity.getBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ())),
                 state.getOutlineShape(world, pos),
                 BooleanBiFunction.AND)) {
-            entity.tryUsePortal(this, pos);
-
             proxy.setInSafariPortal(true);
-
-            SafariData data = ModWorldData.SAFARI.getGlobal(world);
-            SafariData.Entry entry = data.get(player.getUuid()).orElse(null);
-
-            if(world.getRegistryKey() == StarAcademyMod.SAFARI) {
-                data.leaveSafari(player);
-            } else {
-                if(data.getTimeLeft() <= 0 || data.isPaused()) {
-                    player.sendMessage(Text.empty()
-                            .append(Text.literal("The Safari is currently unavailable.")
-                                    .formatted(Formatting.RED)), true);
-                    return;
-                } else if(entry != null && entry.getTimeLeft() <= 0) {
-                    player.sendMessage(Text.empty()
-                            .append(Text.literal("You have no time left in the Safari.")
-                                    .formatted(Formatting.RED)), true);
-                    return;
-                }
-
-                data.joinSafari(player);
-            }
+            entity.tryUsePortal(this, pos);
         }
     }
 
@@ -176,7 +156,16 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
         SafariData data = ModWorldData.SAFARI.getGlobal(world);
 
         if(world.getRegistryKey() == StarAcademyMod.SAFARI) {
-            SafariData.Entry entry = data.get(player.getUuid()).orElseThrow();
+            SafariData.Entry entry = data.get(player.getUuid()).orElse(null);
+
+            if(entry == null || entry.getLastState() == null) {
+                //return new TeleportTarget(world.getServer().getOverworld(), new Vec3d(0, 128,0),
+                //        Vec3d.ZERO, 0.0F, 0.0F, post -> {
+                //    player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
+                //});
+                System.out.println("WTF");
+                return null;
+            }
 
             EntityState state = entry.getLastState();
             ServerWorld destination = world.getServer().getWorld(state.getDimension());
@@ -191,6 +180,20 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
             return new TeleportTarget(destination, state.getPos(), Vec3d.ZERO,
                     state.getYaw(), state.getPitch(), post -> {});
         } else {
+            SafariData.Entry entry = data.get(player.getUuid()).orElse(null);
+
+            if(data.getTimeLeft() <= 0 || data.isPaused()) {
+                player.sendMessage(Text.empty()
+                        .append(Text.literal("The Safari is currently unavailable.")
+                                .formatted(Formatting.RED)), true);
+                return null;
+            } else if(entry != null && entry.getTimeLeft() <= 0) {
+                player.sendMessage(Text.empty()
+                        .append(Text.literal("You have no time left in the Safari.")
+                                .formatted(Formatting.RED)), true);
+                return null;
+            }
+
             data.getOrCreate(player.getUuid()).setLastState(new EntityState(player));
             BlockPos target = ModConfigs.SAFARI.getPlacementOffset().add(ModConfigs.SAFARI.getRelativeSpawnPosition());
             ServerWorld destination = world.getServer().getWorld(StarAcademyMod.SAFARI);

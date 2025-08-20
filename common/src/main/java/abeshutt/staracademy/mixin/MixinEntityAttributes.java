@@ -3,6 +3,7 @@ package abeshutt.staracademy.mixin;
 import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.attribute.again.NodeAttribute;
 import abeshutt.staracademy.attribute.again.type.AttributeTypes;
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.util.AttributeHolder;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,11 +16,10 @@ public class MixinEntityAttributes implements AttributeHolder {
 
     private Attribute<?> attribute;
 
-
     @Override
     public Attribute<?> getRoot() {
         if(this.attribute == null) {
-            this.attribute = NodeAttribute.of(AttributeTypes.number());
+            this.attribute = ModConfigs.ATTRIBUTE.getRoot().copy();
         }
 
         return this.attribute;

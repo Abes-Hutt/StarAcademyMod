@@ -1,5 +1,6 @@
 package abeshutt.staracademy.block.entity;
 
+import abeshutt.staracademy.block.BetterStructureBlock;
 import abeshutt.staracademy.init.ModBlocks;
 import abeshutt.staracademy.screen.BetterStructureBlockScreen;
 import abeshutt.staracademy.util.ProxyStructureTemplate;
@@ -9,11 +10,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.StructureBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.block.enums.StructureBlockMode;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
@@ -25,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -34,6 +40,11 @@ import java.util.stream.Stream;
 
 public class BetterStructureBlockEntity extends BlockEntity {
 
+    private static final int field_31367 = 5;
+    public static final int field_31364 = 48;
+    public static final int field_31365 = 48;
+    public static final String AUTHOR_KEY = "author";
+    @Nullable
     private Identifier templateName;
     private String author = "";
     private String metadata = "";
@@ -57,11 +68,11 @@ public class BetterStructureBlockEntity extends BlockEntity {
         this.ignoreEntities = true;
         this.showBoundingBox = true;
         this.integrity = 1.0F;
-        this.mode = state.get(StructureBlock.MODE);
+        this.mode = state.get(BetterStructureBlock.MODE);
     }
 
-    protected void writeNbt(NbtCompound nbt) {
-        //super.writeNbt(nbt);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
         nbt.putString("name", this.getTemplateName());
         nbt.putString("author", this.author);
         nbt.putString("metadata", this.metadata);
@@ -82,8 +93,8 @@ public class BetterStructureBlockEntity extends BlockEntity {
         nbt.putLong("seed", this.seed);
     }
 
-    public void readNbt(NbtCompound nbt) {
-        //super.readNbt(nbt);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
         this.setTemplateName(nbt.getString("name"));
         this.author = nbt.getString("author");
         this.metadata = nbt.getString("metadata");
@@ -98,19 +109,19 @@ public class BetterStructureBlockEntity extends BlockEntity {
 
         try {
             this.rotation = BlockRotation.valueOf(nbt.getString("rotation"));
-        } catch (IllegalArgumentException var11) {
+        } catch (IllegalArgumentException var12) {
             this.rotation = BlockRotation.NONE;
         }
 
         try {
             this.mirror = BlockMirror.valueOf(nbt.getString("mirror"));
-        } catch (IllegalArgumentException var10) {
+        } catch (IllegalArgumentException var11) {
             this.mirror = BlockMirror.NONE;
         }
 
         try {
             this.mode = StructureBlockMode.valueOf(nbt.getString("mode"));
-        } catch (IllegalArgumentException var9) {
+        } catch (IllegalArgumentException var10) {
             this.mode = StructureBlockMode.DATA;
         }
 
@@ -133,7 +144,7 @@ public class BetterStructureBlockEntity extends BlockEntity {
             BlockPos blockPos = this.getPos();
             BlockState blockState = this.world.getBlockState(blockPos);
             if (blockState.isOf(Blocks.STRUCTURE_BLOCK)) {
-                this.world.setBlockState(blockPos, blockState.with(StructureBlock.MODE, this.mode), 2);
+                this.world.setBlockState(blockPos, (BlockState)blockState.with(StructureBlock.MODE, this.mode), 2);
             }
 
         }
@@ -141,6 +152,10 @@ public class BetterStructureBlockEntity extends BlockEntity {
 
     public BlockEntityUpdateS2CPacket toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        return this.createComponentlessNbt(registryLookup);
     }
 
     @Environment(EnvType.CLIENT)
@@ -151,10 +166,6 @@ public class BetterStructureBlockEntity extends BlockEntity {
 
     public String getTemplateName() {
         return this.templateName == null ? "" : this.templateName.toString();
-    }
-
-    public String getStructurePath() {
-        return this.templateName == null ? "" : this.templateName.getPath();
     }
 
     public boolean hasStructureName() {
@@ -255,7 +266,6 @@ public class BetterStructureBlockEntity extends BlockEntity {
             return false;
         } else {
             BlockPos blockPos = this.getPos();
-
             BlockPos blockPos2 = new BlockPos(blockPos.getX() - 80, this.world.getBottomY(), blockPos.getZ() - 80);
             BlockPos blockPos3 = new BlockPos(blockPos.getX() + 80, this.world.getTopY() - 1, blockPos.getZ() + 80);
             Stream<BlockPos> stream = this.streamCornerPos(blockPos2, blockPos3);
@@ -278,9 +288,12 @@ public class BetterStructureBlockEntity extends BlockEntity {
     }
 
     private Stream<BlockPos> streamCornerPos(BlockPos start, BlockPos end) {
-        return BlockPos.stream(start, end).filter((pos) -> {
+        Stream<BlockPos> var10000 = BlockPos.stream(start, end).filter((pos) -> {
             return this.world.getBlockState(pos).isOf(Blocks.STRUCTURE_BLOCK);
-        }).map(this.world::getBlockEntity).filter((blockEntity) -> {
+        });
+        World var10001 = this.world;
+        Objects.requireNonNull(var10001);
+        return var10000.map(var10001::getBlockEntity).filter((blockEntity) -> {
             return blockEntity instanceof BetterStructureBlockEntity;
         }).map((blockEntity) -> {
             return (BetterStructureBlockEntity)blockEntity;
@@ -308,38 +321,57 @@ public class BetterStructureBlockEntity extends BlockEntity {
     }
 
     public boolean saveStructure() {
-        return this.saveStructure(true);
+        return this.mode != StructureBlockMode.SAVE ? false : this.saveStructure(true);
     }
 
     public boolean saveStructure(boolean interactive) {
-        if(this.mode == StructureBlockMode.SAVE && !this.world.isClient && this.templateName != null) {
-            BlockPos pos = this.getPos().add(this.offset);
+        if (this.templateName == null) {
+            return false;
+        } else {
+            BlockPos blockPos = this.getPos().add(this.offset);
             ServerWorld serverWorld = (ServerWorld)this.world;
             StructureTemplateManager structureTemplateManager = serverWorld.getStructureTemplateManager();
 
-            StructureTemplate structure;
-
+            StructureTemplate structureTemplate;
             try {
-                structure = structureTemplateManager.getTemplateOrBlank(this.templateName);
-            } catch(InvalidIdentifierException var8) {
+                structureTemplate = structureTemplateManager.getTemplateOrBlank(this.templateName);
+            } catch (InvalidIdentifierException var8) {
                 return false;
             }
 
-            ProxyStructureTemplate.of(structure).ifPresent(proxy -> {
-                proxy.setCustom(true);
+            ProxyStructureTemplate.of(structureTemplate).ifPresent(proxyStructureTemplate -> {
+                proxyStructureTemplate.setCustom(true);
             });
 
-            structure.saveFromWorld(this.world, pos, this.size, !this.ignoreEntities, null);
-            structure.setAuthor(this.author);
-
-            if(interactive) {
+            structureTemplate.saveFromWorld(this.world, blockPos, this.size, !this.ignoreEntities, Blocks.STRUCTURE_VOID);
+            structureTemplate.setAuthor(this.author);
+            if (interactive) {
                 try {
                     return structureTemplateManager.saveTemplate(this.templateName);
-                } catch(InvalidIdentifierException var7) {
+                } catch (InvalidIdentifierException var7) {
                     return false;
                 }
             } else {
                 return true;
+            }
+        }
+    }
+
+    public static Random createRandom(long seed) {
+        return seed == 0L ? Random.create(Util.getMeasuringTimeMs()) : Random.create(seed);
+    }
+
+    public boolean loadAndTryPlaceStructure(ServerWorld world) {
+        if (this.mode == StructureBlockMode.LOAD && this.templateName != null) {
+            StructureTemplate structureTemplate = world.getStructureTemplateManager().getTemplate(this.templateName).orElse(null);
+            if (structureTemplate == null) {
+                return false;
+            } else if (structureTemplate.getSize().equals(this.size)) {
+                this.loadAndPlaceStructure(world, structureTemplate);
+                return true;
+            } else {
+                this.loadStructure(structureTemplate);
+                return false;
             }
         } else {
             return false;
@@ -347,60 +379,43 @@ public class BetterStructureBlockEntity extends BlockEntity {
     }
 
     public boolean loadStructure(ServerWorld world) {
-        return this.loadStructure(world, true);
-    }
-
-    public static Random createRandom(long seed) {
-        return seed == 0L ? Random.create(Util.getMeasuringTimeMs()) : Random.create(seed);
-    }
-
-    public boolean loadStructure(ServerWorld world, boolean interactive) {
-        if(this.mode == StructureBlockMode.LOAD && this.templateName != null) {
-            StructureTemplateManager structureTemplateManager = world.getStructureTemplateManager();
-
-            Optional<StructureTemplate> optional;
-            try {
-                optional = structureTemplateManager.getTemplate(this.templateName);
-            } catch(InvalidIdentifierException var6) {
-                return false;
-            }
-
-            return optional.filter(t -> this.place(world, interactive, t)).isPresent();
-        } else {
-            return false;
-        }
-    }
-
-    public boolean place(ServerWorld world, boolean interactive, StructureTemplate template) {
-        BlockPos blockPos = this.getPos();
-
-        if(!StringHelper.isEmpty(template.getAuthor())) {
-            this.author = template.getAuthor();
-        }
-
-        Vec3i vec3i = template.getSize();
-        boolean bl = this.size.equals(vec3i);
-
-        if(!bl) {
-            this.size = vec3i;
-            this.markDirty();
-            BlockState blockState = world.getBlockState(blockPos);
-            world.updateListeners(blockPos, blockState, blockState, 3);
-        }
-
-        if(interactive && !bl) {
+        StructureTemplate structureTemplate = this.getStructureTemplate(world);
+        if (structureTemplate == null) {
             return false;
         } else {
-            StructurePlacementData structurePlacementData = (new StructurePlacementData()).setMirror(this.mirror).setRotation(this.rotation).setIgnoreEntities(this.ignoreEntities);
-
-            if(this.integrity < 1.0F) {
-                structurePlacementData.clearProcessors().addProcessor(new BlockRotStructureProcessor(MathHelper.clamp(this.integrity, 0.0F, 1.0F))).setRandom(createRandom(this.seed));
-            }
-
-            BlockPos blockPos2 = blockPos.add(this.offset);
-            template.place(world, blockPos2, blockPos2, structurePlacementData, createRandom(this.seed), 2);
+            this.loadStructure(structureTemplate);
             return true;
         }
+    }
+
+    private void loadStructure(StructureTemplate template) {
+        this.author = !StringHelper.isEmpty(template.getAuthor()) ? template.getAuthor() : "";
+        this.size = template.getSize();
+        this.markDirty();
+    }
+
+    public void loadAndPlaceStructure(ServerWorld world) {
+        StructureTemplate structureTemplate = this.getStructureTemplate(world);
+        if (structureTemplate != null) {
+            this.loadAndPlaceStructure(world, structureTemplate);
+        }
+
+    }
+
+    @Nullable
+    private StructureTemplate getStructureTemplate(ServerWorld world) {
+        return this.templateName == null ? null : world.getStructureTemplateManager().getTemplate(this.templateName).orElse(null);
+    }
+
+    private void loadAndPlaceStructure(ServerWorld world, StructureTemplate template) {
+        this.loadStructure(template);
+        StructurePlacementData structurePlacementData = (new StructurePlacementData()).setMirror(this.mirror).setRotation(this.rotation).setIgnoreEntities(this.ignoreEntities);
+        if (this.integrity < 1.0F) {
+            structurePlacementData.clearProcessors().addProcessor(new BlockRotStructureProcessor(MathHelper.clamp(this.integrity, 0.0F, 1.0F))).setRandom(createRandom(this.seed));
+        }
+
+        BlockPos blockPos = this.getPos().add(this.offset);
+        template.place(world, blockPos, blockPos, structurePlacementData, createRandom(this.seed), 2);
     }
 
     public void unloadStructure() {
@@ -450,11 +465,14 @@ public class BetterStructureBlockEntity extends BlockEntity {
         this.showBoundingBox = showBoundingBox;
     }
 
-    public enum Action {
+    public static enum Action {
         UPDATE_DATA,
         SAVE_AREA,
         LOAD_AREA,
-        SCAN_AREA
+        SCAN_AREA;
+
+        private Action() {
+        }
     }
 
 }

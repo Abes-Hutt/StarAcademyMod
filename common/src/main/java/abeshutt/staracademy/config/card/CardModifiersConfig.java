@@ -51,7 +51,7 @@ public class CardModifiersConfig extends FileConfig {
         this.pools = new LinkedHashMap<>();
 
         this.values.put("shiny_chance", new CardModifierEntry(
-                absolute("shiny_chance_increased"), 1,
+                absolute("shiny_chance", "increased"), 1,
                 new AddAttribute<>(number(), NodeAttribute.of(number())
                             .add(null, 0, AssignAttribute.of(
                                     NumberRoll.uniformResolutionII(

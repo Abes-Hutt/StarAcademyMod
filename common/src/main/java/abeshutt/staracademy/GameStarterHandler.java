@@ -6,11 +6,15 @@ import abeshutt.staracademy.world.data.PokemonStarterData;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import com.cobblemon.mod.common.api.storage.player.GeneralPlayerData;
 import com.cobblemon.mod.common.config.starter.StarterCategory;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.starter.CobblemonStarterHandler;
+import com.cobblemon.mod.common.util.LocalizationUtilsKt;
 import com.cobblemon.mod.common.util.ResourceLocationExtensionsKt;
+import journeymap.client.data.PlayerData;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 public class GameStarterHandler extends CobblemonStarterHandler {
@@ -21,18 +25,17 @@ public class GameStarterHandler extends CobblemonStarterHandler {
 
     @Override
     public void chooseStarter(ServerPlayerEntity player, String categoryName, int index) {
-        //TODO new player data format
-        //PlayerData playerData = Cobblemon.playerData.get(player);
+        GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
 
-        //if(playerData.getStarterSelected()) {
-        //    player.sendMessage(LocalizationUtilsKt.lang("ui.starter.alreadyselected")
-        //            .formatted(Formatting.RED), true);
-        //    return;
-        //} else if(playerData.getStarterLocked()) {
-        //    player.sendMessage(LocalizationUtilsKt.lang("ui.starter.cannotchoose")
-        //            .formatted(Formatting.RED), true);
-        //    return;
-        //}
+        if(playerData.getStarterSelected()) {
+            player.sendMessage(LocalizationUtilsKt.lang("ui.starter.alreadyselected")
+                    .formatted(Formatting.RED), true);
+            return;
+        } else if(playerData.getStarterLocked()) {
+            player.sendMessage(LocalizationUtilsKt.lang("ui.starter.cannotchoose")
+                    .formatted(Formatting.RED), true);
+            return;
+        }
 
         StarterCategory category = null;
 

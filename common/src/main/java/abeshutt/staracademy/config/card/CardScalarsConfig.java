@@ -7,19 +7,28 @@ import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.world.random.RandomSource;
 import com.google.gson.annotations.Expose;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CardScalarsConfig extends FileConfig {
 
+    @Expose private List<Rational> weights;
     @Expose private Map<String, List<Rational>> values;
     @Expose private Map<String, Map<String, Rational>> pools;
 
     @Override
     public String getPath() {
         return "card.scalars";
+    }
+
+    public int getGrade(RandomSource random) {
+        WeightedList<Integer> weighted = WeightedList.empty();
+
+        for(int i = 0; i < this.weights.size(); i++) {
+            Rational weight = this.weights.get(i);
+            weighted.add(i + 1, weight);
+        }
+
+        return weighted.getRandom(random).orElse(0);
     }
 
     public Optional<List<Rational>> get(String id) {
@@ -43,8 +52,13 @@ public class CardScalarsConfig extends FileConfig {
 
     @Override
     protected void reset() {
+        this.weights = new ArrayList<>();
         this.values = new LinkedHashMap<>();
         this.pools = new LinkedHashMap<>();
+
+        for(int i = 0; i < 10; i++) {
+           this.weights.add(Rational.ONE);
+        }
 
         this.values.put("base", List.of(
                 Rational.of(2, 10),

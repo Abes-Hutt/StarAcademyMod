@@ -161,6 +161,7 @@
   "entity.academy.partner_npc": "Partner NPC",
   "entity.academy.safari_npc": "Safari NPC",
   "entity.academy.nurse_npc": "Nurse NPC",
+  "entity.academy.card_grader_npc": "Card Grader NPC",
   "stat_type.minecraft.custom": "Custom",
 
   "trinkets.slot.legs.card_album": "Card Album",
@@ -175,5 +176,16 @@
   "text.academy.card.rarity.epic": "Epic",
   "text.academy.card.rarity.legendary": "Legendary",
   "text.academy.card.rarity.shiny": "Shiny",
-  "text.academy.card.grade": "Grade"
+  "text.academy.card.grade": "Grade",
+  "text.academy.card.grade.1": "1",
+  "text.academy.card.grade.2": "2",
+  "text.academy.card.grade.3": "3",
+  "text.academy.card.grade.4": "4",
+  "text.academy.card.grade.5": "5",
+  "text.academy.card.grade.6": "6",
+  "text.academy.card.grade.7": "7",
+  "text.academy.card.grade.8": "8",
+  "text.academy.card.grade.9": "9",
+  "text.academy.card.grade.10": "10",
+  "text.academy.card.display.shiny_chance_increased": "Shiny Chance"
 }

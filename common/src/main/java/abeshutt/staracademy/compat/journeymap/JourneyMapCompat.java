@@ -6,12 +6,12 @@ import java.util.Set;
 
 public class JourneyMapCompat {
 
-    private static final Set<String> MOD_IDS = new HashSet<>(Arrays.asList(
+    private static final Set<String> MOD_IDS = new   HashSet<>(Arrays.asList(
             "wavimons", "genomons", "cobblemon_reanimodel"
     ));
 
     public static boolean shouldLogIconData() {
-        return true;
+        return false;
     }
 
     public static boolean isCobblemonLike(String id) {

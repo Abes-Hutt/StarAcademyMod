@@ -37,26 +37,38 @@ public class CardScalarAttribute<T> extends Attribute<T> {
         return this;
     }
 
+    public int getGrade() {
+        return this.grade;
+    }
+
+    public Option<Rational> getScalar() {
+        List<Rational> scalars = ModConfigs.CARD_SCALARS.get(this.id).orElse(new ArrayList<>());
+        int index = this.grade - 1;
+
+        if(index <= 0 || index >= scalars.size()) {
+            return Option.absent();
+        }
+
+        return Option.present(scalars.get(index));
+    }
+
     @Override
     public Option<T> get(Option<T> value, AttributeContext context) {
         if(value.isAbsent()) {
             return Option.absent();
         }
 
-        List<Rational> scalars = ModConfigs.CARD_SCALARS.get(this.id).orElse(new ArrayList<>());
-        int index = this.grade - 1;
+        return (Option<T>)value.map(a -> {
+            if(this.type instanceof NumberAttributeType) {
+                Option<Rational> b = this.getScalar();
 
-        if(index <= 0 || index >= scalars.size()) {
-            return value;
-        }
+                if(b.isPresent()) {
+                    return ((Rational)a).multiply(b.get());
+                }
+            }
 
-        if(this.type instanceof NumberAttributeType) {
-            Rational a = (Rational)value.get();
-            Rational b = scalars.get(index);
-            return Option.present((T)a.multiply(b));
-        }
-
-        return value;
+            return value.get();
+        });
     }
 
     @Override
@@ -79,6 +91,17 @@ public class CardScalarAttribute<T> extends Attribute<T> {
         }
 
         this.id = Adapters.UTF_8.readNbt(compound.get("id")).orElseThrow();
+    }
+
+    @Override
+    public Attribute<T> copy() {
+        Attribute<T> copy = super.copy();
+
+        if(copy instanceof CardScalarAttribute<?> other) {
+            other.setGrade(this.grade);
+        }
+
+        return copy;
     }
 
 }

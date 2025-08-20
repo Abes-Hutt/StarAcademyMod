@@ -11,9 +11,12 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class ShinyPokedollCollectorBlockEntity extends BaseBlockEntity {
@@ -32,7 +35,21 @@ public class ShinyPokedollCollectorBlockEntity extends BaseBlockEntity {
         if (state.get(ShinyPokedollCollectorBlock.LIT) && this.world != null && !this.world.isClient()) {
             Registry<Block> blocks = world.getRegistryManager().get(RegistryKeys.BLOCK);
             if (lifeTime % ModConfigs.POKEDOLLS.getCheckInterval() == 0) {
-                int found = FastBlockCheck.countBlocksFast(ModConfigs.POKEDOLLS.getRadius(), ModConfigs.POKEDOLLS.getNumberOfPokedolls(), true, world, pos, state1 -> ModConfigs.POKEDOLLS.getBlocksToDetect().contains(blocks.getId(state1.getBlock())), FastBlockCheck.EUCLIDEAN_DISTANCE);
+                Set<Identifier> targets = new HashSet<>(ModConfigs.POKEDOLLS.getBlocksToDetect());
+
+                int found = FastBlockCheck.countBlocksFast(ModConfigs.POKEDOLLS.getRadius(),
+                        ModConfigs.POKEDOLLS.getNumberOfPokedolls(), true, world, pos,
+                        state1 -> {
+                            Identifier id = blocks.getId(state1.getBlock());
+
+                            if(targets.contains(id)) {
+                                targets.remove(id);
+                                return true;
+                            }
+
+                            return false;
+                        }, FastBlockCheck.EUCLIDEAN_DISTANCE);
+
                 float newProgress = MathHelper.clamp((float) found / (float) ModConfigs.POKEDOLLS.getNumberOfPokedolls(), 0.0f, 1.0f);
                 if(newProgress != this.progress) {
                     this.progress = newProgress;

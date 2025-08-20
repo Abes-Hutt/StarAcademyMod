@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.number;
 
@@ -29,6 +30,10 @@ public class AssignAttribute<T> extends Attribute<T> {
         return new AssignAttribute<>(number(), NumberConstantAttribute.of(roll));
     }
 
+    public Attribute<T> getValue() {
+        return this.value;
+    }
+
     @Override
     public Option<T> get(Option<T> value, AttributeContext context) {
         Option<T> result = this.value.get(Option.absent(), context);
@@ -44,6 +49,11 @@ public class AssignAttribute<T> extends Attribute<T> {
     public void populate(AttributeContext context) {
         this.value.populate(context);
         super.populate(context);
+    }
+
+    public void iterate(Consumer<Attribute<?>> action) {
+        super.iterate(action);
+        action.accept(this.value);
     }
 
     @Override

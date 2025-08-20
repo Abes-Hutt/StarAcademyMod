@@ -51,7 +51,7 @@ public class PartnerNPCConversation implements INbtSerializable<NbtCompound> {
         "Are you certain you want to select ${pokemon} as your partner?",
         "You've chosen ${pokemon}! Would you like to confirm it as your partner?",
         "Do you want to make ${pokemon} your official partner?",
-        "You've selected ${pokemon} as your partner—do you want to proceed with this choice?"
+        "You've selected ${pokemon} as your partner. Do you want to proceed with this choice?"
     );
 
     public static final Function<RandomSource, String> PARTNER_SUMMON_SUCCESS = create(

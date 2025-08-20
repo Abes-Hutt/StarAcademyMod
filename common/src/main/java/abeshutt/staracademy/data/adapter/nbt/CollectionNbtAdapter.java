@@ -94,7 +94,7 @@ public class CollectionNbtAdapter extends NbtAdapter<AbstractNbtList<?>> {
     
     @Override
     protected AbstractNbtList<?> readTagJson(JsonElement json) {
-        if(json instanceof JsonArray array && array.size() > 0) {
+        if(json instanceof JsonArray array && !array.isEmpty()) {
             String key = array.get(0) instanceof JsonPrimitive primitive && primitive.isString() ? primitive.getAsString() : null;
 
             if("B".equals(key)) {
@@ -103,12 +103,10 @@ public class CollectionNbtAdapter extends NbtAdapter<AbstractNbtList<?>> {
                 return Adapters.INT_ARRAY_NBT.readJson(json).orElse(null);
             } else if("L".equals(key)) {
                 return Adapters.LONG_ARRAY_NBT.readJson(json).orElse(null);
-            } else {
-                return Adapters.LIST_NBT.readJson(json).orElse(null);
             }
         }
 
-        return null;
+        return Adapters.LIST_NBT.readJson(json).orElse(null);
     }
 
 }

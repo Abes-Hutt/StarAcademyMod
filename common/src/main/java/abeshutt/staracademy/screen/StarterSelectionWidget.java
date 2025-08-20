@@ -90,7 +90,7 @@ public class StarterSelectionWidget implements Drawable {
         }
 
         List<OrderedText> lines = text.wrapLines(description, 172);
-
+        lines = lines.subList(0, Math.min(lines.size(), 7));
         context.getMatrices().push();
         context.getMatrices().translate(0.0D, 13.0D, 0.0D);
         context.getMatrices().scale(0.61F, 0.61F, 0.61F);

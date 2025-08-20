@@ -12,6 +12,7 @@ public class ModWorldData extends ModRegistries {
     public static WorldDataType<WardrobeData> WARDROBE;
     public static WorldDataType<PartnerData> PARTNER;
     public static WorldDataType<HouseData> HOUSE;
+    public static WorldDataType<CardGradingData> CARD_GRADING;
 
     public static void register() {
         PLAYER_PROFILE = new WorldDataType<>(StarAcademyMod.ID + ".player_profile", PlayerProfileData::new);
@@ -21,6 +22,7 @@ public class ModWorldData extends ModRegistries {
         WARDROBE = new WorldDataType<>(StarAcademyMod.ID + ".wardrobe", WardrobeData::new);
         PARTNER = new WorldDataType<>(StarAcademyMod.ID + ".partner", PartnerData::new);
         HOUSE = new WorldDataType<>(StarAcademyMod.ID + ".house", HouseData::new);
+        CARD_GRADING = new WorldDataType<>(StarAcademyMod.ID + ".card_grading", CardGradingData::new);
 
         PlayerProfileData.init();
         StarBadgeData.init();
@@ -29,6 +31,7 @@ public class ModWorldData extends ModRegistries {
         WardrobeData.init();
         PartnerData.init();
         HouseData.init();
+        CardGradingData.init();
     }
 
 }

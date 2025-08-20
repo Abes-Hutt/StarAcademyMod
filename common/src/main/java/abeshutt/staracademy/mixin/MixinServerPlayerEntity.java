@@ -1,6 +1,7 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.util.AttributeHolder;
+import abeshutt.staracademy.util.ProxyGymData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,6 +14,7 @@ public class MixinServerPlayerEntity {
     @Inject(method = "copyFrom", at = @At("RETURN"))
     private void copyFrom(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
         AttributeHolder.setRoot(this, AttributeHolder.getRoot(oldPlayer));
+        ProxyGymData.setGymData(this, ProxyGymData.getGymData(oldPlayer));
     }
 
 }

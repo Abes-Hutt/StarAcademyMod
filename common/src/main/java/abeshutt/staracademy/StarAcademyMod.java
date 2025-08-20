@@ -1,5 +1,6 @@
 package abeshutt.staracademy;
 
+import abeshutt.staracademy.attribute.Attributes;
 import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
@@ -44,6 +45,7 @@ public final class StarAcademyMod {
         }
 
         ModRegistries.register();
+        Attributes.init();
 
         CommonEvents.POKEMON_CATCH_RATE.register(event -> {
             if(event.getThrower().getWorld().getRegistryKey() == SAFARI) {
@@ -52,12 +54,6 @@ public final class StarAcademyMod {
                 }
             }
         }, Priority.LOWEST);
-
-        CommonEvents.POKEMON_SENT_PRE.register(event -> {
-            if(event.getLevel().getRegistryKey() == SAFARI) {
-                event.cancel();
-            }
-        });
 
         CommonEvents.POKEMON_ENTITY_SPAWN.register(event -> {
             if(FORCE_SPAWNING.get()) {

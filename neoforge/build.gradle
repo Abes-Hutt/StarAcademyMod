@@ -41,6 +41,7 @@ repositories {
 dependencies {
     neoForge("net.neoforged:neoforge:$rootProject.neoforge_version")
     modImplementation("dev.architectury:architectury-neoforge:$rootProject.architectury_api_version")
+    implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.3.3"))
 
     modImplementation("com.cobblemon:neoforge:1.6.1+1.21.1")
 

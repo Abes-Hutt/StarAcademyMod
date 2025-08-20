@@ -2,6 +2,7 @@ package abeshutt.staracademy.config;
 
 import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.card.*;
+import abeshutt.staracademy.config.card.CardDisplayConfig;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.biome.BiomePredicate;
 import abeshutt.staracademy.data.entity.EntityPredicate;
@@ -43,6 +44,7 @@ public abstract class Config {
             .registerTypeAdapter(CardModifierEntry.class, Adapters.CARD_MODIFIER_ENTRY)
             .registerTypeAdapter(BoosterPackEntry.class, Adapters.CARD_BOOSTER_ENTRY)
             .registerTypeAdapter(CardAlbumEntry.class, Adapters.CARD_ALBUM_ENTRY)
+            .registerTypeAdapter(CardDisplayEntry.class, Adapters.CARD_DISPLAY_ENTRY)
             .registerTypeAdapter(Attribute.class, Adapters.ATTRIBUTE)
             .create();
 

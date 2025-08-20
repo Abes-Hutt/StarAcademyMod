@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class MultiplyAttribute<T> extends Attribute<T> {
 
@@ -16,6 +17,15 @@ public class MultiplyAttribute<T> extends Attribute<T> {
 
     protected MultiplyAttribute(AttributeType<T> type) {
         super(type);
+    }
+
+    public MultiplyAttribute(AttributeType<T> type, Attribute<T> value) {
+        super(type);
+        this.value = value;
+    }
+
+    public Attribute<T> getValue() {
+        return this.value;
     }
 
     @Override
@@ -43,6 +53,11 @@ public class MultiplyAttribute<T> extends Attribute<T> {
     public void populate(AttributeContext context) {
         this.value.populate(context);
         super.populate(context);
+    }
+
+    public void iterate(Consumer<Attribute<?>> action) {
+        super.iterate(action);
+        this.value.iterate(action);
     }
 
     @Override

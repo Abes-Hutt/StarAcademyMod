@@ -1,20 +1,26 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.attribute.again.Attribute;
+import abeshutt.staracademy.attribute.again.NodeAttribute;
 import abeshutt.staracademy.card.CardAlbumEntry;
 import abeshutt.staracademy.data.component.CardAlbumInventory;
+import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.item.renderer.AlbumItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.screen.handler.CardAlbumScreenHandler;
+import abeshutt.staracademy.util.AttributeHolder;
 import abeshutt.staracademy.util.ISpecialItemModel;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
+import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -33,6 +39,8 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class CardAlbumItem extends TrinketItem implements ISpecialItemModel {
+
+    public static final Object REFERENCE = new Object();
 
     public CardAlbumItem() {
         super(new Settings().fireproof().maxCount(1));

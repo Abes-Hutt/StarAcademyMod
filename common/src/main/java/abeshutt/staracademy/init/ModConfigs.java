@@ -30,6 +30,7 @@ public class ModConfigs extends ModRegistries {
     public static ShopConfig SHOP;
     public static LegendaryItemsConfig LEGENDARY_ITEMS;
     public static GymCachesConfig GYM_CACHES;
+    public static AttributeConfig ATTRIBUTE;
 
     public static CardIconsConfig CARD_ICONS;
     public static CardRaritiesConfig CARD_RARITIES;
@@ -38,6 +39,8 @@ public class ModConfigs extends ModRegistries {
     public static CardEntriesConfig CARD_ENTRIES;
     public static CardBoosterPacksConfig CARD_BOOSTERS;
     public static CardAlbumsConfig CARD_ALBUMS;
+    public static CardDisplayConfig CARD_DISPLAYS;
+
     public static PokedollConfig POKEDOLLS;
 
     public static void register(boolean initialization) {
@@ -68,6 +71,7 @@ public class ModConfigs extends ModRegistries {
         SHOP = new ShopConfig().read();
         LEGENDARY_ITEMS = new LegendaryItemsConfig().read();
         GYM_CACHES = new GymCachesConfig().read();
+        ATTRIBUTE = new AttributeConfig().read();
 
         CARD_ICONS = new CardIconsConfig().read();
         CARD_RARITIES = new CardRaritiesConfig().read();
@@ -76,6 +80,8 @@ public class ModConfigs extends ModRegistries {
         CARD_ENTRIES = new CardEntriesConfig().read();
         CARD_BOOSTERS = new CardBoosterPacksConfig().read();
         CARD_ALBUMS = new CardAlbumsConfig().read();
+        CARD_DISPLAYS = new CardDisplayConfig().read();
+
         POKEDOLLS = new PokedollConfig().read();
 
         if(!initialization) {

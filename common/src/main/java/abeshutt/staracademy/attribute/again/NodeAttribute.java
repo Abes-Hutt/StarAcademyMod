@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class NodeAttribute<T> extends Attribute<T> {
 
@@ -24,10 +25,13 @@ public class NodeAttribute<T> extends Attribute<T> {
         return new NodeAttribute<>(type);
     }
 
-    public NodeAttribute<T> add(Object owner, int order, Attribute<T> attribute) {
-        List<Modifier<T>> keyed = this.keyedListeners.computeIfAbsent(owner,
+    public List<Modifier<T>> getModifiers() {
+        return this.orderedModifiers;
+    }
+
+    public NodeAttribute<T> add(Modifier<T> modifier) {
+        List<Modifier<T>> keyed = this.keyedListeners.computeIfAbsent(modifier.getOwner(),
                 key -> new ArrayList<>());
-        Modifier<T> modifier = new Modifier<>(owner, order, attribute);
         keyed.add(modifier);
 
         List<Modifier<T>> ordered = this.orderedModifiers;
@@ -44,13 +48,23 @@ public class NodeAttribute<T> extends Attribute<T> {
         }
 
         ordered.add(index, modifier);
+        modifier.getAttribute().setParent(this);
         return this;
+    }
+
+    public NodeAttribute<T> add(Object owner, int order, Attribute<T> attribute) {
+        return this.add(new Modifier<>(owner, order, attribute));
     }
 
     public NodeAttribute<T> remove(Object owner) {
         List<Modifier<T>> listeners = this.keyedListeners.remove(owner);
         if(listeners == null || listeners.isEmpty()) return this;
         this.orderedModifiers.removeAll(new HashSet<>(listeners));
+
+        for(Modifier<T> listener : listeners) {
+           listener.getAttribute().setParent(null);
+        }
+
         return this;
     }
 
@@ -70,6 +84,14 @@ public class NodeAttribute<T> extends Attribute<T> {
         }
 
         super.populate(context);
+    }
+
+    public void iterate(Consumer<Attribute<?>> action) {
+        super.iterate(action);
+
+        for(Modifier<T> modifier : this.orderedModifiers) {
+            modifier.getAttribute().iterate(action);
+        }
     }
 
     public static class Modifier<T> implements Comparable<Modifier<T>> {
@@ -162,7 +184,7 @@ public class NodeAttribute<T> extends Attribute<T> {
                     NbtCompound element = list.getCompound(i);
                     Modifier<T> modifier = new Modifier<>();
                     modifier.readNbt(element, this.type);
-                    this.orderedModifiers.add(modifier);
+                    this.add(modifier);
                 }
             }
         }

@@ -2,19 +2,25 @@ package abeshutt.staracademy.attribute.again;
 
 import abeshutt.staracademy.attribute.Option;
 import abeshutt.staracademy.attribute.again.type.AttributeType;
+import abeshutt.staracademy.attribute.again.type.AttributeTypes;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonSerializationContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtString;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.*;
@@ -87,6 +93,12 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
         return Optional.of((Attribute<U>)this);
     }
 
+    public Attribute<?> addChild(String name, Attribute<?> attribute) {
+        this.children.put(name, attribute);
+        attribute.setParent(this);
+        return this;
+    }
+
     @Override
     public Optional<NbtElement> writeNbt() {
         return Optional.of(new NbtCompound()).map(nbt -> {
@@ -120,14 +132,17 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
         }
     }
 
+    public void iterate(Consumer<Attribute<?>> action) {
+        action.accept(this);
+        this.children.forEach((s, attribute) -> attribute.iterate(action));
+    }
+
     public Attribute<T> copy() {
         NbtElement nbt = Adapters.ATTRIBUTE.writeNbt(this, this.type).orElse(null);
         return (Attribute<T>)Adapters.ATTRIBUTE.readNbt(nbt, this.type).orElseThrow();
     }
 
     public static class Adapter implements IAdapter<Attribute<?>, NbtElement, JsonElement, AttributeType<?>> {
-        private static final Pattern PATH = Pattern.compile("^(?:/|\\./|\\.\\./)");
-
         @Override
         public void writeBits(Attribute<?> value, BitBuffer buffer, AttributeType<?> context) {
             Adapters.GENERIC_NBT.asNullable().writeBits(this.writeNbt(value, context).orElse(null), buffer);
@@ -141,6 +156,10 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
 
         @Override
         public Optional<NbtElement> writeNbt(Attribute<?> value, AttributeType<?> context) {
+            if(value instanceof ReferenceAttribute<?>) {
+                return value.writeNbt();
+            }
+
             String type = switch(value) {
                 case NodeAttribute<?> ignored -> "node";
                 case AssignAttribute<?> ignored -> "assign";
@@ -175,7 +194,7 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
             if(nbt instanceof NbtCompound compound) {
                 String type = Adapters.UTF_8.readNbt(compound.get("type")).orElse(null);
 
-                if(type == null && compound.contains("modifiers")) {
+                if(type == null && (compound.contains("modifiers") || compound.getKeys().stream().anyMatch(s -> s.startsWith("/")))) {
                     type = "node";
                 }
 
@@ -192,8 +211,9 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
                 } else if(context.equals(number())) {
                     attribute = new NumberConstantAttribute();
                 }
-            } else if(nbt instanceof NbtString string && PATH.matcher(string.asString()).matches()) {
-                // Path reference
+            } else if(nbt instanceof NbtString string && (string.asString().startsWith("/")
+                    || string.asString().startsWith("./") || string.asString().startsWith("../"))) {
+                attribute = new ReferenceAttribute<>(context, null);
             } else if(context.simplify().equals(number())) {
                 attribute = new NumberConstantAttribute();
             }
@@ -217,6 +237,16 @@ public abstract class Attribute<T> implements ISerializable<NbtElement, JsonElem
             return Adapters.GENERIC_NBT.readJson(json, context).flatMap(tag -> {
                 return Adapters.ATTRIBUTE.readNbt(tag, context);
             });
+        }
+
+        @Override
+        public JsonElement serialize(Attribute<?> value, Type source, JsonSerializationContext context) {
+            return this.writeJson(value, AttributeTypes.any()).orElse(JsonNull.INSTANCE);
+        }
+
+        @Override
+        public Attribute<?> deserialize(JsonElement json, Type source, JsonDeserializationContext context) {
+            return this.readJson(json, AttributeTypes.any()).orElse(null);
         }
     }
 

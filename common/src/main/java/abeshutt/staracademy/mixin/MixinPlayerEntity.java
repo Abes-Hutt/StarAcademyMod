@@ -1,8 +1,10 @@
 package abeshutt.staracademy.mixin;
 
+import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HouseData;
+import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,13 +15,20 @@ import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void postTick(CallbackInfo ci) {
+        CommonEvents.PLAYER_TICK.invoker().tick((PlayerEntity)(Object)this);
     }
 
     @Redirect(method = "getDisplayName", at = @At(value = "INVOKE", target = "Lnet/minecraft/scoreboard/Team;decorateName(Lnet/minecraft/scoreboard/AbstractTeam;Lnet/minecraft/text/Text;)Lnet/minecraft/text/MutableText;"))

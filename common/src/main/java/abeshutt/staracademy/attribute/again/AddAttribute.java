@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class AddAttribute<T> extends Attribute<T> {
 
@@ -52,6 +53,11 @@ public class AddAttribute<T> extends Attribute<T> {
     public void populate(AttributeContext context) {
         this.value.populate(context);
         super.populate(context);
+    }
+
+    public void iterate(Consumer<Attribute<?>> action) {
+        super.iterate(action);
+        this.value.iterate(action);
     }
 
     @Override

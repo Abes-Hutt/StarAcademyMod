@@ -4,6 +4,7 @@ import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +61,46 @@ public class AttributePath<U> implements ISerializable<NbtElement, JsonElement> 
             return action.apply(this.parts.getFirst(), empty());
         }
 
-        return action.apply(this.parts.getFirst(), new AttributePath<>(false, this.parts.subList(1, this.parts.size() - 1)));
+        return action.apply(this.parts.getFirst(), new AttributePath<>(false, this.parts.subList(1, this.parts.size())));
+    }
+
+    @Override
+    public Optional<NbtElement> writeNbt() {
+        if(!this.absolute && this.parts.isEmpty()) {
+            return Optional.empty();
+        }
+
+        StringBuilder builder = new StringBuilder(this.absolute ? "/" : "");
+
+        for(int i = 0; i < this.parts.size(); i++) {
+            String folder = this.parts.get(i);
+            builder.append(folder);
+
+            if(i != this.parts.size() - 1) {
+                builder.append("/");
+            }
+        }
+
+        return Optional.of(NbtString.of(builder.toString()));
+    }
+
+    @Override
+    public void readNbt(NbtElement nbt) {
+        this.parts.clear();
+
+        if(nbt instanceof NbtString string) {
+            String path = string.asString();
+
+            if(path.startsWith("/")) {
+                path = path.substring(1);
+                this.absolute = true;
+            } else {
+                this.absolute = false;
+            }
+
+            String[] parts = path.split("/");
+            this.parts.addAll(Arrays.asList(parts));
+        }
     }
 
     @Override

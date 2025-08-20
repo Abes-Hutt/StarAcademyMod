@@ -127,12 +127,12 @@ public class SafariData extends WorldData {
         MinecraftServer server = player.getServer();
         if(server == null) return;
         SafariData.Entry entry = this.get(player.getUuid()).orElse(null);
-
-        if(entry == null || entry.getLastState() == null) {
-            player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
-        } else {
+        player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
+        //if(entry == null || entry.getLastState() == null) {
+            //player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
+       // } else {
             //player.interactionManager.changeGameMode(entry.getLastState().getGameMode());
-            player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
+
 
             /*
             RegistryKey<World> dimension = entry.getLastState().getDimension();
@@ -145,7 +145,7 @@ public class SafariData extends WorldData {
 
                 player.moveToWorld(destination);
             }*/
-        }
+       // }
 
         //ProxyEntity.of(player).ifPresent(proxy -> {
         //    proxy.setSafariPortalCooldown(true);
@@ -201,7 +201,22 @@ public class SafariData extends WorldData {
         server.worlds.put(world.getRegistryKey(), newWorld);
 
         this.timeLeft = ModConfigs.SAFARI.getTimeLeft(this.lastUpdated) / 50;
-        this.entries.clear();
+
+        List<UUID> keys = new ArrayList<>(this.entries.keySet());
+
+        for(UUID key : keys) {
+            this.entries.compute(key, (k, v) -> {
+                this.markDirty();
+                Entry entry = new Entry();
+                entry.setTimeLeft(ModConfigs.SAFARI.getPlayerDuration());
+
+                if(v != null) {
+                    entry.setLastState(v.getLastState());
+                }
+
+                return entry;
+            });
+        }
     }
 
     private void onJoin(ServerPlayerEntity player) {

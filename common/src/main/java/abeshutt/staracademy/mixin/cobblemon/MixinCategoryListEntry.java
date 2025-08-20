@@ -35,5 +35,4 @@ public abstract class MixinCategoryListEntry extends AlwaysSelectedEntryListWidg
                 0.75F, 0.75F, 0.75F, 1.0F, true, 1.0F);
     }
 
-
 }

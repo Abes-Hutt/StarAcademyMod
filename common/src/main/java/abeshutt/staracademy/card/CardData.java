@@ -1,6 +1,7 @@
 package abeshutt.staracademy.card;
 
 import abeshutt.staracademy.CardRarity;
+import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import com.google.gson.JsonObject;
@@ -44,6 +45,25 @@ public class CardData implements ISerializable<NbtCompound, JsonObject> {
         return this.rarity;
     }
 
+    public int getGrade() {
+        return this.grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+
+        for(CardModifier modifier : this.modifiers) {
+            modifier.setGrade(this.grade);
+        }
+    }
+
+    public void attach(Attribute<?> root) {
+        for(CardModifier modifier : this.modifiers) {
+           modifier.attach(root);
+           modifier.setGrade(this.grade);
+        }
+    }
+
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         tooltip.add(Text.empty()
                 .append(Text.translatable("text.academy.card.rarity"))
@@ -61,10 +81,10 @@ public class CardData implements ISerializable<NbtCompound, JsonObject> {
                     .append(Text.translatable("text.academy.card.grade." + this.grade)));
         }
 
-        tooltip.add(Text.empty());
+        //tooltip.add(Text.empty());
 
         for(CardModifier modifier : this.modifiers) {
-           modifier.appendTooltip(stack, context, tooltip, type);
+           modifier.appendTooltip(stack, this.grade, context, tooltip, type);
         }
     }
 

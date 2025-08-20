@@ -12,10 +12,13 @@ import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.starter.StarterChosenEvent;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import com.cobblemon.mod.common.api.storage.player.GeneralPlayerData;
+import com.cobblemon.mod.common.api.storage.player.PlayerInstancedDataStoreTypes;
 import com.cobblemon.mod.common.config.starter.StarterCategory;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.starter.CobblemonStarterHandler;
+import com.cobblemon.mod.common.util.LocalizationUtilsKt;
 import com.cobblemon.mod.common.world.gamerules.CobblemonGameRules;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
@@ -175,8 +178,8 @@ public class PokemonStarterData extends WorldData {
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             StarterEntry entry = this.getEntries().get(player.getUuid());
             if(entry == null) continue;
-            //PlayerData playerData = Cobblemon.playerData.get(player);
-            //entry.setAvailable(!playerData.getStarterSelected() && !playerData.getStarterLocked());
+            GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
+            entry.setAvailable(!playerData.getStarterSelected() && !playerData.getStarterLocked());
         }
 
         Map<UUID, StarterEntry> changes = new HashMap<>();
@@ -191,7 +194,7 @@ public class PokemonStarterData extends WorldData {
 
         this.setSelectionCooldown(ModConfigs.STARTER_RAFFLE.getSelectionCooldown());
 
-        if(!changes.isEmpty() || this.changed) {
+        if(!changes.isEmpty() || this.isChanged()) {
             for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 Map<UUID, StarterEntry> message = new HashMap<>();
 
@@ -266,8 +269,7 @@ public class PokemonStarterData extends WorldData {
     }
 
     public boolean giveStarter(ServerPlayerEntity player, Identifier speciesId) {
-        /*
-        PlayerData playerData = Cobblemon.playerData.get(player);
+        GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
 
         if(playerData.getStarterSelected()) {
             player.sendMessage(LocalizationUtilsKt.lang("ui.starter.alreadyselected")
@@ -277,7 +279,7 @@ public class PokemonStarterData extends WorldData {
             player.sendMessage(LocalizationUtilsKt.lang("ui.starter.cannotchoose")
                     .formatted(Formatting.RED), true);
             return false;
-        }*/
+        }
 
         PokemonProperties properties = null;
 
@@ -298,22 +300,25 @@ public class PokemonStarterData extends WorldData {
         if(properties == null) return false;
         Pokemon pokemon = properties.create();
 
-        CobblemonEvents.STARTER_CHOSEN.postThen(new StarterChosenEvent(player, properties, pokemon), event -> {
-            return Unit.INSTANCE;
-        }, event -> {
-            //playerData.setStarterSelected(true);
-            //playerData.setStarterUUID(pokemon.getUuid());
+        CobblemonEvents.STARTER_CHOSEN.postThen(new StarterChosenEvent(player, properties, pokemon),
+            event -> {
+                return Unit.INSTANCE;
+            },
+            event -> {
+                Pokemon eventPokemon = event.getPokemon();
+                playerData.setStarterSelected(true);
+                playerData.setStarterUUID(eventPokemon.getUuid());
 
-            if(player.getWorld().getGameRules().getBoolean(CobblemonGameRules.SHINY_STARTERS)) {
-                pokemon.setShiny(true);
-            }
+                if(player.getWorld().getGameRules().getBoolean(CobblemonGameRules.SHINY_STARTERS)) {
+                    pokemon.setShiny(true);
+                }
 
-            Cobblemon.INSTANCE.getStorage().getParty(player).add(pokemon);
-            CobblemonCriteria.INSTANCE.getPICK_STARTER().trigger(player, pokemon);
-            //Cobblemon.playerData.saveSingle(playerData);
-            //playerData.sendToPlayer(player);
-            return Unit.INSTANCE;
-        });
+                Cobblemon.INSTANCE.getStorage().getParty(player).add(eventPokemon);
+                CobblemonCriteria.INSTANCE.getPICK_STARTER().trigger(player, pokemon);
+                Cobblemon.playerDataManager.saveSingle(playerData, PlayerInstancedDataStoreTypes.INSTANCE.getGENERAL());
+                playerData.sendToPlayer(player);
+                return Unit.INSTANCE;
+            });
 
         return true;
     }
