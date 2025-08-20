@@ -59,9 +59,10 @@ jobs:
         with:
           script: |
             const gh = ${{ toJSON(github) }};
-
+            const version = "${{ steps.get_version.outputs.VERSION_NAME }}";
+            
             core.setOutput('EMBED_TITLE', "[" + gh.event.repository.name + ":" + gh.ref_name +"] New Build [${{steps.get_version.outputs.VERSION_NAME}}]");
-            core.setOutput('EMBED_URL', "https://github.com/Abes-Hutt/StarAcademyMod/packages/2603833?version=${{steps.get_version.outputs.VERSION_NAME}}");
+            core.setOutput('EMBED_URL', "https://github.com/Abes-Hutt/StarAcademyMod/packages/2603833?version=" + encodeURIComponent(version);
             core.setOutput('EMBED_AUTHOR_NAME', gh.event.sender.login);
             core.setOutput('EMBED_AUTHOR_ICON_URL', gh.event.sender.avatar_url);
 
