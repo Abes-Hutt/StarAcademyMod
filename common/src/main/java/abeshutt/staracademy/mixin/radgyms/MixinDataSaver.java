@@ -23,7 +23,7 @@ public abstract class MixinDataSaver implements ProxyGymData {
 
     @Shadow public abstract UUID getUuid();
 
-    @TargetHandler(mixin = "lol.gito.radgyms.mixin.DataSaver", name = "getGymsPersistentData", print = true)
+    @TargetHandler(mixin = "lol.gito.radgyms.mixin.DataSaver", name = "getGymsPersistentData")
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true, require = 0)
     public void getGymsPersistentData(CallbackInfoReturnable<NbtCompound> ci) {
         if(this.academy$gymData == null) {
