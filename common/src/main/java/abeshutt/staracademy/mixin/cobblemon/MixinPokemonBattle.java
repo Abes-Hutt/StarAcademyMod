@@ -43,9 +43,8 @@ public class MixinPokemonBattle {
                             RandomSource random = JavaRandom.ofNanoTime();
                             double raw = result.get().doubleValue();
                             int floored = (int)raw;
-                            return floored + (random.nextDouble() >= raw - floored ? 1 : 0);
+                            return floored + (random.nextDouble() < raw - floored ? 1 : 0);
                         }
-
 
                         return yield;
                     }).orElse(yield));
