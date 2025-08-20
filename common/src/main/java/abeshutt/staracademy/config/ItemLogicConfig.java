@@ -34,9 +34,9 @@ public class ItemLogicConfig extends FileConfig {
     protected void reset() {
         this.use = new ArrayList<>();
         this.use.add(new ItemUseLogic("academy:hunt", false, PLAYER, "/hunt"));
-        this.use.add(new ItemUseLogic("academy:shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 4 20 minutes"));
-        this.use.add(new ItemUseLogic("academy:strong_shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 4 30 minutes"));
-        this.use.add(new ItemUseLogic("academy:uber_shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 8 60 minutes"));
+        this.use.add(new ItemUseLogic("academy:shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 2 20 minutes"));
+        this.use.add(new ItemUseLogic("academy:strong_shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 3 40 minutes"));
+        this.use.add(new ItemUseLogic("academy:uber_shiny_incense", true, SERVER, "/sparkles boost start ${user_name} 4 60 minutes"));
         this.use.add(new ItemUseLogic("academy:lootbag_mythsandlegends", true, SERVER, "/lootables random ${user_name} lootables:mythsandlegends"));
         this.use.add(new ItemUseLogic("academy:lootbag_megastone", true, SERVER, "/lootables random ${user_name} lootables:megastones"));
         this.use.add(new ItemUseLogic("academy:lootbag_shinyplushie", true, SERVER, "/lootables random ${user_name} lootables:pokeblocks_shiny"));

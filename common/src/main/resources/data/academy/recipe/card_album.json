@@ -1,20 +1,29 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "   ",
-    "lbl",
-    "   "
+    " b ",
+    "lwl",
+    " r "
   ],
   "key": {
     "l": {
       "item": "minecraft:leather"
     },
-    "b": {
+    "w": {
       "item": "minecraft:black_wool"
+    },
+    "b": {
+      "item": "minecraft:light_blue_dye"
+    },
+    "r": {
+      "item": "minecraft:red_dye"
     }
   },
   "result": {
     "id": "academy:card_album",
+    "components": {
+      "academy:card_album": "base"
+    },
     "count": 1
   }
 }
