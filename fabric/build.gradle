@@ -50,8 +50,8 @@ dependencies {
 
     implementation(shadowBundle("com.squareup.okhttp3:okhttp:4.12.0"))
 
-    modImplementation(files("../common/jars/trinkets-3.10.0.jar"))
-    modImplementation(files("../common/jars/cardinal-components-api-6.1.2.jar"))
+    modImplementation("maven.modrinth:trinkets:3.10.0")
+    modImplementation("maven.modrinth:cardinal-components-api:6.1.2")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
