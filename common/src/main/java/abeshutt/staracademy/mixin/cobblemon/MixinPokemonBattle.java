@@ -23,7 +23,7 @@ import static abeshutt.staracademy.attribute.Attributes.ofEVYield;
 @Mixin(PokemonBattle.class)
 public class MixinPokemonBattle {
 
-    @Redirect(method = "end", at = @At(value = "INVOKE", target = "Lcom/cobblemon/mod/common/api/pokemon/stats/EvCalculator;calculate(Lcom/cobblemon/mod/common/battles/pokemon/BattlePokemon;Lcom/cobblemon/mod/common/battles/pokemon/BattlePokemon;)Ljava/util/Map;", remap = false), remap = false)
+    @Redirect(method = "end", at = @At(value = "INVOKE", target = "Lcom/cobblemon/mod/common/api/pokemon/stats/EvCalculator;calculate(Lcom/cobblemon/mod/common/battles/pokemon/BattlePokemon;Lcom/cobblemon/mod/common/battles/pokemon/BattlePokemon;)Ljava/util/Map;"), remap = false)
     private Map<Stat, Integer> end(EvCalculator instance, BattlePokemon battlePokemon, BattlePokemon opponentPokemon) {
         Map<Stat, Integer> evs = instance.calculate(battlePokemon, opponentPokemon);
         ServerPlayerEntity player = battlePokemon.getEffectedPokemon().getOwnerPlayer();
