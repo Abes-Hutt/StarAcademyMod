@@ -73,6 +73,11 @@ public class EnhancedCelestialsCompat {
             @Override
             public float affectBucketWeight(@NotNull SpawnBucket spawnBucket, float v) {
                 Optional<EnhancedCelestialsLunarForecastWorldData> enhancedCelestialsLunarForecastWorldData = EnhancedCelestials.lunarForecastWorldData(serverPlayerEntity.getWorld());
+
+                if (enhancedCelestialsLunarForecastWorldData.isEmpty()) {
+                    return SpawningInfluence.DefaultImpls.affectBucketWeight(this, spawnBucket, v);
+                }
+
                 EnhancedCelestialsLunarForecastWorldData worldData = enhancedCelestialsLunarForecastWorldData.orElseThrow();
 
                 if (spawnBucket.getName().equals("uncommon") || spawnBucket.getName().equals("rare") || spawnBucket.getName().equals("ultra-rare")) {
