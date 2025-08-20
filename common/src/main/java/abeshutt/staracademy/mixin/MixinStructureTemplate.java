@@ -1,9 +1,11 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.util.ProxyStructureTemplate;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.StructureTemplate.PalettedBlockInfoList;
 import net.minecraft.structure.StructureTemplate.StructureBlockInfo;
@@ -18,10 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Mixin(StructureTemplate.class)
 public abstract class MixinStructureTemplate implements ProxyStructureTemplate {
@@ -68,51 +67,48 @@ public abstract class MixinStructureTemplate implements ProxyStructureTemplate {
             return;
         }
 
-        if(dimensions.getX() >= 1 && dimensions.getY() >= 1 && dimensions.getZ() >= 1) {
+        if (dimensions.getX() >= 1 && dimensions.getY() >= 1 && dimensions.getZ() >= 1) {
             BlockPos blockPos = start.add(dimensions).add(-1, -1, -1);
-            List<StructureBlockInfo> list = new ArrayList<>();
-            List<StructureBlockInfo> list2 = new ArrayList<>();
-            List<StructureBlockInfo> list3 = new ArrayList<>();
-            BlockPos min = new BlockPos(Math.min(start.getX(), blockPos.getX()), Math.min(start.getY(), blockPos.getY()), Math.min(start.getZ(), blockPos.getZ()));
-            BlockPos max = new BlockPos(Math.max(start.getX(), blockPos.getX()), Math.max(start.getY(), blockPos.getY()), Math.max(start.getZ(), blockPos.getZ()));
+            List<StructureBlockInfo> list = Lists.newArrayList();
+            List<StructureBlockInfo> list2 = Lists.newArrayList();
+            List<StructureBlockInfo> list3 = Lists.newArrayList();
+            BlockPos blockPos2 = new BlockPos(Math.min(start.getX(), blockPos.getX()), Math.min(start.getY(), blockPos.getY()), Math.min(start.getZ(), blockPos.getZ()));
+            BlockPos blockPos3 = new BlockPos(Math.max(start.getX(), blockPos.getX()), Math.max(start.getY(), blockPos.getY()), Math.max(start.getZ(), blockPos.getZ()));
             this.size = dimensions;
+            Iterator var12 = BlockPos.iterate(blockPos2, blockPos3).iterator();
 
-            int current = 0;
-            int total = this.size.getX() * this.size.getY() * this.size.getZ();
+            while(true) {
+                BlockPos blockPos4;
+                BlockPos blockPos5;
+                BlockState blockState;
+                do {
+                    if (!var12.hasNext()) {
+                        List<StructureBlockInfo> list4 = combineSorted(list, list2, list3);
+                        this.blockInfoLists.clear();
+                        this.blockInfoLists.add(new PalettedBlockInfoList(list4));
+                        if (includeEntities) {
+                            this.addEntitiesFromWorld(world, blockPos2, blockPos3);
+                        } else {
+                            this.entities.clear();
+                        }
 
-            for(BlockPos offset : BlockPos.iterate(min, max)) {
-                BlockPos blockPos5 = offset.subtract(min);
-                BlockState blockState = world.getBlockState(offset);
-
-                if(!blockState.isAir()) {
-                    BlockEntity blockEntity = world.getBlockEntity(offset);
-                    StructureBlockInfo structureBlockInfo;
-
-                    if(blockEntity != null) {
-                        //structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, blockEntity.createNbtWithId());
-                        structureBlockInfo = null;
-                    } else {
-                        structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, null);
+                        return;
                     }
 
-                    categorize(structureBlockInfo, list, list2, list3);
+                    blockPos4 = (BlockPos)var12.next();
+                    blockPos5 = blockPos4.subtract(blockPos2);
+                    blockState = world.getBlockState(blockPos4);
+                } while((ignoredBlock != null && blockState.isOf(ignoredBlock)) || blockState.isAir());
+
+                BlockEntity blockEntity = world.getBlockEntity(blockPos4);
+                StructureBlockInfo structureBlockInfo;
+                if (blockEntity != null) {
+                    structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, blockEntity.createNbtWithId(world.getRegistryManager()));
+                } else {
+                    structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, (NbtCompound)null);
                 }
 
-                current++;
-
-                if(total / 8 > 0 && current % (total / 8) == 0) {
-                    System.out.println("Saving progress: " + (float)((double)current / total * 100.0D) + "%");
-                }
-            }
-
-            List<StructureBlockInfo> list4 = combineSorted(list, list2, list3);
-            this.blockInfoLists.clear();
-            this.blockInfoLists.add(new PalettedBlockInfoList(list4));
-
-            if(includeEntities) {
-                this.addEntitiesFromWorld(world, min, max.add(1, 1, 1));
-            } else {
-                this.entities.clear();
+                categorize(structureBlockInfo, list, list2, list3);
             }
         }
 
