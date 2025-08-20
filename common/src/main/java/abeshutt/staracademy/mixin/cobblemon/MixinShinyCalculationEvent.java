@@ -21,12 +21,13 @@ public class MixinShinyCalculationEvent {
     @Inject(method = "calculate", at = @At("RETURN"), cancellable = true)
     private void calculate(ServerPlayerEntity player, CallbackInfoReturnable<Float> ci) {
         if(player != null) {
-            Float chance = ci.getReturnValue();
+            Rational value = Rational.of(1, ci.getReturnValue());
+
             ci.setReturnValue(AttributeHolder.getRoot(player).path(Attributes.SHINY_CHANCE).map(attribute -> {
-                Option<Rational> result = attribute.get(Option.present(Rational.of(chance)),
+                Option<Rational> result = attribute.get(Option.present(value),
                         AttributeContext.random());
-                return result.isPresent() ? result.get().floatValue() : chance;
-            }).orElse(chance));
+                return result.isPresent() ? result.get() : value;
+            }).orElse(value).floatValue());
         }
     }
 
