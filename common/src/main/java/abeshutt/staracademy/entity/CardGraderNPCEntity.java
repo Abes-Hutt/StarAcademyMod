@@ -7,7 +7,10 @@ import abeshutt.staracademy.item.CardItem;
 import abeshutt.staracademy.world.data.CardGradingData;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.random.RandomSource;
+import com.glisco.numismaticoverhaul.ModComponents;
+import com.glisco.numismaticoverhaul.currency.CurrencyComponent;
 import dev.architectury.hooks.item.ItemStackHooks;
+import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -62,15 +65,10 @@ public class CardGraderNPCEntity extends HumanEntity {
     @Override
     public void tick() {
         this.setInvulnerable(true);
-        this.setCustomNameVisible(false);
 
         if(this.getWorld().isClient()) {
             this.equipCard();
-        }
-
-        if(!this.getWorld().isClient() && this.getServer() != null) {
-            String name = ModConfigs.NPC.getCardGraderNpcName();
-            this.setCustomName(name == null ? Text.empty() : Text.literal(ModConfigs.NPC.getCardGraderNpcName()));
+            this.updateName();
         }
 
         super.tick();
@@ -83,6 +81,31 @@ public class CardGraderNPCEntity extends HumanEntity {
         this.setStackInHand(Hand.MAIN_HAND, CardGradingData.CLIENT.getStack(player.getUuid()));
     }
 
+    @Environment(EnvType.CLIENT)
+    private void updateName() {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if(player == null) {
+            this.setCustomNameVisible(false);
+            return;
+        }
+
+        ItemStack stack = CardGradingData.CLIENT.getStack(player.getUuid());
+
+        if(stack.isEmpty()) {
+            this.setCustomNameVisible(false);
+            return;
+        }
+
+        long millis = Math.max(CardGradingData.CLIENT.getTimeLeft(player.getUuid()), 0);
+        long hours = millis / 1000 / 3600;
+        long minutes = millis / 1000 % 3600 / 60;
+        long seconds = millis / 1000 % 60;
+        String time = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        this.setCustomNameVisible(true);
+        this.setCustomName(Text.literal(time));
+    }
+
     @Override
     protected ActionResult interactMob(PlayerEntity user, Hand hand) {
         RandomSource random = JavaRandom.ofNanoTime();
@@ -92,7 +115,7 @@ public class CardGraderNPCEntity extends HumanEntity {
             CardGradingData data = ModWorldData.CARD_GRADING.getGlobal(player.getWorld());
 
             if(data.has(player.getUuid())) {
-                if(data.isFinished(player.getUuid())) {
+                if(data.getTimeLeft(player.getUuid()) < 0) {
                     ItemStack returned = data.getStack(player.getUuid());
                     int grade = ModConfigs.CARD_SCALARS.getGrade(random);
 
@@ -104,21 +127,35 @@ public class CardGraderNPCEntity extends HumanEntity {
                     player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
                             ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    player.sendMessage(Text.empty().append(Text.literal(REQUEST_COMPLETE.apply(random))
+                    player.sendMessage(Text.empty().append(Text.translatable(REQUEST_COMPLETE.apply(random))
                             .formatted(Formatting.GRAY)));
                     data.remove(player.getUuid());
                 } else {
-                    player.sendMessage(Text.empty().append(Text.literal(REQUEST_IMPATIENT.apply(random))
+                    player.sendMessage(Text.empty().append(Text.translatable(REQUEST_IMPATIENT.apply(random))
                             .formatted(Formatting.GRAY)));
                 }
             } else if(stack.getItem() instanceof CardItem && CardItem.get(stack).map(card -> card.getGrade() == 0).orElse(false)) {
-                data.add(player.getUuid(), stack.copy());
-                player.setStackInHand(hand, ItemStack.EMPTY);
+                if(Platform.isModLoaded("numismatic-overhaul")) {
+                    CurrencyComponent purse = ModComponents.CURRENCY.get(player);
 
-                player.sendMessage(Text.empty().append(Text.literal(INITIAL_CARD.apply(random))
-                        .formatted(Formatting.GRAY)));
+                    if(purse.getValue() < ModConfigs.NPC.getGradingCurrencyCost()) {
+                        player.sendMessage(Text.empty().append(Text.translatable(INITIAL_BROKE.apply(random))
+                                .formatted(Formatting.GRAY)));
+                    } else {
+                        purse.pushTransaction(-ModConfigs.NPC.getGradingCurrencyCost());
+                        data.add(player.getUuid(), stack.copy());
+                        player.setStackInHand(hand, ItemStack.EMPTY);
+                        player.sendMessage(Text.empty().append(Text.translatable(INITIAL_CARD.apply(random))
+                                .formatted(Formatting.GRAY)));
+                    }
+                } else {
+                    data.add(player.getUuid(), stack.copy());
+                    player.setStackInHand(hand, ItemStack.EMPTY);
+                    player.sendMessage(Text.empty().append(Text.translatable(INITIAL_CARD.apply(random))
+                            .formatted(Formatting.GRAY)));
+                }
             } else {
-                player.sendMessage(Text.empty().append(Text.literal(INITIAL_NO_CARD.apply(random))
+                player.sendMessage(Text.empty().append(Text.translatable(INITIAL_NO_CARD.apply(random))
                         .formatted(Formatting.GRAY)));
             }
         }
@@ -132,31 +169,37 @@ public class CardGraderNPCEntity extends HumanEntity {
     }
 
     public static final Function<RandomSource, String> INITIAL_NO_CARD = create(
-            "Ah, practicing the ancient art of pretend card holding, I see.",
-            "That hand is looking mint! But I only grade cards.",
-            "You know, maybe the rarest card of them all is the one we pretend to hold.",
-            "No card for me? That’s alright, the real treasure is the trainer holding it.",
-            "Looking to get something graded? Just hand me a card when you're ready.",
-            "Got a favorite card? I’d be happy to take a look!",
-            "I can’t grade empty hands, but I’ll gladly grade any card you bring."
+            "text.academy.grader.initial_no_card_1",
+            "text.academy.grader.initial_no_card_2",
+            "text.academy.grader.initial_no_card_3",
+            "text.academy.grader.initial_no_card_4",
+            "text.academy.grader.initial_no_card_5",
+            "text.academy.grader.initial_no_card_6",
+            "text.academy.grader.initial_no_card_7"
     );
 
     public static final Function<RandomSource, String> INITIAL_CARD = create(
-            "Ah, let me take a look at that beauty… This might take a while to appraise properly. Leave it with me for an hour.",
-            "Oho! A fine specimen you’ve brought me. I’ll need some time to check its condition. Come back in about an hour!",
-            "A fine choice! I’ll make sure it gets the grade it deserves. Check back in one hour."
+            "text.academy.grader.initial_card_1",
+            "text.academy.grader.initial_card_2",
+            "text.academy.grader.initial_card_3"
+    );
+
+    public static final Function<RandomSource, String> INITIAL_BROKE = create(
+            "text.academy.grader.initial_broke_1",
+            "text.academy.grader.initial_broke_2",
+            "text.academy.grader.initial_broke_3"
     );
 
     public static final Function<RandomSource, String> REQUEST_IMPATIENT = create(
-            "Patience, patience... good grading takes time!",
-            "Come back later. The card is still being evaluated.",
-            "Careful work cannot be rushed. Trust me, you’ll want a proper grade."
+            "text.academy.grader.request_impatient_1",
+            "text.academy.grader.request_impatient_2",
+            "text.academy.grader.request_impatient_3"
     );
 
     public static final Function<RandomSource, String> REQUEST_COMPLETE = create(
-            "The evaluation is complete. I must say, this one surprised me...",
-            "Ta-daaaa! One freshly graded card, hot out of the oven!",
-            "All done! Thank you for waiting."
+            "text.academy.grader.request_complete_1",
+            "text.academy.grader.request_complete_2",
+            "text.academy.grader.request_complete_3"
     );
 
     public static Function<RandomSource, String> create(String... lines) {

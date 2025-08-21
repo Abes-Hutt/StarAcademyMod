@@ -13,13 +13,18 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class HumanEntity extends PathAwareEntity implements IDefaultedAttributes {
 
+    protected Map<EquipmentSlot, ItemStack> slots;
     protected Vec3d lastVelocity;
 
     protected HumanEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
+        this.slots = new HashMap<>();
     }
 
     @Override
@@ -40,18 +45,31 @@ public abstract class HumanEntity extends PathAwareEntity implements IDefaultedA
     public abstract Identifier getSkinTexture();
 
     @Override
+    public Iterable<ItemStack> getHandItems() {
+        return List.of(
+            this.getEquippedStack(EquipmentSlot.MAINHAND),
+            this.getEquippedStack(EquipmentSlot.OFFHAND)
+        );
+    }
+
+    @Override
     public Iterable<ItemStack> getArmorItems() {
-        return new ArrayList<>();
+        return List.of(
+            this.getEquippedStack(EquipmentSlot.HEAD),
+            this.getEquippedStack(EquipmentSlot.CHEST),
+            this.getEquippedStack(EquipmentSlot.LEGS),
+            this.getEquippedStack(EquipmentSlot.FEET)
+        );
     }
 
     @Override
     public ItemStack getEquippedStack(EquipmentSlot slot) {
-        return ItemStack.EMPTY;
+        return this.slots.getOrDefault(slot, ItemStack.EMPTY);
     }
 
     @Override
     public void equipStack(EquipmentSlot slot, ItemStack stack) {
-
+        this.slots.put(slot, stack);
     }
 
     @Override
@@ -61,7 +79,7 @@ public abstract class HumanEntity extends PathAwareEntity implements IDefaultedA
     }
 
     public Vec3d lerpVelocity(float tickDelta) {
-        return this.lastVelocity.lerp(this.getVelocity(), (double)tickDelta);
+        return this.lastVelocity.lerp(this.getVelocity(), tickDelta);
     }
 
 }

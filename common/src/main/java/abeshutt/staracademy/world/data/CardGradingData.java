@@ -3,6 +3,7 @@ package abeshutt.staracademy.world.data;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.net.UpdateCardGradingS2CPacket;
 import com.google.gson.JsonObject;
@@ -40,7 +41,7 @@ public class CardGradingData extends WorldData {
 
     public void add(UUID uuid, ItemStack stack) {
         this.entries.put(uuid, new Entry(
-                ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli() + 1000 * 5,
+                ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli(),
                 stack));
         this.changes.add(uuid);
     }
@@ -50,11 +51,11 @@ public class CardGradingData extends WorldData {
         this.changes.add(uuid);
     }
 
-    public boolean isFinished(UUID uuid) {
+    public long getTimeLeft(UUID uuid) {
         Entry entry = this.entries.get(uuid);
-        if(entry == null) return false;
+        if(entry == null) return 0;
         long now = ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli();
-        return now >= entry.time;
+        return entry.time + ModConfigs.NPC.getGradingTimeMillis() - now;
     }
 
     public ItemStack getStack(UUID uuid) {
