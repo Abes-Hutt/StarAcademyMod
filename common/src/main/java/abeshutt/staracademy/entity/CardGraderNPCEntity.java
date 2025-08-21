@@ -143,6 +143,7 @@ public class CardGraderNPCEntity extends HumanEntity {
                                 .formatted(Formatting.GRAY)));
                     } else {
                         purse.pushTransaction(-ModConfigs.NPC.getGradingCurrencyCost());
+                        purse.commitTransactions();
                         data.add(player.getUuid(), stack.copy());
                         player.setStackInHand(hand, ItemStack.EMPTY);
                         player.sendMessage(Text.empty().append(Text.translatable(INITIAL_CARD.apply(random))
