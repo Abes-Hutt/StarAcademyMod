@@ -57,7 +57,8 @@
     "numismaticoverhaul.MixinShopBlockEntity",
     "radgyms.MixinDataSaver",
     "radgyms.MixinEventManager",
-    "radgyms.MixinManager"
+    "radgyms.MixinManager",
+    "shutters.MixinShutter"
   ],
   "injectors": {
     "defaultRequire": 1

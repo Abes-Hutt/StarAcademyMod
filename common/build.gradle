@@ -40,6 +40,8 @@ dependencies {
 
     modCompileOnly("maven.modrinth:fading-clouds:1.1.0")
 
+    modCompileOnly("maven.modrinth:shutters:2.1.2")
+
     modCompileOnly("com.squareup.okhttp3:okhttp:4.12.0")
 
     modCompileOnly("dev.emi:trinkets:3.10.0")

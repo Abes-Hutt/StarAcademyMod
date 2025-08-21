@@ -105,7 +105,7 @@ public abstract class MixinStructureTemplate implements ProxyStructureTemplate {
                 if (blockEntity != null) {
                     structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, blockEntity.createNbtWithId(world.getRegistryManager()));
                 } else {
-                    structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, (NbtCompound)null);
+                    structureBlockInfo = new StructureBlockInfo(blockPos5, blockState, null);
                 }
 
                 categorize(structureBlockInfo, list, list2, list3);
