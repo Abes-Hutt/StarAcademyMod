@@ -48,10 +48,10 @@ public class AttributeConfig extends FileConfig {
                     .add(null, 0, AssignAttribute.of(NumberRoll.constant(0))));
 
             child.addChild(ADD_MULTIPLIED_BASE.asString(), NodeAttribute.of(number())
-                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(1))));
+                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(0))));
 
             child.addChild(ADD_MULTIPLIED_TOTAL.asString(), NodeAttribute.of(number())
-                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(1))));
+                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(0))));
 
             vanilla.addChild(entry.getIdAsString(), child);
         }
