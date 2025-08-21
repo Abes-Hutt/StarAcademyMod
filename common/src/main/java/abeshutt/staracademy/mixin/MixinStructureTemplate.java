@@ -27,6 +27,7 @@ public abstract class MixinStructureTemplate implements ProxyStructureTemplate {
 
     @Unique private boolean custom;
     @Unique private Map<BlockPos, StructureBlockInfo> blockCache;
+    @Unique private final Object lock = new Object();
 
     @Shadow private Vec3i size;
     @Shadow @Final private List<PalettedBlockInfoList> blockInfoLists;
@@ -44,12 +45,14 @@ public abstract class MixinStructureTemplate implements ProxyStructureTemplate {
 
     @Override
     public StructureBlockInfo get(BlockPos pos) {
-        if(this.blockCache == null) {
-            this.blockCache = new HashMap<>();
+        synchronized(this.lock) {
+            if(this.blockCache == null) {
+                this.blockCache = new HashMap<>();
 
-            for(PalettedBlockInfoList list : this.blockInfoLists) {
-                for(StructureBlockInfo entry : list.getAll()) {
-                   this.blockCache.put(entry.pos(), entry);
+                for(PalettedBlockInfoList list : this.blockInfoLists) {
+                    for(StructureBlockInfo entry : list.getAll()) {
+                        this.blockCache.put(entry.pos(), entry);
+                    }
                 }
             }
         }
