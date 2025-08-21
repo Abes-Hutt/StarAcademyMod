@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.UUID;
@@ -23,12 +24,14 @@ public abstract class MixinDataSaver implements ProxyGymData {
 
     @Shadow public abstract UUID getUuid();
 
+    @Shadow public abstract String getUuidAsString();
+
     @TargetHandler(mixin = "lol.gito.radgyms.mixin.DataSaver", name = "getGymsPersistentData")
-    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true, require = 0)
+    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
     public void getGymsPersistentData(CallbackInfoReturnable<NbtCompound> ci) {
         if(this.academy$gymData == null) {
             this.academy$gymData = new NbtCompound();
-            RadGyms.INSTANCE.debug("PersistentData created for player " + this.getUuid());
+            RadGyms.INSTANCE.debug("Academy PersistentData created for player " + this.getUuid());
         }
 
         ci.setReturnValue(this.academy$gymData);
@@ -42,6 +45,26 @@ public abstract class MixinDataSaver implements ProxyGymData {
     @Override
     public void setGymData(NbtCompound gymData) {
         this.academy$gymData = gymData;
+    }
+
+    @TargetHandler(mixin = "lol.gito.radgyms.mixin.DataSaver", name = "RadGyms$injectWriteMethod")
+    @Inject(method = "@MixinSquared:Handler", at = @At("RETURN"))
+    protected void RadGyms$injectWriteMethod(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir, CallbackInfo ci) {
+        if (this.academy$gymData != null) {
+            nbt.put("rad-gyms.entity_data", this.academy$gymData);
+            RadGyms.INSTANCE.debug("Academy PersistentData wrote for player " + this.getUuid());
+        }
+
+        ci.cancel();
+    }
+
+    @TargetHandler(mixin = "lol.gito.radgyms.mixin.DataSaver", name = "RadGyms$injectReadMethod")
+    @Inject(method = "@MixinSquared:Handler", at = @At("RETURN"))
+    protected void RadGyms$injectReadMethod(NbtCompound nbt, CallbackInfo info, CallbackInfo ci) {
+        if (nbt.contains("rad-gyms.entity_data", 10)) {
+            this.academy$gymData = nbt.getCompound("rad-gyms.entity_data");
+            RadGyms.INSTANCE.debug("Academy PersistentData read for player " + this.getUuidAsString());
+        }
     }
 
 }
