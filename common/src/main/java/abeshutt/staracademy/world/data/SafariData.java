@@ -166,39 +166,41 @@ public class SafariData extends WorldData {
             this.leaveSafari(player);
         }
 
-        Path folder = world.getServer().session.getWorldDirectory(world.getRegistryKey());
-        server.worlds.remove(StarAcademyMod.SAFARI);
+        if(ModConfigs.SAFARI.isResetWorld()) {
+            Path folder = world.getServer().session.getWorldDirectory(world.getRegistryKey());
+            server.worlds.remove(StarAcademyMod.SAFARI);
 
-        try {
-            Files.walkFileTree(folder, new SimpleFileVisitor<>() {
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attributes) throws IOException {
-                    StarAcademyMod.LOGGER.debug("Deleting {}", path);
-                    Files.delete(path);
-                    return FileVisitResult.CONTINUE;
-                }
+            try {
+                Files.walkFileTree(folder, new SimpleFileVisitor<>() {
+                    public FileVisitResult visitFile(Path path, BasicFileAttributes attributes) throws IOException {
+                        StarAcademyMod.LOGGER.debug("Deleting {}", path);
+                        Files.delete(path);
+                        return FileVisitResult.CONTINUE;
+                    }
 
-                public FileVisitResult postVisitDirectory(Path path, IOException exception) throws IOException {
-                    if(exception != null) throw exception;
-                    if(path.equals(folder)) Files.deleteIfExists(path);
-                    Files.delete(path);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } catch(IOException ignored) { }
+                    public FileVisitResult postVisitDirectory(Path path, IOException exception) throws IOException {
+                        if(exception != null) throw exception;
+                        if(path.equals(folder)) Files.deleteIfExists(path);
+                        Files.delete(path);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            } catch(IOException ignored) { }
 
-        UnmodifiableLevelProperties worldProperties = new UnmodifiableLevelProperties(server.getSaveProperties(),
-                server.getSaveProperties().getMainWorldProperties());
+            UnmodifiableLevelProperties worldProperties = new UnmodifiableLevelProperties(server.getSaveProperties(),
+                    server.getSaveProperties().getMainWorldProperties());
 
-        DimensionOptions options = server.getCombinedDynamicRegistries().getCombinedRegistryManager()
-                .get(RegistryKeys.DIMENSION).get(StarAcademyMod.SAFARI.getValue());
+            DimensionOptions options = server.getCombinedDynamicRegistries().getCombinedRegistryManager()
+                    .get(RegistryKeys.DIMENSION).get(StarAcademyMod.SAFARI.getValue());
 
-        ServerWorld newWorld = new ServerWorld(server, Util.getMainWorkerExecutor(), server.session, worldProperties,
-                world.getRegistryKey(), options, new DummyWorldGenerationProgressListener(),
-                server.getSaveProperties().isDebugWorld(), BiomeAccess.hashSeed(server.getSaveProperties().getGeneratorOptions().getSeed()),
-                ImmutableList.of(), false, server.getOverworld().getRandomSequences());
+            ServerWorld newWorld = new ServerWorld(server, Util.getMainWorkerExecutor(), server.session, worldProperties,
+                    world.getRegistryKey(), options, new DummyWorldGenerationProgressListener(),
+                    server.getSaveProperties().isDebugWorld(), BiomeAccess.hashSeed(server.getSaveProperties().getGeneratorOptions().getSeed()),
+                    ImmutableList.of(), false, server.getOverworld().getRandomSequences());
 
-        server.getOverworld().getWorldBorder().addListener(new WorldBorderSyncer(newWorld.getWorldBorder()));
-        server.worlds.put(world.getRegistryKey(), newWorld);
+            server.getOverworld().getWorldBorder().addListener(new WorldBorderSyncer(newWorld.getWorldBorder()));
+            server.worlds.put(world.getRegistryKey(), newWorld);
+        }
 
         this.timeLeft = ModConfigs.SAFARI.getTimeLeft(this.lastUpdated) / 50;
 

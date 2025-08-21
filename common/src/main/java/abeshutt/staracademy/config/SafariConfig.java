@@ -27,6 +27,7 @@ public class SafariConfig extends FileConfig {
     @Expose private long startEpoch;
     @Expose private long restartDelay;
     @Expose private boolean paused;
+    @Expose private boolean resetWorld;
     @Expose private Map<String, SafariTicketEntry> tickets = new HashMap<>();
 
     @Override
@@ -68,6 +69,10 @@ public class SafariConfig extends FileConfig {
 
     public boolean isPaused() {
         return this.paused;
+    }
+
+    public boolean isResetWorld() {
+        return this.resetWorld;
     }
 
     public long getTimeLeft(long lastUpdated) {
