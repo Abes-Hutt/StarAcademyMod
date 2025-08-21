@@ -9,29 +9,27 @@ import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.Expose;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.any;
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.number;
 import static abeshutt.staracademy.attribute.path.AttributePath.relative;
+import static net.minecraft.entity.attribute.EntityAttributeModifier.Operation.*;
 
 public class AttributeConfig extends FileConfig {
 
-    @Expose protected Map<Identifier, String> associations;
     @Expose protected Attribute<?> root;
 
     @Override
     public String getPath() {
         return "attribute";
-    }
-
-    public Optional<AttributePath> getAssociation(Identifier attribute) {
-        String raw = this.associations.get(attribute);
-        return raw == null ? Optional.empty() : Adapters.ATTRIBUTE_PATH.readJson(new JsonPrimitive(raw));
     }
 
     public Attribute<?> getRoot() {
@@ -41,6 +39,25 @@ public class AttributeConfig extends FileConfig {
     @Override
     protected void reset() {
         this.root = NodeAttribute.of(any());
+        Attribute<?> vanilla = NodeAttribute.of(any());
+
+        for(RegistryEntry<EntityAttribute> entry : Registries.ATTRIBUTE.getIndexedEntries()) {
+            Attribute<?> child = NodeAttribute.of(any());
+
+            child.addChild(ADD_VALUE.asString(), NodeAttribute.of(number())
+                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(0))));
+
+            child.addChild(ADD_MULTIPLIED_BASE.asString(), NodeAttribute.of(number())
+                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(1))));
+
+            child.addChild(ADD_MULTIPLIED_TOTAL.asString(), NodeAttribute.of(number())
+                    .add(null, 0, AssignAttribute.of(NumberRoll.constant(1))));
+
+            vanilla.addChild(entry.getIdAsString(), child);
+        }
+
+        this.root.addChild("vanilla", vanilla);
+
         this.root.addChild("shiny_chance", NodeAttribute.of(number())
                 .add(null, 0, new MultiplyAttribute<>(number(),
                         ReferenceAttribute.of(number(), relative("..", "increased"))))

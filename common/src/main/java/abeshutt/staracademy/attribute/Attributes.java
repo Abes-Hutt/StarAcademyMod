@@ -1,5 +1,6 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.attribute.again.AttributeContext;
 import abeshutt.staracademy.attribute.again.NodeAttribute;
@@ -19,8 +20,13 @@ import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -42,6 +48,10 @@ public class Attributes {
 
     public static AttributePath<Rational> ofEVYield(Stat stat) {
         return AttributePath.absolute("ev_yield", stat.getIdentifier().toString());
+    }
+
+    public static AttributePath<Rational> ofVanilla(RegistryEntry<EntityAttribute> attribute, Operation operation) {
+        return AttributePath.absolute("vanilla", attribute.getIdAsString(), operation.asString());
     }
 
     public static void init() {
