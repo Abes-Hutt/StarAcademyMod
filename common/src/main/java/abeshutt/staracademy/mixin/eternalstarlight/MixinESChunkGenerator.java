@@ -33,8 +33,11 @@ public abstract class MixinESChunkGenerator extends NoiseChunkGenerator {
 
     @Override
     public void generateFeatures(StructureWorldAccess access, Chunk chunk, StructureAccessor structureAccessor) {
-        super.generateFeatures(access, chunk, structureAccessor);
-        if(!(access instanceof ChunkRegion region)) return;
+        if(!(access instanceof ChunkRegion region)) {
+            super.generateFeatures(access, chunk, structureAccessor);
+            return;
+        }
+
         ServerWorld world = region.toServerWorld();
 
         world.getStructureTemplateManager().getTemplate(ModConfigs.SAFARI.getStructure()).ifPresent(template -> {
@@ -84,6 +87,8 @@ public abstract class MixinESChunkGenerator extends NoiseChunkGenerator {
                 }
             });
         });
+
+        super.generateFeatures(access, chunk, structureAccessor);
     }
 
 }
