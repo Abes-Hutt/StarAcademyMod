@@ -54,8 +54,6 @@ public abstract class MixinDataSaver implements ProxyGymData {
             nbt.put("rad-gyms.entity_data", this.academy$gymData);
             RadGyms.INSTANCE.debug("Academy PersistentData wrote for player " + this.getUuid());
         }
-
-        ci.cancel();
     }
 
     @TargetHandler(mixin = "lol.gito.radgyms.mixin.DataSaver", name = "RadGyms$injectReadMethod")
