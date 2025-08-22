@@ -43,6 +43,10 @@ public class UniformNumberRoll extends NumberRoll {
         Rational resolution;
         Rational granularity;
 
+        if(minimum.equals(maximum)) {
+            return minimum;
+        }
+
         if(this.resolution != null && this.granularity != null) {
             resolution = this.resolution.get(random);
             granularity = this.granularity.get(random);
