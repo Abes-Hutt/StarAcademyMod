@@ -7,6 +7,7 @@ import abeshutt.staracademy.data.serializable.IBitSerializable;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HouseData;
 import abeshutt.staracademy.world.data.HousePlayer;
+import abeshutt.staracademy.world.data.HousePokedexManager;
 import com.cobblemon.mod.common.api.pokedex.SpeciesDexRecord;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.CustomPayload;
@@ -60,6 +61,10 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
                 if(house.pokedex == null) {
                     full.getPokedex().getSpeciesRecords().clear();
                 } else {
+                    house.pokedex.forEach((identifier, speciesDexRecord) -> {
+                        speciesDexRecord.initialize(full.getPokedex(), speciesDexRecord.getId());
+                    });
+
                     full.getPokedex().getSpeciesRecords().putAll(house.pokedex);
                 }
 
@@ -104,6 +109,10 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
         public Map<UUID, HousePlayer> players;
         public Map<Identifier, SpeciesDexRecord> pokedex;
 
+        public House() {
+
+        }
+
         @Override
         public void writeBits(BitBuffer buffer) {
             Adapters.INT.writeBits(this.color, buffer);
@@ -125,7 +134,7 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
                 this.pokedex.forEach((id, record) -> {
                     Adapters.IDENTIFIER.writeBits(id, buffer);
-                    Adapters.SPECIES_DEX_RECORD.asNullable().writeBits(record, buffer);
+                    Adapters.SPECIES_DEX_RECORD.asNullable().writeBits(record, buffer, new HousePokedexManager());
                 });
             }
         }
@@ -157,7 +166,7 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
                 for(int i = 0; i < size; i++) {
                     this.pokedex.put(
                             Adapters.IDENTIFIER.readBits(buffer).orElseThrow(),
-                            Adapters.SPECIES_DEX_RECORD.asNullable().readBits(buffer).orElseThrow()
+                            Adapters.SPECIES_DEX_RECORD.asNullable().readBits(buffer, new HousePokedexManager()).orElseThrow()
                     );
                 }
             }

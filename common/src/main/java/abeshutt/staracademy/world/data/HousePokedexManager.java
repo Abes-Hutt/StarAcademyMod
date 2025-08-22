@@ -3,6 +3,7 @@ package abeshutt.staracademy.world.data;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import com.cobblemon.mod.common.api.pokedex.AbstractPokedexManager;
+import com.cobblemon.mod.common.api.pokedex.PokedexManager;
 import com.cobblemon.mod.common.api.pokedex.SpeciesDexRecord;
 import com.cobblemon.mod.common.api.storage.player.InstancedPlayerData;
 import com.cobblemon.mod.common.api.storage.player.client.ClientPokedexManager;
@@ -66,19 +67,22 @@ public class HousePokedexManager extends AbstractPokedexManager implements Insta
         String formName = pokemon.getForm().getName();
         this.getOrCreateSpeciesRecord(speciesId).getOrCreateFormRecord(formName)
                 .encountered(new PokedexEntityData(pokemon, null));
+        this.onSpeciesRecordUpdated(this.getSpeciesRecord(speciesId));
     }
 
     public void onEncounter(PokedexEntityData data) {
         Identifier speciesId = data.getApparentSpecies().resourceIdentifier;
         String formName = data.getApparentForm().getName();
         this.getOrCreateSpeciesRecord(speciesId).getOrCreateFormRecord(formName).encountered(data);
+        this.onSpeciesRecordUpdated(this.getSpeciesRecord(speciesId));
     }
 
     public void onCapture(Pokemon pokemon) {
         Identifier speciesId = pokemon.getSpecies().resourceIdentifier;
         String formName = pokemon.getForm().getName();
-        getOrCreateSpeciesRecord(speciesId).getOrCreateFormRecord(formName)
+        this.getOrCreateSpeciesRecord(speciesId).getOrCreateFormRecord(formName)
                 .caught(new PokedexEntityData(pokemon, null));
+        this.onSpeciesRecordUpdated(this.getSpeciesRecord(speciesId));
     }
 
     public ClientPokedexManager toClientData() {
@@ -94,7 +98,7 @@ public class HousePokedexManager extends AbstractPokedexManager implements Insta
             NbtCompound records = new NbtCompound();
 
             this.getSpeciesRecords().forEach((id, record) -> {
-                Adapters.SPECIES_DEX_RECORD.writeNbt(record).ifPresent(tag -> {
+                Adapters.SPECIES_DEX_RECORD.writeNbt(record, this).ifPresent(tag -> {
                     records.put(id.toString(), tag);
                 });
             });
@@ -112,7 +116,7 @@ public class HousePokedexManager extends AbstractPokedexManager implements Insta
         NbtCompound records = nbt.getCompound("records");
 
         this.getSpeciesRecords().forEach((id, record) -> {
-            Adapters.SPECIES_DEX_RECORD.writeNbt(record).ifPresent(tag -> {
+            Adapters.SPECIES_DEX_RECORD.writeNbt(record, this).ifPresent(tag -> {
                 records.put(id.toString(), tag);
             });
         });

@@ -1,11 +1,13 @@
 package abeshutt.staracademy.data.adapter.util;
 
 import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.adapter.basic.EnumAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import com.cobblemon.mod.common.api.pokedex.FormDexRecord;
 import com.cobblemon.mod.common.api.pokedex.PokedexEntryProgress;
+import com.cobblemon.mod.common.api.pokedex.SpeciesDexRecord;
 import com.cobblemon.mod.common.pokemon.Gender;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
@@ -20,14 +22,16 @@ import static abeshutt.staracademy.data.adapter.basic.EnumAdapter.Mode.NAME;
 import static abeshutt.staracademy.data.adapter.basic.EnumAdapter.Mode.ORDINAL;
 import static com.cobblemon.mod.common.pokemon.Gender.*;
 
-public class FormDexRecordAdapter implements ISimpleAdapter<FormDexRecord, NbtCompound, JsonObject> {
+public class FormDexRecordAdapter implements IAdapter<FormDexRecord, NbtCompound, JsonObject, SpeciesDexRecord> {
 
     private static final EnumAdapter<Gender> GENDER_NAME = Adapters.ofEnum(Gender.class, NAME);
     private static final EnumAdapter<PokedexEntryProgress> KNOWLEDGE_ORDINAL = Adapters.ofEnum(PokedexEntryProgress.class, ORDINAL);
     private static final EnumAdapter<PokedexEntryProgress> KNOWLEDGE_NAME = Adapters.ofEnum(PokedexEntryProgress.class, NAME);
 
     @Override
-    public void writeBits(FormDexRecord value, BitBuffer buffer) {
+    public void writeBits(FormDexRecord value, BitBuffer buffer, SpeciesDexRecord context) {
+        Adapters.UTF_8.writeBits(value.getFormName(), buffer);
+
         Set<Gender> genders = value.getGenders();
         Adapters.ofBoundedInt(8).writeBits((genders.contains(MALE) ? 1 : 0)
                 | (genders.contains(FEMALE) ? 2 : 0) | (genders.contains(GENDERLESS) ? 4 : 0), buffer);
@@ -42,8 +46,9 @@ public class FormDexRecordAdapter implements ISimpleAdapter<FormDexRecord, NbtCo
     }
 
     @Override
-    public Optional<FormDexRecord> readBits(BitBuffer buffer) {
+    public Optional<FormDexRecord> readBits(BitBuffer buffer, SpeciesDexRecord context) {
         FormDexRecord record = new FormDexRecord();
+        record.initialize(context, Adapters.UTF_8.readBits(buffer).orElseThrow());
 
         int packed = Adapters.ofBoundedInt(8).readBits(buffer).orElseThrow();
         Set<Gender> genders = new HashSet<>();
@@ -66,8 +71,12 @@ public class FormDexRecordAdapter implements ISimpleAdapter<FormDexRecord, NbtCo
     }
 
     @Override
-    public Optional<NbtCompound> writeNbt(FormDexRecord value) {
+    public Optional<NbtCompound> writeNbt(FormDexRecord value, SpeciesDexRecord context) {
         return Optional.of(new NbtCompound()).map(nbt -> {
+            Adapters.UTF_8.writeNbt(value.getFormName()).ifPresent(tag -> {
+                nbt.put("name", tag);
+            });
+
             NbtList genders = new NbtList();
 
             for(Gender gender : value.getGenders()) {
@@ -90,12 +99,14 @@ public class FormDexRecordAdapter implements ISimpleAdapter<FormDexRecord, NbtCo
     }
 
     @Override
-    public Optional<FormDexRecord> readNbt(NbtCompound nbt) {
+    public Optional<FormDexRecord> readNbt(NbtCompound nbt, SpeciesDexRecord context) {
         if(nbt == null) {
             return Optional.empty();
         }
 
         FormDexRecord value = new FormDexRecord();
+        value.initialize(context, Adapters.UTF_8.readNbt(nbt.get("name")).orElseThrow());
+
         value.getGenders().clear();
         value.getSeenShinyStates().clear();
 

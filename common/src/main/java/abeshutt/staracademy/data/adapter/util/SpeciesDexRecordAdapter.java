@@ -1,9 +1,11 @@
 package abeshutt.staracademy.data.adapter.util;
 
 import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.data.adapter.IAdapter;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.util.ProxySpeciesDexRecord;
+import com.cobblemon.mod.common.api.pokedex.AbstractPokedexManager;
 import com.cobblemon.mod.common.api.pokedex.FormDexRecord;
 import com.cobblemon.mod.common.api.pokedex.SpeciesDexRecord;
 import com.google.gson.JsonObject;
@@ -14,7 +16,7 @@ import net.minecraft.nbt.NbtList;
 import java.util.Map;
 import java.util.Optional;
 
-public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord, NbtCompound, JsonObject> {
+public class SpeciesDexRecordAdapter implements IAdapter<SpeciesDexRecord, NbtCompound, JsonObject, AbstractPokedexManager> {
 
     private final boolean nullable;
 
@@ -31,12 +33,13 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
     }
 
     @Override
-    public void writeBits(SpeciesDexRecord value, BitBuffer buffer) {
+    public void writeBits(SpeciesDexRecord value, BitBuffer buffer, AbstractPokedexManager context) {
         if(this.nullable) {
             Adapters.BOOLEAN.writeBits(value == null, buffer);
             if(value == null) return;
         }
 
+        Adapters.IDENTIFIER.writeBits(value.id, buffer);
         Adapters.INT_SEGMENTED_3.writeBits(value.getAspects().size(), buffer);
 
         for(String aspect : value.getAspects()) {
@@ -48,19 +51,19 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
 
         for(Map.Entry<String, FormDexRecord> entry : formRecords.entrySet()) {
            Adapters.UTF_8.writeBits(entry.getKey(), buffer);
-           Adapters.FORM_DEX_RECORD.writeBits(entry.getValue(), buffer);
+           Adapters.FORM_DEX_RECORD.writeBits(entry.getValue(), buffer, value);
         }
     }
 
     @Override
-    public Optional<SpeciesDexRecord> readBits(BitBuffer buffer) {
+    public Optional<SpeciesDexRecord> readBits(BitBuffer buffer, AbstractPokedexManager context) {
         if(this.nullable && Adapters.BOOLEAN.readBits(buffer).orElseThrow()) {
             return Optional.empty();
         }
 
         SpeciesDexRecord record = new SpeciesDexRecord();
+        record.initialize(context, Adapters.IDENTIFIER.readBits(buffer).orElseThrow());
         int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
-
 
         for(int i = 0; i < size; i++) {
             record.getAspects().add(Adapters.UTF_8.readBits(buffer).orElseThrow());
@@ -74,7 +77,7 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
         for(int i = 0; i < size; i++) {
             formRecords.put(
                 Adapters.UTF_8.readBits(buffer).orElseThrow(),
-                Adapters.FORM_DEX_RECORD.readBits(buffer).orElseThrow()
+                Adapters.FORM_DEX_RECORD.readBits(buffer, record).orElseThrow()
             );
         }
 
@@ -82,12 +85,16 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
     }
 
     @Override
-    public Optional<NbtCompound> writeNbt(SpeciesDexRecord value) {
+    public Optional<NbtCompound> writeNbt(SpeciesDexRecord value, AbstractPokedexManager context) {
         if(value == null) {
             return Optional.empty();
         }
 
         return Optional.of(new NbtCompound()).map(nbt -> {
+            Adapters.IDENTIFIER.writeNbt(value.id).ifPresent(tag -> {
+                nbt.put("id", tag);
+            });
+
             NbtList aspects = new NbtList();
 
             for(String aspect : value.getAspects()) {
@@ -100,7 +107,7 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
             NbtCompound records = new NbtCompound();
 
             formRecords.forEach((id, record) -> {
-                Adapters.FORM_DEX_RECORD.writeNbt(record).ifPresent(tag -> {
+                Adapters.FORM_DEX_RECORD.writeNbt(record, value).ifPresent(tag -> {
                     records.put(id, tag);
                 });
             });
@@ -111,12 +118,14 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
     }
 
     @Override
-    public Optional<SpeciesDexRecord> readNbt(NbtCompound nbt) {
+    public Optional<SpeciesDexRecord> readNbt(NbtCompound nbt, AbstractPokedexManager context) {
         if(nbt == null) {
             return Optional.empty();
         }
 
         SpeciesDexRecord record = new SpeciesDexRecord();
+        record.initialize(context, Adapters.IDENTIFIER.readNbt(nbt.get("id")).orElseThrow());
+
         Map<String, FormDexRecord> formRecords = ProxySpeciesDexRecord.of(record).orElseThrow().getFormRecords();
         record.getAspects().clear();
         formRecords.clear();
@@ -130,7 +139,7 @@ public class SpeciesDexRecordAdapter implements ISimpleAdapter<SpeciesDexRecord,
         NbtCompound records = nbt.getCompound("records");
 
         for(String id : records.getKeys()) {
-            Adapters.FORM_DEX_RECORD.readNbt(records.getCompound(id)).ifPresent(child -> {
+            Adapters.FORM_DEX_RECORD.readNbt(records.getCompound(id), record).ifPresent(child -> {
                 formRecords.put(id, child);
             });
         }

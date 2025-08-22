@@ -1,6 +1,7 @@
 package abeshutt.staracademy.block;
 
 import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
+import abeshutt.staracademy.screen.HousePokedexScreen;
 import abeshutt.staracademy.screen.PokedexScreen;
 import abeshutt.staracademy.world.data.HouseData;
 import com.cobblemon.mod.common.client.pokedex.PokedexType;
@@ -94,7 +95,7 @@ public class HousePokedexBlock extends BlockWithEntity {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(world.isClient) {
             HouseData.CLIENT.getFor(player.getUuid()).ifPresent(house -> {
-                PokedexScreen.open(house.getPokedex(), PokedexType.BLACK, null, null);
+                HousePokedexScreen.open(house.getPokedex(), PokedexType.BLACK, null, null);
             });
 
             return ActionResult.SUCCESS;
