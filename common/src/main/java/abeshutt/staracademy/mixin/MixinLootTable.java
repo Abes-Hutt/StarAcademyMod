@@ -24,6 +24,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
+
 @Mixin(LootTable.class)
 public class MixinLootTable {
 
@@ -63,13 +65,23 @@ public class MixinLootTable {
         }
 
         result.removeIf(stack -> stack.getItem() == ModItems.LEGENDARY_PLACEHOLDER.get());
+        JavaRandom random = JavaRandom.ofNanoTime();
 
         if(player != null && ModConfigs.LEGENDARY_ITEMS.isUnique()) {
             for(int i = 0; i < count; i++) {
-                data.getRemainingItem(JavaRandom.ofNanoTime()).ifPresent(item -> {
+                data.getRemainingItem(random).ifPresent(item -> {
                     ItemStack stack = new ItemStack(item);
                     result.add(stack);
                     data.add(server, Registries.ITEM.getId(item), player.getUuid(), pos, dimension);
+                });
+            }
+        } else if(!ModConfigs.LEGENDARY_ITEMS.isUnique()) {
+            List<Identifier> occurrences = ModConfigs.LEGENDARY_ITEMS.getOccurrences();
+
+            if(!occurrences.isEmpty()) {
+                Registries.ITEM.getEntry(occurrences.get(random.nextInt(occurrences.size()))).ifPresent(item -> {
+                    ItemStack stack = new ItemStack(item);
+                    result.add(stack);
                 });
             }
         }
