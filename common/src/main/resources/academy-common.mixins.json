@@ -36,6 +36,7 @@
     "MixinGameProfile",
     "MixinItemStack",
     "MixinLivingEntity",
+    "MixinLootTable",
     "MixinPlayerEntity",
     "MixinPlayerScreenHandler",
     "MixinServerPlayerEntity",

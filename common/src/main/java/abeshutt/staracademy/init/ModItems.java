@@ -28,6 +28,7 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> CARD;
     public static RegistrySupplier<Item> BOOSTER_PACK;
     public static RegistrySupplier<Item> CARD_ALBUM;
+    public static RegistrySupplier<Item> LEGENDARY_PLACEHOLDER;
 
     public static void register() {
         STAR_BADGE = register("star_badge", StarBadgeItem::new);
@@ -45,6 +46,7 @@ public class ModItems extends ModRegistries {
         CARD = register("card", CardItem::new);
         BOOSTER_PACK = register("booster_pack", BoosterPackItem::new);
         CARD_ALBUM = register("card_album", CardAlbumItem::new);
+        LEGENDARY_PLACEHOLDER = register("legendary_placeholder", () -> new Item(new Item.Settings().maxCount(1)));
         register("roasted_aguav_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_apicot_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_aspear_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));

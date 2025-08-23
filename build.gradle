@@ -86,6 +86,12 @@ subprojects {
             name = "Ladysnake Libs"
             url = 'https://maven.ladysnake.org/releases'
         }
+        maven {
+            url = 'https://maven.blamejared.com'
+            content {
+                includeGroup 'noobanidus.mods.lootr'
+            }
+        }
     }
 
     dependencies {
