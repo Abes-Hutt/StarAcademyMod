@@ -151,7 +151,7 @@ public class Vec2fAdapter implements ISimpleAdapter<Vector2f, NbtElement, JsonEl
 
 	@Override
 	public Optional<Vector2f> readJson(JsonElement json) {
-		if(json instanceof JsonArray array && array.size() == 3) {
+		if(json instanceof JsonArray array && array.size() == 2) {
 			return Optional.of(new Vector2f(
 				Adapters.FLOAT.readJson(array.get(0)).orElseThrow(),
 				Adapters.FLOAT.readJson(array.get(1)).orElseThrow()
