@@ -1,5 +1,6 @@
 package abeshutt.staracademy.mixin;
 
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.LegendaryItemData;
@@ -63,7 +64,7 @@ public class MixinLootTable {
 
         result.removeIf(stack -> stack.getItem() == ModItems.LEGENDARY_PLACEHOLDER.get());
 
-        if(player != null) {
+        if(player != null && ModConfigs.LEGENDARY_ITEMS.isUnique()) {
             for(int i = 0; i < count; i++) {
                 data.getRemainingItem(JavaRandom.ofNanoTime()).ifPresent(item -> {
                     ItemStack stack = new ItemStack(item);
