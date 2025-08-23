@@ -49,6 +49,7 @@ public class LegendaryItemData extends WorldData {
 
         this.entries.add(new Entry(id, ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli(),
                 player, pos, dimension));
+        this.setDirty(true);
     }
 
     public Optional<Item> getRemainingItem(RandomSource random) {
