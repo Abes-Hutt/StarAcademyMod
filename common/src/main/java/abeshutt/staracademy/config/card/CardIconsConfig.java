@@ -1,7 +1,6 @@
 package abeshutt.staracademy.config.card;
 
 import abeshutt.staracademy.CardRarity;
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.attribute.Option;
 import abeshutt.staracademy.attribute.again.WeightedList;
 import abeshutt.staracademy.card.CardIconEntry;
@@ -10,7 +9,6 @@ import abeshutt.staracademy.config.FileConfig;
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.world.random.RandomSource;
 import com.google.gson.annotations.Expose;
-import net.minecraft.util.Identifier;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

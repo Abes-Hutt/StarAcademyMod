@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.StructureTemplate.PalettedBlockInfoList;
 import net.minecraft.structure.StructureTemplate.StructureBlockInfo;
@@ -20,7 +19,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Mixin(StructureTemplate.class)
 public abstract class MixinStructureTemplate implements ProxyStructureTemplate {

@@ -3,7 +3,6 @@ package abeshutt.staracademy.mixin.numismaticoverhaul;
 import abeshutt.staracademy.StarAcademyMod;
 import com.glisco.numismaticoverhaul.ModComponents;
 import com.glisco.numismaticoverhaul.client.gui.CurrencyTooltipComponent;
-import com.glisco.numismaticoverhaul.client.gui.PurseLayerElement;
 import com.glisco.numismaticoverhaul.currency.Currency;
 import com.glisco.numismaticoverhaul.currency.CurrencyComponent;
 import com.glisco.numismaticoverhaul.item.CurrencyTooltipData;
@@ -18,13 +17,10 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import org.apache.commons.lang3.mutable.MutableInt;
-import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 

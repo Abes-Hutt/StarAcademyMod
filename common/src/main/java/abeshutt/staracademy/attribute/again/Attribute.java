@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.*;
 

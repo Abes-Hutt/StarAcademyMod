@@ -3,9 +3,11 @@ package abeshutt.staracademy.event;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.entity.SpawnEvent;
 import com.cobblemon.mod.common.api.events.pokeball.PokemonCatchRateEvent;
-import com.cobblemon.mod.common.api.events.pokemon.*;
+import com.cobblemon.mod.common.api.events.pokemon.ExperienceGainedPreEvent;
+import com.cobblemon.mod.common.api.events.pokemon.PokemonCapturedEvent;
+import com.cobblemon.mod.common.api.events.pokemon.PokemonSentPostEvent;
+import com.cobblemon.mod.common.api.events.pokemon.PokemonSentPreEvent;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
-import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class CommonEvents {

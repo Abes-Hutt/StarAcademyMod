@@ -1,6 +1,5 @@
 package abeshutt.staracademy.attribute;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.attribute.again.AttributeContext;
 import abeshutt.staracademy.attribute.again.NodeAttribute;
@@ -18,17 +17,12 @@ import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 
-import java.math.BigInteger;
 import java.util.Map;
 
 public class Attributes {

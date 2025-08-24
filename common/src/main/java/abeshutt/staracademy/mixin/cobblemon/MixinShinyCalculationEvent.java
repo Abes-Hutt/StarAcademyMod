@@ -2,7 +2,6 @@ package abeshutt.staracademy.mixin.cobblemon;
 
 import abeshutt.staracademy.attribute.Attributes;
 import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.attribute.again.AttributeContext;
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.util.AttributeHolder;
@@ -12,8 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static abeshutt.staracademy.attribute.Attributes.ofBucketWeight;
 
 @Mixin(ShinyChanceCalculationEvent.class)
 public class MixinShinyCalculationEvent {

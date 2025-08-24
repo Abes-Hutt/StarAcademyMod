@@ -9,8 +9,6 @@ import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.entity.IDefaultedAttributes;
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.util.AttributeHolder;
-import abeshutt.staracademy.world.random.JavaRandom;
-import abeshutt.staracademy.world.random.RandomSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

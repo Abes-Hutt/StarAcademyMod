@@ -1,8 +1,6 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.attribute.again.Attribute;
-import abeshutt.staracademy.attribute.again.NodeAttribute;
-import abeshutt.staracademy.attribute.again.type.AttributeTypes;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.util.AttributeHolder;
 import net.minecraft.entity.Entity;

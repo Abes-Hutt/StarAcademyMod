@@ -46,8 +46,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-import static net.minecraft.entity.Entity.RemovalReason.CHANGED_DIMENSION;
-
 public class SafariData extends WorldData {
 
     public static final SafariData CLIENT = new SafariData(false);

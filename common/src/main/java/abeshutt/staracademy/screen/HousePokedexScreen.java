@@ -29,7 +29,6 @@ import com.cobblemon.mod.common.client.pokedex.PokedexType;
 import com.cobblemon.mod.common.client.render.RenderHelperKt;
 import com.cobblemon.mod.common.net.messages.server.block.AdjustBlockEntityViewerCountPacket;
 import com.cobblemon.mod.common.pokemon.FormData;
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.pokemon.abilities.HiddenAbility;
 import com.cobblemon.mod.common.util.MiscUtilsKt;

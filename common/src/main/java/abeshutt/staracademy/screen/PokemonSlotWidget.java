@@ -24,7 +24,6 @@ import org.joml.Vector3f;
 
 import java.util.function.Supplier;
 
-import static abeshutt.staracademy.screen.InfoWidget.caughtIcon;
 import static com.cobblemon.mod.common.api.gui.GuiUtilsKt.blitk;
 import static com.cobblemon.mod.common.client.gui.pokedex.PokedexGUIConstants.SCALE;
 import static com.cobblemon.mod.common.client.gui.pokedex.PokedexGUIConstants.SCROLL_SLOT_SIZE;

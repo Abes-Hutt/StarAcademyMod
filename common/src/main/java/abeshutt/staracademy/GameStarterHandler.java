@@ -12,7 +12,6 @@ import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.starter.CobblemonStarterHandler;
 import com.cobblemon.mod.common.util.LocalizationUtilsKt;
 import com.cobblemon.mod.common.util.ResourceLocationExtensionsKt;
-import journeymap.client.data.PlayerData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;

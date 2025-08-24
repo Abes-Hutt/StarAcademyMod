@@ -2,7 +2,6 @@ package abeshutt.staracademy.config;
 
 import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.card.*;
-import abeshutt.staracademy.config.card.CardDisplayConfig;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.biome.BiomePredicate;
 import abeshutt.staracademy.data.entity.EntityPredicate;

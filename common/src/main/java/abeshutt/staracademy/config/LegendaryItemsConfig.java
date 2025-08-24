@@ -4,9 +4,7 @@ import com.google.gson.annotations.Expose;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class LegendaryItemsConfig extends FileConfig {
 

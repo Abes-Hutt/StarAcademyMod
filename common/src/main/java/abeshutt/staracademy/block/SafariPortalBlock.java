@@ -33,8 +33,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
 
-import static net.minecraft.entity.Entity.RemovalReason.CHANGED_DIMENSION;
-
 public class SafariPortalBlock extends Block implements BlockEntityProvider, Portal {
 
     public static final EnumProperty<Direction.Axis> AXIS = Properties.HORIZONTAL_AXIS;

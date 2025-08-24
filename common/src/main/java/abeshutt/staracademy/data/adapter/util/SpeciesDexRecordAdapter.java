@@ -2,7 +2,6 @@ package abeshutt.staracademy.data.adapter.util;
 
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.IAdapter;
-import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.util.ProxySpeciesDexRecord;
 import com.cobblemon.mod.common.api.pokedex.AbstractPokedexManager;

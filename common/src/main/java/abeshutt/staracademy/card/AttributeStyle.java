@@ -2,7 +2,6 @@ package abeshutt.staracademy.card;
 
 import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
-import abeshutt.staracademy.math.Rational;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
 

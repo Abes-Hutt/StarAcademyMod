@@ -1,15 +1,11 @@
 package abeshutt.staracademy.world.data;
 
 import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.data.adapter.nbt.ListNbtAdapter;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.world.random.RandomSource;
 import com.google.gson.JsonObject;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;

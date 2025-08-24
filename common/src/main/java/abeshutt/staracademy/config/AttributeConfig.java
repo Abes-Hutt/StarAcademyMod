@@ -1,22 +1,16 @@
 package abeshutt.staracademy.config;
 
 import abeshutt.staracademy.attribute.again.*;
-import abeshutt.staracademy.attribute.path.AttributePath;
-import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.world.roll.NumberRoll;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.Expose;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.List;
 
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.any;
 import static abeshutt.staracademy.attribute.again.type.AttributeTypes.number;

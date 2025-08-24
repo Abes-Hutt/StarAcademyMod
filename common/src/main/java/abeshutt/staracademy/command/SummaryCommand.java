@@ -1,7 +1,6 @@
 package abeshutt.staracademy.command;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.net.OpenSummaryS2CPacket;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,8 +9,6 @@ import dev.architectury.networking.NetworkManager;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 import static net.minecraft.server.command.CommandManager.literal;
 

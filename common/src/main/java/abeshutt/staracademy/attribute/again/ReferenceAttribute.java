@@ -4,8 +4,6 @@ import abeshutt.staracademy.attribute.Option;
 import abeshutt.staracademy.attribute.again.type.AttributeType;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.adapter.Adapters;
-import abeshutt.staracademy.data.adapter.IAdapter;
-import com.google.gson.JsonElement;
 import net.minecraft.nbt.NbtElement;
 
 import java.util.Optional;

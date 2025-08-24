@@ -12,7 +12,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import static com.cobblemon.mod.common.api.gui.GuiUtilsKt.blitk;
-import static com.cobblemon.mod.common.client.gui.pokedex.PokedexGUIConstants.SCROLL_SLOT_SIZE;
 import static com.cobblemon.mod.common.util.MiscUtilsKt.cobblemonResource;
 
 public class SlotButtonWidget extends ClickableWidget {

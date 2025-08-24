@@ -3,7 +3,6 @@ package abeshutt.staracademy.world.data;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import com.cobblemon.mod.common.api.pokedex.AbstractPokedexManager;
-import com.cobblemon.mod.common.api.pokedex.PokedexManager;
 import com.cobblemon.mod.common.api.pokedex.SpeciesDexRecord;
 import com.cobblemon.mod.common.api.storage.player.InstancedPlayerData;
 import com.cobblemon.mod.common.api.storage.player.client.ClientPokedexManager;

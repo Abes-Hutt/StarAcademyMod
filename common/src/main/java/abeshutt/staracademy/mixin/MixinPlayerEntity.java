@@ -4,7 +4,6 @@ import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HouseData;
-import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
