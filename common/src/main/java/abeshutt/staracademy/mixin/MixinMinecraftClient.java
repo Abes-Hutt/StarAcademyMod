@@ -1,5 +1,6 @@
 package abeshutt.staracademy.mixin;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.client.AcademyClient;
 import abeshutt.staracademy.client.AcademyPackets;
 import abeshutt.staracademy.util.ProxyAcademyClient;
@@ -33,6 +34,7 @@ public abstract class MixinMinecraftClient implements ProxyAcademyClient {
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
         this.client.tick();
+        StarAcademyMod.CLIENT_TICKERS.forEach(Runnable::run);
     }
 
     @Inject(method = "stop", at = @At("HEAD"))

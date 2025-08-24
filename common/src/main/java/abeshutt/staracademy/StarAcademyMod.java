@@ -7,7 +7,6 @@ import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
-import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
@@ -25,6 +24,9 @@ import net.minecraft.world.border.WorldBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class StarAcademyMod {
 
     public static final ThreadLocal<Boolean> FORCE_SPAWNING = ThreadLocal.withInitial(() -> false);
@@ -34,6 +36,7 @@ public final class StarAcademyMod {
     public static final Logger LOGGER = LogManager.getLogger(ID);
 
     public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));
+    public static List<Runnable> CLIENT_TICKERS = new ArrayList<>();
 
     public static void init() {
         LifecycleEvent.SERVER_STARTED.register(instance -> {

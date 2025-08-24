@@ -56,6 +56,7 @@
     "mythsandlegends.MixinFormAndAspectUtils",
     "mythsandlegends.MixinItems",
     "mythsandlegends.MixinPlayerEvents",
+    "numismaticoverhaul.MixinPurseLayerElement",
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
     "radgyms.MixinDataSaver",

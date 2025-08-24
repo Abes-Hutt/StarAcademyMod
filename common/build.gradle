@@ -46,4 +46,8 @@ dependencies {
 
     modCompileOnly("dev.emi:trinkets:3.10.0")
     modCompileOnly("maven.modrinth:cardinal-components-api:6.1.2")
+
+    modCompileOnly("maven.modrinth:fancymenu:3.7.0-1.21.1-fabric")
+    modCompileOnly("maven.modrinth:konkrete:1.9.9-1.21-fabric")
+    modCompileOnly("maven.modrinth:melody:1.0.10-1.21-fabric")
 }
