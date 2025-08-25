@@ -61,7 +61,8 @@
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
     "radgyms.MixinDataSaver",
-    "shutters.MixinShutter"
+    "shutters.MixinShutter",
+    "ultrabeasts.MixinWormholeEntity"
   ],
   "injectors": {
     "defaultRequire": 1

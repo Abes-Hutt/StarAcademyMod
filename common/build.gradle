@@ -50,4 +50,6 @@ dependencies {
     modCompileOnly("maven.modrinth:fancymenu:3.7.0-1.21.1-fabric")
     modCompileOnly("maven.modrinth:konkrete:1.9.9-1.21-fabric")
     modCompileOnly("maven.modrinth:melody:1.0.10-1.21-fabric")
+
+    modCompileOnly(files("jars/UltraBeasts-1.0.1.jar"))
 }
