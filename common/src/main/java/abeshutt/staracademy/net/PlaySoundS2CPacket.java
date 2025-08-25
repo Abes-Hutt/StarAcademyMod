@@ -1,0 +1,56 @@
+package abeshutt.staracademy.net;
+
+import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.data.adapter.Adapters;
+import abeshutt.staracademy.data.adapter.util.ServerSound;
+import abeshutt.staracademy.data.bit.BitBuffer;
+import com.cobblemon.mod.common.CobblemonSounds;
+import com.cobblemon.mod.common.client.keybind.keybinds.SummaryBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.registry.Registries;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.random.CheckedRandom;
+
+import java.util.Random;
+
+public class PlaySoundS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
+
+    public static final Id<PlaySoundS2CPacket> ID = new Id<>(StarAcademyMod.id("play_sound_s2c"));
+
+    private ServerSound sound;
+
+    public PlaySoundS2CPacket() {
+
+    }
+
+    public PlaySoundS2CPacket(ServerSound sound) {
+        this.sound = sound;
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
+    }
+
+    @Override
+    public void onReceive(ClientPlayNetworkHandler listener) {
+        MinecraftClient.getInstance().getSoundManager().play(this.sound.build(
+                new CheckedRandom(new Random().nextLong())
+        ));
+    }
+
+    @Override
+    public void writeBits(BitBuffer buffer) {
+        Adapters.SERVER_SOUND.writeBits(this.sound, buffer);
+    }
+
+    @Override
+    public void readBits(BitBuffer buffer) {
+        this.sound = Adapters.SERVER_SOUND.readBits(buffer).orElseThrow();
+    }
+
+}

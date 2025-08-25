@@ -148,6 +148,7 @@ public class Adapters {
     public static final Vec3fAdapter VEC_3F = new Vec3fAdapter(false);
     public static final Vec3dAdapter VEC_3D = new Vec3dAdapter(false);
     public static final DilationAdapter DILATION = new DilationAdapter(false);
+    public static final SerializableAdapter<ServerSound, NbtElement, JsonElement> SERVER_SOUND = Adapters.of(ServerSound::new, false);
     public static final DynamicCuboid.Adapter DYNAMIC_CUBOID = new DynamicCuboid.Adapter();
     public static final DynamicBone.Adapter DYNAMIC_BONE = new DynamicBone.Adapter();
     public static final DynamicTexture.Adapter DYNAMIC_TEXTURE = new DynamicTexture.Adapter();

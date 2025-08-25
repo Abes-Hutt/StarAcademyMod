@@ -2,6 +2,7 @@ package abeshutt.staracademy.config;
 
 import abeshutt.staracademy.attribute.again.Attribute;
 import abeshutt.staracademy.card.*;
+import abeshutt.staracademy.config.sound.PlaySoundEvent;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.biome.BiomePredicate;
 import abeshutt.staracademy.data.entity.EntityPredicate;
@@ -33,6 +34,7 @@ public abstract class Config {
             .registerTypeHierarchyAdapter(ItemPredicate.class, Adapters.ITEM_PREDICATE)
             .registerTypeHierarchyAdapter(BiomePredicate.class, Adapters.BIOME_PREDICATE)
             .registerTypeHierarchyAdapter(IntRoll.class, Adapters.INT_ROLL)
+            .registerTypeHierarchyAdapter(PlaySoundEvent.class, PlaySoundEvent.Adapter.INSTANCE)
             .registerTypeAdapter(BlockPos.class, Adapters.BLOCK_POS)
             .registerTypeAdapter(Identifier.class, Adapters.IDENTIFIER)
             .registerTypeAdapter(ItemStack.class, Adapters.ITEM_STACK)

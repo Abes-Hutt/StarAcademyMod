@@ -43,6 +43,7 @@
     "MixinServerWorld",
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
+    "MixinTeleportTarget",
     "cobblemon.MixinFormDexRecord",
     "cobblemon.MixinPlayerSpawnerFactory",
     "cobblemon.MixinPokeBallItem",
