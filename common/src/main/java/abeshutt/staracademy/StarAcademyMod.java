@@ -50,6 +50,12 @@ public final class StarAcademyMod {
         ModRegistries.register();
         Attributes.init();
 
+        CommonEvents.POKEMON_SENT_PRE.register(event -> {
+            if(event.getLevel().getRegistryKey() == SAFARI) {
+                event.cancel();
+            }
+        });
+
         CommonEvents.POKEMON_CATCH_RATE.register(event -> {
             if(event.getThrower().getWorld().getRegistryKey() == SAFARI) {
                 if(event.getPokeBallEntity().getPokeBall().item() != CobblemonItems.SAFARI_BALL) {
