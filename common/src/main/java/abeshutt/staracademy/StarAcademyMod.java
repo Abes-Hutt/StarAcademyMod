@@ -7,6 +7,7 @@ import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
+import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
@@ -52,6 +53,12 @@ public final class StarAcademyMod {
 
         CommonEvents.POKEMON_SENT_PRE.register(event -> {
             if(event.getLevel().getRegistryKey() == SAFARI) {
+                event.cancel();
+            }
+        });
+
+        CommonEvents.BATTLE_STARTED_PRE.register(event -> {
+            if(event.getBattle().getPlayers().stream().anyMatch(player -> player.getWorld().getRegistryKey() == SAFARI)) {
                 event.cancel();
             }
         });
