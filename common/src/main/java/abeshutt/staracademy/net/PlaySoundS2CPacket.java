@@ -6,6 +6,10 @@ import abeshutt.staracademy.data.adapter.util.ServerSound;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import com.cobblemon.mod.common.CobblemonSounds;
 import com.cobblemon.mod.common.client.keybind.keybinds.SummaryBinding;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -38,6 +42,13 @@ public class PlaySoundS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
     @Override
     public void onReceive(ClientPlayNetworkHandler listener) {
+        if(Platform.getEnvironment() == Env.CLIENT) {
+            this.playSound();
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    private void playSound() {
         MinecraftClient.getInstance().getSoundManager().play(this.sound.build(
                 new CheckedRandom(new Random().nextLong())
         ));

@@ -37,6 +37,8 @@ dependencies {
     modCompileOnly("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
 
     modCompileOnly("maven.modrinth:rad-gyms:0.2-alpha.2")
+    modCompileOnly("maven.modrinth:rctapi:sZK1GcWC")
+    modCompileOnly("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
 
     modCompileOnly("maven.modrinth:fading-clouds:1.1.0")
 
