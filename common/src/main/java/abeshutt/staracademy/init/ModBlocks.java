@@ -54,6 +54,15 @@ public class ModBlocks extends ModRegistries {
 
         SHINY_POKEDOLL_COLLECTOR = register("shiny_pokedoll_collector", ShinyPokedollCollectorBlock::new,
                 block -> new BlockItem(block.get(), new Item.Settings()));
+
+        register("meteoric_chunk", () -> new Block(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
+                block -> new BlockItem(block.get(), new Item.Settings()));
+
+        register("rare_meteoric_chunk", () -> new Block(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
+                block -> new BlockItem(block.get(), new Item.Settings()));
+
+        register("fabulous_meteoric_chunk", () -> new Block(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
+                block -> new BlockItem(block.get(), new Item.Settings()));
     }
 
     public static class Entities extends ModBlocks {
