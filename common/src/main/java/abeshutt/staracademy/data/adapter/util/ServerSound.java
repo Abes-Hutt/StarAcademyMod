@@ -52,7 +52,7 @@ public class ServerSound implements ISerializable<NbtCompound, JsonObject> {
     @Environment(EnvType.CLIENT)
     public PositionedSoundInstance build(Random random) {
         return new PositionedSoundInstance(this.id, this.category, this.volume, this.pitch, random, this.repeat,
-                this.repeatDelay, this.attenuationType, this.position.x, this.position.y, this.position.z, this.relative);
+                this.repeatDelay, this.attenuationType.toVanilla(), this.position.x, this.position.y, this.position.z, this.relative);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ServerSound implements ISerializable<NbtCompound, JsonObject> {
         Adapters.FLOAT.writeBits(this.pitch, buffer);
         Adapters.BOOLEAN.writeBits(this.repeat, buffer);
         Adapters.INT.writeBits(this.repeatDelay, buffer);
-        Adapters.ofEnum(SoundInstance.AttenuationType.class, NAME).writeBits(this.attenuationType, buffer);
+        Adapters.ofEnum(AttenuationType.class, NAME).writeBits(this.attenuationType, buffer);
         Adapters.VEC_3D.writeBits(this.position, buffer);
         Adapters.BOOLEAN.writeBits(this.relative, buffer);
     }
@@ -76,7 +76,7 @@ public class ServerSound implements ISerializable<NbtCompound, JsonObject> {
         this.pitch = Adapters.FLOAT.readBits(buffer).orElseThrow();
         this.repeat = Adapters.BOOLEAN.readBits(buffer).orElseThrow();
         this.repeatDelay = Adapters.INT.readBits(buffer).orElseThrow();
-        this.attenuationType = Adapters.ofEnum(SoundInstance.AttenuationType.class, NAME).readBits(buffer).orElseThrow();
+        this.attenuationType = Adapters.ofEnum(AttenuationType.class, NAME).readBits(buffer).orElseThrow();
         this.position = Adapters.VEC_3D.readBits(buffer).orElseThrow();
         this.relative = Adapters.BOOLEAN.readBits(buffer).orElseThrow();
     }
@@ -90,7 +90,7 @@ public class ServerSound implements ISerializable<NbtCompound, JsonObject> {
         Adapters.FLOAT.writeJson(this.pitch).ifPresent(tag -> json.add("pitch", tag));
         Adapters.BOOLEAN.writeJson(this.repeat).ifPresent(tag -> json.add("repeat", tag));
         Adapters.INT.writeJson(this.repeatDelay).ifPresent(tag -> json.add("repeatDelay", tag));
-        Adapters.ofEnum(SoundInstance.AttenuationType.class, NAME).writeJson(this.attenuationType).ifPresent(tag -> json.add("attenuation", tag));
+        Adapters.ofEnum(AttenuationType.class, NAME).writeJson(this.attenuationType).ifPresent(tag -> json.add("attenuation", tag));
         Adapters.VEC_3D.writeJson(this.position).ifPresent(tag -> json.add("position", tag));
         Adapters.BOOLEAN.writeJson(this.relative).ifPresent(tag -> json.add("relative", tag));
         return Optional.of(json);
@@ -105,8 +105,21 @@ public class ServerSound implements ISerializable<NbtCompound, JsonObject> {
         this.position = Adapters.VEC_3D.readJson(json.get("position")).orElseThrow();
         this.repeat = Adapters.BOOLEAN.readJson(json.get("repeat")).orElseThrow();
         this.repeatDelay = Adapters.INT.readJson(json.get("repeatDelay")).orElseThrow();
-        this.attenuationType = Adapters.ofEnum(SoundInstance.AttenuationType.class, NAME).readJson(json.get("attenuation")).orElseThrow();
+        this.attenuationType = Adapters.ofEnum(AttenuationType.class, NAME).readJson(json.get("attenuation")).orElseThrow();
         this.relative = Adapters.BOOLEAN.readJson(json.get("relative")).orElseThrow();
+    }
+
+    public enum AttenuationType {
+        NONE,
+        LINEAR;
+
+        @Environment(EnvType.CLIENT)
+        public SoundInstance.AttenuationType toVanilla() {
+            return switch(this) {
+                case NONE -> SoundInstance.AttenuationType.NONE;
+                case LINEAR -> SoundInstance.AttenuationType.LINEAR;
+            };
+        }
     }
 
 }

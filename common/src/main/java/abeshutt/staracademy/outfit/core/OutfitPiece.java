@@ -32,12 +32,14 @@ public abstract class OutfitPiece {
     private OutfitModel model;
 
     @Environment(EnvType.CLIENT)
-    private final JsonObject classicModelJson = new JsonObject();
+    private JsonObject classicModelJson;
 
     public OutfitPiece(String id) {
         this.id = id;
 
         if (Platform.getEnvironment() == Env.CLIENT) {
+            this.classicModelJson = new JsonObject();
+
             this.texture = this.buildTexture();
             this.model = new OutfitModel(this.createMesh().createModel());
 

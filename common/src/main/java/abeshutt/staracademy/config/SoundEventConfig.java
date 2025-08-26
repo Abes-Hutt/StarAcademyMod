@@ -41,7 +41,7 @@ public class SoundEventConfig extends FileConfig {
                 SoundEvents.AMBIENT_SOUL_SAND_VALLEY_LOOP.value().getId(),
                 SoundCategory.MASTER,
                 1.0F, 1.0F, new Vec3d(0, 0, 0), false, 0,
-                SoundInstance.AttenuationType.NONE, true
+                ServerSound.AttenuationType.NONE, true
         ), StarAcademyMod.SAFARI.getValue()));
     }
 
