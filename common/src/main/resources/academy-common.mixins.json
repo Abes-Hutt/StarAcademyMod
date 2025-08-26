@@ -49,6 +49,7 @@
     "cobblemon.MixinPokeBallItem",
     "cobblemon.MixinPokemonBattle",
     "cobblemon.MixinShinyCalculationEvent",
+    "cobblemonalphas.MixinAlphaParticleEffect",
     "eternalstarlight.MixinESChunkGenerator",
     "fadingclouds.MixinFadingCloudBlock",
     "journeymap.MixinEntityHelper",
