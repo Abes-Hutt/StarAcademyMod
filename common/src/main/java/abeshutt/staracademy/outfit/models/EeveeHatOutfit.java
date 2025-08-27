@@ -109,4 +109,33 @@ public class EeveeHatOutfit {
 
     }
 
+    public static class Eevee extends OutfitPiece {
+
+        public Eevee(String id) {
+            super(id);
+        }
+
+        @Override
+        protected void buildMesh(ModelPartData modelPartData) {
+            ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 16).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(1.0F))
+                    .uv(0, 0).cuboid(-6.0F, -7.0F, -6.0F, 12.0F, 4.0F, 12.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+
+            ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(24, 32).cuboid(-3.0F, -6.0F, 0.0F, 6.0F, 12.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(5.0F, -13.0F, 0.0F, 0.0F, 0.0F, 0.3927F));
+
+            ModelPartData cube_r2 = head.addChild("cube_r2", ModelPartBuilder.create().uv(32, 16).cuboid(-3.0F, -6.0F, 0.0F, 6.0F, 12.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(-5.0F, -13.0F, 0.0F, 0.0F, 0.0F, -0.3927F));
+
+            ModelPartData cube_r3 = head.addChild("cube_r3", ModelPartBuilder.create().uv(36, 28).cuboid(-2.0F, -2.0F, 1.0F, 4.0F, 4.0F, 2.0F, new Dilation(0.0F))
+                    .uv(0, 32).cuboid(-3.0F, -3.0F, -5.0F, 6.0F, 6.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -9.0F, 9.5F, 0.6981F, 0.0F, 0.0F));
+        }
+
+        @Override
+        protected OutfitTexture buildTexture() {
+            return new OutfitTexture(64, 64,
+                    StarAcademyMod.id("textures/entity/outfit/eevee_hat.png"),
+                    StarAcademyMod.mid("outfit/eevee_hat", "inventory")
+            );
+        }
+
+    }
+
 }
