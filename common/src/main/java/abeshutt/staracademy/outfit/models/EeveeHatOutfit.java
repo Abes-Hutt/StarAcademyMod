@@ -262,4 +262,42 @@ public class EeveeHatOutfit {
 
     }
 
+    public static class Sylveon extends OutfitPiece {
+
+        public Sylveon(String id) {
+            super(id);
+        }
+
+        @Override
+        protected void buildMesh(ModelPartData modelPartData) {
+            ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(1.0F))
+                    .uv(0, 16).cuboid(-13.0F, -14.0F, 0.0F, 18.0F, 3.0F, 0.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+
+            ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(32, 11).cuboid(1.0F, -5.0F, -1.0F, 2.0F, 3.0F, 2.0F, new Dilation(0.0F))
+                    .uv(32, 0).cuboid(-4.0F, -5.0F, -1.0F, 5.0F, 5.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(9.0F, -6.0F, -2.0F, 0.0F, 0.0F, -0.0873F));
+
+            ModelPartData cube_r2 = head.addChild("cube_r2", ModelPartBuilder.create().uv(32, 7).cuboid(-2.0F, -7.0F, -1.0F, 3.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                    .uv(24, 28).cuboid(-4.0F, -5.0F, -1.0F, 5.0F, 5.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(4.0F, -9.0F, -2.0F, 0.0F, 0.0F, -0.0873F));
+
+            ModelPartData cube_r3 = head.addChild("cube_r3", ModelPartBuilder.create().uv(0, 22).cuboid(-3.5F, -1.5F, 0.0F, 16.0F, 3.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(-10.7975F, -13.5F, -1.9182F, 0.0F, 0.6109F, -0.6109F));
+
+            ModelPartData cube_r4 = head.addChild("cube_r4", ModelPartBuilder.create().uv(0, 19).cuboid(-7.25F, -1.5F, 2.25F, 18.0F, 3.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(9.0F, -9.0F, 6.5F, 0.0F, 0.829F, 0.6981F));
+
+            ModelPartData cube_r5 = head.addChild("cube_r5", ModelPartBuilder.create().uv(0, 25).cuboid(-9.0F, -1.5F, 0.0F, 14.0F, 3.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(12.0F, -6.5F, 0.0F, 0.0F, 0.0F, 0.6981F));
+
+            ModelPartData cube_r6 = head.addChild("cube_r6", ModelPartBuilder.create().uv(0, 28).cuboid(-3.0F, -8.0F, 0.0F, 6.0F, 16.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(7.5F, -16.0F, -0.5F, 0.0F, 0.0F, 0.3927F));
+
+            ModelPartData cube_r7 = head.addChild("cube_r7", ModelPartBuilder.create().uv(12, 28).cuboid(-3.0F, -8.0F, 0.0F, 6.0F, 16.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(-8.0F, -16.0F, -0.5F, 0.0F, 0.0F, -0.3927F));
+        }
+
+        @Override
+        protected OutfitTexture buildTexture() {
+            return new OutfitTexture(64, 64,
+                    StarAcademyMod.id("textures/entity/outfit/sylveon_hat.png"),
+                    StarAcademyMod.mid("outfit/sylveon_hat", "inventory")
+            );
+        }
+
+    }
+
 }
