@@ -229,4 +229,37 @@ public class EeveeHatOutfit {
 
     }
 
+    public static class Leafeon extends OutfitPiece {
+
+        public Leafeon(String id) {
+            super(id);
+        }
+
+        @Override
+        protected void buildMesh(ModelPartData modelPartData) {
+            ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(24, 16).cuboid(-3.0F, -17.0F, -5.25F, 6.0F, 11.0F, 0.0F, new Dilation(0.0F))
+                    .uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(1.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+
+            ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(32, 0).cuboid(2.0F, -2.5F, -1.0F, 2.0F, 5.0F, 2.0F, new Dilation(0.0F))
+                    .uv(32, 11).cuboid(2.5F, -4.5F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                    .uv(8, 32).cuboid(-3.5F, -4.5F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                    .uv(0, 32).cuboid(-4.0F, -2.5F, -1.0F, 2.0F, 5.0F, 2.0F, new Dilation(0.0F))
+                    .uv(32, 7).cuboid(-1.0F, -5.5F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                    .uv(24, 27).cuboid(-2.0F, -3.5F, -1.0F, 4.0F, 7.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -8.75F, -1.5F, -1.0036F, 0.0F, 0.0F));
+
+            ModelPartData cube_r2 = head.addChild("cube_r2", ModelPartBuilder.create().uv(0, 16).cuboid(-3.0F, -8.0F, 0.0F, 6.0F, 16.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(7.5F, -16.0F, -0.5F, 0.0F, 0.0F, 0.3927F));
+
+            ModelPartData cube_r3 = head.addChild("cube_r3", ModelPartBuilder.create().uv(12, 16).cuboid(-3.0F, -8.0F, 0.0F, 6.0F, 16.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(-8.0F, -16.0F, -0.5F, 0.0F, 0.0F, -0.3927F));
+        }
+
+        @Override
+        protected OutfitTexture buildTexture() {
+            return new OutfitTexture(64, 64,
+                    StarAcademyMod.id("textures/entity/outfit/leafeon_hat.png"),
+                    StarAcademyMod.mid("outfit/leafeon_hat", "inventory")
+            );
+        }
+
+    }
+
 }
