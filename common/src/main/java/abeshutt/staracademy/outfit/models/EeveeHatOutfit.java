@@ -79,4 +79,34 @@ public class EeveeHatOutfit {
 
     }
 
+    public static class Glaceon extends OutfitPiece {
+
+        public Glaceon(String id) {
+            super(id);
+        }
+
+        @Override
+        protected void buildMesh(ModelPartData modelPartData) {
+            ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(24, 32).cuboid(-2.0F, -11.0F, -6.0F, 4.0F, 7.0F, 2.0F, new Dilation(0.0F))
+                    .uv(36, 16).cuboid(-4.0F, -10.0F, -6.0F, 2.0F, 5.0F, 2.0F, new Dilation(0.0F))
+                    .uv(0, 16).cuboid(-7.0F, -10.0F, -5.5F, 6.0F, 24.0F, 0.0F, new Dilation(0.0F))
+                    .uv(12, 16).cuboid(1.0F, -10.0F, -5.5F, 6.0F, 24.0F, 0.0F, new Dilation(0.0F))
+                    .uv(36, 23).cuboid(2.0F, -10.0F, -6.0F, 2.0F, 5.0F, 2.0F, new Dilation(0.0F))
+                    .uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(1.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+
+            ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(24, 16).cuboid(-3.0F, -8.0F, 0.0F, 6.0F, 16.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(7.5F, -16.0F, -0.5F, 0.0F, 0.0F, 0.3927F));
+
+            ModelPartData cube_r2 = head.addChild("cube_r2", ModelPartBuilder.create().uv(32, 0).cuboid(-3.0F, -8.0F, 0.0F, 6.0F, 16.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(-8.0F, -16.0F, -0.5F, 0.0F, 0.0F, -0.3927F));
+        }
+
+        @Override
+        protected OutfitTexture buildTexture() {
+            return new OutfitTexture(64, 64,
+                    StarAcademyMod.id("textures/entity/outfit/glaceon_hat.png"),
+                    StarAcademyMod.mid("outfit/glaceon_hat", "inventory")
+            );
+        }
+
+    }
+
 }
