@@ -64,6 +64,8 @@ public class ModOutfits {
     public static HeadBandOutfit.Flower FLOWER_HEAD_BAND;
     public static HeadBandOutfit.CatEars CAT_EARS;
 
+    public static EeveeHatOutfit.Vaporeon VAPOREON_HAT;
+
     public static void register() {
         CLASSY1_HAT = register(new Classy1Outfit.Hat("classy1_hat"));
         CLASSY1_SHIRT = register(new Classy1Outfit.Shirt("classy1_shirt"));
@@ -118,6 +120,8 @@ public class ModOutfits {
         CARROT_HEAD_BAND = register(new HeadBandOutfit.Carrot("carrot_head_band"));
         FLOWER_HEAD_BAND = register(new HeadBandOutfit.Flower("flower_head_band"));
         CAT_EARS = register(new HeadBandOutfit.CatEars("cat_ears"));
+
+        VAPOREON_HAT = register(new EeveeHatOutfit.Vaporeon("vaporeon_hat"));
     }
 
     private static int order;
