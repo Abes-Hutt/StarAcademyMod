@@ -68,6 +68,7 @@ public class ModOutfits {
     public static EeveeHatOutfit.Umbreon UMBREON_HAT;
     public static EeveeHatOutfit.Glaceon GLACEON_HAT;
     public static EeveeHatOutfit.Eevee EEVEE_HAT;
+    public static EeveeHatOutfit.Espeon ESPEON_HAT;
 
     public static void register() {
         CLASSY1_HAT = register(new Classy1Outfit.Hat("classy1_hat"));
@@ -128,6 +129,7 @@ public class ModOutfits {
         UMBREON_HAT = register(new EeveeHatOutfit.Umbreon("umbreon_hat"));
         GLACEON_HAT = register(new EeveeHatOutfit.Glaceon("glaceon_hat"));
         EEVEE_HAT = register(new EeveeHatOutfit.Eevee("eevee_hat"));
+        ESPEON_HAT = register(new EeveeHatOutfit.Espeon("espeon_hat"));
     }
 
     private static int order;

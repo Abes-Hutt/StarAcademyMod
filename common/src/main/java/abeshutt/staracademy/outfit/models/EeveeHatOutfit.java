@@ -138,4 +138,36 @@ public class EeveeHatOutfit {
 
     }
 
+    public static class Espeon extends OutfitPiece {
+
+        public Espeon(String id) {
+            super(id);
+        }
+
+        @Override
+        protected void buildMesh(ModelPartData modelPartData) {
+            ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(1.0F))
+                    .uv(28, 28).cuboid(-1.0F, -8.0F, -6.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+
+            ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(14, 28).cuboid(-0.1537F, -5.1526F, -1.0F, 5.0F, 1.0F, 2.0F, new Dilation(0.0F))
+                    .uv(14, 16).cuboid(-1.1537F, -4.1526F, -1.0F, 5.0F, 10.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(10.0598F, -7.8657F, 0.0F, 3.1416F, 0.0F, -2.0508F));
+
+            ModelPartData cube_r2 = head.addChild("cube_r2", ModelPartBuilder.create().uv(28, 22).cuboid(-5.4482F, 0.9005F, -0.5F, 3.0F, 5.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(10.0598F, -7.8657F, 0.0F, -3.1416F, 0.0F, -1.6581F));
+
+            ModelPartData cube_r3 = head.addChild("cube_r3", ModelPartBuilder.create().uv(28, 16).cuboid(-4.9139F, 0.622F, -0.5F, 3.0F, 5.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(-9.4593F, -7.3092F, 0.0F, 0.0F, 0.0F, -1.4835F));
+
+            ModelPartData cube_r4 = head.addChild("cube_r4", ModelPartBuilder.create().uv(0, 28).cuboid(-1.5407F, -4.6908F, -1.0F, 5.0F, 1.0F, 2.0F, new Dilation(0.0F))
+                    .uv(0, 16).cuboid(-2.5407F, -3.6908F, -1.0F, 5.0F, 10.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(-9.4593F, -9.3092F, 0.0F, 0.0F, 0.0F, -1.0908F));
+        }
+
+        @Override
+        protected OutfitTexture buildTexture() {
+            return new OutfitTexture(64, 64,
+                    StarAcademyMod.id("textures/entity/outfit/espeon_hat.png"),
+                    StarAcademyMod.mid("outfit/espeon_hat", "inventory")
+            );
+        }
+
+    }
+
 }
