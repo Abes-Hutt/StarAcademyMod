@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Debug(export = true, print = true)
 @Mixin(targets = { "dev.ftb.mods.ftbquests.net.NotifyItemRewardMessage" })
 public class MixinNotifyItemRewardMessage implements ProxyNotifyItemRewardMessage {
 
@@ -44,7 +45,7 @@ public class MixinNotifyItemRewardMessage implements ProxyNotifyItemRewardMessag
         );
     }
 
-    @Inject(method = "lambda$handle$0", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/client/FTBQuestsNetClient;displayItemRewardToast(Lnet/minecraft/item/ItemStack;IZ)V", shift = At.Shift.BEFORE), remap = false)
+    @Inject(method = "lambda$handle$0", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/client/FTBQuestsNetClient;displayItemRewardToast(Lnet/minecraft/item/ItemStack;IZ)V", shift = At.Shift.BEFORE))
     private static void handle(NotifyItemRewardMessage message, CallbackInfo ci) {
         StarAcademyMod.QUEST_ID.set(ProxyNotifyItemRewardMessage.getId(message));
     }

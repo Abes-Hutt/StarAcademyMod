@@ -15,16 +15,18 @@ import dev.ftb.mods.ftbquests.quest.QuestObjectBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Debug(export = true, print = true)
 @Mixin(targets = { "dev.ftb.mods.ftbquests.client.FTBQuestsNetClient" })
 public class MixinFtbQuestsNetClient {
 
-    @Redirect(method = "displayItemRewardToast", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/client/NotificationStyle;notifyReward(Lnet/minecraft/text/Text;Ldev/ftb/mods/ftblibrary/icon/Icon;)V"), remap = false)
+    @Redirect(method = "displayItemRewardToast", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/client/NotificationStyle;notifyReward(Lnet/minecraft/text/Text;Ldev/ftb/mods/ftblibrary/icon/Icon;)V"))
     private static void notifyReward(NotificationStyle instance, Text text, Icon icon) {
         QuestObjectBase base = ClientQuestFile.INSTANCE.getBase(StarAcademyMod.QUEST_ID.get());
 
@@ -38,7 +40,7 @@ public class MixinFtbQuestsNetClient {
         instance.notifyReward(text, icon);
     }
 
-    @Inject(method = "displayRewardToast", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "displayRewardToast", at = @At("HEAD"), cancellable = true)
     private static void displayRewardToast(long id, Text text, Icon icon, boolean disableBlur, CallbackInfo ci) {
         QuestObjectBase base = ClientQuestFile.INSTANCE.getBase(id);
 

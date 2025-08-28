@@ -7,10 +7,12 @@ import dev.ftb.mods.ftbquests.quest.reward.ItemReward;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+@Debug(export = true, print = true)
 @Mixin(targets = { "dev.ftb.mods.ftbquests.quest.reward.ItemReward" })
 public abstract class MixinItemReward extends Reward {
 
@@ -18,7 +20,7 @@ public abstract class MixinItemReward extends Reward {
         super(id, q);
     }
 
-    @Redirect(method = "claim", at = @At(value = "INVOKE", target = "Ldev/architectury/networking/NetworkManager;sendToPlayer(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/network/packet/CustomPayload;)V"), remap = false)
+    @Redirect(method = "claim", at = @At(value = "INVOKE", target = "Ldev/architectury/networking/NetworkManager;sendToPlayer(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/network/packet/CustomPayload;)V"))
     private void claim(ServerPlayerEntity player, CustomPayload payload) {
         ProxyNotifyItemRewardMessage.setId(payload, this.getId());
         NetworkManager.sendToPlayer(player, payload);
