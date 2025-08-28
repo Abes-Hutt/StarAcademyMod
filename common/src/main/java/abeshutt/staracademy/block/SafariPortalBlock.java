@@ -157,11 +157,6 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
             SafariData.Entry entry = data.get(player.getUuid()).orElse(null);
 
             if(entry == null || entry.getLastState() == null) {
-                //return new TeleportTarget(world.getServer().getOverworld(), new Vec3d(0, 128,0),
-                //        Vec3d.ZERO, 0.0F, 0.0F, post -> {
-                //    player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
-                //});
-                System.out.println("WTF");
                 return null;
             }
 
@@ -178,14 +173,14 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
             return new TeleportTarget(destination, state.getPos(), Vec3d.ZERO,
                     state.getYaw(), state.getPitch(), post -> {});
         } else {
-            SafariData.Entry entry = data.get(player.getUuid()).orElse(null);
+            SafariData.Entry entry = data.getOrCreate(player.getUuid());
 
-            if(data.getTimeLeft() <= 0 || data.isPaused()) {
+            if(data.isPaused() || !entry.isUnlocked()) {
                 player.sendMessage(Text.empty()
                         .append(Text.literal("The Safari is currently unavailable.")
                                 .formatted(Formatting.RED)), true);
                 return null;
-            } else if(entry != null && entry.getTimeLeft() <= 0) {
+            } else if(entry.getTimeLeft() <= 0) {
                 player.sendMessage(Text.empty()
                         .append(Text.literal("You have no time left in the Safari.")
                                 .formatted(Formatting.RED)), true);

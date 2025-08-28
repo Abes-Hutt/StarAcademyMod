@@ -1,15 +1,19 @@
 package abeshutt.staracademy.command;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.SafariTicketItem;
 import abeshutt.staracademy.world.data.SafariData;
+import com.glisco.numismaticoverhaul.ModComponents;
+import com.glisco.numismaticoverhaul.currency.CurrencyComponent;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.TimeArgumentType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,17 +31,46 @@ public class SafariCommand extends Command {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal(StarAcademyMod.ID)
                 .then(literal("safari")
-                    .requires(source -> source.hasPermissionLevel(4))
+                    .then(literal("unlock")
+                        .executes(this::onUnlock))
                     .then(literal("pause")
+                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onPause))
                     .then(literal("unpause")
+                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onUnpause))
                     .then(literal("restart")
+                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onRestart))
                     .then(literal("add_time")
+                        .requires(source -> source.hasPermissionLevel(4))
                         .then(argument("players", EntityArgumentType.players())
                             .then(argument("time", TimeArgumentType.time(Integer.MIN_VALUE))
                                 .executes(this::onAddTime))))));
+    }
+
+    private int onUnlock(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
+        SafariData data = ModWorldData.SAFARI.getGlobal(context.getSource().getServer());
+        SafariData.Entry entry = data.getOrCreate(player.getUuid());
+
+        if(!entry.isUnlocked()) {
+            CurrencyComponent purse = ModComponents.CURRENCY.get(player);
+
+            if(purse.getValue() < ModConfigs.NPC.getGradingCurrencyCost()) {
+                player.sendMessage(Text.empty().append(Text.translatable("text.academy.safari.unlock_broke")
+                        .formatted(Formatting.GRAY)));
+            } else {
+                purse.pushTransaction(-ModConfigs.NPC.getGradingCurrencyCost());
+                purse.commitTransactions();
+                player.sendMessage(Text.empty().append(Text.translatable("text.academy.safari.unlock_complete")
+                        .formatted(Formatting.GRAY)));
+                entry.setUnlocked(true);
+                data.markDirty();
+            }
+        }
+
+        return 0;
     }
 
     private int onAddTime(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

@@ -110,46 +110,14 @@ public class SafariData extends WorldData {
 
         if(destination != null) {
             this.getOrCreate(player.getUuid()).setLastState(new EntityState(player));
-            //player.interactionManager.changeGameMode(GameMode.ADVENTURE);
             player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
-            //ProxyEntity.of(player).ifPresent(proxy -> {
-            //    proxy.schedulePortalTick(() -> player.moveToWorld(destination));
-            //});
-
-            //TODO: For some reason this causes a CME...
-            //player.moveToWorld(destination);
         }
     }
 
     public void leaveSafari(ServerPlayerEntity player) {
         MinecraftServer server = player.getServer();
         if(server == null) return;
-        SafariData.Entry entry = this.get(player.getUuid()).orElse(null);
         player.tryUsePortal(ModBlocks.SAFARI_PORTAL.get(), player.getBlockPos());
-        //if(entry == null || entry.getLastState() == null) {
-            //player.getServer().getPlayerManager().respawnPlayer(player, true, CHANGED_DIMENSION);
-       // } else {
-            //player.interactionManager.changeGameMode(entry.getLastState().getGameMode());
-
-
-            /*
-            RegistryKey<World> dimension = entry.getLastState().getDimension();
-            ServerWorld destination = server.getWorld(dimension);
-
-            if(destination != null) {
-                ProxyEntity.of(player).ifPresent(proxy -> {
-                    proxy.schedulePortalTick(() -> player.moveToWorld(destination));
-                });
-
-                player.moveToWorld(destination);
-            }*/
-       // }
-
-        //ProxyEntity.of(player).ifPresent(proxy -> {
-        //    proxy.setSafariPortalCooldown(true);
-        //});
-
-        //player.setPortalCooldown(20);
     }
 
     public void addPortal(World world, BlockPos pos) {
@@ -389,6 +357,7 @@ public class SafariData extends WorldData {
         private long timeLeft;
         private int ballsGiven;
         private BlockPos nearestPortal;
+        protected boolean unlocked;
 
         public EntityState getLastState() {
             return this.lastState;
@@ -422,6 +391,14 @@ public class SafariData extends WorldData {
             this.nearestPortal = nearestPortal;
         }
 
+        public boolean isUnlocked() {
+            return this.unlocked;
+        }
+
+        public void setUnlocked(boolean unlocked) {
+            this.unlocked = unlocked;
+        }
+
         @Override
         public void writeBits(BitBuffer buffer) {
             Adapters.BOOLEAN.writeBits(this.lastState != null, buffer);
@@ -433,6 +410,7 @@ public class SafariData extends WorldData {
             Adapters.LONG.writeBits(this.timeLeft, buffer);
             Adapters.INT.writeBits(this.ballsGiven, buffer);
             Adapters.BLOCK_POS.asNullable().writeBits(this.nearestPortal, buffer);
+            Adapters.BOOLEAN.writeBits(this.unlocked, buffer);
         }
 
         @Override
@@ -447,6 +425,7 @@ public class SafariData extends WorldData {
             this.timeLeft = Adapters.LONG.readBits(buffer).orElseThrow();
             this.ballsGiven = Adapters.INT.readBits(buffer).orElseThrow();
             this.nearestPortal = Adapters.BLOCK_POS.asNullable().readBits(buffer).orElse(null);
+            this.unlocked = Adapters.BOOLEAN.readBits(buffer).orElseThrow();
         }
 
         @Override
@@ -459,6 +438,7 @@ public class SafariData extends WorldData {
                 Adapters.LONG.writeNbt(this.timeLeft).ifPresent(tag -> nbt.put("timeLeft", tag));
                 Adapters.INT.writeNbt(this.ballsGiven).ifPresent(tag -> nbt.put("ballsGiven", tag));
                 Adapters.BLOCK_POS.writeNbt(this.nearestPortal).ifPresent(tag -> nbt.put("nearestPortal", tag));
+                Adapters.BOOLEAN.writeNbt(this.unlocked).ifPresent(tag -> nbt.put("unlocked", tag));
                 return nbt;
             });
         }
@@ -475,6 +455,7 @@ public class SafariData extends WorldData {
             this.timeLeft = Adapters.LONG.readNbt(nbt.get("timeLeft")).orElse(0L);
             this.ballsGiven = Adapters.INT.readNbt(nbt.get("ballsGiven")).orElse(0);
             this.nearestPortal = Adapters.BLOCK_POS.readNbt(nbt.get("nearestPortal")).orElse(null);
+            this.unlocked = Adapters.BOOLEAN.readNbt(nbt.get("unlocked")).orElse(false);
         }
     }
 
