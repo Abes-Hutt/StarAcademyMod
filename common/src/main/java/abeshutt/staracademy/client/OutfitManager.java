@@ -3,10 +3,16 @@ package abeshutt.staracademy.client;
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.IJsonSerializable;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class OutfitManager {
@@ -39,6 +45,25 @@ public class OutfitManager {
         }
 
         return new HashSet<>();
+    }
+
+    public void receive(Map<String, DynamicOutfit> registry) {
+        this.registry.clear();
+        this.registry.putAll(registry);
+
+        this.registry.forEach((id, outfit) -> {
+            Adapters.DYNAMIC_OUTFIT.writeJson(outfit).ifPresent(tag -> {
+                String json = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(tag);
+                Path path = Paths.get("codex", "outfits", id + ".json");
+
+                try {
+                    Files.createDirectories(path.getParent());
+                    Files.writeString(path, json);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
     }
 
     public void tick(AcademyClient client) {

@@ -142,7 +142,7 @@ public class AcademyClient {
         } else if(packet instanceof UpdateCodexPacket payload) {
             this.codex.receive(this, payload.getAssets(), payload.getData());
         } else if(packet instanceof UpdateOutfitRegistryPacket payload) {
-            this.outfits.getRegistry().putAll(payload.getRegistry());
+            this.outfits.receive(payload.getRegistry());
         } else if(packet instanceof UpdateOutfitEntryPacket payload) {
             this.outfits.getEntries().putAll(payload.getEntries());
         }
