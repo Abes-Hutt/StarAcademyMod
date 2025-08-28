@@ -75,11 +75,13 @@ public class MixinLootTable {
         } else if(!ModConfigs.LEGENDARY_ITEMS.isUnique()) {
             List<Identifier> occurrences = ModConfigs.LEGENDARY_ITEMS.getOccurrences();
 
-            if(!occurrences.isEmpty()) {
-                Registries.ITEM.getEntry(occurrences.get(random.nextInt(occurrences.size()))).ifPresent(item -> {
-                    ItemStack stack = new ItemStack(item);
-                    result.add(stack);
-                });
+            for(int i = 0; i < count; i++) {
+                if(!occurrences.isEmpty()) {
+                    Registries.ITEM.getEntry(occurrences.get(random.nextInt(occurrences.size()))).ifPresent(item -> {
+                        ItemStack stack = new ItemStack(item);
+                        result.add(stack);
+                    });
+                }
             }
         }
 
