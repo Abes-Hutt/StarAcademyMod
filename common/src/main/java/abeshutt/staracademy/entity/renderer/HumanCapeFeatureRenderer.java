@@ -1,6 +1,5 @@
 package abeshutt.staracademy.entity.renderer;
 
-import abeshutt.staracademy.entity.HumanEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -8,14 +7,15 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class HumanCapeFeatureRenderer<T extends HumanEntity> extends FeatureRenderer<T, PlayerEntityModel<T>> {
+public class HumanCapeFeatureRenderer<T extends LivingEntity> extends FeatureRenderer<T, PlayerEntityModel<T>> {
     public HumanCapeFeatureRenderer(FeatureRendererContext<T, PlayerEntityModel<T>> featureRendererContext) {
         super(featureRendererContext);
     }
 
-    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, HumanEntity abstractClientPlayerEntity, float f, float g, float h, float j, float k, float l) {
+    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, LivingEntity abstractClientPlayerEntity, float f, float g, float h, float j, float k, float l) {
         /*
         if (abstractClientPlayerEntity.canRenderCapeTexture() && !abstractClientPlayerEntity.isInvisible() && abstractClientPlayerEntity.isPartVisible(PlayerModelPart.CAPE) && abstractClientPlayerEntity.getCapeTexture() != null) {
             ItemStack itemStack = abstractClientPlayerEntity.getEquippedStack(EquipmentSlot.CHEST);

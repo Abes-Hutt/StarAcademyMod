@@ -1,6 +1,5 @@
 package abeshutt.staracademy.mixin.cobblemonalphas;
 
-import dev.cudzer.cobblemonalphas.particles.AlphaParticleEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;

@@ -5,7 +5,6 @@ import abeshutt.staracademy.config.sound.DimensionEnterPlaySoundEvent;
 import abeshutt.staracademy.config.sound.PlaySoundEvent;
 import abeshutt.staracademy.data.adapter.util.ServerSound;
 import com.google.gson.annotations.Expose;
-import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;

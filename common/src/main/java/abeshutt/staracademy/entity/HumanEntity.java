@@ -8,7 +8,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class HumanEntity extends PathAwareEntity implements IDefaultedAttributes {
+public abstract class HumanEntity extends PathAwareEntity implements IDefaultedAttributes, HumanData {
 
     protected Map<EquipmentSlot, ItemStack> slots;
     protected Vec3d lastVelocity;
@@ -40,8 +39,6 @@ public abstract class HumanEntity extends PathAwareEntity implements IDefaultedA
     public Arm getMainArm() {
         return Arm.RIGHT;
     }
-
-    public abstract Identifier getSkinTexture();
 
     @Override
     public Iterable<ItemStack> getHandItems() {

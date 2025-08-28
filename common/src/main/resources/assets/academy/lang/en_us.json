@@ -249,5 +249,7 @@
   "text.academy.card.display.label_weight_dragon_increased": "Dragon Type Spawn Influence",
   "text.academy.card.display.label_weight_rock_increased": "Rock Type Spawn Influence",
   "text.academy.card.display.capture_chance_increased": "Capture Chance",
-  "text.academy.card.display.capture_experience_increased": "Capture Experience"
+  "text.academy.card.display.capture_experience_increased": "Capture Experience",
+
+  "multiplayer.disconnect.island_crash": "Your island has crashed unexpectedly."
 }

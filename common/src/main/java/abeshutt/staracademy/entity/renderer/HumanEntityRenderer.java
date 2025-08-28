@@ -1,6 +1,6 @@
 package abeshutt.staracademy.entity.renderer;
 
-import abeshutt.staracademy.entity.HumanEntity;
+import abeshutt.staracademy.entity.HumanData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
@@ -16,6 +16,7 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -28,20 +29,25 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 
-@Environment(EnvType.CLIENT)
-public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRenderer<T, PlayerEntityModel<T>> {
+import java.util.function.Function;
 
-    public HumanEntityRenderer(EntityRendererFactory.Context context, boolean slim) {
+@Environment(EnvType.CLIENT)
+public class HumanEntityRenderer<T extends LivingEntity> extends LivingEntityRenderer<T, PlayerEntityModel<T>> {
+
+    private final Function<T, HumanData> data;
+
+    public HumanEntityRenderer(EntityRendererFactory.Context context, boolean slim, Function<T, HumanData> data) {
         super(context, new PlayerEntityModel<>(context.getPart(slim ?
                 EntityModelLayers.PLAYER_SLIM : EntityModelLayers.PLAYER), slim), 0.5F);
         this.addFeature(new ArmorFeatureRenderer<>(this, new ArmorEntityModel<>(context.getPart(slim ? EntityModelLayers.PLAYER_SLIM_INNER_ARMOR : EntityModelLayers.PLAYER_INNER_ARMOR)), new ArmorEntityModel<>(context.getPart(slim ? EntityModelLayers.PLAYER_SLIM_OUTER_ARMOR : EntityModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
-        this.addFeature(new PlayerHeldItemFeatureRenderer(this, context.getHeldItemRenderer()));
+        this.addFeature(new HeldItemFeatureRenderer<>(this, context.getHeldItemRenderer()));
         this.addFeature(new StuckArrowsFeatureRenderer<>(context, this));
-        this.addFeature(new HumanCapeFeatureRenderer(this));
+        this.addFeature(new HumanCapeFeatureRenderer<>(this));
         this.addFeature(new HeadFeatureRenderer<>(this, context.getModelLoader(), context.getHeldItemRenderer()));
         this.addFeature(new ElytraFeatureRenderer<>(this, context.getModelLoader()));
         this.addFeature(new TridentRiptideFeatureRenderer<>(this, context.getModelLoader()));
         this.addFeature(new StuckStingersFeatureRenderer<>(this));
+        this.data = data;
     }
 
     @Override
@@ -91,7 +97,7 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
 
     }
 
-    private static BipedEntityModel.ArmPose getArmPose(HumanEntity player, Hand hand) {
+    private static BipedEntityModel.ArmPose getArmPose(LivingEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (itemStack.isEmpty()) {
             return BipedEntityModel.ArmPose.EMPTY;
@@ -135,7 +141,7 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
 
     @Override
     public Identifier getTexture(T human) {
-        return human.getSkinTexture();
+        return this.data.apply(human).getSkinTexture();
     }
 
     protected void scale(T abstractClientPlayerEntity, MatrixStack matrixStack, float f) {
@@ -166,9 +172,9 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
         playerEntityModel.leaningPitch = 0.0F;
         playerEntityModel.setAngles(human, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         arm.pitch = 0.0F;
-        arm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(human.getSkinTexture())), light, OverlayTexture.DEFAULT_UV);
+        arm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(this.getTexture(human))), light, OverlayTexture.DEFAULT_UV);
         sleeve.pitch = 0.0F;
-        sleeve.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(human.getSkinTexture())), light, OverlayTexture.DEFAULT_UV);
+        sleeve.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(this.getTexture(human))), light, OverlayTexture.DEFAULT_UV);
     }
 
     protected void setupTransforms(T human, MatrixStack matrixStack, float f, float g, float h, float i) {
@@ -185,7 +191,7 @@ public class HumanEntityRenderer<T extends HumanEntity> extends LivingEntityRend
             }
 
             Vec3d vec3d = human.getRotationVec(h);
-            Vec3d vec3d2 = human.lerpVelocity(h);
+            Vec3d vec3d2 = this.data.apply(human).lerpVelocity(h);
             double d = vec3d2.horizontalLengthSquared();
             double e = vec3d.horizontalLengthSquared();
             if (d > 0.0 && e > 0.0) {
