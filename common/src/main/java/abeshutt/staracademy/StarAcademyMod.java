@@ -31,6 +31,7 @@ import java.util.List;
 public final class StarAcademyMod {
 
     public static final ThreadLocal<Boolean> FORCE_SPAWNING = ThreadLocal.withInitial(() -> false);
+    public static final ThreadLocal<Long> QUEST_ID = ThreadLocal.withInitial(() -> 0L);
     public static RegistryWrapper.WrapperLookup REGISTRIES;
 
     public static final String ID = "academy";
