@@ -66,9 +66,9 @@ public class SafariNPCEntity extends HumanEntity {
 
             if(!entry.isUnlocked()) {
                 MutableText cost = Text.empty()
-                        .append(Text.literal("["))
-                        .append(Text.literal(ModConfigs.NPC.getSafariCurrencyCost() + " "));
-                NumismaticOverhaulItems.BRONZE_COIN.getName().withoutStyle().forEach(cost::append);
+                        .append(Text.literal("[Submit "))
+                        .append(Text.literal(ModConfigs.NPC.getSafariCurrencyCost() / 10000 + " "));
+                NumismaticOverhaulItems.GOLD_COIN.getName().withoutStyle().forEach(cost::append);
                 cost.append(Text.literal("]"));
 
                 cost.setStyle(cost.getStyle().withFormatting(Formatting.GOLD)
@@ -86,7 +86,7 @@ public class SafariNPCEntity extends HumanEntity {
                         .append(Text.translatable("text.academy.safari.initial_closed").formatted(Formatting.GRAY)));
             } else {
                 player.sendMessage(Text.empty()
-                        .append(Text.literal("text.academy.safari.initial_open").formatted(Formatting.GRAY)));
+                        .append(Text.translatable("text.academy.safari.initial_open").formatted(Formatting.GRAY)));
             }
         }
 

@@ -180,6 +180,7 @@ public class SafariData extends WorldData {
 
                 if(v != null) {
                     entry.setLastState(v.getLastState());
+                    entry.setUnlocked(v.isUnlocked());
                 }
 
                 return entry;
