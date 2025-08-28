@@ -193,11 +193,11 @@
   "text.academy.grader.request_complete_1": "The evaluation is complete. I must say, this one surprised me...",
   "text.academy.grader.request_complete_2": "Ta-daaaa! One freshly graded card, hot out of the oven!",
   "text.academy.grader.request_complete_3": "All done! Thank you for waiting.",
-  "text.academy.safari.initial_locked": "Welcome, Trainer! The Safari Zone awaits but entry isn’t free.",
-  "text.academy.safari.initial_open": "The Safari is open for exploration. Step right through and enjoy the hunt!",
-  "text.academy.safari.initial_closed": "Sorry, Trainer, but the Safari is off-limits at the moment. Please come back later!",
-  "text.academy.safari.unlock_broke": "You're broke, dipshit.",
-  "text.academy.safari.unlock_complete": "Nice.",
+  "text.academy.safari.initial_locked": "Welcome, Trainer! The Safari World awaits but entry isn’t free.",
+  "text.academy.safari.initial_open": "The Safari World is open for exploration. Step right through and enjoy the hunt!",
+  "text.academy.safari.initial_closed": "Sorry, Trainer, but the Safari World is off-limits at the moment. Please come back later!",
+  "text.academy.safari.unlock_broke": "Talk to me when you have the gold, brokie.",
+  "text.academy.safari.unlock_complete": "Thank you for the gold! Enjoy your time in the Safari World.",
 
   "stat_type.minecraft.custom": "Custom",
 
