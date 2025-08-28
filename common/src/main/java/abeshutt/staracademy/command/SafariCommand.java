@@ -31,8 +31,6 @@ public class SafariCommand extends Command {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal(StarAcademyMod.ID)
                 .then(literal("safari")
-                    .then(literal("unlock")
-                        .executes(this::onUnlock))
                     .then(literal("pause")
                         .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onPause))
@@ -47,30 +45,6 @@ public class SafariCommand extends Command {
                         .then(argument("players", EntityArgumentType.players())
                             .then(argument("time", TimeArgumentType.time(Integer.MIN_VALUE))
                                 .executes(this::onAddTime))))));
-    }
-
-    private int onUnlock(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
-        SafariData data = ModWorldData.SAFARI.getGlobal(context.getSource().getServer());
-        SafariData.Entry entry = data.getOrCreate(player.getUuid());
-
-        if(!entry.isUnlocked()) {
-            CurrencyComponent purse = ModComponents.CURRENCY.get(player);
-
-            if(purse.getValue() < ModConfigs.NPC.getGradingCurrencyCost()) {
-                player.sendMessage(Text.empty().append(Text.translatable("text.academy.safari.unlock_broke")
-                        .formatted(Formatting.GRAY)));
-            } else {
-                purse.pushTransaction(-ModConfigs.NPC.getGradingCurrencyCost());
-                purse.commitTransactions();
-                player.sendMessage(Text.empty().append(Text.translatable("text.academy.safari.unlock_complete")
-                        .formatted(Formatting.GRAY)));
-                entry.setUnlocked(true);
-                data.markDirty();
-            }
-        }
-
-        return 0;
     }
 
     private int onAddTime(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

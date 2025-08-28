@@ -181,6 +181,7 @@ public class SafariData extends WorldData {
                 if(v != null) {
                     entry.setLastState(v.getLastState());
                     entry.setUnlocked(v.isUnlocked());
+                    entry.setPrompted(v.isPrompted());
                 }
 
                 return entry;
@@ -358,6 +359,7 @@ public class SafariData extends WorldData {
         private long timeLeft;
         private int ballsGiven;
         private BlockPos nearestPortal;
+        protected boolean prompted;
         protected boolean unlocked;
 
         public EntityState getLastState() {
@@ -392,6 +394,14 @@ public class SafariData extends WorldData {
             this.nearestPortal = nearestPortal;
         }
 
+        public boolean isPrompted() {
+            return this.prompted;
+        }
+
+        public void setPrompted(boolean prompted) {
+            this.prompted = prompted;
+        }
+
         public boolean isUnlocked() {
             return this.unlocked;
         }
@@ -412,6 +422,7 @@ public class SafariData extends WorldData {
             Adapters.INT.writeBits(this.ballsGiven, buffer);
             Adapters.BLOCK_POS.asNullable().writeBits(this.nearestPortal, buffer);
             Adapters.BOOLEAN.writeBits(this.unlocked, buffer);
+            Adapters.BOOLEAN.writeBits(this.prompted, buffer);
         }
 
         @Override
@@ -427,6 +438,7 @@ public class SafariData extends WorldData {
             this.ballsGiven = Adapters.INT.readBits(buffer).orElseThrow();
             this.nearestPortal = Adapters.BLOCK_POS.asNullable().readBits(buffer).orElse(null);
             this.unlocked = Adapters.BOOLEAN.readBits(buffer).orElseThrow();
+            this.prompted = Adapters.BOOLEAN.readBits(buffer).orElseThrow();
         }
 
         @Override
@@ -440,6 +452,7 @@ public class SafariData extends WorldData {
                 Adapters.INT.writeNbt(this.ballsGiven).ifPresent(tag -> nbt.put("ballsGiven", tag));
                 Adapters.BLOCK_POS.writeNbt(this.nearestPortal).ifPresent(tag -> nbt.put("nearestPortal", tag));
                 Adapters.BOOLEAN.writeNbt(this.unlocked).ifPresent(tag -> nbt.put("unlocked", tag));
+                Adapters.BOOLEAN.writeNbt(this.prompted).ifPresent(tag -> nbt.put("prompted", tag));
                 return nbt;
             });
         }
@@ -457,6 +470,7 @@ public class SafariData extends WorldData {
             this.ballsGiven = Adapters.INT.readNbt(nbt.get("ballsGiven")).orElse(0);
             this.nearestPortal = Adapters.BLOCK_POS.readNbt(nbt.get("nearestPortal")).orElse(null);
             this.unlocked = Adapters.BOOLEAN.readNbt(nbt.get("unlocked")).orElse(false);
+            this.prompted = Adapters.BOOLEAN.readNbt(nbt.get("unlocked")).orElse(false);
         }
     }
 

@@ -4,6 +4,8 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.SafariData;
+import com.glisco.numismaticoverhaul.ModComponents;
+import com.glisco.numismaticoverhaul.currency.CurrencyComponent;
 import com.glisco.numismaticoverhaul.item.NumismaticOverhaulItems;
 import dev.cudzer.cobblemonalphas.config.ModConfig;
 import net.minecraft.entity.EntityType;
@@ -65,19 +67,28 @@ public class SafariNPCEntity extends HumanEntity {
             SafariData.Entry entry = data.getOrCreate(player.getUuid());
 
             if(!entry.isUnlocked()) {
-                MutableText cost = Text.empty()
-                        .append(Text.literal("[Submit "))
-                        .append(Text.literal(ModConfigs.NPC.getSafariCurrencyCost() / 10000 + " "));
-                NumismaticOverhaulItems.GOLD_COIN.getName().withoutStyle().forEach(cost::append);
-                cost.append(Text.literal("]"));
+                CurrencyComponent purse = ModComponents.CURRENCY.get(player);
 
-                cost.setStyle(cost.getStyle().withFormatting(Formatting.GOLD)
-                        .withClickEvent(new ClickEvent(RUN_COMMAND, "/academy safari unlock")));
+                if(purse.getValue() < ModConfigs.NPC.getGradingCurrencyCost()) {
+                    if(!entry.isPrompted()) {
+                        player.sendMessage(Text.empty()
+                                .append(Text.translatable("text.academy.safari.initial_locked").formatted(Formatting.GRAY)));
+                        entry.setPrompted(true);
+                        data.markDirty();
+                    } else {
+                        player.sendMessage(Text.empty()
+                                .append(Text.translatable("text.academy.safari.unlock_broke").formatted(Formatting.GRAY)));
+                    }
+                } else {
+                    purse.pushTransaction(-ModConfigs.NPC.getGradingCurrencyCost());
+                    purse.commitTransactions();
+                    player.sendMessage(Text.empty().append(Text.translatable("text.academy.safari.unlock_complete")
+                            .formatted(Formatting.GRAY)));
+                    entry.setUnlocked(true);
+                    entry.setPrompted(true);
+                    data.markDirty();
+                }
 
-                player.sendMessage(Text.empty()
-                        .append(Text.translatable("text.academy.safari.initial_locked").formatted(Formatting.GRAY))
-                        .append(Text.literal(" "))
-                        .append(cost));
                 return ActionResult.SUCCESS;
             }
 
