@@ -35,7 +35,7 @@ public class CodexManager {
 
         try {
             Path root = MinecraftClient.getInstance().runDirectory.toPath().toRealPath();
-            cache = root.resolve("cache").toRealPath();
+            cache = root.resolve("codex").toRealPath();
 
             try {
                 assetsChecksum = hash(cache.resolve(CLIENT_RESOURCES.getDirectory() + ".zip").toRealPath());
@@ -74,10 +74,10 @@ public class CodexManager {
         Path cache;
 
         try {
-            cache = root.resolve("cache").toRealPath();
+            cache = root.resolve("codex").toRealPath();
         } catch(Exception e) {
             try {
-                Files.createDirectory(cache = root.resolve("cache"));
+                Files.createDirectory(cache = root.resolve("codex"));
             } catch(IOException ex) {
                 return;
             }

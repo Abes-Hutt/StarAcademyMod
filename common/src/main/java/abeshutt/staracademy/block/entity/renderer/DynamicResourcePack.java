@@ -37,7 +37,7 @@ public class DynamicResourcePack extends AbstractFileResourcePack {
     public static void open(ResourceType type, ResourcePackSource source, TriConsumer<Path, ResourcePackProfile.PackFactory, ResourcePackInfo> callback) {
         try {
             Path root = MinecraftClient.getInstance().runDirectory.toPath().toRealPath();
-            Path cache = root.resolve("cache").toRealPath();
+            Path cache = root.resolve("codex").toRealPath();
             Path resources = cache.resolve(type.getDirectory() + ".zip").toRealPath();
 
             ResourcePackInfo info = new ResourcePackInfo("Academy Runtime",

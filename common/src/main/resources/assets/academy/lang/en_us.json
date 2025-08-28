@@ -198,7 +198,9 @@
   "text.academy.safari.initial_closed": "Sorry, Trainer, but the Safari World is off-limits at the moment. Please come back later!",
   "text.academy.safari.unlock_broke": "Talk to me when you have the gold, brokie.",
   "text.academy.safari.unlock_complete": "Thank you for the gold! Enjoy your time in the Safari World.",
-
+  "text.academy.safari.enter_paused": "The Safari is currently unavailable.",
+  "text.academy.safari.enter_no_time": "You have no time left in the Safari.",
+  "text.academy.safari.enter_locked": "blablabla",
   "stat_type.minecraft.custom": "Custom",
 
   "trinkets.slot.legs.card_album": "Card Album",
