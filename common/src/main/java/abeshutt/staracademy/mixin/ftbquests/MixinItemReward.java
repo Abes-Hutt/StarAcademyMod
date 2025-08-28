@@ -1,6 +1,7 @@
 package abeshutt.staracademy.mixin.ftbquests;
 
 import abeshutt.staracademy.util.ProxyNotifyItemRewardMessage;
+import dev.architectury.networking.NetworkManager;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.ItemReward;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
@@ -20,6 +21,7 @@ public abstract class MixinItemReward extends Reward {
     @Redirect(method = "claim", at = @At(value = "INVOKE", target = "Ldev/architectury/networking/NetworkManager;sendToPlayer(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/network/packet/CustomPayload;)V"), remap = false)
     private void claim(ServerPlayerEntity player, CustomPayload payload) {
         ProxyNotifyItemRewardMessage.setId(payload, this.getId());
+        NetworkManager.sendToPlayer(player, payload);
     }
 
 }

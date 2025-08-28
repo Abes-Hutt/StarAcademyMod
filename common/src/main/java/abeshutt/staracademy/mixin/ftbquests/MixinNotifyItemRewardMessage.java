@@ -44,7 +44,7 @@ public class MixinNotifyItemRewardMessage implements ProxyNotifyItemRewardMessag
         );
     }
 
-    @Inject(method = "lambda$handle$0", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/client/FTBQuestsNetClient;displayItemRewardToast(Lnet/minecraft/item/ItemStack;IZ)V", shift = At.Shift.BEFORE))
+    @Inject(method = "lambda$handle$0", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/client/FTBQuestsNetClient;displayItemRewardToast(Lnet/minecraft/item/ItemStack;IZ)V", shift = At.Shift.BEFORE), remap = false)
     private static void handle(NotifyItemRewardMessage message, CallbackInfo ci) {
         StarAcademyMod.QUEST_ID.set(ProxyNotifyItemRewardMessage.getId(message));
     }
