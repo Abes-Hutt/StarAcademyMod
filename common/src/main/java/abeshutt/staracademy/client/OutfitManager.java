@@ -3,10 +3,7 @@ package abeshutt.staracademy.client;
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.IJsonSerializable;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 
 import java.io.IOException;
@@ -17,6 +14,8 @@ import java.util.*;
 
 public class OutfitManager {
 
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
     private final Map<String, DynamicOutfit> registry;
     private final Map<UUID, Entry> entries;
     private final Set<UUID> tracked;
@@ -25,6 +24,30 @@ public class OutfitManager {
         this.registry = new HashMap<>();
         this.entries = new HashMap<>();
         this.tracked = new HashSet<>();
+
+        Path path = Paths.get("codex", "outfits");
+
+        if(Files.exists(path)) {
+            try {
+                Files.list(path).forEach(child -> {
+                    if(Files.isDirectory(child)) return;
+                    if(!child.toString().endsWith(".json")) return;
+                    String id = child.getFileName().toString().replace(".json", "");
+
+                    try {
+                        JsonElement json = JsonParser.parseString(Files.readString(child));
+
+                        Adapters.DYNAMIC_OUTFIT.readJson(json).ifPresent(outfit -> {
+                            this.registry.put(id, outfit);
+                        });
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch(IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public Map<String, DynamicOutfit> getRegistry() {
@@ -53,7 +76,7 @@ public class OutfitManager {
 
         this.registry.forEach((id, outfit) -> {
             Adapters.DYNAMIC_OUTFIT.writeJson(outfit).ifPresent(tag -> {
-                String json = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(tag);
+                String json = GSON.toJson(tag);
                 Path path = Paths.get("codex", "outfits", id + ".json");
 
                 try {

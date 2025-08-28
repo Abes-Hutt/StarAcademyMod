@@ -49,16 +49,16 @@ public class DynamicOutfit {
         DynamicTexture texture = slim ? this.slimTexture : this.classicTexture;
         DynamicBone mesh = slim ? this.slimMesh : this.classicMesh;
 
-        ModelData modelData = new ModelData();
-        ModelPartData root = modelData.getRoot();
+        ModelPartData root = mesh.build();
 
         for(String name : BASE_PARTS) {
-            root.addChild(name, ModelPartBuilder.create(),
-                    ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+            if(root.getChild(name) == null) {
+                root.addChild(name, ModelPartBuilder.create(),
+                        ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+            }
         }
 
-        mesh.build();
-        ModelPart model = TexturedModelData.of(modelData, texture.width, texture.height).createModel();
+        ModelPart model = root.createPart(texture.width, texture.height);
         return new PlayerEntityModel<>(model, slim);
     }
 
