@@ -25,7 +25,9 @@
     "cobblemon.MixinSelectionButton",
     "cobblemon.MixinStarterSelectionScreen",
     "display.MixinBlockFrameBlockRenderer",
-    "itemzoomer.MixinZoomRenderer"
+    "itemzoomer.MixinZoomRenderer",
+    "radgyms.MixinGymEnterScreen",
+    "radgyms.ProxyDiscreteSliderComponent"
   ],
   "mixins": [
     "MixinAbstractFireBlock",
