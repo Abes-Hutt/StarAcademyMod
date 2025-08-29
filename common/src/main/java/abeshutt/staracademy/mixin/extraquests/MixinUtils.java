@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @Mixin(targets = { "com.vecoo.extraquests.util.Utils" })
 public class MixinUtils {
 
-    @Redirect(method = "startTimer", at = @At(value = "INVOKE", target = "Ljava/lang/System;currentTimeMillis()J"))
+    @Redirect(method = "startTimer", at = @At(value = "INVOKE", target = "Ljava/lang/System;currentTimeMillis()J"), remap = false)
     private static long init() {
         return ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli();
     }
