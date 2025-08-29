@@ -55,9 +55,11 @@ dependencies {
 
     modCompileOnly("maven.modrinth:cobblemon-alpha-project:1.1")
 
-    modImplementation("dev.ftb.mods:ftb-quests:2101.1.14")
-    modImplementation("dev.ftb.mods:ftb-teams:2101.1.4")
-    modImplementation("dev.ftb.mods:ftb-library:2101.1.19")
+    modCompileOnly("dev.ftb.mods:ftb-quests:2101.1.14")
+    modCompileOnly("dev.ftb.mods:ftb-teams:2101.1.4")
+    modCompileOnly("dev.ftb.mods:ftb-library:2101.1.19")
 
     modCompileOnly(files("jars/UltraBeasts-1.0.1.jar"))
+
+    modCompileOnly("maven.modrinth:extraquests:xyNKgwgq")
 }
