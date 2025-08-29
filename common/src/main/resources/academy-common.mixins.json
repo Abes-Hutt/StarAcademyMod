@@ -10,7 +10,7 @@
     "MixinClientWorld",
     "MixinCreativeInventoryScreen",
     "MixinDiscreteSliderComponent",
-    "MixinEntityRenderers",
+    "radgyms.MixinEntityRenderers",
     "MixinHandledScreen",
     "MixinInGameHud",
     "MixinInventoryScreen",

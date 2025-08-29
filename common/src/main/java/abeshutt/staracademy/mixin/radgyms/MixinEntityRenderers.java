@@ -1,8 +1,9 @@
-package abeshutt.staracademy.mixin;
+package abeshutt.staracademy.mixin.radgyms;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.entity.HumanData;
 import abeshutt.staracademy.entity.renderer.HumanEntityRenderer;
+import dev.architectury.platform.Platform;
 import lol.gito.radgyms.entity.EntityManager;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -29,17 +30,19 @@ public abstract class MixinEntityRenderers {
     @Inject(method = "reloadEntityRenderers", at = @At("HEAD"))
     private static void reloadEntityRenderers(EntityRendererFactory.Context ctx,
                                               CallbackInfoReturnable<Map<EntityType<?>, EntityRenderer<?>>> ci) {
-        register(EntityManager.INSTANCE.getGYM_TRAINER(), factory -> new HumanEntityRenderer<>(factory, false, e -> new HumanData() {
-            @Override
-            public Identifier getSkinTexture() {
-                return StarAcademyMod.id("textures/entity/partner_npc.png");
-            }
+        if(Platform.isModLoaded("rad-gyms")) {
+            register(EntityManager.INSTANCE.getGYM_TRAINER(), factory -> new HumanEntityRenderer<>(factory, false, e -> new HumanData() {
+                @Override
+                public Identifier getSkinTexture() {
+                    return StarAcademyMod.id("textures/entity/partner_npc.png");
+                }
 
-            @Override
-            public Vec3d lerpVelocity(float tickDelta) {
-                return Vec3d.ZERO;
-            }
-        }));
+                @Override
+                public Vec3d lerpVelocity(float tickDelta) {
+                    return Vec3d.ZERO;
+                }
+            }));
+        }
     }
 
 }
