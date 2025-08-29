@@ -45,7 +45,7 @@ public class CardScalarAttribute<T> extends Attribute<T> {
         List<Rational> scalars = ModConfigs.CARD_SCALARS.get(this.id).orElse(new ArrayList<>());
         int index = this.grade - 1;
 
-        if(index <= 0 || index >= scalars.size()) {
+        if(index < 0 || index >= scalars.size()) {
             return Option.absent();
         }
 
