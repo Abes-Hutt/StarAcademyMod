@@ -10,6 +10,11 @@ import java.util.Set;
 
 public class AcademyMixinPlugin implements IMixinConfigPlugin {
 
+    private static final Set<String> RAD_GYMS_MIXINS = Set.of(
+            "abeshutt.staracademy.mixin.radgyms.MixinDataSaver",
+            "abeshutt.staracademy.mixin.radgyms.MixinEntityRenderers"
+    );
+
     @Override
     public void onLoad(String mixinPackage) {
 
@@ -22,7 +27,7 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if("abeshutt.staracademy.mixin.radgyms.MixinDataSaver".equals(mixinClassName)) {
+        if(RAD_GYMS_MIXINS.contains(mixinClassName)) {
             return Platform.isModLoaded("rad-gyms");
         }
 

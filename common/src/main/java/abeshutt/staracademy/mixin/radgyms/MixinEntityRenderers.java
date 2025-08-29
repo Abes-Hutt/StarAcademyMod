@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -30,19 +31,17 @@ public abstract class MixinEntityRenderers {
     @Inject(method = "reloadEntityRenderers", at = @At("HEAD"))
     private static void reloadEntityRenderers(EntityRendererFactory.Context ctx,
                                               CallbackInfoReturnable<Map<EntityType<?>, EntityRenderer<?>>> ci) {
-        if(Platform.isModLoaded("rad-gyms")) {
-            register(EntityManager.INSTANCE.getGYM_TRAINER(), factory -> new HumanEntityRenderer<>(factory, false, e -> new HumanData() {
-                @Override
-                public Identifier getSkinTexture() {
-                    return StarAcademyMod.id("textures/entity/partner_npc.png");
-                }
+        register(EntityManager.INSTANCE.getGYM_TRAINER(), factory -> new HumanEntityRenderer<>(factory, false, e -> new HumanData() {
+            @Override
+            public Identifier getSkinTexture() {
+                return StarAcademyMod.id("textures/entity/partner_npc.png");
+            }
 
-                @Override
-                public Vec3d lerpVelocity(float tickDelta) {
-                    return Vec3d.ZERO;
-                }
-            }));
-        }
+            @Override
+            public Vec3d lerpVelocity(float tickDelta) {
+                return Vec3d.ZERO;
+            }
+        }));
     }
 
 }
