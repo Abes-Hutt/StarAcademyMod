@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class ModOutfits {
 
-    public static Map<String, OutfitPiece> REGISTRY = new HashMap<>();
+    private static Map<String, OutfitPiece> REGISTRY = new HashMap<>();
 
     public static Classy1Outfit.Hat CLASSY1_HAT;
     public static Classy1Outfit.Shirt CLASSY1_SHIRT;

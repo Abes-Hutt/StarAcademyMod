@@ -1,5 +1,6 @@
 package abeshutt.staracademy.item;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.init.ModOutfits;
@@ -40,9 +41,7 @@ public class ValueOutfitEntry extends OutfitEntry {
 
     @Override
     public void render(OutfitItemRenderer renderer, ItemStack stack, ModelTransformationMode mode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        OutfitPiece outfit = ModOutfits.REGISTRY.get(this.id);
-        if(outfit == null) return;
-        ModelIdentifier icon = outfit.getTexture().getIcon();
+        ModelIdentifier icon = StarAcademyMod.mid("outfit/" + this.id, "inventory");
         renderer.renderModel(icon, stack, mode, leftHanded, matrices, vertexConsumers, light, overlay);
     }
 

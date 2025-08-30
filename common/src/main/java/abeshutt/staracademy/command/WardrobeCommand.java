@@ -28,8 +28,8 @@ public class WardrobeCommand extends Command {
     public static SimpleCommandExceptionType INVALID_OUTFIT_ID = new SimpleCommandExceptionType(
             StarAcademyMod.translatableText("command.wardrobe.unlock.fail"));
 
-    private static final SuggestionProvider<ServerCommandSource> OUTFIT_ID_SUGGESTIONS = (context, builder) ->
-            CommandSource.suggestMatching(ModOutfits.REGISTRY.keySet().stream(), builder);
+    //private static final SuggestionProvider<ServerCommandSource> OUTFIT_ID_SUGGESTIONS = (context, builder) ->
+    //        CommandSource.suggestMatching(ModOutfits.REGISTRY.keySet().stream(), builder);
 
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
@@ -40,10 +40,11 @@ public class WardrobeCommand extends Command {
                                 .executes(this::onListUnlockedOutfits))
                         .then(literal("unlock")
                                 .then(argument("id", StringArgumentType.word())
-                                        .suggests(OUTFIT_ID_SUGGESTIONS)
+                                        //.suggests(OUTFIT_ID_SUGGESTIONS)
                                         .executes(this::onUnlockOutfit))
-                                .then(literal("all")
-                                        .executes(this::onUnlockOutfitAll)))));
+                                //.then(literal("all")
+                               //         .executes(this::onUnlockOutfitAll))
+                        )));
     }
 
     private int onListUnlockedOutfits(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
@@ -70,8 +71,8 @@ public class WardrobeCommand extends Command {
         String outfitId = StringArgumentType.getString(context, "id");
         ServerPlayerEntity sender = context.getSource().getPlayerOrThrow();
 
-        OutfitPiece outfit = ModOutfits.REGISTRY.get(outfitId);
-        if (outfit == null) throw INVALID_OUTFIT_ID.create();
+        //OutfitPiece outfit = ModOutfits.REGISTRY.get(outfitId);
+        //if (outfit == null) throw INVALID_OUTFIT_ID.create();
 
         WardrobeData data = ModWorldData.WARDROBE.getGlobal(sender.getWorld());
         data.setUnlocked(sender, outfitId, true);
@@ -79,6 +80,7 @@ public class WardrobeCommand extends Command {
     }
 
     private int onUnlockOutfitAll(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        /*
         ServerPlayerEntity sender = context.getSource().getPlayerOrThrow();
 
         for (OutfitPiece outfit : ModOutfits.REGISTRY.values()) {
@@ -86,7 +88,7 @@ public class WardrobeCommand extends Command {
 
             WardrobeData data = ModWorldData.WARDROBE.getGlobal(sender.getWorld());
             data.setUnlocked(sender, outfit.getId(), true);
-        }
+        }*/
 
         return 0;
     }

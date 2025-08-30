@@ -39,7 +39,7 @@ public class AcademyClient {
 
         this.auth = new AuthManager();
         this.codex = new CodexManager();
-        this.outfits = new OutfitManager();
+        this.outfits = new OutfitManager(this);
         this.connecting = false;
     }
 

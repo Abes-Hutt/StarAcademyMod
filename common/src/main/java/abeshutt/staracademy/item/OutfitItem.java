@@ -1,5 +1,6 @@
 package abeshutt.staracademy.item;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.init.ModWorldData;
@@ -82,9 +83,11 @@ public class OutfitItem extends Item implements ISpecialItemModel {
 
     @Override
     public void loadModels(Stream<Identifier> unbakedModels, Consumer<ModelIdentifier> loader) {
-        for(OutfitPiece outfit : ModOutfits.REGISTRY.values()) {
-            loader.accept(outfit.getTexture().getIcon());
-        }
+        unbakedModels.forEach(id -> {
+            if(id.getNamespace().equals(StarAcademyMod.ID) && id.getPath().startsWith("outfit")) {
+                loader.accept(StarAcademyMod.mid(id, "inventory"));
+            }
+        });
     }
 
     @Override

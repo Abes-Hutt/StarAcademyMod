@@ -53,14 +53,12 @@ public class WardrobeData extends WorldData {
 
     public boolean setUnlocked(ServerPlayerEntity player, String id, boolean unlocked) {
         if(this.setUnlocked(player.getUuid(), id, unlocked)) {
-            OutfitPiece outfit = ModOutfits.REGISTRY.get(id);
-
-            if(player.getServer() != null && outfit != null) {
+            if(player.getServer() != null) {
                 for(ServerPlayerEntity other : player.getServer().getPlayerManager().getPlayerList()) {
                     other.sendMessage(Text.empty()
                         .append(player.getName())
                         .append(Text.literal(" unlocked a new outfit: ").formatted(Formatting.GRAY))
-                        .append(Text.translatable("item.academy.outfit." + outfit.getId()))
+                        .append(Text.translatable("item.academy.outfit." + id))
                         .append(Text.literal(".").formatted(Formatting.GRAY)));
                 }
             }
