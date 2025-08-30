@@ -36,15 +36,16 @@ public class HouseCommand extends Command {
         dispatcher.register(literal(StarAcademyMod.ID)
             .then(literal("house")
                 .then(literal("create")
-                    .then(argument("name", StringArgumentType.string())
-                        .then(argument("color", IntegerArgumentType.integer())
-                            .executes(this::onCreateHouse))))
+                    .then(argument("id", StringArgumentType.string())
+                        .then(argument("name", StringArgumentType.string())
+                            .then(argument("color", IntegerArgumentType.integer())
+                                .executes(this::onCreateHouse)))))
                 .then(literal("remove")
-                    .then(argument("uuid", UuidArgumentType.uuid())
+                    .then(argument("id", StringArgumentType.string())
                         .suggests(this::getHouseSuggestions)
                         .executes(this::onRemoveHouse)))
                 .then(literal("get")
-                    .then(argument("uuid", UuidArgumentType.uuid())
+                    .then(argument("id", StringArgumentType.string())
                         .suggests(this::getHouseSuggestions)
                         .then(literal("add_player")
                             .then(argument("player", GameProfileArgumentType.gameProfile())
@@ -64,15 +65,15 @@ public class HouseCommand extends Command {
     }
 
     private int onGetName(CommandContext<ServerCommandSource> context) {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.get(uuid).orElse(null);
+        AcademyHouse house = data.get(id).orElse(null);
 
         if(house == null) {
             context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("House ").formatted(Formatting.GRAY))
-                .append(Text.literal(uuid.toString()).formatted(Formatting.WHITE))
+                .append(Text.literal(id).formatted(Formatting.WHITE))
                 .append(Text.literal(" does not exist.").formatted(Formatting.GRAY)), false);
             return 0;
         }
@@ -88,16 +89,16 @@ public class HouseCommand extends Command {
     }
 
     private int onSetName(CommandContext<ServerCommandSource> context) {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
         String name = StringArgumentType.getString(context, "name");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.get(uuid).orElse(null);
+        AcademyHouse house = data.get(id).orElse(null);
 
         if(house == null) {
             context.getSource().sendFeedback(() -> Text.empty()
                     .append(Text.literal("House ").formatted(Formatting.GRAY))
-                    .append(Text.literal(uuid.toString()).formatted(Formatting.WHITE))
+                    .append(Text.literal(id).formatted(Formatting.WHITE))
                     .append(Text.literal(" does not exist.").formatted(Formatting.GRAY)), false);
             return 0;
         }
@@ -116,15 +117,15 @@ public class HouseCommand extends Command {
     }
 
     private int onGetColor(CommandContext<ServerCommandSource> context) {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.get(uuid).orElse(null);
+        AcademyHouse house = data.get(id).orElse(null);
 
         if(house == null) {
             context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("House ").formatted(Formatting.GRAY))
-                .append(Text.literal(uuid.toString()).formatted(Formatting.WHITE))
+                .append(Text.literal(id).formatted(Formatting.WHITE))
                 .append(Text.literal(" does not exist.").formatted(Formatting.GRAY)), false);
             return 0;
         }
@@ -140,16 +141,16 @@ public class HouseCommand extends Command {
     }
 
     private int onSetColor(CommandContext<ServerCommandSource> context) {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
         int color = IntegerArgumentType.getInteger(context, "color");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.get(uuid).orElse(null);
+        AcademyHouse house = data.get(id).orElse(null);
 
         if(house == null) {
             context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("House ").formatted(Formatting.GRAY))
-                .append(Text.literal(uuid.toString()).formatted(Formatting.WHITE))
+                .append(Text.literal(id.toString()).formatted(Formatting.WHITE))
                 .append(Text.literal(" does not exist.").formatted(Formatting.GRAY)), false);
             return 0;
         }
@@ -168,16 +169,16 @@ public class HouseCommand extends Command {
     }
 
     private int onAddPlayer(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
         Collection<GameProfile> players = GameProfileArgumentType.getProfileArgument(context, "player");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.get(uuid).orElse(null);
+        AcademyHouse house = data.get(id).orElse(null);
 
         if(house == null) {
             context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("House ").formatted(Formatting.GRAY))
-                .append(Text.literal(uuid.toString()).formatted(Formatting.WHITE))
+                .append(Text.literal(id).formatted(Formatting.WHITE))
                 .append(Text.literal(" does not exist.").formatted(Formatting.GRAY)), false);
             return 0;
         }
@@ -203,16 +204,16 @@ public class HouseCommand extends Command {
     }
 
     private int onRemovePlayer(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "uuid");
         Collection<GameProfile> players = GameProfileArgumentType.getProfileArgument(context, "player");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.get(uuid).orElse(null);
+        AcademyHouse house = data.get(id).orElse(null);
 
         if(house == null) {
             context.getSource().sendFeedback(() -> Text.empty()
                     .append(Text.literal("House ").formatted(Formatting.GRAY))
-                    .append(Text.literal(uuid.toString()).formatted(Formatting.WHITE))
+                    .append(Text.literal(id).formatted(Formatting.WHITE))
                     .append(Text.literal(" does not exist.").formatted(Formatting.GRAY)), false);
             return 0;
         }
@@ -238,11 +239,12 @@ public class HouseCommand extends Command {
     }
 
     private int onCreateHouse(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        String id = StringArgumentType.getString(context, "id");
         String name = StringArgumentType.getString(context, "name");
         int color = IntegerArgumentType.getInteger(context, "color");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        data.add(name, color);
+        data.add(id, name, color);
 
         context.getSource().sendFeedback(() -> Text.empty()
                 .append(Text.literal("Created house ").formatted(Formatting.GRAY))
@@ -253,10 +255,10 @@ public class HouseCommand extends Command {
     }
 
     private int onRemoveHouse(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        UUID uuid = UuidArgumentType.getUuid(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
-        AcademyHouse house = data.remove(uuid);
+        AcademyHouse house = data.remove(id);
 
         if(house != null) {
             context.getSource().sendFeedback(() -> Text.empty()
@@ -271,7 +273,7 @@ public class HouseCommand extends Command {
     private CompletableFuture<Suggestions> getHouseSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());
         return CommandSource.suggestMatching(data.getHouses().values().stream()
-                .map(AcademyHouse::getUuid).map(UUID::toString), builder);
+                .map(AcademyHouse::getId), builder);
     }
 
 }

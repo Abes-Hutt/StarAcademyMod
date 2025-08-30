@@ -22,13 +22,13 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
     public static final Id<UpdateHousesS2CPacket> ID = new Id<>(StarAcademyMod.id("update_house_s2c"));
 
-    private Map<UUID, House> houses;
+    private Map<String, House> houses;
 
     public UpdateHousesS2CPacket() {
 
     }
 
-    public UpdateHousesS2CPacket(Map<UUID, House> houses) {
+    public UpdateHousesS2CPacket(Map<String, House> houses) {
         this.houses = houses;
     }
 
@@ -39,7 +39,7 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
     @Override
     public void onReceive(ClientPlayNetworkHandler listener) {
-        Map<UUID, AcademyHouse> houses = HouseData.CLIENT.getHouses();
+        Map<String, AcademyHouse> houses = HouseData.CLIENT.getHouses();
 
         if(this.houses == null) {
             houses.clear();
@@ -80,8 +80,8 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
         if(this.houses != null) {
             Adapters.INT_SEGMENTED_3.writeBits(this.houses.size(), buffer);
 
-            this.houses.forEach((uuid, entry) -> {
-                Adapters.UUID.writeBits(uuid, buffer);
+            this.houses.forEach((id, entry) -> {
+                Adapters.UTF_8.writeBits(id, buffer);
                 entry.writeBits(buffer);
             });
         }
@@ -94,12 +94,12 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
         } else {
             this.houses = new HashMap<>();
             int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
-            UUID uuid = Adapters.UUID.readBits(buffer).orElseThrow();
+            String id = Adapters.UTF_8.readBits(buffer).orElseThrow();
             House house = new House();
             house.readBits(buffer);
 
             for(int i = 0; i < size; i++) {
-                this.houses.put(uuid, house);
+                this.houses.put(id, house);
             }
         }
     }

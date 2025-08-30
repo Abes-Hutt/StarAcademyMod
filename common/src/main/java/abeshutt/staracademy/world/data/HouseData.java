@@ -21,15 +21,15 @@ public class HouseData extends WorldData {
 
     public static final HouseData CLIENT = new HouseData();
 
-    private final Map<UUID, AcademyHouse> houses;
-    private final Map<UUID, AcademyHouse> changes;
+    private final Map<String, AcademyHouse> houses;
+    private final Map<String, AcademyHouse> changes;
 
     public HouseData() {
         this.houses = new LinkedHashMap<>();
         this.changes = new LinkedHashMap<>();
     }
 
-    public Map<UUID, AcademyHouse> getHouses() {
+    public Map<String, AcademyHouse> getHouses() {
         return this.houses;
     }
 
@@ -38,24 +38,24 @@ public class HouseData extends WorldData {
         return true;
     }
 
-    public Optional<AcademyHouse> get(UUID uuid) {
-        return Optional.ofNullable(this.houses.get(uuid));
+    public Optional<AcademyHouse> get(String id) {
+        return Optional.ofNullable(this.houses.get(id));
     }
 
-    public AcademyHouse add(String name, int color) {
-        AcademyHouse house = new AcademyHouse();
+    public AcademyHouse add(String id, String name, int color) {
+        AcademyHouse house = new AcademyHouse(id);
         house.setName(name);
         house.setColor(color);
-        this.houses.put(house.getUuid(), house);
-        this.changes.put(house.getUuid(), house);
+        this.houses.put(house.getId(), house);
+        this.changes.put(house.getId(), house);
         return house;
     }
 
-    public AcademyHouse remove(UUID uuid) {
-        AcademyHouse house = this.houses.remove(uuid);
+    public AcademyHouse remove(String id) {
+        AcademyHouse house = this.houses.remove(id);
 
         if(house == null) {
-            this.changes.put(uuid, null);
+            this.changes.put(id, null);
         }
 
         return house;
@@ -72,10 +72,10 @@ public class HouseData extends WorldData {
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        Map<UUID, UpdateHousesS2CPacket.House> changes = new LinkedHashMap<>();
+        Map<String, UpdateHousesS2CPacket.House> changes = new LinkedHashMap<>();
 
-        this.houses.forEach((uuid, house) -> {
-            changes.put(uuid, house.getFullPacket());
+        this.houses.forEach((id, house) -> {
+            changes.put(id, house.getFullPacket());
         });
 
         NetworkManager.sendToPlayer(player, new UpdateHousesS2CPacket(null));
@@ -83,10 +83,10 @@ public class HouseData extends WorldData {
     }
 
     private void onTick(MinecraftServer server) {
-        Map<UUID, UpdateHousesS2CPacket.House> changes = new LinkedHashMap<>();
+        Map<String, UpdateHousesS2CPacket.House> changes = new LinkedHashMap<>();
 
-        this.houses.forEach((uuid, house) -> {
-            house.getChangesPacket().ifPresent(packet -> changes.put(uuid, packet));
+        this.houses.forEach((id, house) -> {
+            house.getChangesPacket().ifPresent(packet -> changes.put(id, packet));
         });
 
         if(changes.isEmpty()) {
@@ -120,7 +120,7 @@ public class HouseData extends WorldData {
 
         for(NbtElement team : houses) {
             Adapters.HOUSE.readNbt(team).ifPresent(house -> {
-                this.houses.put(house.getUuid(), house);
+                this.houses.put(house.getId(), house);
             });
         }
     }

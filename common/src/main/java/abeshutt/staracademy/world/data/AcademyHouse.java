@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
 
-    private UUID uuid;
+    private String id;
     private String name;
     private int color;
     private final Map<UUID, HousePlayer> players;
@@ -27,13 +27,13 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     private final Map<UUID, HousePlayer> playerChanges;
 
     public AcademyHouse() {
-        this(UUID.randomUUID());
+        this(null);
     }
 
-    public AcademyHouse(UUID uuid) {
-        this.uuid = uuid;
+    public AcademyHouse(String id) {
+        this.id = id;
         this.players = new LinkedHashMap<>();
-        this.pokedex = new HousePokedexManager(this.uuid);
+        this.pokedex = new HousePokedexManager();
         this.name = "Unknown";
         this.color = 0xFFFFFF;
 
@@ -41,8 +41,8 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
         this.playerChanges = new LinkedHashMap<>();
     }
 
-    public UUID getUuid() {
-        return this.uuid;
+    public String getId() {
+        return this.id;
     }
 
     public String getName() {
@@ -129,7 +129,7 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     @Override
     public Optional<NbtCompound> writeNbt() {
         return Optional.of(new NbtCompound()).map(nbt -> {
-            Adapters.UUID.writeNbt(this.uuid).ifPresent(tag -> nbt.put("uuid", tag));
+            Adapters.UTF_8.writeNbt(this.id).ifPresent(tag -> nbt.put("id", tag));
             Adapters.UTF_8.writeNbt(this.name).ifPresent(tag -> nbt.put("name", tag));
             Adapters.INT.writeNbt(this.color).ifPresent(tag -> nbt.put("color", tag));
 
@@ -151,7 +151,7 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
 
     @Override
     public void readNbt(NbtCompound nbt) {
-        this.uuid = Adapters.UUID.readNbt(nbt.get("uuid")).orElseThrow();
+        this.id = Adapters.UTF_8.readNbt(nbt.get("id")).orElseThrow();
         this.name = Adapters.UTF_8.readNbt(nbt.get("name")).orElseThrow();
         this.color = Adapters.INT.readNbt(nbt.get("color")).orElseThrow();
 
@@ -164,8 +164,7 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
             });
         }
 
-        this.pokedex = Adapters.HOUSE_POKEDEX_MANAGER.readNbt(nbt.get("pokedex")).orElse(new HousePokedexManager(this.uuid));
-        this.pokedex.setUuid(this.uuid);
+        this.pokedex = Adapters.HOUSE_POKEDEX_MANAGER.readNbt(nbt.get("pokedex")).orElseGet(HousePokedexManager::new);
         this.pokedex.initialize();
     }
 
