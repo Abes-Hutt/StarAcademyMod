@@ -39,16 +39,16 @@ public class CodexManager {
 
             try {
                 assetsChecksum = hash(cache.resolve(CLIENT_RESOURCES.getDirectory() + ".zip").toRealPath());
-            } catch(Exception e) {
+            } catch (Exception e) {
                 assetsChecksum = null;
             }
 
             try {
                 dataChecksum = hash(cache.resolve(SERVER_DATA.getDirectory() + ".zip").toRealPath());
-            } catch(Exception e) {
+            } catch (Exception e) {
                 dataChecksum = null;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             assetsChecksum = null;
             dataChecksum = null;
         }
@@ -66,7 +66,7 @@ public class CodexManager {
     public void writeResources(Path root, ResourceType type, byte[] data) {
         try {
             root = root.toRealPath();
-        } catch(Exception e) {
+        } catch (Exception e) {
             StarAcademyMod.LOGGER.error("Failed to write {} to cache. Root doesn't exist.", type.getDirectory(), e);
             return;
         }
@@ -75,10 +75,10 @@ public class CodexManager {
 
         try {
             cache = root.resolve("codex").toRealPath();
-        } catch(Exception e) {
+        } catch (Exception e) {
             try {
                 Files.createDirectory(cache = root.resolve("codex"));
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 return;
             }
         }
@@ -86,14 +86,14 @@ public class CodexManager {
         Path resources;
 
         try {
-            resources = cache.resolve("assets.zip").toRealPath();
-        } catch(Exception e) {
-            resources = cache.resolve("assets.zip");
+            resources = cache.resolve(type.getDirectory() + ".zip").toRealPath();
+        } catch (Exception e) {
+            resources = cache.resolve(type.getDirectory() + ".zip");
         }
 
         try {
             Files.write(resources, data);
-        } catch(IOException e) {
+        } catch (IOException e) {
             StarAcademyMod.LOGGER.error("Failed to write {} to cache.", type.getDirectory(), e);
         }
     }

@@ -18,7 +18,6 @@ public class AcademyClient {
     private final CodexManager codex;
     private final OutfitManager outfits;
     private boolean connecting;
-
     public AcademyClient(MinecraftClient minecraft) {
         this.minecraft = minecraft;
 
