@@ -12,7 +12,7 @@ public class ModKeyBindings extends ModRegistries {
         BROADCAST_ITEM = register(new KeyBinding(
                 "key.academy.broadcast_item",
                 InputConstants.Type.KEYSYM,
-                InputConstants.GLFW_KEY_LEFT_SHIFT | InputConstants.GLFW_KEY_T,
+                InputConstants.GLFW_KEY_BACKSLASH,
                 "category.academy"
         ));
     }
