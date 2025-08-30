@@ -31,7 +31,7 @@ public class CheckCodexPacket extends AcademyPacket {
     public Optional<JsonObject> writeJson() {
         return super.writeJson().map(object -> {
             Adapters.INT.writeJson(this.assetsChecksum).ifPresent(tag -> object.add("assets_checksum", tag));
-            Adapters.INT.writeJson(this.assetsChecksum).ifPresent(tag -> object.add("data_checksum", tag));
+            Adapters.INT.writeJson(this.dataChecksum).ifPresent(tag -> object.add("data_checksum", tag));
             return object;
         });
     }
