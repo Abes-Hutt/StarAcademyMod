@@ -217,5 +217,7 @@
   "text.academy.card.display.vanilla_minecraft_generic_oxygen_bonus_add_value": "Oxygen Capacity",
   "text.academy.card.display.vanilla_minecraft_generic_armor_add_value": "Armor",
 
-  "multiplayer.disconnect.island_crash": "Your island has crashed unexpectedly."
+  "multiplayer.disconnect.island_crash": "Your island has crashed unexpectedly.",
+  "category.academy": "Academy",
+  "key.academy.broadcast_item": "Broadcast Item"
 }

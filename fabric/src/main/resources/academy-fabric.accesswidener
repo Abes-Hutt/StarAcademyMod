@@ -25,3 +25,4 @@ accessible field net/minecraft/server/world/ServerChunkManager serverThread Ljav
 accessible field net/minecraft/world/World thread Ljava/lang/Thread;
 mutable field net/minecraft/server/world/ServerChunkManager serverThread Ljava/lang/Thread;
 mutable field net/minecraft/world/World thread Ljava/lang/Thread;
+accessible field net/minecraft/client/gui/screen/ingame/HandledScreen focusedSlot Lnet/minecraft/screen/slot/Slot;

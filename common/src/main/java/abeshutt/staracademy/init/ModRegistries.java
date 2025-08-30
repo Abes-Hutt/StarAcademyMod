@@ -55,6 +55,7 @@ public class ModRegistries {
             ModRenderers.ItemModels.register();
             ModRenderers.Entities.register();
             ModScreens.register();
+            ModKeyBindings.register();
         }
 
         ModWorldData.register();

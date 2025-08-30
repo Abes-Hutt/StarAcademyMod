@@ -1,7 +1,6 @@
 package abeshutt.staracademy.item;
 
-import abeshutt.staracademy.init.ModDataComponents;
-import abeshutt.staracademy.screen.BoosterPackScreen;
+import abeshutt.staracademy.screen.AcceptanceLetterScreen;
 import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
 import abeshutt.staracademy.world.data.PlayerProfileData;
@@ -123,7 +122,7 @@ public class AcceptanceLetterItem extends Item {
             return TypedActionResult.fail(stack);
         }
 
-        //MinecraftClient.getInstance().setScreen(new BoosterPackScreen());
+        MinecraftClient.getInstance().setScreen(new AcceptanceLetterScreen());
         return TypedActionResult.consume(stack);
     }
 
