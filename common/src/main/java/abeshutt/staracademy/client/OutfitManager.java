@@ -4,7 +4,9 @@ import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.IJsonSerializable;
 import com.google.gson.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerEntity;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,11 +18,13 @@ public class OutfitManager {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
+    private final AcademyClient client;
     private final Map<String, DynamicOutfit> registry;
     private final Map<UUID, Entry> entries;
     private final Set<UUID> tracked;
 
-    public OutfitManager() {
+    public OutfitManager(AcademyClient client) {
+        this.client = client;
         this.registry = new HashMap<>();
         this.entries = new HashMap<>();
         this.tracked = new HashSet<>();
@@ -114,6 +118,43 @@ public class OutfitManager {
         }
     }
 
+    public boolean isUnlocked(UUID uuid, String id) {
+        Entry entry = this.entries.get(uuid);
+
+        if(entry != null) {
+            return entry.unlocked.contains(id);
+        }
+
+        return false;
+    }
+
+    public boolean isEquipped(UUID uuid, String id) {
+        Entry entry = this.entries.get(uuid);
+
+        if(entry != null) {
+            return entry.equipped.contains(id);
+        }
+
+        return false;
+    }
+
+    public void setEquipped(String id, boolean equipped) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if(player == null) return;
+
+        Entry entry = this.entries.get(player.getUuid());
+
+        if(entry != null) {
+            if(equipped) {
+                entry.equipped.add(id);
+            } else {
+                entry.equipped.remove(id);
+            }
+
+            this.client.send(new UpdateOutfitEntryPacket(Map.of(player.getUuid(), entry)));
+        }
+    }
+
     public static class Entry implements IJsonSerializable<JsonObject> {
         private final Set<String> unlocked;
         private final Set<String> equipped;
@@ -126,6 +167,14 @@ public class OutfitManager {
         public Entry(Set<String> unlocked, Set<String> equipped) {
             this.unlocked = unlocked;
             this.equipped = equipped;
+        }
+
+        public Set<String> getUnlocked() {
+            return this.unlocked;
+        }
+
+        public Set<String> getEquipped() {
+            return this.equipped;
         }
 
         @Override

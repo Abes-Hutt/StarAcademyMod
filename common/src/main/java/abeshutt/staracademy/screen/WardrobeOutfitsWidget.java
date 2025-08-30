@@ -1,6 +1,7 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.client.OutfitManager;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModOutfits;
@@ -8,6 +9,7 @@ import abeshutt.staracademy.item.ValueOutfitEntry;
 import abeshutt.staracademy.net.UpdateOutfitC2SPacket;
 import abeshutt.staracademy.outfit.core.OutfitPiece;
 import abeshutt.staracademy.screen.helper.Texture9SliceRegion;
+import abeshutt.staracademy.util.ProxyAcademyClient;
 import abeshutt.staracademy.world.data.WardrobeData;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.MinecraftClient;
@@ -21,10 +23,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class WardrobeOutfitsWidget extends ScrollableWidget {
 
@@ -41,16 +40,6 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
     public WardrobeOutfitsWidget(int x, int y, int w, int h, Text text) {
         super(x, y, w, h, text);
-
-        WardrobeData.Entry wardrobe = getWardrobe();
-        Set<String> unlocked = wardrobe.getUnlocked();
-        this.unlockedOutfits = unlocked.stream().sorted((id1, id2) -> {
-            OutfitPiece outfit1 = ModOutfits.REGISTRY.get(id1);
-            OutfitPiece outfit2 = ModOutfits.REGISTRY.get(id2);
-            if (outfit1 == null) return 1;
-            if (outfit2 == null) return -1;
-            return Integer.compare(outfit1.getOrder(), outfit2.getOrder());
-        }).toList();
     }
 
     //TODO: wth?
@@ -59,9 +48,17 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
     //    return false;
     //}
 
-    protected WardrobeData.Entry getWardrobe() {
+    protected WardrobeData.Entry getServerWardrobe() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        return WardrobeData.CLIENT.getOrCreate(player.getUuid());
+        if(player == null) return new WardrobeData.Entry();
+        return WardrobeData.CLIENT.get(player.getUuid()).orElse(new WardrobeData.Entry());
+    }
+
+    protected OutfitManager.Entry getGlobalWardrobe() {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if(player == null) return new OutfitManager.Entry();
+        OutfitManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getOutfits();
+        return outfits.getEntries().getOrDefault(player.getUuid(), new OutfitManager.Entry());
     }
 
     @Override
@@ -69,9 +66,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
     @Override
     protected int getContentsHeight() {
-        WardrobeData.Entry wardrobe = getWardrobe();
-        Set<String> unlocked = wardrobe.getUnlocked();
-        return unlocked.size() * this.entryHeight + unlocked.size() * this.gap;
+        return this.unlockedOutfits.size() * (this.entryHeight + this.gap);
     }
 
     @Override
@@ -86,8 +81,8 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         int pointerX = (int) mouseX;
         int pointerY = (int) (mouseY + getScrollY());
 
-        WardrobeData.Entry wardrobe = getWardrobe();
-        Set<String> equipped = wardrobe.getEquipped();
+        WardrobeData.Entry serverWardrobe = getServerWardrobe();
+        OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
 
         int i = 0;
         for (String outfitId : this.unlockedOutfits) {
@@ -98,7 +93,14 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
             if ((x <= pointerX && pointerX <= x + w)
                     && (y <= pointerY && pointerY <= y + h)) {
-                NetworkManager.sendToServer(new UpdateOutfitC2SPacket(outfitId, !equipped.contains(outfitId)));
+                if(serverWardrobe.getUnlocked().contains(outfitId)) {
+                    NetworkManager.sendToServer(new UpdateOutfitC2SPacket(outfitId,
+                            !serverWardrobe.getEquipped().contains(outfitId)));
+                } else if(globalWardrobe.getUnlocked().contains(outfitId)) {
+                    OutfitManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getOutfits();
+                    outfits.setEquipped(outfitId, !globalWardrobe.getEquipped().contains(outfitId));
+                }
+
                 break;
             }
 
@@ -110,6 +112,12 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+        WardrobeData.Entry serverWardrobe = getServerWardrobe();
+        OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
+        Set<String> unlocked = new LinkedHashSet<>();
+        unlocked.addAll(serverWardrobe.getUnlocked());
+        unlocked.addAll(globalWardrobe.getEquipped());
+        this.unlockedOutfits = new ArrayList<>(unlocked);
         super.renderWidget(context, mouseX, mouseY, delta);
     }
 
@@ -155,8 +163,8 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-        WardrobeData.Entry wardrobe = getWardrobe();
-        Set<String> equipped = wardrobe.getEquipped();
+        WardrobeData.Entry serverWardrobe = getServerWardrobe();
+        OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
 
         int i = 0;
 
@@ -188,7 +196,9 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
                     0, 0, 0xFF_FFFFFF, false);
             context.getMatrices().pop();
 
-            if(equipped.contains(outfitId)) {
+            if(serverWardrobe.getEquipped().contains(outfitId)) {
+                context.drawTexture(TEXTURE, x + width - 26, y + 11, 0, 39, 7, 6);
+            } else if(globalWardrobe.getEquipped().contains(outfitId)) {
                 context.drawTexture(TEXTURE, x + width - 26, y + 11, 0, 39, 7, 6);
             }
 

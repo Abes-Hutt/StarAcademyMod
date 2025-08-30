@@ -16,6 +16,10 @@ public class UpdateOutfitEntryPacket extends AcademyPacket {
         this.entries = new HashMap<>();
     }
 
+    public UpdateOutfitEntryPacket(Map<UUID, OutfitManager.Entry> entries) {
+        this.entries = entries;
+    }
+
     public Map<UUID, OutfitManager.Entry> getEntries() {
         return this.entries;
     }
