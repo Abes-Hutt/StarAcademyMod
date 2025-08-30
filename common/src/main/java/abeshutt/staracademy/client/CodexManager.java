@@ -58,8 +58,8 @@ public class CodexManager {
 
     public void receive(AcademyClient client, byte[] assets, byte[] data) {
         Path root = client.getMinecraft().runDirectory.toPath();
-        this.writeResources(root, CLIENT_RESOURCES, assets);
-        this.writeResources(root, SERVER_DATA, data);
+        if (assets != null) this.writeResources(root, CLIENT_RESOURCES, assets);
+        if (data != null) this.writeResources(root, SERVER_DATA, data);
         this.complete = true;
     }
 

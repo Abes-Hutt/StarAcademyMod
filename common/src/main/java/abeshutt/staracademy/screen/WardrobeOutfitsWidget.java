@@ -4,10 +4,8 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.client.OutfitManager;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
-import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.item.ValueOutfitEntry;
 import abeshutt.staracademy.net.UpdateOutfitC2SPacket;
-import abeshutt.staracademy.outfit.core.OutfitPiece;
 import abeshutt.staracademy.screen.helper.Texture9SliceRegion;
 import abeshutt.staracademy.util.ProxyAcademyClient;
 import abeshutt.staracademy.world.data.WardrobeData;
@@ -42,7 +40,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         super(x, y, w, h, text);
     }
 
-    //TODO: wth?
+    //TODO: wth? <-- Such a Wutax comment xd
     //@Override
     //public boolean canFocus(FocusSource source) {
     //    return false;
@@ -116,7 +114,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
         Set<String> unlocked = new LinkedHashSet<>();
         unlocked.addAll(serverWardrobe.getUnlocked());
-        unlocked.addAll(globalWardrobe.getEquipped());
+        unlocked.addAll(globalWardrobe.getUnlocked());
         this.unlockedOutfits = new ArrayList<>(unlocked);
         super.renderWidget(context, mouseX, mouseY, delta);
     }

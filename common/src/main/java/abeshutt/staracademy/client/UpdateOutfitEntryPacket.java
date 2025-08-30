@@ -34,7 +34,7 @@ public class UpdateOutfitEntryPacket extends AcademyPacket {
             });
 
             object.add("entries", entries);
-            return entries;
+            return object;
         });
     }
 
