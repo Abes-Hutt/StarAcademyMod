@@ -15,6 +15,7 @@ public class ModWorldData extends ModRegistries {
     public static WorldDataType<CardGradingData> CARD_GRADING;
     public static WorldDataType<LegendaryItemData> LEGENDARY_ITEM;
     public static WorldDataType<VirtualWorldData> VIRTUAL_WORLD;
+    public static WorldDataType<AcceptanceLetterData> ACCEPTANCE_LETTER;
 
     public static void register() {
         PLAYER_PROFILE = new WorldDataType<>(StarAcademyMod.ID + ".player_profile", PlayerProfileData::new);
@@ -27,6 +28,7 @@ public class ModWorldData extends ModRegistries {
         CARD_GRADING = new WorldDataType<>(StarAcademyMod.ID + ".card_grading", CardGradingData::new);
         LEGENDARY_ITEM = new WorldDataType<>(StarAcademyMod.ID + ".legendary_item", LegendaryItemData::new);
         VIRTUAL_WORLD = new WorldDataType<>(StarAcademyMod.ID + ".virtual_world", VirtualWorldData::new);
+        ACCEPTANCE_LETTER = new WorldDataType<>(StarAcademyMod.ID + ".acceptance_letter", AcceptanceLetterData::new);
 
         PlayerProfileData.init();
         StarBadgeData.init();

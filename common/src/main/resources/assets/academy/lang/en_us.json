@@ -118,6 +118,8 @@
   "item.academy.lootbag_academybiomeblend": "Academy Biome Blend Lootbag",
   "item.academy.lootbag_gymkey": "Gym Key Lootbag",
   "item.academy.lootbag_hats": "Hat Lootbag",
+  "item.academy.acceptance_letter": "Letter of Admission",
+  "item.academy.acceptance_letter.recipient": "Recipient: ",
   "cobblemon.ui.starter.choosebutton.same": "I don't choose you!",
   "entity.academy.partner_npc": "Partner NPC",
   "entity.academy.safari_npc": "Safari NPC",
@@ -150,6 +152,7 @@
   "text.academy.safari.enter_paused": "The Safari World is currently unavailable.",
   "text.academy.safari.enter_no_time": "You have no time left in the Safari World.",
   "text.academy.safari.enter_locked": "You must pay one gold coin to the Safari Expert before entering.",
+  "text.academy.acceptance_letter.incorrect_recipient": "This letter is not intended for you.",
   "stat_type.minecraft.custom": "Custom",
 
   "trinkets.slot.legs.card_album": "Card Album",

@@ -51,6 +51,10 @@ public class ModRenderers extends ModRegistries {
             ProxyModelPredicateProviderRegistry.register(ModItems.SLINGSHOT.get(), Identifier.of("pulling"), (stack, world, entity, seed) -> {
                 return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
             });
+
+            ProxyModelPredicateProviderRegistry.register(ModItems.ACCEPTANCE_LETTER.get(), Identifier.of("open"), (stack, world, entity, seed) -> {
+                return stack.get(ModDataComponents.ACCEPTANCE_LETTER_OPEN.get()) ? 1.0F : 0.0F;
+            });
         }
     }
 
