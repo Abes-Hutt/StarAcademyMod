@@ -98,6 +98,10 @@ public class StarterId implements ISerializable<NbtCompound, JsonObject> {
 
         @Override
         public Optional<NbtElement> writeNbt(StarterId value) {
+            if(value == null) {
+                return Optional.empty();
+            }
+
             return Optional.of(new NbtCompound()).map(nbt -> {
                 Adapters.UTF_8.writeNbt(value.getCategory()).ifPresent(tag -> nbt.put("category", tag));
                 Adapters.INT_SEGMENTED_3.writeNbt(value.getIndex()).ifPresent(tag -> nbt.put("index", tag));

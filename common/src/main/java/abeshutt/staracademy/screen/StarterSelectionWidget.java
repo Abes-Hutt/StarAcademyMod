@@ -26,6 +26,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 public class StarterSelectionWidget implements Drawable {
 
@@ -63,7 +64,7 @@ public class StarterSelectionWidget implements Drawable {
 
         context.fill(x, y, x + width, y + height, 0xFF333333);
 
-        StarterPokemon pokemon = this.starter.resolve().orElse(null);
+        StarterPokemon pokemon = Optional.ofNullable(this.starter).flatMap(StarterId::resolve).orElse(null);
         String title = pokemon != null ? pokemon.getSpecies().getName() : "Raffle";
         int color = pokemon != null ? pokemon.getSpecies().getPrimaryType().getHue() : Formatting.GRAY.getColorValue();
 
@@ -133,11 +134,19 @@ public class StarterSelectionWidget implements Drawable {
         context.getMatrices().scale(2.7F, 2.7F, 2.7F);
         context.getMatrices().translate(10.0D, 10.0D, 0.0D);
 
-        if(pokemon != null) {
-            ModelWidget widget = new ModelWidget(0, 0, 0, 0,
-                    pokemon.asRenderable(),
-                    1.0F, -22.0F, 0.0F);
+        RenderablePokemon renderablePokemon = null;
 
+        if(pokemon != null) {
+            renderablePokemon = pokemon.asRenderable();
+        } else if(!PokemonStarterData.CLIENT.getStarters().isEmpty()) {
+            List<StarterPokemon> starters = new ArrayList<>(PokemonStarterData.CLIENT.getStarters());
+            starters.removeIf(starter -> PokemonStarterData.CLIENT.getRemainingAllocations(starter.getId()) <= 0);
+            renderablePokemon = starters.get((int)ClientScheduler.getTick() / 40 % starters.size()).asRenderable();
+        }
+
+        if(renderablePokemon != null) {
+            ModelWidget widget = new ModelWidget(0, 0, 0, 0,
+                    renderablePokemon, 1.0F, -22.0F, 0.0F);
             widget.render(context, 0, 0, delta);
         }
 

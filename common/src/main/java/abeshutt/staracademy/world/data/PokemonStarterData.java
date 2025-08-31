@@ -167,7 +167,7 @@ public class PokemonStarterData extends WorldData {
             }
         }
 
-        return ModConfigs.STARTER_RAFFLE.getAllocations() - allocations;
+        return this.allocations - allocations;
     }
 
     public void onTick(MinecraftServer server) {
@@ -188,6 +188,8 @@ public class PokemonStarterData extends WorldData {
                 this.setTimeLeft(this.getTimeLeft() - 1);
             }
         }
+
+        this.setAllocations(ModConfigs.STARTER_RAFFLE.getAllocations());
 
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             StarterEntry entry = this.getEntries().get(player.getUuid());
