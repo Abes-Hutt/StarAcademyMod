@@ -216,6 +216,7 @@
   "text.academy.card.display.vanilla_minecraft_generic_water_movement_efficiency_add_multiplied_base": "Underwater Move Speed",
   "text.academy.card.display.vanilla_minecraft_generic_oxygen_bonus_add_value": "Oxygen Capacity",
   "text.academy.card.display.vanilla_minecraft_generic_armor_add_value": "Armor",
+  "text.academy.house_pokedex.button.submit": "Submit to House",
 
   "multiplayer.disconnect.island_crash": "Your island has crashed unexpectedly.",
   "category.academy": "Academy",

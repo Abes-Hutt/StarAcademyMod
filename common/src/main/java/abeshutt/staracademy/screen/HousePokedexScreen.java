@@ -166,7 +166,7 @@ public class HousePokedexScreen extends Screen implements CobblemonRenderable {
         }
 
         this.addDrawableChild(new SlotButtonWidget(x + 50, y + 152, (28 * 3 - 3) * 175 / 100 - 50, 18,
-                Text.literal("Sacrifice"), () -> {
+                Text.translatable("text.academy.house_pokedex.button.submit"), () -> {
             List<Integer> slots = new ArrayList<>();
 
             for(int i = 0; i < this.slots.size(); i++) {
