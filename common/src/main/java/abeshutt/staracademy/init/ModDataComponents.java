@@ -27,6 +27,8 @@ public class ModDataComponents extends ModRegistries {
     public static RegistrySupplier<ComponentType<CardAlbumInventory>> CARD_ALBUM_CONTAINER;
     public static RegistrySupplier<ComponentType<UUID>> ACCEPTANCE_LETTER_OWNER;
     public static RegistrySupplier<ComponentType<Boolean>> ACCEPTANCE_LETTER_OPEN;
+    public static RegistrySupplier<ComponentType<Boolean>> ACCEPTANCE_LETTER_ENROLLED;
+    public static RegistrySupplier<ComponentType<String>> ACCEPTANCE_LETTER_HOUSE;
 
     public static void register() {
         SAFARI_TICKET_ENTRY = register(StarAcademyMod.id("safari_ticket_entry"), builder -> builder
@@ -70,11 +72,17 @@ public class ModDataComponents extends ModRegistries {
                     }
                 }));
 
+        ACCEPTANCE_LETTER_OWNER = register(StarAcademyMod.id("acceptance_letter_owner"), builder -> builder
+                .codec(Adapters.UUID.codecNbt()).packetCodec(Adapters.UUID));
+
         ACCEPTANCE_LETTER_OPEN = register(StarAcademyMod.id("acceptance_letter_open"), builder -> builder
                 .codec(Adapters.BOOLEAN.codecNbt()).packetCodec(Adapters.BOOLEAN));
 
-        ACCEPTANCE_LETTER_OWNER = register(StarAcademyMod.id("acceptance_letter_owner"), builder -> builder
-                .codec(Adapters.UUID.codecNbt()).packetCodec(Adapters.UUID));
+        ACCEPTANCE_LETTER_ENROLLED = register(StarAcademyMod.id("acceptance_letter_enrolled"), builder -> builder
+                .codec(Adapters.BOOLEAN.codecNbt()).packetCodec(Adapters.BOOLEAN));
+
+        ACCEPTANCE_LETTER_HOUSE = register(StarAcademyMod.id("acceptance_letter_house"), builder -> builder
+                .codec(Adapters.UTF_8.codecNbt()).packetCodec(Adapters.UTF_8));
     }
 
     public static <T> RegistrySupplier<ComponentType<T>> register(Identifier id, UnaryOperator<ComponentType.Builder<T>> item) {

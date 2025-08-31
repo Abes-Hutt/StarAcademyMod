@@ -25,14 +25,14 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.UUID;
 
-import static abeshutt.staracademy.init.ModDataComponents.ACCEPTANCE_LETTER_OPEN;
-import static abeshutt.staracademy.init.ModDataComponents.ACCEPTANCE_LETTER_OWNER;
+import static abeshutt.staracademy.init.ModDataComponents.*;
 
 public class AcceptanceLetterItem extends Item {
 
     public AcceptanceLetterItem() {
         super(new Settings().fireproof().maxCount(1)
-                .component(ACCEPTANCE_LETTER_OPEN.get(), false));
+                .component(ACCEPTANCE_LETTER_OPEN.get(), false)
+                .component(ACCEPTANCE_LETTER_ENROLLED.get(), false));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class AcceptanceLetterItem extends Item {
             return TypedActionResult.fail(stack);
         }
 
-        MinecraftClient.getInstance().setScreen(new AcceptanceLetterScreen());
+        MinecraftClient.getInstance().setScreen(new AcceptanceLetterScreen(stack.getOrDefault(ACCEPTANCE_LETTER_ENROLLED.get(), false)));
         return TypedActionResult.consume(stack);
     }
 
