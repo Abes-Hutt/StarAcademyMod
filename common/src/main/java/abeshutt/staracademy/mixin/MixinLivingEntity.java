@@ -9,11 +9,15 @@ import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.entity.IDefaultedAttributes;
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.util.AttributeHolder;
+import abeshutt.staracademy.util.ClientScheduler;
+import dev.architectury.platform.Platform;
+import net.fabricmc.api.EnvType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
@@ -21,6 +25,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -48,7 +53,13 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
-        if(this.getWorld().isClient()) {
+        LivingEntity entity = (LivingEntity)(Object)this;
+
+        if(this.getWorld().isClient() || !(entity instanceof PlayerEntity)) {
+            return;
+        }
+
+        if(this.getServer() != null && this.getServer().getTicks() % 20 != 0) {
             return;
         }
 
@@ -66,7 +77,7 @@ public abstract class MixinLivingEntity extends Entity {
                 Double value = attribute.get(Option.absent(), AttributeContext.random())
                         .map(Rational::doubleValue).orElse(null);
 
-                if(value == null) {
+                if(value == null || value == 0.0D) {
                     instance.removeModifier(id);
                     continue;
                 }
