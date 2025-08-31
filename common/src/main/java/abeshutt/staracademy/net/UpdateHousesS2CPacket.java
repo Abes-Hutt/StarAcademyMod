@@ -52,6 +52,9 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
                 AcademyHouse full = houses.computeIfAbsent(uuid, AcademyHouse::new);
 
+                full.setName(house.name);
+                full.setColor(house.color);
+
                 if(house.players == null) {
                     full.getPlayers().clear();
                 } else {
@@ -105,6 +108,7 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
     }
 
     public static class House implements IBitSerializable {
+        public String name;
         public int color;
         public Map<UUID, HousePlayer> players;
         public Map<Identifier, SpeciesDexRecord> pokedex;
@@ -115,6 +119,7 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
         @Override
         public void writeBits(BitBuffer buffer) {
+            Adapters.UTF_8.writeBits(this.name, buffer);
             Adapters.INT.writeBits(this.color, buffer);
             Adapters.BOOLEAN.writeBits(this.players == null, buffer);
 
@@ -141,6 +146,7 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
 
         @Override
         public void readBits(BitBuffer buffer) {
+            this.name = Adapters.UTF_8.readBits(buffer).orElseThrow();
             this.color = Adapters.INT.readBits(buffer).orElseThrow();
 
             if(Adapters.BOOLEAN.readBits(buffer).orElseThrow()) {

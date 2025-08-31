@@ -58,13 +58,13 @@ dependencies {
     modImplementation("dev.emi:trinkets:3.10.0")
     modImplementation("maven.modrinth:cardinal-components-api:6.1.2")
 
-    modImplementation("maven.modrinth:fancymenu:3.7.0-1.21.1-fabric")
-    modImplementation("maven.modrinth:konkrete:1.9.9-1.21-fabric")
-    modImplementation("maven.modrinth:melody:1.0.10-1.21-fabric")
+    //modImplementation("maven.modrinth:fancymenu:3.7.0-1.21.1-fabric")
+    //modImplementation("maven.modrinth:konkrete:1.9.9-1.21-fabric")
+    //modImplementation("maven.modrinth:melody:1.0.10-1.21-fabric")
 
-    modImplementation("maven.modrinth:rad-gyms:0.2-alpha.2")
-    modImplementation("maven.modrinth:rctapi:sZK1GcWC")
-    modImplementation("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
+    //modImplementation("maven.modrinth:rad-gyms:0.2-alpha.2")
+    //modImplementation("maven.modrinth:rctapi:sZK1GcWC")
+    //modImplementation("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
 
     modImplementation("dev.ftb.mods:ftb-quests-fabric:2101.1.14")
     modImplementation("dev.ftb.mods:ftb-teams-fabric:2101.1.4")

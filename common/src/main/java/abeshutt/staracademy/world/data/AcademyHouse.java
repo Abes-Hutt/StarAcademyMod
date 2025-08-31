@@ -50,7 +50,7 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     }
 
     public boolean setName(String name) {
-        if(this.name.equals(this.name = name)) {
+        if(!this.name.equals(this.name = name)) {
             this.propertiesDirty = true;
             return true;
         }
@@ -63,7 +63,7 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
     }
 
     public boolean setColor(int color) {
-        if(this.color == (this.color = color)) {
+        if(this.color != (this.color = color)) {
             this.propertiesDirty = true;
             return true;
         }
@@ -103,6 +103,8 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
 
     public UpdateHousesS2CPacket.House getFullPacket() {
         UpdateHousesS2CPacket.House payload = new UpdateHousesS2CPacket.House();
+        payload.name = this.name;
+        payload.color = this.color;
         payload.players = new LinkedHashMap<>(this.players);
         payload.pokedex = new LinkedHashMap<>(this.pokedex.getSpeciesRecords());
         return payload;
@@ -114,6 +116,7 @@ public class AcademyHouse implements ISerializable<NbtCompound, JsonObject> {
         }
 
         UpdateHousesS2CPacket.House payload = new UpdateHousesS2CPacket.House();
+        payload.name = this.name;
         payload.color = this.color;
         payload.players = new LinkedHashMap<>(this.playerChanges);
         payload.pokedex = new LinkedHashMap<>(this.pokedex.getChanges());

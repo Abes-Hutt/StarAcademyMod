@@ -33,14 +33,11 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Redirect(method = "getDisplayName", at = @At(value = "INVOKE", target = "Lnet/minecraft/scoreboard/Team;decorateName(Lnet/minecraft/scoreboard/AbstractTeam;Lnet/minecraft/text/Text;)Lnet/minecraft/text/MutableText;"))
     public MutableText getDisplayName(AbstractTeam team, Text name) {
         MutableText result = Team.decorateName(team, name).copy();
+        HouseData data = this.getWorld().isClient() ? HouseData.CLIENT : ModWorldData.HOUSE.getGlobal(this.getWorld());
+        AcademyHouse house = data.getFor(this.getUuid()).orElse(null);
 
-        if(!this.getWorld().isClient()) {
-            HouseData data = ModWorldData.HOUSE.getGlobal(this.getWorld());
-            AcademyHouse house = data.getFor(this.getUuid()).orElse(null);
-
-            if(house != null) {
-                return result.setStyle(result.getStyle().withColor(house.getColor()));
-            }
+        if(house != null) {
+            return result.setStyle(result.getStyle().withColor(house.getColor()));
         }
 
         return result;

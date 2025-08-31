@@ -48,6 +48,7 @@ public class AuthManager {
 
             StarAcademyMod.LOGGER.error(reason, e);
             client.send(new CompleteAuthPacket(false, reason));
+            client.disconnect();
         }
     }
 
