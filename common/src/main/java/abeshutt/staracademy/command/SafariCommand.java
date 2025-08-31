@@ -31,17 +31,14 @@ public class SafariCommand extends Command {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal(StarAcademyMod.ID)
                 .then(literal("safari")
+                    .requires(source -> source.hasPermissionLevel(4))
                     .then(literal("pause")
-                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onPause))
                     .then(literal("unpause")
-                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onUnpause))
                     .then(literal("restart")
-                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(this::onRestart))
                     .then(literal("add_time")
-                        .requires(source -> source.hasPermissionLevel(4))
                         .then(argument("players", EntityArgumentType.players())
                             .then(argument("time", TimeArgumentType.time(Integer.MIN_VALUE))
                                 .executes(this::onAddTime))))));

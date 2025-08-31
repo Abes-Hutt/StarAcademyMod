@@ -20,6 +20,7 @@ public class PartnerCommand extends Command {
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal(StarAcademyMod.ID)
+                .requires(source -> source.hasPermissionLevel(4))
                 .then(literal("partner")
                     .then(argument("npc", EntityArgumentType.entity())
                         .then(literal("select_partner")

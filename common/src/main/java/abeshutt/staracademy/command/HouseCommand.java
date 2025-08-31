@@ -42,6 +42,7 @@ public class HouseCommand extends Command {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal(StarAcademyMod.ID)
             .then(literal("house")
+                .requires(source -> source.hasPermissionLevel(4))
                 .then(literal("create")
                     .then(argument("id", StringArgumentType.string())
                         .then(argument("name", StringArgumentType.string())
