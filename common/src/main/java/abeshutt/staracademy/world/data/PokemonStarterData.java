@@ -11,12 +11,10 @@ import com.cobblemon.mod.common.advancement.CobblemonCriteria;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.starter.StarterChosenEvent;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
-import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.api.storage.player.GeneralPlayerData;
 import com.cobblemon.mod.common.api.storage.player.PlayerInstancedDataStoreTypes;
 import com.cobblemon.mod.common.config.starter.StarterCategory;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.cobblemon.mod.common.pokemon.Species;
 import com.cobblemon.mod.common.starter.CobblemonStarterHandler;
 import com.cobblemon.mod.common.util.LocalizationUtilsKt;
 import com.cobblemon.mod.common.world.gamerules.CobblemonGameRules;
@@ -42,9 +40,9 @@ import static com.cobblemon.mod.common.util.ResourceLocationExtensionsKt.asIdent
 
 public class PokemonStarterData extends WorldData {
 
-    public static final PokemonStarterData CLIENT = new PokemonStarterData(0, RAFFLE_PAUSED, 0);
+    public static final PokemonStarterData CLIENT = new PokemonStarterData(0, RAFFLE_PAUSED);
 
-    private final Set<Identifier> starters;
+    private List<StarterPokemon> starters;
     private final Map<UUID, StarterEntry> entries;
     private long timeInterval;
     private long timeLeft;
@@ -52,40 +50,50 @@ public class PokemonStarterData extends WorldData {
     private StarterMode mode;
     private StarterMode lastMode;
 
-    private int selectionCooldown;
+    private int allocations;
 
     private boolean changed;
 
-    private PokemonStarterData(long timeInterval, StarterMode mode, int selectionCooldown) {
-        this.starters = new LinkedHashSet<>();
+    private PokemonStarterData(long timeInterval, StarterMode mode) {
+        this.starters = new ArrayList<>();
         this.entries = new HashMap<>();
         this.timeInterval = timeInterval;
         this.timeLeft = this.timeInterval;
         this.mode = mode;
         this.lastMode = null;
-        this.selectionCooldown = selectionCooldown;
     }
 
     public PokemonStarterData() {
-        this(ModConfigs.STARTER_RAFFLE.getTimeInterval(), ModConfigs.STARTER_RAFFLE.getMode(),
-                ModConfigs.STARTER_RAFFLE.getSelectionCooldown());
+        this(ModConfigs.STARTER_RAFFLE.getTimeInterval(), ModConfigs.STARTER_RAFFLE.getMode());
     }
 
-    public Set<Identifier> getStarters() {
+    public List<StarterPokemon> getStarters() {
         return this.starters;
+    }
+
+    public boolean setStarters(List<StarterPokemon> starters) {
+        boolean changed = !this.starters.equals(starters);
+        this.starters = starters;
+
+        if(changed) {
+            this.setChanged(true);
+            return true;
+        }
+
+        return false;
     }
 
     public Map<UUID, StarterEntry> getEntries() {
         return this.entries;
     }
 
-    public Identifier getPick(UUID uuid) {
+    public StarterId getPick(UUID uuid) {
         StarterEntry entry = this.entries.get(uuid);
         if(entry == null) return null;
         return entry.getPick();
     }
 
-    public void setPick(UUID uuid, Identifier pick) {
+    public void setPick(UUID uuid, StarterId pick) {
         StarterEntry entry = this.entries.computeIfAbsent(uuid, key -> new StarterEntry());
         entry.setPick(pick);
     }
@@ -125,16 +133,20 @@ public class PokemonStarterData extends WorldData {
         return false;
     }
 
-    public int getSelectionCooldown() {
-        return this.selectionCooldown;
+    public int getAllocations() {
+        return this.allocations;
     }
 
-    public void setSelectionCooldown(int selectionCooldown) {
-        if(this.selectionCooldown != selectionCooldown) {
+    public boolean setAllocations(int allocations) {
+        boolean changed = this.allocations != allocations;
+        this.allocations = allocations;
+
+        if(changed) {
             this.setChanged(true);
+            return true;
         }
 
-        this.selectionCooldown = selectionCooldown;
+        return false;
     }
 
     public boolean isChanged() {
@@ -146,14 +158,16 @@ public class PokemonStarterData extends WorldData {
         this.markDirty();
     }
 
-    public boolean isGranted(Identifier speciesId) {
-        for(StarterEntry entry : this.entries.values()) {
-            if(speciesId.equals(entry.getGranted())) {
-                return true;
+    public int getRemainingAllocations(StarterId starter) {
+        int allocations = 0;
+
+        for(Map.Entry<UUID, StarterEntry> entry : this.entries.entrySet()) {
+            if (starter.equals(entry.getValue().getGranted())) {
+                allocations++;
             }
         }
 
-        return false;
+        return ModConfigs.STARTER_RAFFLE.getAllocations() - allocations;
     }
 
     public void onTick(MinecraftServer server) {
@@ -192,8 +206,6 @@ public class PokemonStarterData extends WorldData {
             }
         });
 
-        this.setSelectionCooldown(ModConfigs.STARTER_RAFFLE.getSelectionCooldown());
-
         if(!changes.isEmpty() || this.isChanged()) {
             for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 Map<UUID, StarterEntry> message = new HashMap<>();
@@ -205,19 +217,12 @@ public class PokemonStarterData extends WorldData {
                 });
 
                 NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(null,
-                        message, this.timeInterval, this.timeLeft, this.mode, this.selectionCooldown));
+                        message, this.timeInterval, this.timeLeft, this.mode, this.allocations));
             }
         }
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        Set<Identifier> starters = Cobblemon.INSTANCE.getStarterHandler().getStarterList(player).stream()
-                .flatMap(category -> category.getPokemon().stream())
-                .map(PokemonProperties::getSpecies)
-                .filter(Objects::nonNull)
-                .map(s -> asIdentifierDefaultingNamespace(s, Cobblemon.MODID))
-                .collect(Collectors.toSet());
-
         this.entries.putIfAbsent(player.getUuid(), new StarterEntry());
         Map<UUID, StarterEntry> message = new HashMap<>();
 
@@ -227,77 +232,90 @@ public class PokemonStarterData extends WorldData {
             }
         });
 
+        List<StarterPokemon> starters = new ArrayList<>();
+        List<StarterCategory> categories = Cobblemon.INSTANCE.getStarterHandler().getStarterList(player);
+
+        for(StarterCategory category : categories) {
+            for(int i = 0; i < category.getPokemon().size(); i++) {
+               starters.add(new StarterPokemon(new StarterId(category.getName(), i),
+                       category.getPokemon().get(i).asRenderablePokemon().getSpecies(),
+                       category.getPokemon().get(i).getAspects()));
+            }
+        }
+
         NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(starters, message,
-                this.timeInterval, this.timeLeft, this.mode, this.selectionCooldown));
+                this.timeInterval, this.timeLeft, this.mode, this.allocations));
     }
 
     private void onRaffle(MinecraftServer server) {
-        Map<Identifier, Set<UUID>> picks = new HashMap<>();
+        Map<StarterId, Set<UUID>> picks = new HashMap<>();
 
         this.entries.forEach((uuid, entry) -> {
             if(entry.getPick() == null) return;
             picks.computeIfAbsent(entry.getPick(), k -> new HashSet<>()).add(uuid);
         });
 
-        picks.entrySet().removeIf(entry -> {
-            if(entry.getValue().size() != 1) return false;
-            UUID uuid = entry.getValue().iterator().next();
-            StarterEntry data = this.getEntries().get(uuid);
-            ServerPlayerEntity player = server.getPlayerManager().getPlayer(uuid);
-            if(player == null) return false;
-            Species species = PokemonSpecies.INSTANCE.getByIdentifier(entry.getKey());
-            if(species == null) return false;
-
-            if(this.giveStarter(player, entry.getKey())) {
-                data.setGranted(entry.getKey());
-
-                for(ServerPlayerEntity other : server.getPlayerManager().getPlayerList()) {
-                    other.sendMessage(Text.empty()
-                            .append(player.getName())
-                            .append(Text.literal(" has claimed ").formatted(Formatting.GRAY))
-                            .append(Text.literal(species.getName()).setStyle(Style.EMPTY.withColor(species.getPrimaryType().getHue())))
-                            .append(Text.literal(" as their starter!").formatted(Formatting.GRAY)));
-                }
+        picks.forEach((pick, pickers) -> {
+            if(pickers.size() > this.getRemainingAllocations(pick)) {
+                return;
             }
 
-            return true;
+            for(UUID picker : pickers) {
+                StarterEntry entry = this.getEntries().get(picker);
+                ServerPlayerEntity player = server.getPlayerManager().getPlayer(picker);
+                if(player == null) return;
+
+                this.giveStarter(player, pick).ifPresent(pokemon -> {
+                    entry.setGranted(pick);
+
+                    for(ServerPlayerEntity other : server.getPlayerManager().getPlayerList()) {
+                        other.sendMessage(Text.empty()
+                                .append(player.getName())
+                                .append(Text.literal(" has claimed ").formatted(Formatting.GRAY))
+                                .append(pokemon.getDisplayName().setStyle(Style.EMPTY.withColor(pokemon.getSpecies().getPrimaryType().getHue())))
+                                .append(Text.literal(" as their starter!").formatted(Formatting.GRAY)));
+                    }
+                });
+            }
         });
 
         for(StarterEntry entry : this.entries.values()) {
-            entry.onCompleteRound(this.selectionCooldown);
+            entry.onCompleteRound();
         }
     }
 
-    public boolean giveStarter(ServerPlayerEntity player, Identifier speciesId) {
+    public Optional<Pokemon> giveStarter(ServerPlayerEntity player, StarterId starter) {
         GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
 
         if(playerData.getStarterSelected()) {
             player.sendMessage(LocalizationUtilsKt.lang("ui.starter.alreadyselected")
                     .formatted(Formatting.RED), true);
-            return false;
+            return Optional.empty();
         } else if(playerData.getStarterLocked()) {
             player.sendMessage(LocalizationUtilsKt.lang("ui.starter.cannotchoose")
                     .formatted(Formatting.RED), true);
-            return false;
+            return Optional.empty();
         }
 
         PokemonProperties properties = null;
 
-        loop:
         for(StarterCategory category : Cobblemon.starterConfig.getStarters()) {
-            for(PokemonProperties pokemon : category.getPokemon()) {
-                if(pokemon.getSpecies() == null) continue;
-                Identifier other = asIdentifierDefaultingNamespace(
-                        pokemon.getSpecies(), Cobblemon.MODID);
+           if(category.getName().equals(starter.getCategory())) {
+               List<PokemonProperties> pokemons = category.getPokemon();
 
-                if(speciesId.equals(other)) {
-                   properties = pokemon;
-                   break loop;
-                }
-            }
+               if(starter.getIndex() < 0 || starter.getIndex() >= pokemons.size()) {
+                   return Optional.empty();
+               }
+
+               properties = pokemons.get(starter.getIndex());
+               break;
+           }
         }
 
-        if(properties == null) return false;
+        if(properties == null) {
+            return Optional.empty();
+        }
+
         Pokemon pokemon = properties.create();
 
         CobblemonEvents.STARTER_CHOSEN.postThen(new StarterChosenEvent(player, properties, pokemon),
@@ -320,7 +338,7 @@ public class PokemonStarterData extends WorldData {
                 return Unit.INSTANCE;
             });
 
-        return true;
+        return Optional.of(pokemon);
     }
 
     @Override

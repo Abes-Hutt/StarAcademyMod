@@ -5,7 +5,9 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;
+import abeshutt.staracademy.world.data.StarterId;
 import abeshutt.staracademy.world.data.StarterMode;
+import abeshutt.staracademy.world.data.StarterPokemon;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
@@ -18,25 +20,25 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
 
     public static final Id<UpdateStarterRaffleS2CPacket> ID = new Id<>(StarAcademyMod.id("update_starter_raffle_s2c"));
 
-    private Set<Identifier> starters;
+    private List<StarterPokemon> starters;
     private Map<UUID, StarterEntry> entries;
     private long timeInterval;
     private long timeLeft;
     private StarterMode mode;
-    private int selectionCooldown;
+    private int allocations;
 
     public UpdateStarterRaffleS2CPacket() {
 
     }
 
-    public UpdateStarterRaffleS2CPacket(Set<Identifier> starters, Map<UUID, StarterEntry> entries, long timeInterval,
-                                        long timeLeft, StarterMode mode, int selectionCooldown) {
+    public UpdateStarterRaffleS2CPacket(List<StarterPokemon> starters, Map<UUID, StarterEntry> entries, long timeInterval,
+                                        long timeLeft, StarterMode mode, int allocations) {
         this.starters = starters;
         this.entries = entries;
         this.timeInterval = timeInterval;
         this.timeLeft = timeLeft;
         this.mode = mode;
-        this.selectionCooldown = selectionCooldown;
+        this.allocations = allocations;
     }
 
     @Override
@@ -47,8 +49,7 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
     @Override
     public void onReceive(ClientPlayNetworkHandler listener) {
         if(this.starters != null) {
-            PokemonStarterData.CLIENT.getStarters().clear();
-            PokemonStarterData.CLIENT.getStarters().addAll(this.starters);
+            PokemonStarterData.CLIENT.setStarters(this.starters);
         }
 
         Map<UUID, StarterEntry> entries = PokemonStarterData.CLIENT.getEntries();
@@ -68,7 +69,7 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
         PokemonStarterData.CLIENT.setTimeInterval(this.timeInterval);
         PokemonStarterData.CLIENT.setTimeLeft(this.timeLeft);
         PokemonStarterData.CLIENT.setMode(this.mode);
-        PokemonStarterData.CLIENT.setSelectionCooldown(this.selectionCooldown);
+        PokemonStarterData.CLIENT.setAllocations(this.allocations);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
 
         if(this.starters != null) {
             Adapters.INT_SEGMENTED_3.writeBits(this.starters.size(), buffer);
-            this.starters.forEach(species -> Adapters.IDENTIFIER.writeBits(species, buffer));
+            this.starters.forEach(species -> Adapters.STARTER_POKEMON.writeBits(species, buffer));
         }
 
         Adapters.BOOLEAN.writeBits(this.entries == null, buffer);
@@ -94,7 +95,7 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
         Adapters.LONG.writeBits(this.timeInterval, buffer);
         Adapters.LONG.writeBits(this.timeLeft, buffer);
         Adapters.ofEnum(StarterMode.class, NAME).asNullable().writeBits(this.mode, buffer);
-        Adapters.INT_SEGMENTED_3.writeBits(this.selectionCooldown, buffer);
+        Adapters.INT_SEGMENTED_3.writeBits(this.allocations, buffer);
     }
 
     @Override
@@ -102,11 +103,11 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
         if(Adapters.BOOLEAN.readBits(buffer).orElseThrow()) {
             this.starters = null;
         } else {
-            this.starters = new LinkedHashSet<>();
+            this.starters = new ArrayList<>();
             int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
 
             for(int i = 0; i < size; i++) {
-                this.starters.add(Adapters.IDENTIFIER.readBits(buffer).orElseThrow());
+                this.starters.add(Adapters.STARTER_POKEMON.readBits(buffer).orElseThrow());
             }
         }
 
@@ -127,7 +128,7 @@ public class UpdateStarterRaffleS2CPacket extends ModPacket<ClientPlayNetworkHan
         this.timeInterval = Adapters.LONG.readBits(buffer).orElseThrow();
         this.timeLeft = Adapters.LONG.readBits(buffer).orElseThrow();
         this.mode = Adapters.ofEnum(StarterMode.class, NAME).asNullable().readBits(buffer).orElse(null);
-        this.selectionCooldown = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
+        this.allocations = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
     }
 
 }

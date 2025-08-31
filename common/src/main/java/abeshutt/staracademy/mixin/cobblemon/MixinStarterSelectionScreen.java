@@ -4,6 +4,7 @@ import abeshutt.staracademy.util.ProxySelectionButton;
 import abeshutt.staracademy.util.ProxySelectionScreen;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;
+import abeshutt.staracademy.world.data.StarterId;
 import abeshutt.staracademy.world.data.StarterMode;
 import com.cobblemon.mod.common.client.gui.startselection.StarterSelectionScreen;
 import com.cobblemon.mod.common.client.gui.startselection.widgets.CategoryList;
@@ -37,7 +38,6 @@ import static abeshutt.staracademy.GameStarterHandler.*;
 @Mixin(StarterSelectionScreen.class)
 public abstract class MixinStarterSelectionScreen extends Screen implements ProxySelectionScreen {
 
-    @Shadow private RenderablePokemon currentPokemon;
     @Shadow private int currentSelection;
     @Shadow private RenderableStarterCategory currentCategory;
 
@@ -93,11 +93,10 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
         if(entry == null) return;
 
         boolean isRaffle = data.getMode() == StarterMode.RAFFLE_ENABLED || data.getMode() == StarterMode.RAFFLE_PAUSED;
-
-        Identifier current = this.currentPokemon.component1().getResourceIdentifier();
+        StarterId current = new StarterId(this.currentCategory.getName(), this.currentSelection);
 
         if(isRaffle) {
-            this.button.visible = entry.isAvailable() && !data.isGranted(current) && !entry.isOnCooldown(current);
+            this.button.visible = entry.isAvailable() && data.getRemainingAllocations(current) > 0;
         } else {
             this.button.visible = true;
         }
@@ -108,7 +107,7 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
                 return;
             }
 
-            Identifier pick = data.getPick(player.getUuid());
+            StarterId pick = data.getPick(player.getUuid());
             if(pick == null) return;
 
             if(current.equals(pick)) {

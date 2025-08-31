@@ -3,6 +3,7 @@ package abeshutt.staracademy;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;
+import abeshutt.staracademy.world.data.StarterId;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
@@ -36,33 +37,18 @@ public class GameStarterHandler extends CobblemonStarterHandler {
             return;
         }
 
-        StarterCategory category = null;
-
-        for(StarterCategory value : this.getStarterList(player)) {
-            if(value.getName().equals(categoryName)) {
-                category = value;
-                break;
-            }
-        }
-
-        if(category == null || index > category.getPokemon().size()) {
-            return;
-        }
-
-        PokemonProperties properties = category.getPokemon().get(index);
-        if(properties.getSpecies() == null) return;
-        Identifier speciesId = ResourceLocationExtensionsKt.asIdentifierDefaultingNamespace(
-                properties.getSpecies(), Cobblemon.MODID);
-        Species species = PokemonSpecies.INSTANCE.getByIdentifier(speciesId);
-        if(species == null) return;
-
+        StarterId starter = new StarterId(categoryName, index);
         PokemonStarterData data = ModWorldData.POKEMON_STARTER.getGlobal(player.getWorld());
         StarterEntry entry = data.getEntries().get(player.getUuid());
 
-        if(speciesId.equals(data.getPick(player.getUuid()))) {
+        if(entry.getGranted() != null) {
+            return;
+        }
+
+        if(starter.equals(data.getPick(player.getUuid()))) {
             data.setPick(player.getUuid(), null);
-        } else if(!entry.isOnCooldown(speciesId) && !data.isGranted(speciesId)) {
-            data.setPick(player.getUuid(), speciesId);
+        } else if(data.getRemainingAllocations(starter) > 0) {
+            data.setPick(player.getUuid(), starter);
         }
     }
 

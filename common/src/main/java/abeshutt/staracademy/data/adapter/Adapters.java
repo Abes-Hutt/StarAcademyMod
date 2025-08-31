@@ -26,9 +26,7 @@ import abeshutt.staracademy.data.tile.*;
 import abeshutt.staracademy.item.OutfitEntry;
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.world.StarOwnership;
-import abeshutt.staracademy.world.data.AcademyHouse;
-import abeshutt.staracademy.world.data.HousePlayer;
-import abeshutt.staracademy.world.data.HousePokedexManager;
+import abeshutt.staracademy.world.data.*;
 import abeshutt.staracademy.world.random.ChunkRandom;
 import abeshutt.staracademy.world.random.JavaRandom;
 import abeshutt.staracademy.world.random.LcgRandom;
@@ -158,6 +156,8 @@ public class Adapters {
     public static final SpeciesDexRecordAdapter SPECIES_DEX_RECORD = new SpeciesDexRecordAdapter(false);
     public static final FormDexRecordAdapter FORM_DEX_RECORD = new FormDexRecordAdapter();
     public static final SerializableAdapter<HousePokedexManager, NbtElement, JsonElement> HOUSE_POKEDEX_MANAGER = Adapters.of(HousePokedexManager::new, false);
+    public static final StarterId.Adapter STARTER_ID = new StarterId.Adapter(false);
+    public static final StarterPokemon.Adapter STARTER_POKEMON = new StarterPokemon.Adapter(false);
 
     public static final SerializableAdapter<AttributePath, NbtElement, JsonElement> ATTRIBUTE_PATH = Adapters.of(AttributePath::empty, false);
     public static final Attribute.Adapter ATTRIBUTE = new Attribute.Adapter();

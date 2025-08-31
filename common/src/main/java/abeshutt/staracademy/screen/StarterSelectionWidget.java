@@ -4,6 +4,8 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.world.StarterEntry;
 import abeshutt.staracademy.world.data.PokemonStarterData;
+import abeshutt.staracademy.world.data.StarterId;
+import abeshutt.staracademy.world.data.StarterPokemon;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.client.gui.trade.ModelWidget;
 import com.cobblemon.mod.common.client.keybind.CobblemonKeyBinds;
@@ -29,12 +31,12 @@ public class StarterSelectionWidget implements Drawable {
 
     private static final Identifier TEXTURE = StarAcademyMod.id("textures/gui/starter_selection.png");
 
-    private final Species species;
+    private final StarterId starter;
     private final Long timeLeft;
     private final boolean paused;
 
-    public StarterSelectionWidget(Species species, long timeLeft, boolean paused) {
-        this.species = species;
+    public StarterSelectionWidget(StarterId starter, long timeLeft, boolean paused) {
+        this.starter = starter;
         this.timeLeft = timeLeft;
         this.paused = paused;
     }
@@ -61,32 +63,24 @@ public class StarterSelectionWidget implements Drawable {
 
         context.fill(x, y, x + width, y + height, 0xFF333333);
 
-        String title = this.species != null ? this.species.getName() : "Raffle";
-        int color = this.species != null ? this.species.getPrimaryType().getHue() : Formatting.GRAY.getColorValue();
+        StarterPokemon pokemon = this.starter.resolve().orElse(null);
+        String title = pokemon != null ? pokemon.getSpecies().getName() : "Raffle";
+        int color = pokemon != null ? pokemon.getSpecies().getPrimaryType().getHue() : Formatting.GRAY.getColorValue();
 
         context.getMatrices().push();
         context.getMatrices().translate(x + 57.0D, y + 1.5D, 0.0D);
 
         MutableText description;
 
-        if(this.species != null) {
-            description = Text.translatable(this.species.getForm(new HashSet<>()).getPokedex().get(0));
+        if(pokemon != null) {
+            description = Text.translatable(pokemon.getSpecies().getForm(pokemon.getAspects()).getPokedex().getFirst());
         } else {
             description = Text.empty()
                 .append(Text.literal("Press ["))
                 .append(CobblemonKeyBinds.INSTANCE.getSUMMARY().getBoundKeyLocalizedText())
-                .append(Text.literal("] to choose your starter Pokémon. If another player picks the same " +
-                        "Pokémon as you, neither of you will receive it"));
-
-            int cooldown = PokemonStarterData.CLIENT.getSelectionCooldown();
-
-            if(cooldown > 1) {
-                description = description.append(", and you won’t be able to choose that Pokémon for the next %d rounds".formatted(cooldown));
-            } else if(cooldown == 1) {
-                description = description.append(", and you won’t be able to choose that Pokémon for the next round");
-            }
-
-            description = description.append(Text.literal(". Choose wisely!"));
+                .append(Text.literal("] to choose your starter Pokémon. If more than "
+                        + PokemonStarterData.CLIENT.getAllocations() + " players select the same Pokémon, " +
+                        "no one will receive it. Choose wisely!"));
         }
 
         List<OrderedText> lines = text.wrapLines(description, 172);
@@ -139,37 +133,15 @@ public class StarterSelectionWidget implements Drawable {
         context.getMatrices().scale(2.7F, 2.7F, 2.7F);
         context.getMatrices().translate(10.0D, 10.0D, 0.0D);
 
-        Species renderSpecies = this.getDisplaySpecies();
-
-        if(renderSpecies != null) {
+        if(pokemon != null) {
             ModelWidget widget = new ModelWidget(0, 0, 0, 0,
-                    new RenderablePokemon(renderSpecies, new HashSet<>()),
+                    pokemon.asRenderable(),
                     1.0F, -22.0F, 0.0F);
 
             widget.render(context, 0, 0, delta);
         }
 
         context.getMatrices().pop();
-    }
-
-    public Species getDisplaySpecies() {
-        Species species = this.species;
-
-        if(species == null) {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if(player == null) return null;
-            StarterEntry entry = PokemonStarterData.CLIENT.getEntries().get(player.getUuid());
-            if(entry == null) return null;
-            List<Identifier> starters = new ArrayList<>(PokemonStarterData.CLIENT.getStarters());
-            starters.removeIf(entry::isOnCooldown);
-
-            while(species == null && !starters.isEmpty()) {
-                Identifier speciesId = starters.get((int)ClientScheduler.getTick() / 40 % starters.size());
-                species = speciesId == null ? null : PokemonSpecies.INSTANCE.getByIdentifier(speciesId);
-            }
-        }
-
-        return species;
     }
 
     public String formatTimeString(long remainingTicks) {
