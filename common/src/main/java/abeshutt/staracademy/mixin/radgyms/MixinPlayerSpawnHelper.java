@@ -21,7 +21,7 @@ public class MixinPlayerSpawnHelper {
     @Overwrite
     public final BlockPos getUniquePlayerCoords(ServerPlayerEntity serverPlayer, ServerWorld serverWorld) {
         Random random = new Random(serverPlayer.getUuid().getMostSignificantBits());
-        int playerX = random.nextInt(200000);
+        int playerX = random.nextInt(20000000);
         int playerZ = GymsNbtData.INSTANCE.incrementVisitCount((EntityDataSaver)serverPlayer) * 128;
         RadGyms.INSTANCE.debug("Derived player ${serverPlayer.name} unique X coordinate from UUID: $playerX");
         RadGyms.INSTANCE.debug("Derived player ${serverPlayer.name} unique Z coordinate from UUID: ${border.boundWest.toLong() + playerZ}");

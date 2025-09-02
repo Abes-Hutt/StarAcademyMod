@@ -35,6 +35,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version")
     modImplementation("dev.architectury:architectury-fabric:$rootProject.architectury_api_version")
     include(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
+    implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
 
     modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0")
@@ -62,9 +63,9 @@ dependencies {
     //modImplementation("maven.modrinth:konkrete:1.9.9-1.21-fabric")
     //modImplementation("maven.modrinth:melody:1.0.10-1.21-fabric")
 
-    //modImplementation("maven.modrinth:rad-gyms:0.2-alpha.2")
-    //modImplementation("maven.modrinth:rctapi:sZK1GcWC")
-    //modImplementation("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
+    modImplementation("maven.modrinth:rad-gyms:0.2-alpha.2")
+    modImplementation("maven.modrinth:rctapi:sZK1GcWC")
+    modImplementation("maven.modrinth:admiral:0.4.7+1.21.1+fabric")
 
     modImplementation("dev.ftb.mods:ftb-quests-fabric:2101.1.14")
     modImplementation("dev.ftb.mods:ftb-teams-fabric:2101.1.4")
