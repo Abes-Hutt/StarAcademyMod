@@ -43,6 +43,7 @@ public class ModConfigs extends ModRegistries {
 
     public static PokedollConfig POKEDOLLS;
     public static SoundEventConfig SOUND_EVENTS;
+    public static IslandConfig ISLAND;
 
     public static void register(boolean initialization) {
         try {
@@ -85,6 +86,7 @@ public class ModConfigs extends ModRegistries {
 
         POKEDOLLS = new PokedollConfig().read();
         SOUND_EVENTS = new SoundEventConfig().read();
+        ISLAND = new IslandConfig().read();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);

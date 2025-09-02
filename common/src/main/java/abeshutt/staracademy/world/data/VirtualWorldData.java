@@ -3,6 +3,7 @@ package abeshutt.staracademy.world.data;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.ISerializable;
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.net.WorldKeysUpdateS2CPacket;
 import abeshutt.staracademy.world.VirtualWorld;
@@ -104,10 +105,12 @@ public class VirtualWorldData extends WorldData {
     }
 
     public void onTick(MinecraftServer server) {
-        for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            Identifier id = VirtualWorld.island(player);
-            if(this.has(id)) continue;
-            this.add(id, "island");
+        if(ModConfigs.ISLAND.isEnabled()) {
+            for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                Identifier id = VirtualWorld.island(player);
+                if(this.has(id)) continue;
+                this.add(id, "island");
+            }
         }
 
         this.entries.forEach((id, entry) -> {
