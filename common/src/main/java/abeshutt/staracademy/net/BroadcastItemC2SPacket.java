@@ -6,6 +6,7 @@ import abeshutt.staracademy.data.bit.BitBuffer;
 import com.cobblemon.mod.common.client.keybind.keybinds.SummaryBinding;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.screen.slot.Slot;
@@ -40,10 +41,13 @@ public class BroadcastItemC2SPacket extends ModPacket<ServerPlayNetworkHandler> 
         if(listener.getPlayer().currentScreenHandler != null) {
             try {
                 Slot slot = listener.getPlayer().currentScreenHandler.getSlot(this.id);
+                ItemStack stack = slot.getStack();
+                if(stack.isEmpty()) return;
+
                 MutableText text = Text.empty();
                 text.append(listener.getPlayer().getDisplayName());
                 text.append(Text.literal(" shared ").formatted(Formatting.GRAY));
-                text.append(slot.getStack().toHoverableText());
+                text.append(stack.toHoverableText());
                 text.append(Text.literal(".").formatted(Formatting.GRAY));
 
                 MinecraftServer server = listener.getPlayer().getServer();
