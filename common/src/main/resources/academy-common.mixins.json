@@ -72,6 +72,7 @@
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
     "radgyms.MixinDataSaver",
+    "radgyms.MixinPlayerSpawnHelper",
     "shutters.MixinShutter",
     "ultrabeasts.MixinWormholeEntity"
   ],
