@@ -25,4 +25,14 @@ public class CardAlbumInventory extends BaseInventory {
         return super.canInsert(stack);
     }
 
+    public CardAlbumInventory copy() {
+        CardAlbumInventory copy = new CardAlbumInventory();
+
+        for(int i = 0; i < this.size(); i++) {
+           copy.setStack(i, this.getStack(i));
+        }
+
+        return copy;
+    }
+
 }

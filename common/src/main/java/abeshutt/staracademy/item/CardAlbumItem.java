@@ -93,7 +93,7 @@ public class CardAlbumItem extends TrinketItem implements ISpecialItemModel {
 
                     @Override
                     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity _player) {
-                        return new CardAlbumScreenHandler(syncId, player, stack, stack.get(ModDataComponents.CARD_ALBUM_CONTAINER.get()));
+                        return new CardAlbumScreenHandler(syncId, player, stack, stack.get(ModDataComponents.CARD_ALBUM_CONTAINER.get()).copy());
                     }
                 });
             }

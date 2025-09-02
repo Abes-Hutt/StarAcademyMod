@@ -33,7 +33,7 @@ public class CardAlbumScreenHandler extends ScreenHandler {
         this.slot = this.player.getInventory().selectedSlot;
 
         this.listener = sender -> {
-            this.player.getInventory().getStack(this.slot).set(ModDataComponents.CARD_ALBUM_CONTAINER.get(), inventory);
+            this.player.getInventory().getStack(this.slot).set(ModDataComponents.CARD_ALBUM_CONTAINER.get(), inventory.copy());
         };
 
         inventory.onOpen(player);
