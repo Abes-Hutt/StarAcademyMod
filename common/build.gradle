@@ -62,4 +62,6 @@ dependencies {
     modCompileOnly(files("jars/UltraBeasts-1.0.1.jar"))
 
     modCompileOnly("maven.modrinth:extraquests:xyNKgwgq")
+
+    modCompileOnly("maven.modrinth:cobblemon-alpha-project:1.1")
 }

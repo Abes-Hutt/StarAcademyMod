@@ -49,6 +49,7 @@
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "MixinTeleportTarget",
+    "alphas.MixinAlphaSpawner",
     "cobblemon.MixinFormDexRecord",
     "cobblemon.MixinPlayerSpawnerFactory",
     "cobblemon.MixinPokeBallItem",

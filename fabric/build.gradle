@@ -71,6 +71,8 @@ dependencies {
     modImplementation("dev.ftb.mods:ftb-teams-fabric:2101.1.4")
     modImplementation("dev.ftb.mods:ftb-library-fabric:2101.1.19")
 
+    modImplementation("maven.modrinth:cobblemon-alpha-project:1.1")
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
