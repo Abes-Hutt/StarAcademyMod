@@ -64,4 +64,6 @@ dependencies {
     modCompileOnly("maven.modrinth:extraquests:xyNKgwgq")
 
     modCompileOnly("maven.modrinth:cobblemon-alpha-project:1.1")
+
+    modCompileOnly("maven.modrinth:bookshelf-lib:ckzM6Bhh")
 }

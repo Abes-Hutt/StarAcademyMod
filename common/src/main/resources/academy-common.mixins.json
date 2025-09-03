@@ -50,6 +50,7 @@
     "MixinStructureTemplate",
     "MixinTeleportTarget",
     "alphas.MixinAlphaSpawner",
+    "bookshelf.MixinFabricMod",
     "cobblemon.MixinFormDexRecord",
     "cobblemon.MixinPlayerSpawnerFactory",
     "cobblemon.MixinPokeBallItem",
