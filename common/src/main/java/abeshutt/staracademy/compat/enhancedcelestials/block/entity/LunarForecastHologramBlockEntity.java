@@ -53,7 +53,7 @@ public class LunarForecastHologramBlockEntity extends BlockEntity {
         }
         hologramBlockEntity.ticks++;
 
-        if (hologramBlockEntity.ticks % ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getHologramSwitchTime() == 0) {
+        if (hologramBlockEntity.ticks % ModConfigs.ENHANCED_CELESTIALS.getHologramSwitchTime() == 0) {
             hologramBlockEntity.next();
         }
     }
@@ -74,14 +74,14 @@ public class LunarForecastHologramBlockEntity extends BlockEntity {
                 return;
             }
 
-            if (forecast.getFirst().getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) >= ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getForecastDayView()) {
+            if (forecast.getFirst().getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) >= ModConfigs.ENHANCED_CELESTIALS.getForecastDayView()) {
                 this.idx = -1;
                 sync();
                 return;
             }
 
             LunarEventInstance lunarEventInstance = forecast.get(nextIdx);
-            if (lunarEventInstance.getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) <= ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getForecastDayView()) {
+            if (lunarEventInstance.getDaysUntil(enhancedCelestialsLunarForecastWorldData.getCurrentDay()) <= ModConfigs.ENHANCED_CELESTIALS.getForecastDayView()) {
                 this.idx = nextIdx;
                 sync();
             } else {

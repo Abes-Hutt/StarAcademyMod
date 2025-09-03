@@ -57,10 +57,10 @@ public class EnhancedCelestialsCompat {
                         if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.HARVEST_MOON)) {
                             if(worldData.currentLunarEventHolder().isIn(ECLunarEventTags.SUPER_MOON)) {
                                 experienceGainedPreEvent.setExperience((int) (experienceGainedPreEvent.getExperience()
-                                        * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getSuperHarvestMoonExpShareMultiplier()));
+                                        * ModConfigs.ENHANCED_CELESTIALS.getSuperHarvestMoonExpShareMultiplier()));
                             } else {
                                 experienceGainedPreEvent.setExperience((int) (experienceGainedPreEvent.getExperience()
-                                        * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getHarvestMoonExpShareMultiplier()));
+                                        * ModConfigs.ENHANCED_CELESTIALS.getHarvestMoonExpShareMultiplier()));
                             }
 
                         }
@@ -90,9 +90,9 @@ public class EnhancedCelestialsCompat {
                 if (spawnBucket.getName().equals("uncommon") || spawnBucket.getName().equals("rare") || spawnBucket.getName().equals("ultra-rare")) {
                     if (worldData.currentLunarEventHolder().matchesKey(AURORA_MOON)) {
                         if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.SUPER_MOON)) {
-                            return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getSuperAuroraMoonRarePokemonSpawnMultiplier();
+                            return v * ModConfigs.ENHANCED_CELESTIALS.getSuperAuroraMoonRarePokemonSpawnMultiplier();
                         } else {
-                            return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getAuroraMoonRarePokemonSpawnMultiplier();
+                            return v * ModConfigs.ENHANCED_CELESTIALS.getAuroraMoonRarePokemonSpawnMultiplier();
                         }
                     }
                 }
@@ -114,26 +114,14 @@ public class EnhancedCelestialsCompat {
                     }
                     EnhancedCelestialsLunarForecastWorldData worldData = enhancedCelestialsLunarForecastWorldData.orElseThrow();
 
-
                     PokemonProperties pokemon = pokemonSpawnDetail.getPokemon();
-                    Boolean shiny = pokemon.getShiny();
-                    if (shiny != null && shiny) {
-                        if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.BLUE_MOON)) {
-                            if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.SUPER_MOON)) {
-                                return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getSuperBlueMoonShinyMultiplier();
-                            } else {
-                                return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getBlueMoonShinyMultiplier();
-                            }
-                        }
-                    }
-
                     IVs ivs = pokemon.getIvs();
                     if (ivs != null && !ivs.getAcceptableRange().isEmpty()) {
                         if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.BLOOD_MOON)) {
                             if (worldData.currentLunarEventHolder().isIn(ECLunarEventTags.SUPER_MOON)) {
-                                return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getSuperBloodMoonIVsMultiplier();
+                                return v * ModConfigs.ENHANCED_CELESTIALS.getSuperBloodMoonIVsMultiplier();
                             } else {
-                                return v * ModConfigs.ENHANCED_CELESTIALS_COBBLEMON_CONFIG.getBloodMoonIVsMultiplier();
+                                return v * ModConfigs.ENHANCED_CELESTIALS.getBloodMoonIVsMultiplier();
                             }
                         }
                     }

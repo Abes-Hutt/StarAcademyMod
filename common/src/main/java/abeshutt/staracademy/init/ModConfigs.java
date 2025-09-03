@@ -19,7 +19,7 @@ public class ModConfigs extends ModRegistries {
 
     public static StarterRaffleConfig STARTER_RAFFLE;
     public static PokemonSpawnConfig POKEMON_SPAWN;
-    public static ECCobblemonConfig ENHANCED_CELESTIALS_COBBLEMON_CONFIG;
+    public static ECCobblemonConfig ENHANCED_CELESTIALS;
     public static SafariConfig SAFARI;
     public static WardrobeConfig WARDROBE;
     public static NPCConfig NPC;
@@ -62,7 +62,7 @@ public class ModConfigs extends ModRegistries {
 
         STARTER_RAFFLE = new StarterRaffleConfig().read();
         POKEMON_SPAWN = new PokemonSpawnConfig().read();
-        ENHANCED_CELESTIALS_COBBLEMON_CONFIG = new ECCobblemonConfig().read();
+        ENHANCED_CELESTIALS = new ECCobblemonConfig().read();
         SAFARI = new SafariConfig().read();
         WARDROBE = new WardrobeConfig().read();
         NPC = new NPCConfig().read();
