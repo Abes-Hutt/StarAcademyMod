@@ -44,11 +44,13 @@ public class CardGradingData extends WorldData {
                 ZonedDateTime.now(ZoneId.of("UTC")).toInstant().toEpochMilli(),
                 stack));
         this.changes.add(uuid);
+        this.markDirty();
     }
 
     public void remove(UUID uuid) {
         this.entries.remove(uuid);
         this.changes.add(uuid);
+        this.markDirty();
     }
 
     public long getTimeLeft(UUID uuid) {
