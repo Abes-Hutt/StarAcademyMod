@@ -97,11 +97,11 @@ public class UpdateHousesS2CPacket extends ModPacket<ClientPlayNetworkHandler> {
         } else {
             this.houses = new HashMap<>();
             int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
-            String id = Adapters.UTF_8.readBits(buffer).orElseThrow();
-            House house = new House();
-            house.readBits(buffer);
 
             for(int i = 0; i < size; i++) {
+                String id = Adapters.UTF_8.readBits(buffer).orElseThrow();
+                House house = new House();
+                house.readBits(buffer);
                 this.houses.put(id, house);
             }
         }
