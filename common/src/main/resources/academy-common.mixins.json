@@ -44,6 +44,7 @@
     "MixinMinecraftServer",
     "MixinPlayerEntity",
     "MixinPlayerScreenHandler",
+    "MixinSellMapFactory",
     "MixinServerPlayerEntity",
     "MixinServerWorld",
     "MixinSpeciesDexRecord",
