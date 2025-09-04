@@ -65,6 +65,7 @@
     "ftbquests.MixinItemReward",
     "ftbquests.MixinNotifyItemRewardMessage",
     "journeymap.MixinEntityHelper",
+    "megashowdown.MixinModEvents",
     "modernfix.MixinLRUMap",
     "mythsandlegends.MixinForceSpawningUtils",
     "mythsandlegends.MixinFormAndAspectUtils",
