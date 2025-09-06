@@ -44,6 +44,7 @@
     "MixinMinecraftServer",
     "MixinPlayerEntity",
     "MixinPlayerScreenHandler",
+    "cobblemon.MixinCodecUtils",
     "MixinSellMapFactory",
     "MixinServerPlayerEntity",
     "MixinServerWorld",
