@@ -68,4 +68,6 @@ dependencies {
     modCompileOnly("maven.modrinth:bookshelf-lib:ckzM6Bhh")
 
     modCompileOnly("maven.modrinth:cobblemon-mega-showdown:10.0.7-release-fabric")
+
+    modCompileOnly("maven.modrinth:gliding:1.0.1")
 }
