@@ -148,8 +148,8 @@ public class CardGradingData extends WorldData {
 
         @Override
         public void readNbt(NbtCompound nbt) {
-            this.time = Adapters.LONG.readNbt(nbt).orElseThrow();
-            this.stack = Adapters.ITEM_STACK.readNbt(nbt).orElseThrow();
+            this.time = Adapters.LONG.readNbt(nbt.get("time")).orElseThrow();
+            this.stack = Adapters.ITEM_STACK.readNbt(nbt.get("stack")).orElseThrow();
         }
     }
 
