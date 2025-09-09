@@ -21,6 +21,9 @@
     ],
     "client": [
       "abeshutt.staracademy.fabric.client.StarAcademyFabricModClient"
+    ],
+    "emi": [
+      "abeshutt.staracademy.AcademyEmiPlugin"
     ]
   },
   "mixins": [

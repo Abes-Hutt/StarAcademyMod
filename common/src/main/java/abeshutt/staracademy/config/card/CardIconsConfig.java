@@ -26,6 +26,10 @@ public class CardIconsConfig extends FileConfig {
         return "card.icons";
     }
 
+    public Map<String, CardIconEntry> getValues() {
+        return this.values;
+    }
+
     public Optional<CardIconEntry> get(String id) {
         return Optional.ofNullable(this.values.get(id));
     }

@@ -20,6 +20,10 @@ public class CardBoosterPacksConfig extends FileConfig {
         return "card.booster_packs";
     }
 
+    public Map<String, BoosterPackEntry> getValues() {
+        return this.values;
+    }
+
     public Optional<BoosterPackEntry> get(String id) {
         return Optional.ofNullable(this.values.get(id));
     }

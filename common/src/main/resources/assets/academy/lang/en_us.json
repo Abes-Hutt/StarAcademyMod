@@ -158,7 +158,9 @@
   "stat_type.minecraft.custom": "Custom",
 
   "trinkets.slot.legs.card_album": "Card Album",
+  "item.academy.booster_pack": "Booster Pack",
   "item.academy.booster_pack.base": "Base Booster Pack",
+  "item.academy.card_album": "Card Album",
   "item.academy.card_album.base": "Base Card Album",
   "text.academy.card.name.prefix": "",
   "text.academy.card.name.suffix": " Card",

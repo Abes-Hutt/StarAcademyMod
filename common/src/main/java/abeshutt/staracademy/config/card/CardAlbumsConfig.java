@@ -18,6 +18,10 @@ public class CardAlbumsConfig extends FileConfig {
         return "card.albums";
     }
 
+    public Map<String, CardAlbumEntry> getValues() {
+        return this.values;
+    }
+
     public Optional<CardAlbumEntry> get(String id) {
         return Optional.ofNullable(this.values.get(id));
     }

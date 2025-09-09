@@ -5,6 +5,7 @@ import abeshutt.staracademy.card.BoosterPackEntry;
 import abeshutt.staracademy.card.CardData;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModDataComponents;
+import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.renderer.BoosterPackItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.screen.BoosterPackScreen;
@@ -46,6 +47,12 @@ public class BoosterPackItem extends Item implements ISpecialItemModel {
 
     public static void set(ItemStack stack, String id) {
         stack.set(ModDataComponents.BOOSTER_PACK.get(), id);
+    }
+
+    public static ItemStack create(String id) {
+        ItemStack stack = new ItemStack(ModItems.BOOSTER_PACK.get());
+        stack.set(ModDataComponents.BOOSTER_PACK.get(), id);
+        return stack;
     }
 
     @Override

@@ -92,6 +92,10 @@ subprojects {
                 includeGroup 'noobanidus.mods.lootr'
             }
         }
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/"
+        }
     }
 
     dependencies {

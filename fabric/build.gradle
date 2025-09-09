@@ -75,7 +75,8 @@ dependencies {
 
     modImplementation("maven.modrinth:bookshelf-lib:ckzM6Bhh")
 
-    modImplementation("maven.modrinth:cobblemon-mega-showdown:10.0.7-release-fabric")
+    modCompileOnly("dev.emi:emi-fabric:1.1.22+1.21.1:api")
+    modLocalRuntime("dev.emi:emi-fabric:1.1.22+1.21.1")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')

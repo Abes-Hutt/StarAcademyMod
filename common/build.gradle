@@ -70,4 +70,6 @@ dependencies {
     modCompileOnly("maven.modrinth:cobblemon-mega-showdown:10.0.7-release-fabric")
 
     modCompileOnly("maven.modrinth:gliding:1.0.1")
+
+    modCompileOnly("dev.emi:emi-xplat-intermediary:1.1.22+1.21.1:api")
 }

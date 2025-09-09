@@ -5,7 +5,8 @@ import abeshutt.staracademy.card.CardAlbumEntry;
 import abeshutt.staracademy.data.component.CardAlbumInventory;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModDataComponents;
-import abeshutt.staracademy.item.renderer.AlbumItemRenderer;
+import abeshutt.staracademy.init.ModItems;
+import abeshutt.staracademy.item.renderer.CardAlbumItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.screen.handler.CardAlbumScreenHandler;
 import abeshutt.staracademy.util.ISpecialItemModel;
@@ -47,6 +48,12 @@ public class CardAlbumItem extends TrinketItem implements ISpecialItemModel {
 
     public static void set(ItemStack stack, String id) {
         stack.set(ModDataComponents.CARD_ALBUM.get(), id);
+    }
+
+    public static ItemStack create(String id) {
+        ItemStack stack = new ItemStack(ModItems.CARD_ALBUM.get());
+        stack.set(ModDataComponents.CARD_ALBUM.get(), id);
+        return stack;
     }
 
     @Override
@@ -115,7 +122,7 @@ public class CardAlbumItem extends TrinketItem implements ISpecialItemModel {
 
     @Override
     public SpecialItemRenderer getRenderer() {
-        return AlbumItemRenderer.INSTANCE;
+        return CardAlbumItemRenderer.INSTANCE;
     }
 
 }

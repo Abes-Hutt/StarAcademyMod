@@ -3,6 +3,7 @@ package abeshutt.staracademy.item;
 import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModDataComponents;
+import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.renderer.SafariTicketItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
@@ -82,6 +83,12 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
                         .formatted(Formatting.GRAY));
             }
         });
+    }
+
+    public static ItemStack create(String id) {
+        ItemStack stack = new ItemStack(ModItems.SAFARI_TICKET.get());
+        stack.set(ModDataComponents.SAFARI_TICKET_ENTRY.get(), id);
+        return stack;
     }
 
     public static Optional<SafariTicketEntry> getEntry(ItemStack stack, boolean client) {
