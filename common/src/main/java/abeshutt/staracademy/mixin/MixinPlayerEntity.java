@@ -7,7 +7,6 @@ import abeshutt.staracademy.world.data.HouseData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.AbstractTeam;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -15,10 +14,10 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class)
+@Mixin(value = PlayerEntity.class, priority = 2000)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> type, World world) {
@@ -30,17 +29,15 @@ public abstract class MixinPlayerEntity extends LivingEntity {
         CommonEvents.PLAYER_TICK.invoker().tick((PlayerEntity)(Object)this);
     }
 
-    @Redirect(method = "getDisplayName", at = @At(value = "INVOKE", target = "Lnet/minecraft/scoreboard/Team;decorateName(Lnet/minecraft/scoreboard/AbstractTeam;Lnet/minecraft/text/Text;)Lnet/minecraft/text/MutableText;"))
-    public MutableText getDisplayName(AbstractTeam team, Text name) {
-        MutableText result = Team.decorateName(team, name).copy();
+    @Inject(method = "getDisplayName", at = @At(value = "RETURN"), cancellable = true)
+    public void getDisplayName(CallbackInfoReturnable<Text> ci) {
+        MutableText result = ci.getReturnValue().copy();
         HouseData data = this.getWorld().isClient() ? HouseData.CLIENT : ModWorldData.HOUSE.getGlobal(this.getWorld());
         AcademyHouse house = data.getFor(this.getUuid()).orElse(null);
 
         if(house != null) {
-            return result.setStyle(result.getStyle().withColor(house.getColor()));
+            ci.setReturnValue(result.setStyle(result.getStyle().withColor(house.getColor())));
         }
-
-        return result;
     }
 
 }
