@@ -206,7 +206,7 @@ public class SafariData extends WorldData {
 
            this.get(player.getUuid()).ifPresent(entry -> {
                if(player.getWorld().getRegistryKey() == StarAcademyMod.SAFARI) {
-                   if(entry.getTimeLeft() <= 0 || player.getY() < player.getWorld().getBottomY()) {
+                   if(entry.getTimeLeft() <= 0 || !entry.isUnlocked() || player.getY() < player.getWorld().getBottomY()) {
                        player.fallDistance = 0.0F;
                        this.leaveSafari(player);
                    }
