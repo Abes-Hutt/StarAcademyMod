@@ -182,7 +182,7 @@ public class SafariPortalBlock extends Block implements BlockEntityProvider, Por
                 return null;
             } else if(entry.getTimeLeft() <= 0) {
                 player.sendMessage(Text.empty()
-                        .append(Text.literal("text.academy.safari.enter_no_time")
+                        .append(Text.translatable("text.academy.safari.enter_no_time")
                                 .formatted(Formatting.RED)), true);
                 return null;
             } else if(data.isPaused()) {
