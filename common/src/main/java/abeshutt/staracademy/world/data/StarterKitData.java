@@ -43,6 +43,8 @@ public class StarterKitData extends WorldData {
                 } else {
                     ItemStackHooks.giveItem(player, stack);
                 }
+
+                this.setGranted(player.getUuid(), true);
             });
         }
     }
