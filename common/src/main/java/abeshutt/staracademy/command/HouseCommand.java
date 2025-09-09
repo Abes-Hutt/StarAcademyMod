@@ -217,7 +217,7 @@ public class HouseCommand extends Command {
     }
 
     private int onRemovePlayer(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        String id = StringArgumentType.getString(context, "uuid");
+        String id = StringArgumentType.getString(context, "id");
         Collection<GameProfile> players = GameProfileArgumentType.getProfileArgument(context, "player");
 
         HouseData data = ModWorldData.HOUSE.getGlobal(context.getSource().getServer());

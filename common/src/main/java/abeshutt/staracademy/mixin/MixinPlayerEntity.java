@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = PlayerEntity.class, priority = 2000)
+@Mixin(value = PlayerEntity.class, priority = 1000)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> type, World world) {
@@ -30,7 +30,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     }
 
     @Inject(method = "getDisplayName", at = @At(value = "RETURN"), cancellable = true)
-    public void getDisplayName(CallbackInfoReturnable<Text> ci) {
+    private void getDisplayName(CallbackInfoReturnable<Text> ci) {
         MutableText result = ci.getReturnValue().copy();
         HouseData data = this.getWorld().isClient() ? HouseData.CLIENT : ModWorldData.HOUSE.getGlobal(this.getWorld());
         AcademyHouse house = data.getFor(this.getUuid()).orElse(null);
