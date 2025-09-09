@@ -15,6 +15,7 @@ accessible method net/minecraft/entity/LivingEntity playEquipmentBreakEffects (L
 extendable class net/minecraft/world/gen/chunk/NoiseChunkGenerator
 accessible field net/minecraft/client/render/WorldRenderer MOON_PHASES Lnet/minecraft/util/Identifier;
 extendable class net/minecraft/resource/ResourcePackInfo
+accessible class net/minecraft/screen/slot/ArmorSlot
 accessible method net/minecraft/client/model/ModelPartData <init> (Ljava/util/List;Lnet/minecraft/client/model/ModelTransform;)V
 accessible method net/minecraft/client/model/ModelCuboidData <init> (Ljava/lang/String;FFFFFFFFLnet/minecraft/client/model/Dilation;ZFFLjava/util/Set;)V
 extendable method net/minecraft/client/gui/screen/ingame/HandledScreen isPointOverSlot (Lnet/minecraft/screen/slot/Slot;DD)Z
@@ -28,3 +29,5 @@ mutable field net/minecraft/world/World thread Ljava/lang/Thread;
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen focusedSlot Lnet/minecraft/screen/slot/Slot;
 accessible method net/minecraft/server/network/ServerPlayNetworkHandler checkForSpam ()V
 accessible field net/minecraft/client/option/KeyBinding boundKey Lnet/minecraft/client/util/InputUtil$Key;
+accessible field net/minecraft/screen/slot/ArmorSlot entity Lnet/minecraft/entity/LivingEntity;
+accessible field net/minecraft/screen/slot/ArmorSlot equipmentSlot Lnet/minecraft/entity/EquipmentSlot;

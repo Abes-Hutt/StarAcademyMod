@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "plugin": "abeshutt.staracademy.AcademyMixinPlugin",
   "client": [
+    "MixinArmorFeatureRenderer",
     "MixinBlockEntityRendererFactories",
     "MixinBuiltinModelItemRenderer",
     "MixinClientWorld",

@@ -224,5 +224,6 @@
 
   "multiplayer.disconnect.island_crash": "Your island has crashed unexpectedly.",
   "category.academy": "Academy",
-  "key.academy.broadcast_item": "Broadcast Item"
+  "key.academy.broadcast_item": "Broadcast Item",
+  "key.academy.toggle_armor_display": "Toggle Armor Display"
 }

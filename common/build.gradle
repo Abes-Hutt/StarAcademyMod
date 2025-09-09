@@ -58,6 +58,7 @@ dependencies {
     modCompileOnly("dev.ftb.mods:ftb-quests:2101.1.14")
     modCompileOnly("dev.ftb.mods:ftb-teams:2101.1.4")
     modCompileOnly("dev.ftb.mods:ftb-library:2101.1.19")
+    modCompileOnly("dev.ftb.mods:ftb-essentials:2101.1.6")
 
     modCompileOnly(files("jars/UltraBeasts-1.0.1.jar"))
 

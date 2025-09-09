@@ -70,6 +70,7 @@ dependencies {
     modImplementation("dev.ftb.mods:ftb-quests-fabric:2101.1.14")
     modImplementation("dev.ftb.mods:ftb-teams-fabric:2101.1.4")
     modImplementation("dev.ftb.mods:ftb-library-fabric:2101.1.19")
+    modImplementation("dev.ftb.mods:ftb-essentials-fabric:2101.1.6")
 
     modImplementation("maven.modrinth:cobblemon-alpha-project:1.1")
 
