@@ -25,11 +25,9 @@ public class DuelingGloveItem extends RangedWeaponItem {
     }
 
     @Override
-    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
-        if(shooter instanceof PlayerEntity player) {
-            World world = player.getWorld();
-            //float progress = getPullProgress(this.getMaxUseTime(stack) - remainingUseTicks);
-            float progress = speed;
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if(user instanceof PlayerEntity player) {
+            float progress = getPullProgress(this.getMaxUseTime(stack, user) - remainingUseTicks);
 
             if(progress < 0.1D) {
                 return;
@@ -82,6 +80,11 @@ public class DuelingGloveItem extends RangedWeaponItem {
     @Override
     public int getRange() {
         return 15;
+    }
+
+    @Override
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+
     }
 
 }

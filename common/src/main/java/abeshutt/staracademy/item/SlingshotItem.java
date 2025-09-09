@@ -24,14 +24,10 @@ public class SlingshotItem extends RangedWeaponItem {
         super(new Settings());
     }
 
-
     @Override
-    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
-        if(shooter instanceof PlayerEntity player) {
-            World world = shooter.getWorld();
-
-            //float progress = getPullProgress(this.getMaxUseTime(stack, user) - remainingUseTicks) / 2.0F;
-            float progress = speed;
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if(user instanceof PlayerEntity player) {
+            float progress = getPullProgress(this.getMaxUseTime(stack, user) - remainingUseTicks) / 2.0F;
 
             if(progress < 0.1D) {
                 return;
@@ -39,7 +35,7 @@ public class SlingshotItem extends RangedWeaponItem {
 
             if(!world.isClient) {
                 SlingshotEntity entity = new SlingshotEntity(world, player, new ItemStack(Items.FIRE_CHARGE));
-                entity.setVelocity(entity, player.getPitch(), player.getYaw(), 0.0F, progress, 1.0F);
+                entity.setVelocity(entity, player.getPitch(), player.getYaw(), 0.0F, progress * 3.0F, 1.0F);
                 world.spawnEntity(entity);
             }
 
@@ -84,6 +80,11 @@ public class SlingshotItem extends RangedWeaponItem {
     @Override
     public int getRange() {
         return 15;
+    }
+
+    @Override
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+
     }
 
 }
