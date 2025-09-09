@@ -17,6 +17,7 @@ public class ModWorldData extends ModRegistries {
     public static WorldDataType<VirtualWorldData> VIRTUAL_WORLD;
     public static WorldDataType<AcceptanceLetterData> ACCEPTANCE_LETTER;
     public static WorldDataType<ArmorDisplayData> ARMOR_DISPLAY;
+    public static WorldDataType<StarterKitData> STARTER_KIT;
 
     public static void register() {
         PLAYER_PROFILE = new WorldDataType<>(StarAcademyMod.ID + ".player_profile", PlayerProfileData::new);
@@ -31,6 +32,7 @@ public class ModWorldData extends ModRegistries {
         VIRTUAL_WORLD = new WorldDataType<>(StarAcademyMod.ID + ".virtual_world", VirtualWorldData::new);
         ACCEPTANCE_LETTER = new WorldDataType<>(StarAcademyMod.ID + ".acceptance_letter", AcceptanceLetterData::new);
         ARMOR_DISPLAY = new WorldDataType<>(StarAcademyMod.ID + ".armor_display", ArmorDisplayData::new);
+        STARTER_KIT = new WorldDataType<>(StarAcademyMod.ID + ".starter_kit", StarterKitData::new);
 
         PlayerProfileData.init();
         StarBadgeData.init();
@@ -42,6 +44,7 @@ public class ModWorldData extends ModRegistries {
         CardGradingData.init();
         VirtualWorldData.init();
         ArmorDisplayData.init();
+        StarterKitData.init();
     }
 
 }
