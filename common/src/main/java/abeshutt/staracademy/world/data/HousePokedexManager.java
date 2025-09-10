@@ -114,11 +114,11 @@ public class HousePokedexManager extends AbstractPokedexManager implements Insta
         this.getSpeciesRecords().clear();
         NbtCompound records = nbt.getCompound("records");
 
-        this.getSpeciesRecords().forEach((id, record) -> {
-            Adapters.SPECIES_DEX_RECORD.writeNbt(record, this).ifPresent(tag -> {
-                records.put(id.toString(), tag);
+        for(String key : records.getKeys()) {
+            Adapters.SPECIES_DEX_RECORD.readNbt(records.getCompound(key), this).ifPresent(record -> {
+                this.getSpeciesRecords().put(Identifier.tryParse(key), record);
             });
-        });
+        }
     }
 
 }
