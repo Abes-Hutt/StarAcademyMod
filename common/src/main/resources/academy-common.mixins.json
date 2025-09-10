@@ -79,9 +79,11 @@
     "numismaticoverhaul.MixinPurseLayerElement",
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
+    "radgyms.MixinCacheOpenPacketHandler",
     "radgyms.MixinDataSaver",
     "radgyms.MixinPlayerPartyStore",
     "radgyms.MixinPlayerSpawnHelper",
+    "radgyms.MixinPokeCache",
     "shutters.MixinShutter",
     "ultrabeasts.MixinWormholeEntity"
   ],
