@@ -32,28 +32,38 @@ public class UpdateArmorDisplayS2CPacket extends ModPacket<ClientPlayNetworkHand
 
     @Override
     public void onReceive(ClientPlayNetworkHandler listener) {
-        ArmorDisplayData.CLIENT.getEntries().putAll(this.entries);
+        if(this.entries == null) {
+            ArmorDisplayData.CLIENT.getEntries().clear();
+        } else {
+            ArmorDisplayData.CLIENT.getEntries().putAll(this.entries);
+        }
     }
 
     @Override
     public void writeBits(BitBuffer buffer) {
-        Adapters.INT_SEGMENTED_3.writeBits(this.entries.size(), buffer);
+        Adapters.BOOLEAN.writeBits(this.entries != null, buffer);
 
-        this.entries.forEach((uuid, entry) -> {
-            Adapters.UUID.writeBits(uuid, buffer);
-            entry.writeBits(buffer);
-        });
+        if(this.entries != null) {
+            Adapters.INT_SEGMENTED_3.writeBits(this.entries.size(), buffer);
+
+            this.entries.forEach((uuid, entry) -> {
+                Adapters.UUID.writeBits(uuid, buffer);
+                entry.writeBits(buffer);
+            });
+        }
     }
 
     @Override
     public void readBits(BitBuffer buffer) {
-        int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
+        if(Adapters.BOOLEAN.readBits(buffer).orElseThrow()) {
+            int size = Adapters.INT_SEGMENTED_3.readBits(buffer).orElseThrow();
 
-        for(int i = 0; i < size; i++) {
-            UUID uuid = Adapters.UUID.readBits(buffer).orElseThrow();
-            ArmorDisplayData.Entry entry = new ArmorDisplayData.Entry();
-            entry.readBits(buffer);
-            this.entries.put(uuid, entry);
+            for(int i = 0; i < size; i++) {
+                UUID uuid = Adapters.UUID.readBits(buffer).orElseThrow();
+                ArmorDisplayData.Entry entry = new ArmorDisplayData.Entry();
+                entry.readBits(buffer);
+                this.entries.put(uuid, entry);
+            }
         }
     }
 

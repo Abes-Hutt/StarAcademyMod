@@ -52,6 +52,7 @@ public class ArmorDisplayData extends WorldData {
     }
 
     private void onJoin(ServerPlayerEntity player) {
+        NetworkManager.sendToPlayer(player, new UpdateArmorDisplayS2CPacket(null));
         NetworkManager.sendToPlayer(player, new UpdateArmorDisplayS2CPacket(this.entries));
     }
 
