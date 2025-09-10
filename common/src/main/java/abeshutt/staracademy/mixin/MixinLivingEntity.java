@@ -12,14 +12,21 @@ import abeshutt.staracademy.util.AttributeHolder;
 import abeshutt.staracademy.util.ClientScheduler;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
+import net.minecraft.component.EnchantmentEffectComponentTypes;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -41,6 +48,8 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Shadow public abstract void remove(RemovalReason reason);
+
+    @Shadow public abstract void playSound(SoundEvent sound);
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/attribute/DefaultAttributeRegistry;get(Lnet/minecraft/entity/EntityType;)Lnet/minecraft/entity/attribute/DefaultAttributeContainer;"))
     public DefaultAttributeContainer getAttributes(EntityType<? extends LivingEntity> type) {
@@ -90,6 +99,20 @@ public abstract class MixinLivingEntity extends Entity {
 
                 instance.removeModifier(id);
                 instance.addTemporaryModifier(new EntityAttributeModifier(id, value, operation));
+            }
+        }
+    }
+
+    @Inject(method = "drop", at = @At("HEAD"))
+    protected void drop(ServerWorld world, DamageSource damageSource, CallbackInfo ci) {
+        if(damageSource.isOf(DamageTypes.LIGHTNING_BOLT) && (Object)this instanceof PlayerEntity player) {
+            for(int slot = 0; slot < player.getInventory().size(); slot++) {
+                ItemStack stack = player.getInventory().getStack(slot).copy();
+
+                if(!stack.isEmpty() && EnchantmentHelper.hasAnyEnchantmentsWith(stack, EnchantmentEffectComponentTypes.PREVENT_ARMOR_CHANGE)) {
+                    player.getInventory().removeStack(slot);
+                    player.dropItem(stack, true, false);
+                }
             }
         }
     }
