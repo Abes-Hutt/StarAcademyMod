@@ -42,6 +42,7 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), PlaySoundS2CPacket.ID, PlaySoundS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), WorldKeysUpdateS2CPacket.ID, WorldKeysUpdateS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateArmorDisplayS2CPacket.ID, UpdateArmorDisplayS2CPacket::new, CLIENT_PLAY);
+            ModNetwork.register(NetworkManager.s2c(), UpdateNickS2CPacket.ID, UpdateNickS2CPacket::new, CLIENT_PLAY);
 
             ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);
@@ -70,6 +71,7 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), PlaySoundS2CPacket.ID, PlaySoundS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), WorldKeysUpdateS2CPacket.ID, WorldKeysUpdateS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateArmorDisplayS2CPacket.ID, UpdateArmorDisplayS2CPacket::new, null);
+            ModNetwork.register(NetworkManager.s2c(), UpdateNickS2CPacket.ID, UpdateNickS2CPacket::new, null);
 
             ModNetwork.register(NetworkManager.c2s(), UpdateBetterStructureBlockC2SPacket.ID, UpdateBetterStructureBlockC2SPacket::new, SERVER_PLAY);
             ModNetwork.register(NetworkManager.c2s(), UpdateOutfitC2SPacket.ID, UpdateOutfitC2SPacket::new, SERVER_PLAY);

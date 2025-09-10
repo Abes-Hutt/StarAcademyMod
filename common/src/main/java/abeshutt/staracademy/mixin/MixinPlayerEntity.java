@@ -4,6 +4,7 @@ import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.HouseData;
+import abeshutt.staracademy.world.data.NickData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = PlayerEntity.class, priority = 2000)
+@Mixin(value = PlayerEntity.class)
 public abstract class MixinPlayerEntity extends LivingEntity {
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> type, World world) {
@@ -31,13 +32,17 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 
     @Inject(method = "getDisplayName", at = @At(value = "RETURN"), cancellable = true)
     private void getDisplayName(CallbackInfoReturnable<Text> ci) {
-        MutableText result = ci.getReturnValue().copy();
+        String nick = (this.getWorld().isClient() ? NickData.CLIENT
+                : ModWorldData.NICK.getGlobal(this.getWorld())).get(this.getUuid()).orElse(null);
+        MutableText result = nick != null ? Text.literal(nick) : ci.getReturnValue().copy();
         HouseData data = this.getWorld().isClient() ? HouseData.CLIENT : ModWorldData.HOUSE.getGlobal(this.getWorld());
         AcademyHouse house = data.getFor(this.getUuid()).orElse(null);
 
         if(house != null) {
-            ci.setReturnValue(result.setStyle(result.getStyle().withColor(house.getColor())));
+            result = result.setStyle(result.getStyle().withColor(house.getColor()));
         }
+
+        ci.setReturnValue(result);
     }
 
 }
