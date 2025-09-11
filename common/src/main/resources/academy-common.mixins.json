@@ -28,6 +28,7 @@
     "cobblemon.MixinStarterSelectionScreen",
     "display.MixinBlockFrameBlockRenderer",
     "itemzoomer.MixinZoomRenderer",
+    "megashowdown.MixinBattleTargetSelection",
     "radgyms.MixinEntityRenderers",
     "radgyms.MixinGymEnterScreen",
     "radgyms.ProxyDiscreteSliderComponent"
