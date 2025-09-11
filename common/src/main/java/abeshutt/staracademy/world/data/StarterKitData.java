@@ -1,15 +1,18 @@
 package abeshutt.staracademy.world.data;
 
+import abeshutt.staracademy.config.StarterKitConfig;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
 import com.google.gson.JsonObject;
+import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.hooks.item.ItemStackHooks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.WorldEvents;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,9 +42,9 @@ public class StarterKitData extends WorldData {
         if(!this.isGranted(player.getUuid())) {
             ModConfigs.STARTER_KIT.getEquipment().forEach((slot, stack) -> {
                 if(player.getEquippedStack(slot).isEmpty()) {
-                    player.equipStack(slot, stack);
+                    player.equipStack(slot, stack.copy());
                 } else {
-                    ItemStackHooks.giveItem(player, stack);
+                    ItemStackHooks.giveItem(player, stack.copy());
                 }
 
                 this.setGranted(player.getUuid(), true);
@@ -79,6 +82,10 @@ public class StarterKitData extends WorldData {
         PlayerEvent.PLAYER_JOIN.register(player -> {
             StarterKitData data = ModWorldData.STARTER_KIT.getGlobal(player.getWorld());
             data.onJoin(player);
+        });
+
+        LifecycleEvent.SERVER_BEFORE_START.register(server -> {
+            ModConfigs.STARTER_KIT = new StarterKitConfig().read();
         });
     }
 
