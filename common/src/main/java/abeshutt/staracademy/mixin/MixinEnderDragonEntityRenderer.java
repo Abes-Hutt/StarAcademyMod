@@ -62,6 +62,7 @@ public class MixinEnderDragonEntityRenderer {
                 .uv(446, 319).cuboid(-1.0F, -14.0F, -8.0F, 2.0F, 2.0F, 8.0F, new Dilation(0.0F))
                 .uv(448, 125).cuboid(-1.0F, 11.0F, -10.0F, 2.0F, 2.0F, 8.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 17.0F, -8.0F));
 
+        /*
         ModelPartData neck2 = neck.addChild("neck2", ModelPartBuilder.create().uv(388, 290).cuboid(-5.0F, -5.0F, -10.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F))
                 .uv(432, 381).cuboid(-1.0F, -12.0F, -8.0F, 2.0F, 23.0F, 6.0F, new Dilation(0.0F))
                 .uv(0, 444).cuboid(-1.0F, -14.0F, -8.0F, 2.0F, 2.0F, 8.0F, new Dilation(0.0F))
@@ -81,7 +82,7 @@ public class MixinEnderDragonEntityRenderer {
                 .uv(434, 167).cuboid(-1.0F, -12.0F, -8.0F, 2.0F, 23.0F, 6.0F, new Dilation(0.0F))
                 .uv(432, 332).cuboid(-1.0F, -14.0F, -8.0F, 2.0F, 2.0F, 8.0F, new Dilation(0.0F))
                 .uv(198, 441).cuboid(-1.0F, 11.0F, -10.0F, 2.0F, 2.0F, 8.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, -10.0F));
-
+*/
         ModelPartData body = partdefinition.addChild("body", ModelPartBuilder.create().uv(402, 20).cuboid(-1.0F, -31.0F, -10.0F, 2.0F, 20.0F, 12.0F, new Dilation(0.0F))
                 .uv(148, 421).cuboid(-1.0F, -35.0F, -10.0F, 2.0F, 4.0F, 16.0F, new Dilation(0.0F))
                 .uv(184, 421).cuboid(-1.0F, -45.0F, 10.0F, 2.0F, 4.0F, 16.0F, new Dilation(0.0F))
@@ -167,6 +168,7 @@ public class MixinEnderDragonEntityRenderer {
                 .uv(340, 386).cuboid(-2.0F, -7.0F, -16.0F, 3.0F, 4.0F, 20.0F, new Dilation(0.0F))
                 .uv(120, 389).cuboid(3.0F, 0.0F, -16.0F, 3.0F, 4.0F, 20.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 22.0F, 0.0F, 0.7854F, 0.0F, 0.0F));
 
+        /*
         ModelPartData tail = partdefinition.addChild("tail", ModelPartBuilder.create().uv(28, 408).cuboid(-5.0F, -5.0F, 0.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F))
                 .uv(296, 315).cuboid(-1.0F, -13.0F, 2.0F, 2.0F, 24.0F, 6.0F, new Dilation(0.0F))
                 .uv(448, 135).cuboid(-1.0F, -15.0F, 2.0F, 2.0F, 2.0F, 8.0F, new Dilation(0.0F))
@@ -214,7 +216,7 @@ public class MixinEnderDragonEntityRenderer {
 
         ModelPartData tail11 = tail10.addChild("tail11", ModelPartBuilder.create().uv(414, 253).cuboid(-5.0F, -5.0F, 0.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 10.0F));
 
-        ModelPartData tail12 = tail11.addChild("tail12", ModelPartBuilder.create().uv(252, 417).cuboid(-5.0F, -5.0F, 0.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 10.0F));
+        ModelPartData tail12 = tail11.addChild("tail12", ModelPartBuilder.create().uv(252, 417).cuboid(-5.0F, -5.0F, 0.0F, 10.0F, 10.0F, 10.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 10.0F));*/
         ci.setReturnValue(TexturedModelData.of(modelData, 512, 512));
     }
 
