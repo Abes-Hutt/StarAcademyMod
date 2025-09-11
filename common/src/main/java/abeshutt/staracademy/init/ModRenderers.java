@@ -67,7 +67,7 @@ public class ModRenderers extends ModRegistries {
                 EntityRenderers.register(ModEntities.PARTNER_NPC.get(), ctx -> new HumanEntityRenderer<>(ctx, false, e -> e));
                 EntityRenderers.register(ModEntities.SAFARI_NPC.get(), ctx -> new HumanEntityRenderer<>(ctx, true, e -> e));
                 EntityRenderers.register(ModEntities.NURSE_NPC.get(), ctx -> new HumanEntityRenderer<>(ctx, true, e -> e));
-                EntityRenderers.register(ModEntities.CARD_GRADER_NPC.get(), ctx -> new HumanEntityRenderer<>(ctx, false, e -> e));
+                EntityRenderers.register(ModEntities.CARD_GRADER_NPC.get(), ctx -> new HumanEntityRenderer<>(ctx, true, e -> e));
                 EntityRenderers.register(ModEntities.SHOOTING_STAR.get(), ShootingStarRenderer::new);
             });
         }
