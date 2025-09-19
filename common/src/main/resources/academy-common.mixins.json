@@ -30,8 +30,6 @@
     "itemzoomer.MixinZoomRenderer",
     "megashowdown.MixinBattleTargetSelection",
     "radgyms.MixinEntityRenderers",
-    "radgyms.MixinGymEnterScreen",
-    "radgyms.ProxyDiscreteSliderComponent"
   ],
   "mixins": [
     "MixinAbstractFireBlock",
@@ -81,7 +79,6 @@
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
     "radgyms.MixinCacheOpenPacketHandler",
-    "radgyms.MixinDataSaver",
     "radgyms.MixinPlayerPartyStore",
     "radgyms.MixinPlayerSpawnHelper",
     "radgyms.MixinPokeCache",
