@@ -11,7 +11,6 @@ import java.util.Set;
 public class AcademyMixinPlugin implements IMixinConfigPlugin {
 
     private static final Set<String> RAD_GYMS_MIXINS = Set.of(
-            "abeshutt.staracademy.mixin.radgyms.MixinDataSaver",
             "abeshutt.staracademy.mixin.radgyms.MixinEntityRenderers",
             "abeshutt.staracademy.mixin.radgyms.MixinPlayerPartyStore"
     );
