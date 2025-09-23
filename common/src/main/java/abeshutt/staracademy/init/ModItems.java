@@ -146,10 +146,6 @@ public class ModItems extends ModRegistries {
         register("lootbag_academybiomeblend", () -> new LootBagItem(0x4C694C, new Item.Settings().maxCount(1)));
         register("lootbag_gymkey", () -> new LootBagItem(0xFFDCA1, new Item.Settings().maxCount(1)));
         register("lootbag_hats", () -> new LootBagItem(0x4F3539, new Item.Settings().maxCount(1)));
-        register("beads_of_ruin", () -> new LegendaryItem(0xFC54FC, new Item.Settings().maxCount(1)));
-        register("sword_of_ruin", () -> new LegendaryItem(0xFC54FC, new Item.Settings().maxCount(1)));
-        register("tablets_of_ruin", () -> new LegendaryItem(0xFC54FC, new Item.Settings().maxCount(1)));
-        register("vessel_of_ruin", () -> new LegendaryItem(0xFC54FC, new Item.Settings().maxCount(1)));
     }
 
     public static <V extends Item> RegistrySupplier<V> register(Identifier id, Supplier<V> item) {
