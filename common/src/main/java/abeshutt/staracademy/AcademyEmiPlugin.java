@@ -7,6 +7,8 @@ import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.BoosterPackItem;
 import abeshutt.staracademy.item.CardAlbumItem;
 import abeshutt.staracademy.item.SafariTicketItem;
+import com.cobblemon.mod.common.client.render.models.blockbench.pokemon.PokemonPosableModel;
+import com.cobblemon.mod.common.client.render.models.blockbench.repository.PokemonModelRepository;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;

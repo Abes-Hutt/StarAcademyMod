@@ -1,6 +1,10 @@
 package abeshutt.staracademy.mixin.mythsandlegends;
 
 import abeshutt.staracademy.StarAcademyMod;
+import com.cobblemon.mod.common.api.spawning.detail.EntitySpawnResult;
+import com.cobblemon.mod.common.api.spawning.detail.SpawnAction;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -9,6 +13,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = { "com.github.d0ctorleon.mythsandlegends.utils.ForceSpawningUtils" })
@@ -24,6 +29,19 @@ public class MixinForceSpawningUtils {
     private static void forceSpawnv1Return(World world, PlayerEntity playerEntity, Hand hand, String keyItemIdentifierPath,
                                            CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
         StarAcademyMod.FORCE_SPAWNING.set(false);
+    }
+
+    @Inject(method = "handleSpawnAction2", at = @At("HEAD"))
+    private static void handleSpawnAction2(SpawnAction<?> spawnAction, CallbackInfo ci) {
+        spawnAction.getFuture().thenAccept(object -> {
+            if(object instanceof EntitySpawnResult result) {
+                for(Entity entity : result.getEntities()) {
+                    if(entity instanceof MobEntity mob) {
+                        mob.setPersistent();
+                    }
+                }
+            }
+        });
     }
 
 }
