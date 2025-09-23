@@ -31,7 +31,7 @@ public class MixinForceSpawningUtils {
         StarAcademyMod.FORCE_SPAWNING.set(false);
     }
 
-    @Inject(method = "handleSpawnAction2", at = @At("HEAD"))
+    @Inject(method = "handleSpawnAction2", at = @At("HEAD"), remap = false)
     private static void handleSpawnAction2(SpawnAction<?> spawnAction, CallbackInfo ci) {
         spawnAction.getFuture().thenAccept(object -> {
             if(object instanceof EntitySpawnResult result) {
