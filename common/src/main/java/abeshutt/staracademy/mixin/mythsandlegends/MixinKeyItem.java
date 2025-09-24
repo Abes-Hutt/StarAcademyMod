@@ -18,12 +18,10 @@ import java.util.List;
 @Mixin(targets = { "com.github.d0ctorleon.mythsandlegends.items.KeyItem" })
 public class MixinKeyItem {
 
-    @Shadow @Final private String itemName;
-
     @Inject(method = "appendTooltip", at = @At(value = "HEAD"), cancellable = true)
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         Identifier id = Registries.ITEM.getId(stack.getItem());
-        tooltip.add(Text.translatable("item." + this.itemName + ".description"));
+        tooltip.add(Text.translatable("item." + id + ".description"));
         ci.cancel();
     }
 
