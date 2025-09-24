@@ -32,7 +32,7 @@ public class LegendaryItemsConfig extends FileConfig {
     @Override
     protected void reset() {
         this.custom = new ArrayList<>();
-        this.custom.add("test");
+        this.custom.add("academy:test");
 
         this.occurrences = new ArrayList<>();
         this.occurrences.add(Identifier.ofVanilla("diamond"));
