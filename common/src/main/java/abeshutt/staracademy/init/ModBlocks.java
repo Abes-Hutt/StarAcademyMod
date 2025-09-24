@@ -1,9 +1,6 @@
 package abeshutt.staracademy.init;
 
-import abeshutt.staracademy.block.BetterStructureBlock;
-import abeshutt.staracademy.block.HousePokedexBlock;
-import abeshutt.staracademy.block.SafariPortalBlock;
-import abeshutt.staracademy.block.ShinyPokedollCollectorBlock;
+import abeshutt.staracademy.block.*;
 import abeshutt.staracademy.block.entity.BetterStructureBlockEntity;
 import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.block.entity.SafariPortalBlockEntity;
@@ -55,13 +52,13 @@ public class ModBlocks extends ModRegistries {
         SHINY_POKEDOLL_COLLECTOR = register("shiny_pokedoll_collector", ShinyPokedollCollectorBlock::new,
                 block -> new BlockItem(block.get(), new Item.Settings()));
 
-        register("meteoric_chunk", () -> new Block(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
+        register("meteoric_chunk", () -> new MeteoricChunkBlock(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
                 block -> new BlockItem(block.get(), new Item.Settings()));
 
-        register("rare_meteoric_chunk", () -> new Block(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
+        register("rare_meteoric_chunk", () -> new MeteoricChunkBlock(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
                 block -> new BlockItem(block.get(), new Item.Settings()));
 
-        register("fabulous_meteoric_chunk", () -> new Block(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
+        register("fabulous_meteoric_chunk", () -> new MeteoricChunkBlock(Block.Settings.copy(Blocks.AMETHYST_BLOCK)),
                 block -> new BlockItem(block.get(), new Item.Settings()));
     }
 
