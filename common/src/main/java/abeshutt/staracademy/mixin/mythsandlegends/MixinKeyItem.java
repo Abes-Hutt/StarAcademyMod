@@ -3,9 +3,7 @@ package abeshutt.staracademy.mixin.mythsandlegends;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,10 +16,11 @@ import java.util.List;
 @Mixin(targets = { "com.github.d0ctorleon.mythsandlegends.items.KeyItem" })
 public class MixinKeyItem {
 
+    @Shadow @Final private String itemName;
+
     @Inject(method = "appendTooltip", at = @At(value = "HEAD"), cancellable = true)
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
-        Identifier id = Registries.ITEM.getId(stack.getItem());
-        tooltip.add(Text.translatable("item." + id + ".description"));
+        tooltip.add(Text.translatable("item." + this.itemName + ".description"));
         ci.cancel();
     }
 

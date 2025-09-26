@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = { "com.github.d0ctorleon.mythsandlegends.utils.ForceSpawningUtils" })
-public class MixinForceSpawningUtils {
+public abstract class MixinForceSpawningUtils {
 
     @Inject(method = "forceSpawnv1", at = @At("HEAD"))
     private static void forceSpawnv1Head(World world, PlayerEntity playerEntity, Hand hand, String keyItemIdentifierPath,

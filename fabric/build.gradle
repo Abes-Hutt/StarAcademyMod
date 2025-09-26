@@ -44,6 +44,9 @@ dependencies {
     //modImplementation("io.wispforest:owo-sentinel:0.12.15.4+1.21")
     modImplementation("io.wispforest:owo-lib:0.12.15.4+1.21")
 
+    modImplementation("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
+    modImplementation(project(":common").files("jars/toml4j-0.7.2.jar"))
+
     modImplementation("maven.modrinth:enhanced-celestials:6.0.2.4-fabric")
     modImplementation("maven.modrinth:corgilib:1.21.1-5.0.0.7-Fabric")
     modImplementation("maven.modrinth:data-anchor:2.0.0.12-fabric")
