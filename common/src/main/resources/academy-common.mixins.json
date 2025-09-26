@@ -78,6 +78,7 @@
     "mythsandlegends.MixinItems",
     "mythsandlegends.MixinKeyItem",
     "mythsandlegends.MixinKeyItemConditions",
+    "mythsandlegends.MixinPlayerDataUtils",
     "mythsandlegends.MixinPlayerEvents",
     "mythsandlegends.MixinSingleEntitySpawnAction",
     "numismaticoverhaul.MixinPurseLayerElement",
