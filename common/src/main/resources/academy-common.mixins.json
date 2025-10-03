@@ -60,6 +60,7 @@
     "cobblemon.MixinPlayerSpawnerFactory",
     "cobblemon.MixinPokeBallItem",
     "cobblemon.MixinPokemonBattle",
+    "cobblemon.MixinPokemonEntity",
     "cobblemon.MixinShinyCalculationEvent",
     "eternalstarlight.MixinESChunkGenerator",
     "extraquests.MixinTimerProvider",
