@@ -67,6 +67,7 @@
     "extraquests.MixinTimerStorage",
     "extraquests.MixinUtils",
     "fadingclouds.MixinFadingCloudBlock",
+    "fadingclouds.MixinGlassBottleItem",
     "ftbquests.MixinFtbQuestsNetClient",
     "ftbquests.MixinItemReward",
     "ftbquests.MixinNotifyItemRewardMessage",

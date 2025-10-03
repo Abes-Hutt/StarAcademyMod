@@ -73,4 +73,6 @@ dependencies {
     modCompileOnly("maven.modrinth:gliding:1.0.1")
 
     modCompileOnly("dev.emi:emi-xplat-intermediary:1.1.22+1.21.1:api")
+
+    modCompileOnly("maven.modrinth:lootables:0.1.4+1.21.1")
 }
