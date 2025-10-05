@@ -1,14 +1,27 @@
 package abeshutt.staracademy.init;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.item.*;
+import com.cobblemon.mod.common.CobblemonItems;
+import com.cobblemon.mod.common.api.pokeball.catching.CaptureEffect;
+import com.cobblemon.mod.common.api.pokeball.catching.modifiers.MultiplierModifier;
+import com.cobblemon.mod.common.api.pokeball.catching.modifiers.WorldStateModifier;
+import com.cobblemon.mod.common.item.PokeBallItem;
+import com.cobblemon.mod.common.pokeball.PokeBall;
+import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.type.FoodComponent;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class ModItems extends ModRegistries {
@@ -30,6 +43,9 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> CARD_ALBUM;
     public static RegistrySupplier<Item> LEGENDARY_PLACEHOLDER;
     public static RegistrySupplier<AcceptanceLetterItem> ACCEPTANCE_LETTER;
+    public static RegistrySupplier<PokeBallItem> GREAT_SAFARI_BALL;
+    public static RegistrySupplier<PokeBallItem> GOLDEN_SAFARI_BALL;
+    public static Supplier<Set<PokeBallItem>> SAFARI_BALLS = () -> Set.of(CobblemonItems.SAFARI_BALL, GREAT_SAFARI_BALL.get(), GOLDEN_SAFARI_BALL.get());
 
     public static void register() {
         STAR_BADGE = register("star_badge", StarBadgeItem::new);
@@ -49,6 +65,9 @@ public class ModItems extends ModRegistries {
         CARD_ALBUM = register("card_album", CardAlbumItem::new);
         LEGENDARY_PLACEHOLDER = register("legendary_placeholder", () -> new Item(new Item.Settings().maxCount(1)));
         ACCEPTANCE_LETTER = register("acceptance_letter", AcceptanceLetterItem::new);
+        GREAT_SAFARI_BALL = register("great_safari_ball", () -> new PokeBallItem(ModPokeBalls.GREAT_SAFARI_BALL));
+        GOLDEN_SAFARI_BALL = register("golden_safari_ball", () -> new PokeBallItem(ModPokeBalls.GOLDEN_SAFARI_BALL));
+
         register("roasted_aguav_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_apicot_berry", () -> new FoodItem(Rarity.COMMON, 8, 1.2f, true, false));
         register("roasted_aspear_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.8f, true, false));
