@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinPortalUtils {
 
     @Inject(method = "processOutbreaks", at = @At("HEAD"), cancellable = true)
-    public static void processOutbreaks(ServerPlayerEntity serverPlayer, int outbreakCount, CallbackInfo ci) {
+    private static void processOutbreaks(ServerPlayerEntity serverPlayer, int outbreakCount, CallbackInfo ci) {
         if (serverPlayer.getWorld().getRegistryKey() != StarAcademyMod.SAFARI) {
             ci.cancel();
         }
