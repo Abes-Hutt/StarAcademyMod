@@ -16,12 +16,21 @@ public abstract class MixinOutbreakPortalEntity {
     @Shadow public abstract OutbreakPortal getPortal();
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lcom/scouter/cobblemonoutbreaks/data/OutbreakWaveData;getWaves()I"))
-    public int tick(OutbreakWaveData instance) {
+    public int getWaves(OutbreakWaveData instance) {
         if (this.getTickData().getTicksActive() >= this.getPortal().getGateTimer()) {
             return Integer.MAX_VALUE;
         }
 
         return instance.getWaves();
+    }
+
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lcom/scouter/cobblemonoutbreaks/portal/entity/OutbreakPortalEntityTickData;getTickCount()I"))
+    public int getTickCount(OutbreakPortalEntityTickData instance) {
+        if (this.getTickData().getTicksActive() >= this.getPortal().getGateTimer()) {
+            return 1;
+        }
+
+        return instance.getTickCount();
     }
 
 }
