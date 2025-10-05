@@ -24,6 +24,10 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
             "abeshutt.staracademy.mixin.fadingclouds.MixinGlassBottleItem"
     );
 
+    private static final Set<String> OUTBREAKS_MIXINS = Set.of(
+            "abeshutt.staracademy.mixin.outbreaks.MixinPlayerEntity"
+    );
+
     @Override
     public void onLoad(String mixinPackage) {
 
@@ -42,6 +46,8 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
             return Platform.isModLoaded("mythsandlegends");
         } else if (FADING_CLOUDS_MIXINS.contains(mixinClassName)) {
             return Platform.isModLoaded("fading_clouds");
+        } else if (OUTBREAKS_MIXINS.contains(mixinClassName)) {
+            return Platform.isModLoaded("cobblemonoutbreaks");
         }
 
         return true;

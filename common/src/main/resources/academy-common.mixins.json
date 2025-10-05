@@ -87,6 +87,7 @@
     "numismaticoverhaul.MixinShopBlock",
     "numismaticoverhaul.MixinShopBlockEntity",
     "outbreaks.MixinOutbreakPortalEntity",
+    "outbreaks.MixinPlayerEntity",
     "outbreaks.MixinPortalUtils",
     "radgyms.MixinCacheOpenPacketHandler",
     "radgyms.MixinDataSaver",
