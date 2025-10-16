@@ -74,6 +74,11 @@ public class ModOutfits {
     public static EeveeHatOutfit.Leafeon LEAFEON_HAT;
     public static EeveeHatOutfit.Sylveon SYLVEON_HAT;
 
+    public static MimikyuOutfit.Hat MIMIKYU_HAT;
+    public static MimikyuOutfit.Chestplate MIMIKYU_CHESTPLATE;
+    public static MimikyuOutfit.Tail MIMIKYU_TAIL;
+    public static MimikyuOutfit.Shoes MIMIKYU_SHOES;
+
     public static void register() {
         CLASSY1_HAT = register(new Classy1Outfit.Hat("classy1_hat"));
         CLASSY1_SHIRT = register(new Classy1Outfit.Shirt("classy1_shirt"));
@@ -122,6 +127,7 @@ public class ModOutfits {
         PIKACHU_HAT = register(new PokemonHatOutfit.Pikachu("pikachu_hat"));
         SLOWKING_HAT = register(new PokemonHatOutfit.Slowking("slowking_hat"));
 
+
         SWEATER_TOP = register(new SweaterOutfit.Top("sweater_top"));
         SWEATER_BOOTS = register(new SweaterOutfit.Boots("sweater_boots"));
 
@@ -138,6 +144,11 @@ public class ModOutfits {
         JOLTEON_HAT = register(new EeveeHatOutfit.Jolteon("jolteon_hat"));
         LEAFEON_HAT = register(new EeveeHatOutfit.Leafeon("leafeon_hat"));
         SYLVEON_HAT = register(new EeveeHatOutfit.Sylveon("sylveon_hat"));
+
+        MIMIKYU_HAT = register(new MimikyuOutfit.Hat("mimikyu_hat"));
+        MIMIKYU_CHESTPLATE = register(new MimikyuOutfit.Chestplate("mimikyu_chestplate"));
+        MIMIKYU_TAIL = register(new MimikyuOutfit.Tail("mimikyu_tail"));
+        MIMIKYU_SHOES = register(new MimikyuOutfit.Shoes("mimikyu_shoes"));
     }
 
     private static int order;
