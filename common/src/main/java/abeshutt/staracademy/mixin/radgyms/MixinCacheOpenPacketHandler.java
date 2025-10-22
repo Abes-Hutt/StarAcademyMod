@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(targets = { "lol.gito.radgyms.network.CacheOpenPacketHandler" })
+@Mixin(targets = { "lol.gito.radgyms.common.network.handler.CacheOpenC2SHandler" })
 public class MixinCacheOpenPacketHandler {
 
-    @Redirect(method = "invoke", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;sendMessage(Lnet/minecraft/text/Text;)V"))
+    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;sendMessage(Lnet/minecraft/text/Text;)V"))
     private void sendMessage(ServerPlayerEntity player, Text message) {
 
     }

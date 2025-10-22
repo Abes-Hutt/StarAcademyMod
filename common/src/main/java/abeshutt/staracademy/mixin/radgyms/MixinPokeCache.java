@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = { "lol.gito.radgyms.item.PokeCache" })
+@Mixin(targets = { "lol.gito.radgyms.common.item.PokeCache" })
 public class MixinPokeCache {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)

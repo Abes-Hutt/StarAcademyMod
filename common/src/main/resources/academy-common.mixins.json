@@ -10,7 +10,6 @@
     "MixinBuiltinModelItemRenderer",
     "MixinClientWorld",
     "MixinCreativeInventoryScreen",
-    "MixinDiscreteSliderComponent",
     "MixinEnderDragonEntityRenderer",
     "MixinHandledScreen",
     "MixinInGameHud",
@@ -30,8 +29,6 @@
     "itemzoomer.MixinZoomRenderer",
     "megashowdown.MixinBattleTargetSelection",
     "radgyms.MixinEntityRenderers",
-    "radgyms.MixinGymEnterScreen",
-    "radgyms.ProxyDiscreteSliderComponent"
   ],
   "mixins": [
     "MixinAbstractFireBlock",
@@ -48,7 +45,6 @@
     "MixinPlayerEntity",
     "MixinPlayerScreenHandler",
     "MixinSellMapFactory",
-    "MixinServerPlayerEntity",
     "MixinServerWorld",
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
@@ -92,7 +88,6 @@
     "outbreaks.MixinPlayerEntity",
     "outbreaks.MixinPortalUtils",
     "radgyms.MixinCacheOpenPacketHandler",
-    "radgyms.MixinDataSaver",
     "radgyms.MixinPlayerPartyStore",
     "radgyms.MixinPlayerSpawnHelper",
     "radgyms.MixinPokeCache",
