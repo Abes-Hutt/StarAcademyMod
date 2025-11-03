@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin.cobblemon;
 
-import abeshutt.staracademy.util.ProxySelectionButton;
+import abeshutt.staracademy.proxy.ProxySelectionButton;
 import com.cobblemon.mod.common.client.gui.startselection.widgets.preview.SelectionButton;
 import com.cobblemon.mod.common.util.LocalizationUtilsKt;
 import net.minecraft.text.MutableText;

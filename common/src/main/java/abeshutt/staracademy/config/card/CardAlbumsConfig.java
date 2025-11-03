@@ -1,8 +1,8 @@
 package abeshutt.staracademy.config.card;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.CardAlbumEntry;
 import abeshutt.staracademy.config.FileConfig;
+import abeshutt.staracademy.item.data.card.CardAlbumEntry;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedHashMap;

@@ -1,10 +1,10 @@
 package abeshutt.staracademy.config.card;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.BoosterPackEntry;
-import abeshutt.staracademy.card.BoosterPackEntry.Pool;
 import abeshutt.staracademy.config.FileConfig;
-import abeshutt.staracademy.world.roll.NumberRoll;
+import abeshutt.staracademy.item.data.card.BoosterPackEntry;
+import abeshutt.staracademy.item.data.card.BoosterPackEntry.Pool;
+import abeshutt.staracademy.math.roll.NumberRoll;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedHashMap;

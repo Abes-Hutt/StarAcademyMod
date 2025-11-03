@@ -1,7 +1,6 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.StarAcademyMod;
-import com.cobblemon.mod.common.api.pokeball.PokeBalls;
 import com.cobblemon.mod.common.api.pokeball.catching.modifiers.WorldStateModifier;
 import com.cobblemon.mod.common.pokeball.PokeBall;
 

@@ -1,7 +1,7 @@
 package abeshutt.staracademy.config;
 
-import abeshutt.staracademy.attribute.again.*;
-import abeshutt.staracademy.world.roll.NumberRoll;
+import abeshutt.staracademy.attribute.*;
+import abeshutt.staracademy.math.roll.NumberRoll;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
@@ -12,9 +12,9 @@ import net.minecraft.registry.entry.RegistryEntry;
 
 import java.util.List;
 
-import static abeshutt.staracademy.attribute.again.type.AttributeTypes.any;
-import static abeshutt.staracademy.attribute.again.type.AttributeTypes.number;
 import static abeshutt.staracademy.attribute.path.AttributePath.relative;
+import static abeshutt.staracademy.attribute.type.AttributeTypes.any;
+import static abeshutt.staracademy.attribute.type.AttributeTypes.number;
 import static net.minecraft.entity.attribute.EntityAttributeModifier.Operation.*;
 
 public class AttributeConfig extends FileConfig {

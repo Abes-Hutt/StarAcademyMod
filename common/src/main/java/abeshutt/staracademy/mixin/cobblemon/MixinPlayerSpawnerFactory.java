@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin.cobblemon;
 
-import abeshutt.staracademy.attribute.again.AttributePlayerInfluence;
+import abeshutt.staracademy.attribute.AttributePlayerInfluence;
 import com.cobblemon.mod.common.api.spawning.SpawnerManager;
 import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawner;
 import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawnerFactory;

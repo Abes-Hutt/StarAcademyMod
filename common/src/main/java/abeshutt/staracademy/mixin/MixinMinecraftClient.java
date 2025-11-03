@@ -1,9 +1,9 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.client.AcademyClient;
-import abeshutt.staracademy.client.AcademyPackets;
-import abeshutt.staracademy.util.ProxyAcademyClient;
+import abeshutt.staracademy.api.AcademyClient;
+import abeshutt.staracademy.api.AcademyPackets;
+import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;

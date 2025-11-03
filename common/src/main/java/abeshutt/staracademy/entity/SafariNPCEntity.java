@@ -3,28 +3,21 @@ package abeshutt.staracademy.entity;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.world.data.SafariData;
+import abeshutt.staracademy.world.data.save.SafariData;
 import com.glisco.numismaticoverhaul.ModComponents;
 import com.glisco.numismaticoverhaul.currency.CurrencyComponent;
-import com.glisco.numismaticoverhaul.item.NumismaticOverhaulItems;
-import dev.cudzer.cobblemonalphas.config.ModConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
-import static net.minecraft.text.ClickEvent.Action.RUN_COMMAND;
 
 public class SafariNPCEntity extends HumanEntity {
 

@@ -1,16 +1,16 @@
 package abeshutt.staracademy.config;
 
-import abeshutt.staracademy.attribute.again.Attribute;
-import abeshutt.staracademy.card.*;
+import abeshutt.staracademy.attribute.Attribute;
 import abeshutt.staracademy.config.sound.PlaySoundEvent;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.biome.BiomePredicate;
 import abeshutt.staracademy.data.entity.EntityPredicate;
 import abeshutt.staracademy.data.item.ItemPredicate;
 import abeshutt.staracademy.data.tile.TilePredicate;
+import abeshutt.staracademy.item.data.card.*;
 import abeshutt.staracademy.math.Rational;
+import abeshutt.staracademy.math.roll.IntRoll;
 import abeshutt.staracademy.util.ItemUseLogic;
-import abeshutt.staracademy.world.roll.IntRoll;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.item.ItemStack;

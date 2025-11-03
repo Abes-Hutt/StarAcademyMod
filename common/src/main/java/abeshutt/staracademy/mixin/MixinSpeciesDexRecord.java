@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.util.ProxySpeciesDexRecord;
+import abeshutt.staracademy.proxy.ProxySpeciesDexRecord;
 import com.cobblemon.mod.common.api.pokedex.FormDexRecord;
 import com.cobblemon.mod.common.api.pokedex.SpeciesDexRecord;
 import org.spongepowered.asm.mixin.Final;

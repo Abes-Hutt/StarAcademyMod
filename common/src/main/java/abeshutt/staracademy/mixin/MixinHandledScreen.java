@@ -5,7 +5,7 @@ import abeshutt.staracademy.net.BroadcastItemC2SPacket;
 import abeshutt.staracademy.net.ToggleArmorDisplayC2SPacket;
 import abeshutt.staracademy.screen.CardAlbumScreen;
 import abeshutt.staracademy.screen.handler.CardAlbumScreenHandler;
-import abeshutt.staracademy.world.data.ArmorDisplayData;
+import abeshutt.staracademy.world.data.save.ArmorDisplayData;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.MinecraftClient;

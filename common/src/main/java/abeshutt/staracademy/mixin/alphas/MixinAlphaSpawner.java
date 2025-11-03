@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin.alphas;
 
-import abeshutt.staracademy.world.random.JavaRandom;
+import abeshutt.staracademy.math.random.JavaRandom;
 import dev.cudzer.cobblemonalphas.CobblemonAlphasMod;
 import dev.cudzer.cobblemonalphas.config.ModConfig;
 import dev.cudzer.cobblemonalphas.data.AlphaJsonDataManager;

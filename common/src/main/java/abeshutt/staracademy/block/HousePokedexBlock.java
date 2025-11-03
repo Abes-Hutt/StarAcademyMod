@@ -2,7 +2,7 @@ package abeshutt.staracademy.block;
 
 import abeshutt.staracademy.block.entity.HousePokedexBlockEntity;
 import abeshutt.staracademy.screen.HousePokedexScreen;
-import abeshutt.staracademy.world.data.HouseData;
+import abeshutt.staracademy.world.data.save.HouseData;
 import com.cobblemon.mod.common.client.pokedex.PokedexType;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;

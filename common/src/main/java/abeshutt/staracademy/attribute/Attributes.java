@@ -1,8 +1,5 @@
 package abeshutt.staracademy.attribute;
 
-import abeshutt.staracademy.attribute.again.Attribute;
-import abeshutt.staracademy.attribute.again.AttributeContext;
-import abeshutt.staracademy.attribute.again.NodeAttribute;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.data.component.CardAlbumInventory;
 import abeshutt.staracademy.event.CommonEvents;
@@ -10,9 +7,9 @@ import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.item.CardAlbumItem;
 import abeshutt.staracademy.item.CardItem;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.util.AttributeHolder;
-import abeshutt.staracademy.world.random.JavaRandom;
-import abeshutt.staracademy.world.random.RandomSource;
+import abeshutt.staracademy.math.random.JavaRandom;
+import abeshutt.staracademy.math.random.RandomSource;
+import abeshutt.staracademy.proxy.AttributeHolder;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import dev.emi.trinkets.api.TrinketInventory;

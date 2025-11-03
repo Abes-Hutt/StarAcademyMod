@@ -1,9 +1,8 @@
 package abeshutt.staracademy.mixin.ftbquests;
 
-import abeshutt.staracademy.util.ProxyNotifyItemRewardMessage;
+import abeshutt.staracademy.proxy.ProxyNotifyItemRewardMessage;
 import dev.architectury.networking.NetworkManager;
 import dev.ftb.mods.ftbquests.quest.Quest;
-import dev.ftb.mods.ftbquests.quest.reward.ItemReward;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;

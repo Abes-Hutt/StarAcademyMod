@@ -1,19 +1,22 @@
 package abeshutt.staracademy.attribute;
 
+import abeshutt.staracademy.math.random.JavaRandom;
+import abeshutt.staracademy.math.random.RandomSource;
+
 public class AttributeContext {
 
-    private Attribute<?> root;
+    private final RandomSource random;
 
-    public AttributeContext() {
-
+    public AttributeContext(RandomSource random) {
+        this.random = random;
     }
 
-    public Attribute<?> getRoot() {
-        return this.root;
+    public static AttributeContext random() {
+        return new AttributeContext(JavaRandom.ofNanoTime());
     }
 
-    public void setRoot(Attribute<?> root) {
-        this.root = root;
+    public RandomSource getRandom() {
+        return this.random;
     }
 
 }

@@ -1,10 +1,10 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.attribute.again.Attribute;
-import abeshutt.staracademy.attribute.again.NodeAttribute;
-import abeshutt.staracademy.attribute.again.type.AttributeTypes;
+import abeshutt.staracademy.attribute.Attribute;
+import abeshutt.staracademy.attribute.NodeAttribute;
+import abeshutt.staracademy.attribute.type.AttributeTypes;
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.util.AttributeHolder;
+import abeshutt.staracademy.proxy.AttributeHolder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

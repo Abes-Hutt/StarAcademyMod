@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin.radgyms;
 
-import abeshutt.staracademy.util.ProxyGymData;
+import abeshutt.staracademy.proxy.ProxyGymData;
 import com.bawnorton.mixinsquared.TargetHandler;
 import lol.gito.radgyms.RadGyms;
 import net.minecraft.entity.Entity;

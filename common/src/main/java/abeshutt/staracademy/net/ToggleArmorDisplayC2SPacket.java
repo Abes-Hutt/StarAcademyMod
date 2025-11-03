@@ -4,18 +4,11 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.world.data.ArmorDisplayData;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.message.MessageType;
+import abeshutt.staracademy.world.data.save.ArmorDisplayData;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.screen.slot.ArmorSlot;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 public class ToggleArmorDisplayC2SPacket extends ModPacket<ServerPlayNetworkHandler> {
 

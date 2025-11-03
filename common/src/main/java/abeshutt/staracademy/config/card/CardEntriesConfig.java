@@ -1,13 +1,13 @@
 package abeshutt.staracademy.config.card;
 
-import abeshutt.staracademy.CardRarity;
 import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.WeightedList;
-import abeshutt.staracademy.card.CardEntry;
-import abeshutt.staracademy.card.CardEntry.Entry;
 import abeshutt.staracademy.config.FileConfig;
+import abeshutt.staracademy.item.data.card.CardEntry;
+import abeshutt.staracademy.item.data.card.CardEntry.Entry;
+import abeshutt.staracademy.item.data.card.CardRarity;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.world.random.RandomSource;
+import abeshutt.staracademy.math.WeightedList;
+import abeshutt.staracademy.math.random.RandomSource;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedHashMap;

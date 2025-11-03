@@ -1,10 +1,10 @@
 package abeshutt.staracademy.config.card;
 
 import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.WeightedList;
 import abeshutt.staracademy.config.FileConfig;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.world.random.RandomSource;
+import abeshutt.staracademy.math.WeightedList;
+import abeshutt.staracademy.math.random.RandomSource;
 import com.google.gson.annotations.Expose;
 
 import java.util.*;

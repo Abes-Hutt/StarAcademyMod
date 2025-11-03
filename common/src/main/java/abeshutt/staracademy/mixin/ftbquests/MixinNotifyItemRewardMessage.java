@@ -1,7 +1,7 @@
 package abeshutt.staracademy.mixin.ftbquests;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.util.ProxyNotifyItemRewardMessage;
+import abeshutt.staracademy.proxy.ProxyNotifyItemRewardMessage;
 import dev.ftb.mods.ftbquests.net.NotifyItemRewardMessage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;

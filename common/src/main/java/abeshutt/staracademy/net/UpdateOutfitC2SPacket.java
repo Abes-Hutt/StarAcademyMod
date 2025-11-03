@@ -4,7 +4,7 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.world.data.WardrobeData;
+import abeshutt.staracademy.world.data.save.WardrobeData;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

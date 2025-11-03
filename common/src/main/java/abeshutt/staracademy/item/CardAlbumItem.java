@@ -1,11 +1,11 @@
 package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.CardAlbumEntry;
 import abeshutt.staracademy.data.component.CardAlbumInventory;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
+import abeshutt.staracademy.item.data.card.CardAlbumEntry;
 import abeshutt.staracademy.item.renderer.CardAlbumItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.screen.handler.CardAlbumScreenHandler;

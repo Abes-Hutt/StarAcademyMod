@@ -1,11 +1,11 @@
 package abeshutt.staracademy.mixin;
 
+import abeshutt.staracademy.proxy.ProxyStarBadges;
 import abeshutt.staracademy.screen.StarBadgeSlot;
 import abeshutt.staracademy.screen.StarBadgeWidget;
 import abeshutt.staracademy.screen.WardrobeScreen;
 import abeshutt.staracademy.screen.WardrobeWidget;
-import abeshutt.staracademy.util.ProxyStarBadges;
-import abeshutt.staracademy.world.data.StarBadgeData;
+import abeshutt.staracademy.world.data.save.StarBadgeData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;

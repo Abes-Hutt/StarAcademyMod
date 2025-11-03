@@ -1,7 +1,7 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.util.AttributeHolder;
-import abeshutt.staracademy.util.ProxyGymData;
+import abeshutt.staracademy.proxy.AttributeHolder;
+import abeshutt.staracademy.proxy.ProxyGymData;
 import dev.architectury.platform.Platform;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

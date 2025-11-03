@@ -2,14 +2,13 @@ package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModDataComponents;
-import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.init.ModWorldData;
+import abeshutt.staracademy.item.data.outfit.OutfitEntry;
 import abeshutt.staracademy.item.renderer.OutfitItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
-import abeshutt.staracademy.outfit.core.OutfitPiece;
+import abeshutt.staracademy.math.random.JavaRandom;
 import abeshutt.staracademy.util.ISpecialItemModel;
-import abeshutt.staracademy.world.data.WardrobeData;
-import abeshutt.staracademy.world.random.JavaRandom;
+import abeshutt.staracademy.world.data.save.WardrobeData;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

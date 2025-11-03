@@ -4,6 +4,7 @@ import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.adapter.ISimpleAdapter;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.ISerializable;
+import abeshutt.staracademy.world.data.save.PokemonStarterData;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.NbtCompound;
@@ -11,7 +12,6 @@ import net.minecraft.nbt.NbtElement;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class StarterId implements ISerializable<NbtCompound, JsonObject> {
 

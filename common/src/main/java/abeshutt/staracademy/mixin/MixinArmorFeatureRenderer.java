@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.world.data.ArmorDisplayData;
+import abeshutt.staracademy.world.data.save.ArmorDisplayData;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;

@@ -1,11 +1,11 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.CardData;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.component.CardAlbumInventory;
-import abeshutt.staracademy.item.OutfitEntry;
-import abeshutt.staracademy.world.StarOwnership;
+import abeshutt.staracademy.item.data.card.CardData;
+import abeshutt.staracademy.item.data.outfit.OutfitEntry;
+import abeshutt.staracademy.world.data.StarOwnership;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.ComponentType;
 import net.minecraft.network.RegistryByteBuf;

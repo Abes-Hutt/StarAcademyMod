@@ -1,26 +1,16 @@
 package abeshutt.staracademy.init;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.item.*;
 import com.cobblemon.mod.common.CobblemonItems;
-import com.cobblemon.mod.common.api.pokeball.catching.CaptureEffect;
-import com.cobblemon.mod.common.api.pokeball.catching.modifiers.MultiplierModifier;
-import com.cobblemon.mod.common.api.pokeball.catching.modifiers.WorldStateModifier;
 import com.cobblemon.mod.common.item.PokeBallItem;
-import com.cobblemon.mod.common.pokeball.PokeBall;
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.type.FoodComponent;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 

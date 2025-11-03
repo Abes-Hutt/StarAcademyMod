@@ -1,13 +1,16 @@
 package abeshutt.staracademy.attribute.type;
 
-import abeshutt.staracademy.attribute.Attribute;
-import abeshutt.staracademy.data.adapter.basic.TypeSupplierAdapter;
+public class NeverAttributeType<T> extends AttributeType<T> {
 
-public class NeverAttributeType extends AttributeType<Object> {
+    public static final int MASK = 0;
+
+    protected NeverAttributeType() {
+
+    }
 
     @Override
-    public TypeSupplierAdapter<Attribute<Object>> getModifiers() {
-        return null;
+    public int toBitMask() {
+        return MASK;
     }
 
 }

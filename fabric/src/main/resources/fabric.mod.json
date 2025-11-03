@@ -23,7 +23,7 @@
       "abeshutt.staracademy.fabric.client.StarAcademyFabricModClient"
     ],
     "emi": [
-      "abeshutt.staracademy.AcademyEmiPlugin"
+      "abeshutt.staracademy.compat.emi.AcademyEmiPlugin"
     ]
   },
   "mixins": [

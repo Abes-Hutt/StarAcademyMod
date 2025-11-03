@@ -3,7 +3,7 @@ package abeshutt.staracademy.item;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
 import abeshutt.staracademy.data.serializable.IBitSerializable;
-import abeshutt.staracademy.world.roll.IntRoll;
+import abeshutt.staracademy.math.roll.IntRoll;
 import com.google.gson.annotations.Expose;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -1,7 +1,7 @@
 package abeshutt.staracademy.init;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.world.data.*;
+import abeshutt.staracademy.world.data.save.*;
 
 public class ModWorldData extends ModRegistries {
 

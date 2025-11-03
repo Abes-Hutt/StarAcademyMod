@@ -1,7 +1,7 @@
 package abeshutt.staracademy.entity.renderer;
 
 import abeshutt.staracademy.entity.model.StarBadgeBeltModel;
-import abeshutt.staracademy.world.data.StarBadgeData;
+import abeshutt.staracademy.world.data.save.StarBadgeData;
 import abeshutt.staracademy.world.inventory.BaseInventory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;

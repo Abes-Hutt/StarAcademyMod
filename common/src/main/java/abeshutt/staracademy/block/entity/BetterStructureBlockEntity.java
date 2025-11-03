@@ -2,8 +2,8 @@ package abeshutt.staracademy.block.entity;
 
 import abeshutt.staracademy.block.BetterStructureBlock;
 import abeshutt.staracademy.init.ModBlocks;
+import abeshutt.staracademy.proxy.ProxyStructureTemplate;
 import abeshutt.staracademy.screen.BetterStructureBlockScreen;
-import abeshutt.staracademy.util.ProxyStructureTemplate;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;

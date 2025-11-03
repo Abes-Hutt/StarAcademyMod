@@ -1,6 +1,6 @@
 package abeshutt.staracademy.event;
 
-import abeshutt.staracademy.util.MappingIterable;
+import abeshutt.staracademy.util.collection.MappingIterable;
 import com.google.common.reflect.AbstractInvocationHandler;
 
 import java.lang.invoke.MethodHandles;

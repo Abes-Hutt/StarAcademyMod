@@ -2,7 +2,7 @@ package abeshutt.staracademy.command;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.world.data.PlayerProfileData;
+import abeshutt.staracademy.world.data.save.PlayerProfileData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;

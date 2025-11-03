@@ -1,6 +1,5 @@
 package abeshutt.staracademy.mixin.radgyms;
 
-import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.client.settings.ServerSettings;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.DiscreteSliderComponent;

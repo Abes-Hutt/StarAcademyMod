@@ -1,16 +1,14 @@
 package abeshutt.staracademy.item.renderer;
 
-import abeshutt.staracademy.CardRarity;
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.CardData;
-import abeshutt.staracademy.card.CardIconEntry;
-import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.item.CardItem;
-import abeshutt.staracademy.item.SafariTicketEntry;
+import abeshutt.staracademy.item.data.card.CardData;
+import abeshutt.staracademy.item.data.card.CardIconEntry;
+import abeshutt.staracademy.item.data.card.CardRarity;
+import abeshutt.staracademy.math.random.JavaRandom;
+import abeshutt.staracademy.math.random.RandomSource;
 import abeshutt.staracademy.util.ClientScheduler;
-import abeshutt.staracademy.world.random.JavaRandom;
-import abeshutt.staracademy.world.random.RandomSource;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.ModelIdentifier;

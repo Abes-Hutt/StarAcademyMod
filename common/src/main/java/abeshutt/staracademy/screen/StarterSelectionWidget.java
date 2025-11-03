@@ -2,20 +2,16 @@ package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.util.ClientScheduler;
-import abeshutt.staracademy.world.StarterEntry;
-import abeshutt.staracademy.world.data.PokemonStarterData;
 import abeshutt.staracademy.world.data.StarterId;
 import abeshutt.staracademy.world.data.StarterPokemon;
-import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import abeshutt.staracademy.world.data.save.PokemonStarterData;
 import com.cobblemon.mod.common.client.gui.trade.ModelWidget;
 import com.cobblemon.mod.common.client.keybind.CobblemonKeyBinds;
 import com.cobblemon.mod.common.pokemon.RenderablePokemon;
-import com.cobblemon.mod.common.pokemon.Species;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
@@ -24,7 +20,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 

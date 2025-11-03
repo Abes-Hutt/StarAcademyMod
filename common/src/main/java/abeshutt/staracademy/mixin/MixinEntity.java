@@ -3,7 +3,7 @@ package abeshutt.staracademy.mixin;
 import abeshutt.staracademy.block.SafariPortalBlock;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.util.ProxyEntity;
+import abeshutt.staracademy.proxy.ProxyEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;

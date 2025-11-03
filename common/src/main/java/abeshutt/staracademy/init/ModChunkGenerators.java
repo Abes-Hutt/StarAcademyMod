@@ -1,7 +1,7 @@
 package abeshutt.staracademy.init;
 
-import abeshutt.staracademy.world.SafariChunkGenerator;
 import abeshutt.staracademy.world.generator.IslandChunkGenerator;
+import abeshutt.staracademy.world.generator.SafariChunkGenerator;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.util.Identifier;

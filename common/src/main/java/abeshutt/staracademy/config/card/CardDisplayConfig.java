@@ -1,10 +1,10 @@
 package abeshutt.staracademy.config.card;
 
-import abeshutt.staracademy.attribute.again.Attribute;
+import abeshutt.staracademy.attribute.Attribute;
 import abeshutt.staracademy.attribute.path.AttributePath;
-import abeshutt.staracademy.card.CardDisplayEntry;
-import abeshutt.staracademy.card.DecimalPercentageAttributeStyle;
 import abeshutt.staracademy.config.FileConfig;
+import abeshutt.staracademy.item.data.card.CardDisplayEntry;
+import abeshutt.staracademy.item.data.card.DecimalPercentageAttributeStyle;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;

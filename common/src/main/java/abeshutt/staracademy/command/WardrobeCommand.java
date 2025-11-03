@@ -1,18 +1,14 @@
 package abeshutt.staracademy.command;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.init.ModOutfits;
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.outfit.core.OutfitPiece;
-import abeshutt.staracademy.world.data.WardrobeData;
+import abeshutt.staracademy.world.data.save.WardrobeData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;

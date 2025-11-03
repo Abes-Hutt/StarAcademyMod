@@ -1,10 +1,10 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.util.FilteringIterable;
-import abeshutt.staracademy.world.ThreadPool;
+import abeshutt.staracademy.util.collection.FilteringIterable;
+import abeshutt.staracademy.util.threading.ThreadPool;
 import abeshutt.staracademy.world.VirtualWorld;
-import abeshutt.staracademy.world.data.VirtualWorldData;
+import abeshutt.staracademy.world.data.save.VirtualWorldData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;

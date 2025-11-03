@@ -1,6 +1,7 @@
 package abeshutt.staracademy.world;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.world.generator.DummyWorldGenerationProgressListener;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
@@ -13,7 +14,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.ReportType;
 import net.minecraft.util.math.random.RandomSequencesState;
@@ -31,10 +31,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 public class VirtualWorld extends ServerWorld {
 

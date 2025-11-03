@@ -2,7 +2,6 @@ package abeshutt.staracademy.mixin.cobblemon;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModItems;
-import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.item.PokeBallItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

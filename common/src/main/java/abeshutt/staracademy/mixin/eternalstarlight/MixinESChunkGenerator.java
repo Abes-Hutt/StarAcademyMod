@@ -1,7 +1,7 @@
 package abeshutt.staracademy.mixin.eternalstarlight;
 
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.util.ProxyStructureTemplate;
+import abeshutt.staracademy.proxy.ProxyStructureTemplate;
 import cn.leolezury.eternalstarlight.common.world.gen.chunkgenerator.ESChunkGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

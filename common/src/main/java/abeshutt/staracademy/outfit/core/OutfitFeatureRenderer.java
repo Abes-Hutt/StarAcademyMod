@@ -1,9 +1,9 @@
 package abeshutt.staracademy.outfit.core;
 
+import abeshutt.staracademy.api.OutfitManager;
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
-import abeshutt.staracademy.client.OutfitManager;
-import abeshutt.staracademy.util.ProxyAcademyClient;
-import abeshutt.staracademy.world.data.WardrobeData;
+import abeshutt.staracademy.proxy.ProxyAcademyClient;
+import abeshutt.staracademy.world.data.save.WardrobeData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;

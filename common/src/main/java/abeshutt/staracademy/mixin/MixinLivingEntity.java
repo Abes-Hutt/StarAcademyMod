@@ -1,17 +1,14 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.attribute.Attribute;
+import abeshutt.staracademy.attribute.AttributeContext;
 import abeshutt.staracademy.attribute.Attributes;
 import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.Attribute;
-import abeshutt.staracademy.attribute.again.AttributeContext;
 import abeshutt.staracademy.attribute.path.AttributePath;
 import abeshutt.staracademy.entity.IDefaultedAttributes;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.util.AttributeHolder;
-import abeshutt.staracademy.util.ClientScheduler;
-import dev.architectury.platform.Platform;
-import net.fabricmc.api.EnvType;
+import abeshutt.staracademy.proxy.AttributeHolder;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -32,7 +29,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;

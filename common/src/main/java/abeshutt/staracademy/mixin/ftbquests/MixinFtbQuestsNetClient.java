@@ -1,19 +1,12 @@
 package abeshutt.staracademy.mixin.ftbquests;
 
 import abeshutt.staracademy.StarAcademyMod;
-import dev.architectury.hooks.item.ItemStackHooks;
 import dev.ftb.mods.ftblibrary.icon.Icon;
-import dev.ftb.mods.ftblibrary.icon.ItemIcon;
-import dev.ftb.mods.ftblibrary.util.client.ClientUtils;
 import dev.ftb.mods.ftbquests.client.ClientQuestFile;
-import dev.ftb.mods.ftbquests.client.FTBQuestsClientConfig;
 import dev.ftb.mods.ftbquests.client.NotificationStyle;
 import dev.ftb.mods.ftbquests.client.gui.IRewardListenerScreen;
 import dev.ftb.mods.ftbquests.client.gui.RewardKey;
-import dev.ftb.mods.ftbquests.client.gui.quests.QuestScreen;
 import dev.ftb.mods.ftbquests.quest.QuestObjectBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,14 +1,14 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.client.OutfitManager;
+import abeshutt.staracademy.api.OutfitManager;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
-import abeshutt.staracademy.item.ValueOutfitEntry;
+import abeshutt.staracademy.item.data.outfit.ValueOutfitEntry;
 import abeshutt.staracademy.net.UpdateOutfitC2SPacket;
+import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import abeshutt.staracademy.screen.helper.Texture9SliceRegion;
-import abeshutt.staracademy.util.ProxyAcademyClient;
-import abeshutt.staracademy.world.data.WardrobeData;
+import abeshutt.staracademy.world.data.save.WardrobeData;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

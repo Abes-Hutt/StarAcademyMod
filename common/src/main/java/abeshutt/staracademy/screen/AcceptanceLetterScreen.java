@@ -3,13 +3,10 @@ package abeshutt.staracademy.screen;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.net.ConfirmAcceptanceLetterC2SPacket;
-import com.cobblemon.mod.common.CobblemonSounds;
-import dev.architectury.hooks.item.ItemStackHooks;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.GameModeSelectionScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -22,9 +19,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-
-import static com.cobblemon.mod.common.api.gui.GuiUtilsKt.blitk;
-import static com.cobblemon.mod.common.util.MiscUtilsKt.cobblemonResource;
 
 public class AcceptanceLetterScreen extends Screen {
 

@@ -1,7 +1,7 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.util.ProxyStarBadges;
+import abeshutt.staracademy.proxy.ProxyStarBadges;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

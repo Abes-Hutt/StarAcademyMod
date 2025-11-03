@@ -1,8 +1,6 @@
 package abeshutt.staracademy.block.entity;
 
 import abeshutt.staracademy.init.ModBlocks;
-import abeshutt.staracademy.init.ModWorldData;
-import abeshutt.staracademy.world.data.SafariData;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;

@@ -1,6 +1,6 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.util.ProxyStructureTemplate;
+import abeshutt.staracademy.proxy.ProxyStructureTemplate;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

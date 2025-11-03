@@ -1,23 +1,21 @@
 package abeshutt.staracademy.mixin.cobblemon;
 
-import abeshutt.staracademy.util.ProxySelectionButton;
-import abeshutt.staracademy.util.ProxySelectionScreen;
-import abeshutt.staracademy.world.StarterEntry;
-import abeshutt.staracademy.world.data.PokemonStarterData;
+import abeshutt.staracademy.proxy.ProxySelectionButton;
+import abeshutt.staracademy.proxy.ProxySelectionScreen;
+import abeshutt.staracademy.world.data.StarterEntry;
 import abeshutt.staracademy.world.data.StarterId;
 import abeshutt.staracademy.world.data.StarterMode;
+import abeshutt.staracademy.world.data.save.PokemonStarterData;
 import com.cobblemon.mod.common.client.gui.startselection.StarterSelectionScreen;
 import com.cobblemon.mod.common.client.gui.startselection.widgets.CategoryList;
 import com.cobblemon.mod.common.client.gui.startselection.widgets.preview.SelectionButton;
 import com.cobblemon.mod.common.config.starter.RenderableStarterCategory;
-import com.cobblemon.mod.common.pokemon.RenderablePokemon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-import static abeshutt.staracademy.GameStarterHandler.*;
+import static abeshutt.staracademy.compat.cobblemon.GameStarterHandler.*;
 
 @Mixin(StarterSelectionScreen.class)
 public abstract class MixinStarterSelectionScreen extends Screen implements ProxySelectionScreen {

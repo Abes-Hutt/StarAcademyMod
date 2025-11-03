@@ -1,11 +1,9 @@
 package abeshutt.staracademy.item.renderer;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.CardAlbumEntry;
-import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.item.CardAlbumItem;
-import abeshutt.staracademy.item.SafariTicketEntry;
+import abeshutt.staracademy.item.data.card.CardAlbumEntry;
 import abeshutt.staracademy.util.ClientScheduler;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;

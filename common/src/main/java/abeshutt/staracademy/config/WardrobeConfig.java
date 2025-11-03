@@ -1,6 +1,6 @@
 package abeshutt.staracademy.config;
 
-import abeshutt.staracademy.item.OutfitEntry;
+import abeshutt.staracademy.item.data.outfit.OutfitEntry;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedHashMap;

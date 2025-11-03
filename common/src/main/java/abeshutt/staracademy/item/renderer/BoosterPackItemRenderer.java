@@ -1,10 +1,9 @@
 package abeshutt.staracademy.item.renderer;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.card.BoosterPackEntry;
-import abeshutt.staracademy.card.CardAlbumEntry;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.item.BoosterPackItem;
+import abeshutt.staracademy.item.data.card.BoosterPackEntry;
 import abeshutt.staracademy.util.ClientScheduler;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;

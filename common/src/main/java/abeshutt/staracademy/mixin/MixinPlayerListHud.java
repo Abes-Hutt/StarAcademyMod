@@ -1,8 +1,8 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.world.data.AcademyHouse;
-import abeshutt.staracademy.world.data.HouseData;
-import abeshutt.staracademy.world.data.NickData;
+import abeshutt.staracademy.world.data.save.HouseData;
+import abeshutt.staracademy.world.data.save.NickData;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.MutableText;

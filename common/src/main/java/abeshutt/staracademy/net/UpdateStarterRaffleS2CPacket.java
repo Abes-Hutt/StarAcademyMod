@@ -3,14 +3,12 @@ package abeshutt.staracademy.net;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
-import abeshutt.staracademy.world.StarterEntry;
-import abeshutt.staracademy.world.data.PokemonStarterData;
-import abeshutt.staracademy.world.data.StarterId;
+import abeshutt.staracademy.world.data.StarterEntry;
 import abeshutt.staracademy.world.data.StarterMode;
 import abeshutt.staracademy.world.data.StarterPokemon;
+import abeshutt.staracademy.world.data.save.PokemonStarterData;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
 
 import java.util.*;
 

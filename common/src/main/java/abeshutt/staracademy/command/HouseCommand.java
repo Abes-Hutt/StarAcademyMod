@@ -1,11 +1,10 @@
 package abeshutt.staracademy.command;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.world.data.AcademyHouse;
-import abeshutt.staracademy.world.data.HouseData;
+import abeshutt.staracademy.world.data.save.HouseData;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -18,7 +17,6 @@ import dev.architectury.hooks.item.ItemStackHooks;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.GameProfileArgumentType;
-import net.minecraft.command.argument.UuidArgumentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -28,7 +26,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.Collection;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static abeshutt.staracademy.init.ModDataComponents.ACCEPTANCE_LETTER_HOUSE;

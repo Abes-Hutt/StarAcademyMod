@@ -37,7 +37,7 @@ public abstract class OutfitPiece {
     public OutfitPiece(String id) {
         this.id = id;
 
-        if (Platform.getEnvironment() == Env.CLIENT) {
+        if (Platform.getEnvironment() == Env.CLIENT && Platform.isDevelopmentEnvironment()) {
             this.classicModelJson = new JsonObject();
 
             this.texture = this.buildTexture();

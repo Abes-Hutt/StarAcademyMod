@@ -1,20 +1,20 @@
 package abeshutt.staracademy.config.card;
 
-import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.*;
-import abeshutt.staracademy.card.CardModifierEntry;
+import abeshutt.staracademy.attribute.*;
 import abeshutt.staracademy.config.FileConfig;
+import abeshutt.staracademy.item.data.card.CardModifierEntry;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.world.random.RandomSource;
-import abeshutt.staracademy.world.roll.NumberRoll;
+import abeshutt.staracademy.math.WeightedList;
+import abeshutt.staracademy.math.random.RandomSource;
+import abeshutt.staracademy.math.roll.NumberRoll;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static abeshutt.staracademy.attribute.again.type.AttributeTypes.number;
 import static abeshutt.staracademy.attribute.path.AttributePath.absolute;
+import static abeshutt.staracademy.attribute.type.AttributeTypes.number;
 
 public class CardModifiersConfig extends FileConfig {
 

@@ -2,7 +2,7 @@ package abeshutt.staracademy.config;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.item.SafariTicketEntry;
-import abeshutt.staracademy.world.roll.IntRoll;
+import abeshutt.staracademy.math.roll.IntRoll;
 import com.google.gson.annotations.Expose;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;

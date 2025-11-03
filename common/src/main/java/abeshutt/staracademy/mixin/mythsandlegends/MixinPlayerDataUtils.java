@@ -1,6 +1,5 @@
 package abeshutt.staracademy.mixin.mythsandlegends;
 
-import com.github.d0ctorleon.mythsandlegends.utils.PlayerDataUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

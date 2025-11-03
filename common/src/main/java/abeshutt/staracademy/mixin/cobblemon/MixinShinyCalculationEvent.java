@@ -1,11 +1,11 @@
 package abeshutt.staracademy.mixin.cobblemon;
 
+import abeshutt.staracademy.attribute.AttributeContext;
 import abeshutt.staracademy.attribute.Attributes;
 import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.AttributeContext;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.util.AttributeHolder;
+import abeshutt.staracademy.proxy.AttributeHolder;
 import com.cobblemon.mod.common.api.events.pokemon.ShinyChanceCalculationEvent;
 import dev.corgitaco.enhancedcelestials.EnhancedCelestials;
 import dev.corgitaco.enhancedcelestials.api.ECLunarEventTags;

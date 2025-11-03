@@ -1,7 +1,7 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.world.data.SafariData;
+import abeshutt.staracademy.world.data.save.SafariData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

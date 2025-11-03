@@ -1,11 +1,11 @@
 package abeshutt.staracademy.mixin.cobblemon;
 
+import abeshutt.staracademy.attribute.AttributeContext;
 import abeshutt.staracademy.attribute.Option;
-import abeshutt.staracademy.attribute.again.AttributeContext;
 import abeshutt.staracademy.math.Rational;
-import abeshutt.staracademy.util.AttributeHolder;
-import abeshutt.staracademy.world.random.JavaRandom;
-import abeshutt.staracademy.world.random.RandomSource;
+import abeshutt.staracademy.math.random.JavaRandom;
+import abeshutt.staracademy.math.random.RandomSource;
+import abeshutt.staracademy.proxy.AttributeHolder;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.pokemon.stats.EvCalculator;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;

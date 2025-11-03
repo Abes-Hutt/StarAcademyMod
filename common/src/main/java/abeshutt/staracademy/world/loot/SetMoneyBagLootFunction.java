@@ -2,8 +2,8 @@ package abeshutt.staracademy.world.loot;
 
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModLootFunctionTypes;
-import abeshutt.staracademy.world.random.JavaRandom;
-import abeshutt.staracademy.world.roll.IntRoll;
+import abeshutt.staracademy.math.random.JavaRandom;
+import abeshutt.staracademy.math.roll.IntRoll;
 import com.glisco.numismaticoverhaul.NumismaticOverhaul;
 import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
 import com.glisco.numismaticoverhaul.item.MoneyBagComponent;

@@ -1,15 +1,11 @@
 package abeshutt.staracademy.net;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
-import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.AcceptanceLetterItem;
 import abeshutt.staracademy.world.data.AcademyHouse;
-import abeshutt.staracademy.world.data.HouseData;
-import abeshutt.staracademy.world.data.WardrobeData;
-import dev.architectury.hooks.item.ItemStackHooks;
+import abeshutt.staracademy.world.data.save.HouseData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -17,9 +13,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static abeshutt.staracademy.init.ModDataComponents.*;
 

@@ -3,8 +3,8 @@ package abeshutt.staracademy.net;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.bit.BitBuffer;
-import abeshutt.staracademy.world.data.WardrobeData;
-import abeshutt.staracademy.world.data.WardrobeData.Entry;
+import abeshutt.staracademy.world.data.save.WardrobeData;
+import abeshutt.staracademy.world.data.save.WardrobeData.Entry;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.CustomPayload;
 

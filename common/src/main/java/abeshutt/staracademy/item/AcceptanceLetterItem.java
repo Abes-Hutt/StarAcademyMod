@@ -3,7 +3,7 @@ package abeshutt.staracademy.item;
 import abeshutt.staracademy.screen.AcceptanceLetterScreen;
 import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
-import abeshutt.staracademy.world.data.PlayerProfileData;
+import abeshutt.staracademy.world.data.save.PlayerProfileData;
 import com.mojang.authlib.GameProfile;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;

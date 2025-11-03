@@ -1,6 +1,6 @@
 package abeshutt.staracademy.config;
 
-import abeshutt.staracademy.world.roll.IntRoll;
+import abeshutt.staracademy.math.roll.IntRoll;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedHashMap;
