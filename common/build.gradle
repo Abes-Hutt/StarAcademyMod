@@ -8,6 +8,7 @@ loom {
 
 dependencies {
     modCompileOnly("net.fabricmc:fabric-loader:$rootProject.fabric_loader_version")
+    modCompileOnly("net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version")
     modCompileOnly("dev.architectury:architectury:$rootProject.architectury_api_version")
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
 
@@ -77,4 +78,6 @@ dependencies {
     modCompileOnly("maven.modrinth:lootables:0.1.4+1.21.1")
 
     modCompileOnly("maven.modrinth:cobblemon-mass-outbreaks:1.0.0-1.21.1-fabric")
+
+    modCompileOnly("maven.modrinth:moonrise-opt:5IV5gcdA")
 }

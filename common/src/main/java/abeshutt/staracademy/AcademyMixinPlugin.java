@@ -50,6 +50,14 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
             return Platform.isModLoaded("cobblemonoutbreaks");
         }
 
+        if (!Platform.isModLoaded("moonrise")) {
+            if ("abeshutt.staracademy.mixin.moonrise.MixinChunkHolder".equals(mixinClassName)) {
+                return false;
+            } else if("abeshutt.staracademy.mixin.moonrise.MixinExplosion".equals(mixinClassName)) {
+                return false;
+            }
+        }
+
         return true;
     }
 

@@ -31,3 +31,4 @@ accessible method net/minecraft/server/network/ServerPlayNetworkHandler checkFor
 accessible field net/minecraft/client/option/KeyBinding boundKey Lnet/minecraft/client/util/InputUtil$Key;
 accessible field net/minecraft/screen/slot/ArmorSlot entity Lnet/minecraft/entity/LivingEntity;
 accessible field net/minecraft/screen/slot/ArmorSlot equipmentSlot Lnet/minecraft/entity/EquipmentSlot;
+accessible field net/minecraft/server/world/ServerChunkLoadingManager world Lnet/minecraft/server/world/ServerWorld;

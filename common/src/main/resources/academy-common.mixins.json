@@ -77,6 +77,8 @@
     "journeymap.MixinEntityHelper",
     "megashowdown.MixinModEvents",
     "modernfix.MixinLRUMap",
+    "moonrise.MixinChunkHolder",
+    "moonrise.MixinExplosion",
     "mythsandlegends.MixinForceSpawningUtils",
     "mythsandlegends.MixinFormAndAspectUtils",
     "mythsandlegends.MixinItems",

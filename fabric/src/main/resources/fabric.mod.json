@@ -24,6 +24,9 @@
     ],
     "emi": [
       "abeshutt.staracademy.compat.emi.AcademyEmiPlugin"
+    ],
+    "mixinsquared": [
+      "abeshutt.staracademy.AcademyMixinCanceller"
     ]
   },
   "mixins": [
