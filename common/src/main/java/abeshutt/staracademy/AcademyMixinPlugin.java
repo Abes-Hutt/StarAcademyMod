@@ -28,6 +28,10 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
             "abeshutt.staracademy.mixin.outbreaks.MixinPlayerEntity"
     );
 
+    private static final Set<String> MOONRISE_MIXINS = Set.of(
+            "abeshutt.staracademy.mixin.moonrise.MixinEntityMixin"
+    );
+
     @Override
     public void onLoad(String mixinPackage) {
 
@@ -48,6 +52,8 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
             return Platform.isModLoaded("fading_clouds");
         } else if (OUTBREAKS_MIXINS.contains(mixinClassName)) {
             return Platform.isModLoaded("cobblemonoutbreaks");
+        } else if (MOONRISE_MIXINS.contains(mixinClassName)) {
+            return Platform.isModLoaded("moonrise");
         }
 
         if (!Platform.isModLoaded("moonrise")) {
