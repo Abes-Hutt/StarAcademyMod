@@ -2,7 +2,6 @@ package abeshutt.staracademy.mixin.moonrise;
 
 import ca.spottedleaf.moonrise.patches.collisions.CollisionUtil;
 import ca.spottedleaf.moonrise.patches.collisions.shape.CollisionVoxelShape;
-import com.bawnorton.mixinsquared.TargetHandler;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import it.unimi.dsi.fastutil.floats.FloatArraySet;
 import it.unimi.dsi.fastutil.floats.FloatArrays;
@@ -13,7 +12,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-@Debug(export = true)
 @Mixin(value = Entity.class, priority = 1500)
 public abstract class MixinEntityMixin {
 
@@ -36,8 +33,7 @@ public abstract class MixinEntityMixin {
     @Shadow public abstract Box getBoundingBox();
     @Shadow public abstract float getStepHeight();
 
-    @TargetHandler(mixin = "ca.spottedleaf.moonrise.mixin.collisions.EntityMixin", name = "adjustMovementForCollisions")
-    @Inject(method = "@MixinSquared:Handler", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At(value = "HEAD"), cancellable = true)
     private void processConditions(Vec3d movement, CallbackInfoReturnable<Vec3d> ci) {
         Entity entity = (Entity)(Object)this;
         boolean xZero = movement.x == 0.0;
