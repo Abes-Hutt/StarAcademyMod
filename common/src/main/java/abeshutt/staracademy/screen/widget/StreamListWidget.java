@@ -26,6 +26,7 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     public static final int GAP = 2;
 
     private final List<StreamWidget> streams;
+    private int iteration;
     private final Map<StreamWidget, Float> offsets;
     private int scroll;
 
@@ -52,10 +53,13 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         TwitchManager twitch = ProxyAcademyClient.get(MinecraftClient.getInstance()).getTwitch();
-        this.clear();
 
-        for (TwitchStream stream : twitch.getStreams()) {
-            this.add(stream.getProfilePicture().asTexture(), stream.getLogin(), stream.getName(), stream.isLive());
+        if (this.iteration != twitch.getIteration()) {
+            this.clear();
+
+            for (TwitchStream stream : twitch.getStreams()) {
+                this.add(stream.getProfilePicture().asTexture(), stream.getLogin(), stream.getName(), stream.isLive());
+            }
         }
 
         if (this.streams.isEmpty()) {

@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 public class TwitchManager {
 
     private final List<TwitchStream> streams;
+    private int iteration;
 
     public TwitchManager() {
         this.streams = new ArrayList<>();
@@ -17,6 +18,10 @@ public class TwitchManager {
 
     public List<TwitchStream> getStreams() {
         return this.streams;
+    }
+
+    public int getIteration() {
+        return this.iteration;
     }
 
     public void update(List<TwitchStream> streams) {
@@ -29,6 +34,8 @@ public class TwitchManager {
                 return null;
             });
         }
+
+        this.iteration++;
     }
 
 }
