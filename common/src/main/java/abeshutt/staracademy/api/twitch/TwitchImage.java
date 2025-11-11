@@ -59,7 +59,9 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
         MinecraftClient minecraft = MinecraftClient.getInstance();
         Identifier id = this.getId();
 
-        if (minecraft.getTextureManager().getOrDefault(id, null) != null) {
+        if (minecraft.getTextureManager().getOrDefault(id, null) instanceof NativeImageBackedTexture backed) {
+            this.width = backed.getImage().getWidth();
+            this.height = backed.getImage().getHeight();
             return;
         }
 
