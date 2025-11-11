@@ -2,7 +2,7 @@ package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.api.AcademyClient;
-import abeshutt.staracademy.api.AcademyPackets;
+import abeshutt.staracademy.api.packet.AcademyPackets;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;

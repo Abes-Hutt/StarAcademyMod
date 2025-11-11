@@ -1,4 +1,4 @@
-package abeshutt.staracademy.api;
+package abeshutt.staracademy.api.packet;
 
 import abeshutt.staracademy.data.serializable.IJsonSerializable;
 import com.google.gson.JsonObject;

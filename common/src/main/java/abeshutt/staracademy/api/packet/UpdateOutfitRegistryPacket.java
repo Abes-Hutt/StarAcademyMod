@@ -1,4 +1,4 @@
-package abeshutt.staracademy.api;
+package abeshutt.staracademy.api.packet;
 
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
 import abeshutt.staracademy.data.adapter.Adapters;

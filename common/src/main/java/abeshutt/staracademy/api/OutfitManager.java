@@ -1,5 +1,7 @@
 package abeshutt.staracademy.api;
 
+import abeshutt.staracademy.api.packet.UpdateOutfitEntryPacket;
+import abeshutt.staracademy.api.packet.UpdateOutfitTrackingPacket;
 import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.IJsonSerializable;

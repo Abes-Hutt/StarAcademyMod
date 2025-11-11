@@ -1,6 +1,7 @@
 package abeshutt.staracademy.api;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.api.packet.CompleteAuthPacket;
 import com.mojang.authlib.exceptions.*;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import net.minecraft.client.session.Session;

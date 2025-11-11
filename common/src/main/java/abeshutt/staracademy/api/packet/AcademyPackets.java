@@ -1,6 +1,7 @@
-package abeshutt.staracademy.api;
+package abeshutt.staracademy.api.packet;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.api.HelloPacket;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class AcademyPackets {
         register("update_outfit_registry", UpdateOutfitRegistryPacket.class, UpdateOutfitRegistryPacket::new);
         register("update_outfit_entry", UpdateOutfitEntryPacket.class, UpdateOutfitEntryPacket::new);
         register("update_outfit_tracking", UpdateOutfitTrackingPacket.class, UpdateOutfitTrackingPacket::new);
+        register("update_streams", UpdateStreamsPacket.class, UpdateStreamsPacket::new);
     }
 
     public static Optional<JsonObject> encode(AcademyPacket packet) {

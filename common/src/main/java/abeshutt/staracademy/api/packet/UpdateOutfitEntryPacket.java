@@ -1,6 +1,7 @@
-package abeshutt.staracademy.api;
+package abeshutt.staracademy.api.packet;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.api.OutfitManager;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;

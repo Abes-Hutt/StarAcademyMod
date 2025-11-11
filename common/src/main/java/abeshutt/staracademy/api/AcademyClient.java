@@ -1,6 +1,7 @@
 package abeshutt.staracademy.api;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.api.packet.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,7 +18,9 @@ public class AcademyClient {
     private final AuthManager auth;
     private final CodexManager codex;
     private final OutfitManager outfits;
+    private final TwitchManager twitch;
     private boolean connecting;
+
     public AcademyClient(MinecraftClient minecraft) {
         this.minecraft = minecraft;
 
@@ -39,6 +42,7 @@ public class AcademyClient {
         this.auth = new AuthManager();
         this.codex = new CodexManager();
         this.outfits = new OutfitManager(this);
+        this.twitch = new TwitchManager();
         this.connecting = false;
     }
 
@@ -52,6 +56,10 @@ public class AcademyClient {
 
     public CodexManager getCodex() {
         return this.codex;
+    }
+
+    public TwitchManager getTwitch() {
+        return this.twitch;
     }
 
     public void connect() {
@@ -144,6 +152,8 @@ public class AcademyClient {
             this.outfits.receive(payload.getRegistry());
         } else if(packet instanceof UpdateOutfitEntryPacket payload) {
             this.outfits.getEntries().putAll(payload.getEntries());
+        } else if(packet instanceof UpdateStreamsPacket payload) {
+            this.twitch.update(payload.getStreams());
         }
     }
 

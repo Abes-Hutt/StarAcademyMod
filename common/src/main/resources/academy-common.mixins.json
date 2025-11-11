@@ -21,6 +21,7 @@
     "MixinPlayerListHud",
     "MixinRenderLayers",
     "MixinResourcePackEntry",
+    "MixinScreen",
     "MixinSplashOverlay",
     "ProxyModelPredicateProviderRegistry",
     "cobblemon.MixinCategoryListEntry",

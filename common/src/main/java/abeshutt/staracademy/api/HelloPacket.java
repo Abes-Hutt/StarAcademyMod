@@ -1,5 +1,6 @@
 package abeshutt.staracademy.api;
 
+import abeshutt.staracademy.api.packet.AcademyPacket;
 import abeshutt.staracademy.data.adapter.Adapters;
 import com.google.gson.JsonObject;
 

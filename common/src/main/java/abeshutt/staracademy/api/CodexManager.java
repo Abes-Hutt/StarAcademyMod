@@ -1,6 +1,7 @@
 package abeshutt.staracademy.api;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.api.packet.CheckCodexPacket;
 import com.google.common.hash.Hashing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.ResourceType;
