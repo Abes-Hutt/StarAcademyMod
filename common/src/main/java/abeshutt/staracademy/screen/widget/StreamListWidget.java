@@ -43,7 +43,7 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     }
 
     public void add(ImageTexture profilePicture, String login, String name, boolean live) {
-        this.streams.add(new StreamWidget(profilePicture, name, login, live, 0, 0, this.width - MARGIN));
+        this.streams.add(new StreamWidget(profilePicture, login, name, live, 0, 0, this.width - MARGIN));
     }
 
     public void clear() {
