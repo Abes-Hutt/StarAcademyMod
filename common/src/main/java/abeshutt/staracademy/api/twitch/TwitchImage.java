@@ -28,6 +28,10 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
     private int height;
     private String hash;
 
+    public TwitchImage() {
+        this("");
+    }
+
     public TwitchImage(String url) {
         this.url = url;
         this.width = 0;

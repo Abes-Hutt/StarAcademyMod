@@ -11,10 +11,10 @@ public class TwitchStream implements IJsonSerializable<JsonObject> {
     private String login;
     private String name;
     private boolean live;
-    private TwitchImage profilePicture;
+    private final TwitchImage profilePicture;
 
     public TwitchStream() {
-
+        this.profilePicture = new TwitchImage();
     }
 
     private TwitchStream(String login, String name, boolean live, TwitchImage profilePicture) {
