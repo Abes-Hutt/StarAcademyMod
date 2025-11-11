@@ -115,6 +115,7 @@ public class AcademyClient {
         }
 
         this.outfits.tick(this);
+        this.twitch.tick(this);
     }
 
     public void awaitCodex() {

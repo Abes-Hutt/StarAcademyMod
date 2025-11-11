@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 public class TwitchManager {
 
     private final List<TwitchStream> streams;
+    private boolean dirty;
     private int iteration;
 
     public TwitchManager() {
@@ -26,7 +27,11 @@ public class TwitchManager {
     public void update(List<TwitchStream> streams) {
         this.streams.clear();
         this.streams.addAll(streams);
+        this.iteration++;
+        this.dirty = true;
+    }
 
+    public void tick(AcademyClient client) {
         for (TwitchStream stream : this.streams) {
             CompletableFuture.supplyAsync(() -> {
                 stream.getProfilePicture().fetch();
@@ -34,7 +39,7 @@ public class TwitchManager {
             }).join();
         }
 
-        this.iteration++;
+        this.dirty = false;
     }
 
 }
