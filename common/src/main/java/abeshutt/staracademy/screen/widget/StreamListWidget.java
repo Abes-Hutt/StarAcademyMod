@@ -72,10 +72,10 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
 
         int totalHeight = this.streams.size() * StreamWidget.HEIGHT + (this.streams.size() - 1) * GAP + 2;
         int displayHeight = this.height - 2;
-        int scrollableHeight = totalHeight - displayHeight;
+        int scrollableHeight = Math.max(0, totalHeight - displayHeight);
         this.scroll = MathHelper.clamp(this.scroll, 0, scrollableHeight);
-        int scrollbarOffset = (int)Math.round((double)this.scroll * displayHeight / totalHeight) + 1;
-        int scrollbarHeight = (int)Math.round((double)displayHeight * displayHeight / totalHeight);
+        int scrollbarOffset = (int) Math.round((double) this.scroll * displayHeight / totalHeight) + 1;
+        int scrollbarHeight = Math.min(displayHeight, (int) Math.round((double) displayHeight * displayHeight / totalHeight));
         context.fill(0, scrollbarOffset, 1, scrollbarOffset + scrollbarHeight, 0xFFFFFFFF);
 
         Matrix4f origin = context.getMatrices().peek().getPositionMatrix();
@@ -162,7 +162,7 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         if (this.isWithinBounds(mouseX, mouseY)) {
-            this.scroll -= (int)verticalAmount * (StreamWidget.HEIGHT + GAP) / 2;
+            this.scroll -= (int) verticalAmount * (StreamWidget.HEIGHT + GAP) / 2;
             return true;
         }
 

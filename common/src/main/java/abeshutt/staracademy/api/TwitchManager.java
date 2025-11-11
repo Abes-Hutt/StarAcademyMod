@@ -32,14 +32,16 @@ public class TwitchManager {
     }
 
     public void tick(AcademyClient client) {
-        for (TwitchStream stream : this.streams) {
-            CompletableFuture.supplyAsync(() -> {
-                stream.getProfilePicture().fetch();
-                return null;
-            }).join();
-        }
+        if (this.dirty) {
+            for (TwitchStream stream : this.streams) {
+                CompletableFuture.supplyAsync(() -> {
+                    stream.getProfilePicture().fetch();
+                    return null;
+                }).join();
+            }
 
-        this.dirty = false;
+            this.dirty = false;
+        }
     }
 
 }

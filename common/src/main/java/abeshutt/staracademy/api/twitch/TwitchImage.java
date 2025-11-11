@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -63,9 +64,11 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
         }
 
         try {
-            URL url = new URL(this.url);
+            URL url = URI.create(this.url).toURL();
             BufferedImage bufferedImage = ImageIO.read(url);
-            NativeImage image = new NativeImage(RGBA, bufferedImage.getWidth(), bufferedImage.getHeight(), false);
+            this.width = bufferedImage.getWidth();
+            this.height = bufferedImage.getHeight();
+            NativeImage image = new NativeImage(RGBA, this.width, this.height, false);
 
             for (int x = 0; x < this.width; x++) {
                 for (int y = 0; y < this.height; y++) {
@@ -74,7 +77,7 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
                     int r = (argb >>> 16) & 0xFF;
                     int g = (argb >>> 8) & 0xFF;
                     int b = (argb) & 0xFF;
-                    image.setColor(x, y, (a << 24) | (r << 16) | (g << 8) | b);
+                    image.setColor(x, y, (a << 24) | (b << 16) | (g << 8) | r);
                 }
             }
 
@@ -99,7 +102,7 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
         this.hash = "null";
 
         if (json instanceof JsonPrimitive primitive && primitive.isString()) {
-            this.url = primitive.toString();
+            this.url = Adapters.UTF_8.readJson(primitive).orElseThrow();
         } else {
             this.url = "";
         }
