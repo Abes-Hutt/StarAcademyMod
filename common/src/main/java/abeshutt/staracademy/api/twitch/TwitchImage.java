@@ -62,11 +62,10 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
             return;
         }
 
-        NativeImage image = new NativeImage(RGBA, this.width, this.height, false);
-
         try {
             URL url = new URL(this.url);
             BufferedImage bufferedImage = ImageIO.read(url);
+            NativeImage image = new NativeImage(RGBA, bufferedImage.getWidth(), bufferedImage.getHeight(), false);
 
             for (int x = 0; x < this.width; x++) {
                 for (int y = 0; y < this.height; y++) {

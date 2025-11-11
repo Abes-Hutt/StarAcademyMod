@@ -1,7 +1,6 @@
 package abeshutt.staracademy.api;
 
 import abeshutt.staracademy.api.twitch.TwitchStream;
-import abeshutt.staracademy.util.threading.ThreadPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class TwitchManager {
             CompletableFuture.supplyAsync(() -> {
                 stream.getProfilePicture().fetch();
                 return null;
-            });
+            }).join();
         }
 
         this.iteration++;
