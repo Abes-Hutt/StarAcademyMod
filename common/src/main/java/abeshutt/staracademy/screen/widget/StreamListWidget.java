@@ -64,6 +64,21 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
                 this.add(stream.getProfilePicture().asTexture(), stream.getLogin(), stream.getName(), stream.isLive());
             }
 
+            for (int i = 0; i < 6; i++) {
+                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
+                        "pointcrow", "PointCrow", true);
+                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
+                        "squeex", "Squeex", true);
+                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
+                        "kyacolloseum", "KyaColloseum", true);
+                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
+                        "xchocobars", "xChocoBars", true);
+                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
+                        "abe", "Abe", false);
+                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
+                        "petezahhutt", "PeteZahHutt", false);
+            }
+
             this.iteration = twitch.getIteration();
         }
 
@@ -79,6 +94,11 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         int scrollableHeight = Math.max(0, totalHeight - displayHeight);
         this.targetScroll = MathHelper.clamp(this.targetScroll, 0, scrollableHeight);
         this.currentScroll += (this.targetScroll - this.currentScroll) * delta;
+
+        if (Math.abs(this.currentScroll - this.targetScroll) < 1.0f) {
+            this.currentScroll = this.targetScroll;
+        }
+
         int scrollbarOffset = Math.round(this.currentScroll * displayHeight / totalHeight) + 1;
         int scrollbarHeight = Math.min(displayHeight, (int)Math.round((double)displayHeight * displayHeight / totalHeight));
 
