@@ -1,5 +1,6 @@
 package abeshutt.staracademy.screen.widget;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.api.TwitchManager;
 import abeshutt.staracademy.api.twitch.TwitchStream;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
@@ -27,7 +28,8 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     private final List<StreamWidget> streams;
     private int iteration;
     private final Map<StreamWidget, Float> offsets;
-    private int scroll;
+    private float currentScroll;
+    private int targetScroll;
     private float hoverTime;
 
     private int x, y;
@@ -75,9 +77,10 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         int totalHeight = this.streams.size() * StreamWidget.HEIGHT + (this.streams.size() - 1) * GAP + 2;
         int displayHeight = this.height - 2;
         int scrollableHeight = Math.max(0, totalHeight - displayHeight);
-        this.scroll = MathHelper.clamp(this.scroll, 0, scrollableHeight);
-        int scrollbarOffset = (int) Math.round((double) this.scroll * displayHeight / totalHeight) + 1;
-        int scrollbarHeight = Math.min(displayHeight, (int) Math.round((double) displayHeight * displayHeight / totalHeight));
+        this.targetScroll = MathHelper.clamp(this.targetScroll, 0, scrollableHeight);
+        this.currentScroll += (this.targetScroll - this.currentScroll) * delta;
+        int scrollbarOffset = Math.round(this.currentScroll * displayHeight / totalHeight) + 1;
+        int scrollbarHeight = Math.min(displayHeight, (int)Math.round((double)displayHeight * displayHeight / totalHeight));
 
         int alpha = this.isWithinBounds (mouseX, mouseY) ? 0x88 << 24 : (int)(0x88 * this.hoverTime / 5.0f) << 24;
         context.fill(0, scrollbarOffset, 1, scrollbarOffset + scrollbarHeight, 0xFFFFFF | alpha);
@@ -101,7 +104,7 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         for (int i = 0; i < this.streams.size(); i++) {
             StreamWidget stream = this.streams.get(i);
             stream.setX(MARGIN);
-            stream.setY((StreamWidget.HEIGHT + GAP) * i - this.scroll + 2);
+            stream.setY((int)((StreamWidget.HEIGHT + GAP) * i - this.currentScroll + 2));
 
             context.getMatrices().push();
             context.getMatrices().translate(this.offsets.getOrDefault(stream, 0.0f), 0.0f, 0.0f);
@@ -168,7 +171,7 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         if (this.isWithinBounds(mouseX, mouseY)) {
-            this.scroll -= (int) verticalAmount * (StreamWidget.HEIGHT + GAP) / 2;
+            this.targetScroll -= (int)verticalAmount * (StreamWidget.HEIGHT + GAP) / 2;
             return true;
         }
 

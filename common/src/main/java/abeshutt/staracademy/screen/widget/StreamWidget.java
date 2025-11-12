@@ -83,19 +83,19 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
         context.getMatrices().pop();
 
         context.getMatrices().push();
-        context.getMatrices().translate(23.25f, 2.75f, 0.0f);
+        context.getMatrices().translate(23.0f, 2.0f, 0.0f);
         MutableText name = this.hovered
                 ? styleText(this.name, ClientScheduler.getTick(delta), 10.0f)
                 : Text.literal(this.name);
 
         context.drawText(MinecraftClient.getInstance().textRenderer,
                 name.setStyle(Style.EMPTY.withObfuscated(this.hovered && this.hoverTime < 0)),
-                    0, 0, 0xFFFFFF, false);
+                    0, 0, 0xFFFFFF, true);
         context.getMatrices().pop();
 
         context.getMatrices().push();
         context.getMatrices().scale(0.8f, 0.8f, 0.8f);
-        context.getMatrices().translate(23.25f / 0.8f, 12.25f / 0.8f, 0.0f);
+        context.getMatrices().translate(23.0f / 0.8f, 15.0f, 0.0f);
         Text state = this.live ? Text.empty()
                     .append(Text.literal("Live ").formatted(Formatting.GRAY))
                     .append(Text.literal("⬤").setStyle(Style.EMPTY.withColor(0x6441A5)))
@@ -103,7 +103,7 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
                     .append(Text.literal("Offline ").formatted(Formatting.GRAY))
                     .append(Text.literal("⬤").formatted(Formatting.GRAY));
         context.drawText(MinecraftClient.getInstance().textRenderer,
-                state, 0, 0, 0xFFFFFF, false);
+                state, 0, 0, 0xFFFFFF, true);
         context.getMatrices().pop();
 
         context.getMatrices().pop();
