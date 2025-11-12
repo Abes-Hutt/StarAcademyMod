@@ -1,6 +1,5 @@
 package abeshutt.staracademy.screen.widget;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.api.TwitchManager;
 import abeshutt.staracademy.api.twitch.TwitchStream;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
@@ -62,21 +61,6 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
 
             for (TwitchStream stream : twitch.getStreams()) {
                 this.add(stream.getProfilePicture().asTexture(), stream.getLogin(), stream.getName(), stream.isLive());
-            }
-
-            for (int i = 0; i < 6; i++) {
-                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
-                        "pointcrow", "PointCrow", true);
-                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
-                        "squeex", "Squeex", true);
-                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
-                        "kyacolloseum", "KyaColloseum", true);
-                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
-                        "xchocobars", "xChocoBars", true);
-                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
-                        "abe", "Abe", false);
-                this.add(new ImageTexture(StarAcademyMod.id("icon.png"), 400, 400),
-                        "petezahhutt", "PeteZahHutt", false);
             }
 
             this.iteration = twitch.getIteration();
