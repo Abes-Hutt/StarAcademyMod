@@ -28,12 +28,14 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
     private int iteration;
     private final Map<StreamWidget, Float> offsets;
     private int scroll;
+    private float hoverTime;
 
     private int x, y;
     private final int width, height;
 
     public StreamListWidget(int x, int y, int width, int height) {
         this.streams = new ArrayList<>();
+        this.iteration = -1;
         this.offsets = new HashMap<>();
         this.x = x;
         this.y = y;
@@ -76,20 +78,22 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         this.scroll = MathHelper.clamp(this.scroll, 0, scrollableHeight);
         int scrollbarOffset = (int) Math.round((double) this.scroll * displayHeight / totalHeight) + 1;
         int scrollbarHeight = Math.min(displayHeight, (int) Math.round((double) displayHeight * displayHeight / totalHeight));
-        context.fill(0, scrollbarOffset, 1, scrollbarOffset + scrollbarHeight, 0xFFFFFFFF);
+
+        int alpha = this.isWithinBounds (mouseX, mouseY) ? 0x88 << 24 : (int)(0x88 * this.hoverTime / 5.0f) << 24;
+        context.fill(0, scrollbarOffset, 1, scrollbarOffset + scrollbarHeight, 0xFFFFFF | alpha);
 
         Matrix4f origin = context.getMatrices().peek().getPositionMatrix();
         VertexConsumer buffer = context.getVertexConsumers().getBuffer(RenderLayer.getGui());
-        buffer.vertex(origin, 0.0f, 1.0f, 0.0f).color(0xFFFFFFFF);
+        buffer.vertex(origin, 0.0f, 1.0f, 0.0f).color(0xFFFFFF | alpha);
         buffer.vertex(origin, this.width * 0.75f, 1.0f, 0.0f).color(0x00FFFFFF);
         buffer.vertex(origin, this.width * 0.75f, 0.0f, 0.0f).color(0x00FFFFFF);
-        buffer.vertex(origin, 0.0f, 0.0f, 0.0f).color(0xFFFFFFFF);
+        buffer.vertex(origin, 0.0f, 0.0f, 0.0f).color(0xFFFFFF | alpha);
         context.draw();
         buffer = context.getVertexConsumers().getBuffer(RenderLayer.getGui());
-        buffer.vertex(origin, 0.0f, this.height, 0.0f).color(0xFFFFFFFF);
+        buffer.vertex(origin, 0.0f, this.height, 0.0f).color(0xFFFFFF | alpha);
         buffer.vertex(origin, this.width * 0.75f, this.height, 0.0f).color(0x00FFFFFF);
         buffer.vertex(origin, this.width * 0.75f, this.height - 1, 0.0f).color(0x00FFFFFF);
-        buffer.vertex(origin, 0.0f, this.height - 1, 0.0f).color(0xFFFFFFFF);
+        buffer.vertex(origin, 0.0f, this.height - 1, 0.0f).color(0xFFFFFF | alpha);
         context.draw();
 
         context.enableScissor(this.x, this.y + 1, this.x + this.width, this.y + this.height - 1);
@@ -118,6 +122,8 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         }
 
         context.getMatrices().pop();
+        this.hoverTime += this.isWithinBounds(mouseX, mouseY) ? delta : -delta;
+        this.hoverTime = MathHelper.clamp(this.hoverTime, 0.0f, 5.0f);
     }
 
     @Override

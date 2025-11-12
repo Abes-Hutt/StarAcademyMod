@@ -1,6 +1,7 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.screen.widget.StreamListWidget;
+import abeshutt.staracademy.screen.widget.StreamWidget;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
@@ -25,7 +26,17 @@ public abstract class MixinScreen {
             return;
         }
 
-        StreamListWidget streamList = new StreamListWidget(0, this.height / 4, 120, this.height / 2);
+        int fit = Integer.MAX_VALUE;
+
+        for (int i = 0; i < 50; i++) {
+            int height = 2 + 2 + i * StreamWidget.HEIGHT + StreamListWidget.GAP * (i - 1);
+
+            if (Math.abs(this.height / 2 - height) < Math.abs(this.height / 2 - fit)) {
+                fit = height;
+            }
+        }
+
+        StreamListWidget streamList = new StreamListWidget(0, (this.height - fit) / 2, 120, fit);
         this.addDrawableChild(streamList);
     }
 

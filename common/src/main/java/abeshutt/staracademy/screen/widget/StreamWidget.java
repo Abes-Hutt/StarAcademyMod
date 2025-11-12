@@ -89,7 +89,7 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
                 : Text.literal(this.name);
 
         context.drawText(MinecraftClient.getInstance().textRenderer,
-                name.setStyle(Style.EMPTY.withObfuscated(this.hovered && this.hoverTime < 2)),
+                name.setStyle(Style.EMPTY.withObfuscated(this.hovered && this.hoverTime < 0)),
                     0, 0, 0xFFFFFF, false);
         context.getMatrices().pop();
 
