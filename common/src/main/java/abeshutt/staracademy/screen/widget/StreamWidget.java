@@ -10,11 +10,13 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
 import java.net.MalformedURLException;
@@ -26,7 +28,7 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
 
     public static final int HEIGHT = 20;
 
-    private final ImageTexture profilePicture;
+    private final Identifier image;
     private final String login;
     private final String name;
     private final boolean live;
@@ -38,8 +40,8 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
 
     private float hoverTime;
 
-    public StreamWidget(ImageTexture profilePicture, String login, String name, boolean live, int x, int y, int width) {
-        this.profilePicture = profilePicture;
+    public StreamWidget(Identifier image, String login, String name, boolean live, int x, int y, int width) {
+        this.image = image;
         this.login = login;
         this.name = name;
         this.live = live;
@@ -74,13 +76,18 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
         context.getMatrices().push();
         context.getMatrices().translate(this.x, this.y, 0);
 
-        context.getMatrices().push();
-        context.getMatrices().scale(20.0f / this.profilePicture.getWidth(),
-                20.0f / this.profilePicture.getHeight(), 1.0f);
-        context.drawTexture(this.profilePicture.getId(), 0, 0, 0, 0,
-                this.profilePicture.getWidth(), this.profilePicture.getHeight(),
-                this.profilePicture.getWidth(), this.profilePicture.getHeight());
-        context.getMatrices().pop();
+        if (MinecraftClient.getInstance().getTextureManager()
+                .getOrDefault(this.image, null) instanceof NativeImageBackedTexture texture) {
+            if (texture.getImage() != null) {
+                int width = texture.getImage().getWidth();
+                int height = texture.getImage().getHeight();
+
+                context.getMatrices().push();
+                context.getMatrices().scale(20.0f / width, 20.0f / height, 1.0f);
+                context.drawTexture(this.image, 0, 0, 0, 0, width, height, width, height);
+                context.getMatrices().pop();
+            }
+        }
 
         context.getMatrices().push();
         context.getMatrices().translate(23.0f, 2.0f, 0.0f);

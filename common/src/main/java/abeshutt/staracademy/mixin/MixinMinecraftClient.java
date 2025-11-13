@@ -4,6 +4,7 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.api.AcademyClient;
 import abeshutt.staracademy.api.packet.AcademyPackets;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
+import abeshutt.staracademy.screen.overlay.SplashLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,6 +30,7 @@ public abstract class MixinMinecraftClient implements ProxyAcademyClient {
         this.client.connect();
         this.client.awaitCodex();
         this.client.getCodex().setComplete(true);
+        SplashLoader.load((MinecraftClient)(Object)this);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))

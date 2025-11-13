@@ -32,3 +32,14 @@ accessible field net/minecraft/client/option/KeyBinding boundKey Lnet/minecraft/
 accessible field net/minecraft/screen/slot/ArmorSlot entity Lnet/minecraft/entity/LivingEntity;
 accessible field net/minecraft/screen/slot/ArmorSlot equipmentSlot Lnet/minecraft/entity/EquipmentSlot;
 accessible field net/minecraft/server/world/ServerChunkLoadingManager world Lnet/minecraft/server/world/ServerWorld;
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    BRAND_ARGB    Ljava/util/function/IntSupplier;
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    LOGO    Lnet/minecraft/util/Identifier;
+accessible    method    net/minecraft/client/gui/screen/SplashOverlay    withAlpha    (II)I
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    client    Lnet/minecraft/client/MinecraftClient;
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    reload    Lnet/minecraft/resource/ResourceReload;
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    exceptionHandler    Ljava/util/function/Consumer;
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    reloading    Z
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    progress    F
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    reloadCompleteTime    J
+accessible    field    net/minecraft/client/gui/screen/SplashOverlay    reloadStartTime    J
+accessible    method    net/minecraft/client/gui/screen/SplashOverlay    renderProgressBar    (Lnet/minecraft/client/gui/DrawContext;IIIIF)V

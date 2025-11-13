@@ -23,6 +23,7 @@
     "MixinResourcePackEntry",
     "MixinScreen",
     "MixinSplashOverlay",
+    "MixinTitleScreen",
     "ProxyModelPredicateProviderRegistry",
     "cobblemon.MixinCategoryListEntry",
     "cobblemon.MixinSelectionButton",

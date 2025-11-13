@@ -1,5 +1,6 @@
 package abeshutt.staracademy.screen.widget;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.api.TwitchManager;
 import abeshutt.staracademy.api.twitch.TwitchStream;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 
@@ -44,8 +46,8 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         this.height = height;
     }
 
-    public void add(ImageTexture profilePicture, String login, String name, boolean live) {
-        this.streams.add(new StreamWidget(profilePicture, login, name, live, 0, 0, this.width - MARGIN));
+    public void add(Identifier image, String login, String name, boolean live) {
+        this.streams.add(new StreamWidget(image, login, name, live, 0, 0, this.width - MARGIN));
     }
 
     public void clear() {
@@ -60,7 +62,23 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
             this.clear();
 
             for (TwitchStream stream : twitch.getStreams()) {
-                this.add(stream.getProfilePicture().asTexture(), stream.getLogin(), stream.getName(), stream.isLive());
+                this.add(stream.getProfilePicture().getId(), stream.getLogin(), stream.getName(), stream.isLive());
+            }
+
+            for (int i = 0; i < 10; i++) {
+                this.add(StarAcademyMod.id("icon.png"), "ironmouse", "Ironmouse", true);
+                this.add(StarAcademyMod.id("icon.png"), "slimecicle", "slimecicle", true);
+                this.add(StarAcademyMod.id("icon.png"), "pointcrow", "pointcrow", true);
+                this.add(StarAcademyMod.id("icon.png"), "39daph", "39daph", true);
+                this.add(StarAcademyMod.id("icon.png"), "shiphtur", "shiphtur", true);
+                this.add(StarAcademyMod.id("icon.png"), "seanic", "seanic", true);
+                this.add(StarAcademyMod.id("icon.png"), "brofain", "brofain", true);
+                this.add(StarAcademyMod.id("icon.png"), "geega", "geega", true);
+                this.add(StarAcademyMod.id("icon.png"), "flygonhg", "flygonhg", false);
+                this.add(StarAcademyMod.id("icon.png"), "squeex", "squeex", false);
+                this.add(StarAcademyMod.id("icon.png"), "ariasaki", "ariasaki", false);
+                this.add(StarAcademyMod.id("icon.png"), "tinakitten", "tinakitten", false);
+                this.add(StarAcademyMod.id("icon.png"), "etoiles", "etoiles", false);
             }
 
             this.iteration = twitch.getIteration();

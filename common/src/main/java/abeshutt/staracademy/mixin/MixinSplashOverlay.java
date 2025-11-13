@@ -1,5 +1,7 @@
 package abeshutt.staracademy.mixin;
 
+import abeshutt.staracademy.screen.overlay.AcademySplashOverlay;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +19,12 @@ public class MixinSplashOverlay {
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void clinit(CallbackInfo ci) {
         MOJANG_RED = 0xFFA63D55;
+    }
+
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
+        ci.cancel();
     }
 
 }

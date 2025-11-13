@@ -1,12 +1,14 @@
 package abeshutt.staracademy.api;
 
 import abeshutt.staracademy.api.twitch.TwitchStream;
+import abeshutt.staracademy.util.threading.ThreadPool;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class TwitchManager {
+
+    private static final ThreadPool IMAGE_DOWNLOADER = new ThreadPool(Runtime.getRuntime().availableProcessors());
 
     private final List<TwitchStream> streams;
     private boolean dirty;
@@ -34,10 +36,9 @@ public class TwitchManager {
     public void tick(AcademyClient client) {
         if (this.dirty) {
             for (TwitchStream stream : this.streams) {
-                CompletableFuture.supplyAsync(() -> {
+                IMAGE_DOWNLOADER.execute(() -> {
                     stream.getProfilePicture().fetch();
-                    return null;
-                }).join();
+                });
             }
 
             this.dirty = false;

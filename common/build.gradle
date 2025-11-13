@@ -11,6 +11,7 @@ dependencies {
     modCompileOnly("net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version")
     modCompileOnly("dev.architectury:architectury:$rootProject.architectury_api_version")
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+    compileOnly("com.madgag:animated-gif-lib:1.4")
 
     modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1")
     modCompileOnly(files("jars/molang-1.1.18.jar"))
