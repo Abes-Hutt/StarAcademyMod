@@ -23,8 +23,8 @@ public class MixinSplashOverlay {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
-        ci.cancel();
+        //AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
+        //ci.cancel();
     }
 
 }
