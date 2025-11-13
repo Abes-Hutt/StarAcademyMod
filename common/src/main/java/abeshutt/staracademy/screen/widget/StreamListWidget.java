@@ -65,22 +65,6 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
                 this.add(stream.getProfilePicture().getId(), stream.getLogin(), stream.getName(), stream.isLive());
             }
 
-            for (int i = 0; i < 10; i++) {
-                this.add(StarAcademyMod.id("icon.png"), "ironmouse", "Ironmouse", true);
-                this.add(StarAcademyMod.id("icon.png"), "slimecicle", "slimecicle", true);
-                this.add(StarAcademyMod.id("icon.png"), "pointcrow", "pointcrow", true);
-                this.add(StarAcademyMod.id("icon.png"), "39daph", "39daph", true);
-                this.add(StarAcademyMod.id("icon.png"), "shiphtur", "shiphtur", true);
-                this.add(StarAcademyMod.id("icon.png"), "seanic", "seanic", true);
-                this.add(StarAcademyMod.id("icon.png"), "brofain", "brofain", true);
-                this.add(StarAcademyMod.id("icon.png"), "geega", "geega", true);
-                this.add(StarAcademyMod.id("icon.png"), "flygonhg", "flygonhg", false);
-                this.add(StarAcademyMod.id("icon.png"), "squeex", "squeex", false);
-                this.add(StarAcademyMod.id("icon.png"), "ariasaki", "ariasaki", false);
-                this.add(StarAcademyMod.id("icon.png"), "tinakitten", "tinakitten", false);
-                this.add(StarAcademyMod.id("icon.png"), "etoiles", "etoiles", false);
-            }
-
             this.iteration = twitch.getIteration();
         }
 

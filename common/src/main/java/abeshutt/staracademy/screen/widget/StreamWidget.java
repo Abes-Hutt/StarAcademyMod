@@ -58,8 +58,8 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if (this.isWithinBounds(mouseX, mouseY)) {
             if (!this.hovered) {
-                MinecraftClient.getInstance().getSoundManager()
-                        .play(PositionedSoundInstance.master(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 4.0F));
+                //MinecraftClient.getInstance().getSoundManager()
+                //        .play(PositionedSoundInstance.master(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 4.0F));
             }
 
             this.hovered = true;
