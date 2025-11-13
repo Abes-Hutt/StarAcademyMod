@@ -20,5 +20,5 @@
     "max_inclusive": 7
   },
   "monster_spawn_block_light_limit": 0,
-  "effects": "eternal_starlight:special_effect"
+  "effects": "minecraft:overworld"
 }
