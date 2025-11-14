@@ -4,6 +4,7 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.screen.widget.StreamListWidget;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.architectury.platform.Platform;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -121,17 +122,19 @@ public abstract class MixinTitleScreen extends Screen {
         this.academy$graphicCreditButton = new PressableTextWidget(0, 0, 0, 0,
                 Text.literal("Graphic & Animation by Polypuff"), button -> {}, this.textRenderer);
 
-        this.addDrawableChild(this.academy$singleplayerButton);
-        this.addDrawableChild(this.academy$multiplayerButton);
-        this.addDrawableChild(this.academy$joinSmpButton);
-        this.addDrawableChild(this.academy$websiteButton);
-        this.addDrawableChild(this.academy$discordButton);
-        this.addDrawableChild(this.academy$rentServerButton);
-        this.addDrawableChild(this.academy$optionsButton);
-        this.addDrawableChild(this.academy$quitButton);
-        this.addDrawableChild(this.academy$copyrightButton);
-        this.addDrawableChild(this.academy$ostCreditButton);
-        this.addDrawableChild(this.academy$graphicCreditButton);
+        if (ModConfigs.SCREEN.hasTitleButtons()) {
+            this.addDrawableChild(this.academy$singleplayerButton);
+            this.addDrawableChild(this.academy$multiplayerButton);
+            this.addDrawableChild(this.academy$joinSmpButton);
+            this.addDrawableChild(this.academy$websiteButton);
+            this.addDrawableChild(this.academy$discordButton);
+            this.addDrawableChild(this.academy$rentServerButton);
+            this.addDrawableChild(this.academy$optionsButton);
+            this.addDrawableChild(this.academy$quitButton);
+            this.addDrawableChild(this.academy$copyrightButton);
+            this.addDrawableChild(this.academy$ostCreditButton);
+            this.addDrawableChild(this.academy$graphicCreditButton);
+        }
 
         if (this.realmsNotificationGui == null) {
             this.realmsNotificationGui = new RealmsNotificationsScreen();
@@ -196,7 +199,11 @@ public abstract class MixinTitleScreen extends Screen {
                     int topMargin = 6;
                     context.getMatrices().scale(scale, scale, 1.0f);
                     context.getMatrices().translate((this.width - logoWidth - rightMargin) / scale, topMargin / scale, 1.0f);
-                    context.drawTexture(logoId, 0, 0, 0, 0, width, height, width, height);
+
+                    if (ModConfigs.SCREEN.hasTitleLogo()) {
+                        context.drawTexture(logoId, 0, 0, 0, 0, width, height, width, height);
+                    }
+
                     context.getMatrices().pop();
 
                     this.academy$singleplayerButton.setDimensions(logoWidth * 8 / 10, 20);

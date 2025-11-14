@@ -62,14 +62,23 @@ public class TwitchImage implements IJsonSerializable<JsonElement> {
             int height = bufferedImage.getHeight();
             NativeImage image = new NativeImage(RGBA, width, height, false);
 
+            int centerX = width / 2;
+            int centerY = height / 2;
+
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    int argb = bufferedImage.getRGB(x, y);
-                    int a = (argb >>> 24) & 0xFF;
-                    int r = (argb >>> 16) & 0xFF;
-                    int g = (argb >>> 8) & 0xFF;
-                    int b = (argb) & 0xFF;
-                    image.setColor(x, y, (a << 24) | (b << 16) | (g << 8) | r);
+                    int dx = x - centerX;
+                    int dy = y - centerY;
+                    //if (dx * dx + dy * dy <= width * width / 4) {
+                        int argb = bufferedImage.getRGB(x, y);
+                        int a = (argb >>> 24) & 0xFF;
+                        int r = (argb >>> 16) & 0xFF;
+                        int g = (argb >>> 8) & 0xFF;
+                        int b = (argb) & 0xFF;
+                        image.setColor(x, y, (a << 24) | (b << 16) | (g << 8) | r);
+                    //} else {
+                    //    image.setColor(x, y, 0);
+                    //}
                 }
             }
 
