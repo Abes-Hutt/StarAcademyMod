@@ -45,6 +45,7 @@ public class ModConfigs extends ModRegistries {
     public static SoundEventConfig SOUND_EVENTS;
     public static IslandConfig ISLAND;
     public static StarterKitConfig STARTER_KIT;
+    public static ScreenConfig SCREEN;
 
     public static void register(boolean initialization) {
         try {
@@ -89,6 +90,7 @@ public class ModConfigs extends ModRegistries {
         SOUND_EVENTS = new SoundEventConfig().read();
         ISLAND = new IslandConfig().read();
         STARTER_KIT = new StarterKitConfig().read();
+        SCREEN = new ScreenConfig();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);

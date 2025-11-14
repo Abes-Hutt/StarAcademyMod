@@ -1,9 +1,9 @@
 package abeshutt.staracademy.screen.widget;
 
-import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.api.TwitchManager;
 import abeshutt.staracademy.api.twitch.TwitchStream;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -35,6 +35,7 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
 
     private int x, y;
     private final int width, height;
+    private float alpha;
 
     public StreamListWidget(int x, int y, int width, int height) {
         this.streams = new ArrayList<>();
@@ -44,6 +45,15 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.alpha = 1.0f;
+    }
+
+    public float getAlpha() {
+        return this.alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
     }
 
     public void add(Identifier image, String login, String name, boolean live) {
@@ -56,6 +66,10 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+        context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+
         TwitchManager twitch = ProxyAcademyClient.get(MinecraftClient.getInstance()).getTwitch();
 
         if (this.iteration != twitch.getIteration()) {

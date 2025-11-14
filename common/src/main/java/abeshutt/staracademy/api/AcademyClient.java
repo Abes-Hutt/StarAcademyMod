@@ -7,8 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.client.MinecraftClient;
 
-import java.util.Random;
-
 public class AcademyClient {
 
     private final MinecraftClient minecraft;
@@ -92,7 +90,7 @@ public class AcademyClient {
         this.auth.setAuthed(null);
         this.outfits.getTracked().clear();
         this.socket.close();
-        this.timeout = 20 * 60 * 5 + new Random().nextInt(380);
+        this.timeout = 20 * 10;
     }
 
     public void tick() {

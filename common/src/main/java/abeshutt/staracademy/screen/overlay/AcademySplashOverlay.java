@@ -1,5 +1,6 @@
 package abeshutt.staracademy.screen.overlay;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.util.ClientScheduler;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -7,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.texture.NativeImageBackedTexture;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
@@ -58,6 +60,8 @@ public class AcademySplashOverlay {
             if (splash.client.currentScreen != null && g < 1.0F) {
                 //splash.client.currentScreen.render(context, mouseX, mouseY, delta);
             }
+
+            h = MathHelper.clamp(g, 0.0F, 1.0F);
 
             int k = MathHelper.ceil(MathHelper.clamp((double)g, 0.15, 1.0) * 255.0);
 
@@ -111,10 +115,30 @@ public class AcademySplashOverlay {
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(770, 1);
+
+        //RenderSystem.blendFunc(770, 1);
         context.setShaderColor(1.0F, 1.0F, 1.0F, h);
-        context.drawTexture(SplashOverlay.LOGO, k - r, p - q, r, (int)d, -0.0625F, 0.0F, 120, 60, 120, 120);
-        context.drawTexture(SplashOverlay.LOGO, k, p - q, r, (int)d, 0.0625F, 60.0F, 120, 60, 120, 120);
+        //context.drawTexture(SplashOverlay.LOGO, k - r, p - q, r, (int)d, -0.0625F, 0.0F, 120, 60, 120, 120);
+        //context.drawTexture(SplashOverlay.LOGO, k, p - q, r, (int)d, 0.0625F, 60.0F, 120, 60, 120, 120);
+
+        Identifier logoId = StarAcademyMod.id("splash/logo");
+
+        if (MinecraftClient.getInstance().getTextureManager()
+                .getOrDefault(logoId, null) instanceof NativeImageBackedTexture texture) {
+            if (texture.getImage() != null) {
+                int width = texture.getImage().getWidth();
+                int height = texture.getImage().getHeight();
+
+                context.getMatrices().push();
+                float scale = (i / 2.0f) / width;
+                context.getMatrices().scale(scale, scale, 1.0f);
+                context.getMatrices().translate((i - width * scale) / 2.0f / scale, (j - height * scale) / 2.0f / scale, 1.0f);
+
+                context.drawTexture(logoId, 0, 0, 0, 0, width, height, width, height);
+                context.getMatrices().pop();
+            }
+        }
+
         context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();

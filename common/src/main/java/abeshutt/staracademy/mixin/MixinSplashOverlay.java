@@ -1,5 +1,6 @@
 package abeshutt.staracademy.mixin;
 
+import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.screen.overlay.AcademySplashOverlay;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.SplashOverlay;
@@ -23,8 +24,10 @@ public class MixinSplashOverlay {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        //AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
-        //ci.cancel();
+        if (ModConfigs.SCREEN.isEnabled()) {
+            AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
+            ci.cancel();
+        }
     }
 
 }
