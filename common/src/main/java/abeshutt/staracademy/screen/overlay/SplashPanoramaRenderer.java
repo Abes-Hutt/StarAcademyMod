@@ -14,7 +14,7 @@ public class SplashPanoramaRenderer extends RotatingCubeMapRenderer {
     }
 
     @Override
-    public void render(DrawContext context, int width, int height, float alpha, float tickDelta) {
+    public void render(DrawContext context, int screenWidth, int screenHeight, float alpha, float tickDelta) {
         RenderSystem.enableBlend();
         context.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
         double time = ClientScheduler.getTick(tickDelta);
@@ -23,12 +23,27 @@ public class SplashPanoramaRenderer extends RotatingCubeMapRenderer {
             if (MinecraftClient.getInstance().getTextureManager()
                     .getOrDefault(id, null) instanceof NativeImageBackedTexture texture) {
                 if (texture.getImage() != null) {
-                    int w = texture.getImage().getWidth();
-                    int h = texture.getImage().getHeight();
+                    int frameWidth = texture.getImage().getWidth();
+                    int frameHeight = texture.getImage().getHeight();
+                    float scale, offsetX, offsetY;
+
+                    if (frameWidth * screenHeight > frameHeight * screenWidth) {
+                        // Frame is wider
+                        scale = (float)screenHeight / frameHeight;
+                        offsetX = (screenWidth - frameWidth * scale) / 2.0f;
+                        offsetY = 0.0f;
+                    } else {
+                        // Frame is taller
+                        scale = (float)screenWidth / frameWidth;
+                        offsetX = 0.0f;
+                        offsetY = (screenHeight - frameHeight * scale) / 2.0f;
+                    }
 
                     context.getMatrices().push();
-                    context.getMatrices().scale((float)width / w, (float)height / h, 1.0f);
-                    context.drawTexture(id, 0, 0, 0, 0, w, h, w, h);
+                    context.getMatrices().scale(scale, scale, 1.0f);
+                    context.getMatrices().translate(offsetX / scale, offsetY / scale, 0.0f);
+                    context.drawTexture(id, 0, 0, 0, 0, frameWidth, frameHeight,
+                            frameWidth, frameHeight);
                     context.getMatrices().pop();
                 }
             }

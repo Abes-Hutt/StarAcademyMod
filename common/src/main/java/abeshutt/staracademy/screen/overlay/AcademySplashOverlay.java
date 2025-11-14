@@ -17,8 +17,8 @@ import java.util.Optional;
 public class AcademySplashOverlay {
 
     public static void render(SplashOverlay splash, DrawContext context, int mouseX, int mouseY, float delta) {
-        int i = context.getScaledWindowWidth();
-        int j = context.getScaledWindowHeight();
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
         long l = Util.getMeasuringTimeMs();
 
         if (splash.reloading && splash.reloadStartTime == -1L) {
@@ -44,12 +44,27 @@ public class AcademySplashOverlay {
                 if (MinecraftClient.getInstance().getTextureManager()
                         .getOrDefault(id, null) instanceof NativeImageBackedTexture texture) {
                     if (texture.getImage() != null) {
-                        int width = texture.getImage().getWidth();
-                        int height = texture.getImage().getHeight();
+                        int frameWidth = texture.getImage().getWidth();
+                        int frameHeight = texture.getImage().getHeight();
+                        float scale, offsetX, offsetY;
+
+                        if (frameWidth * screenHeight > frameHeight * screenWidth) {
+                            // Frame is wider
+                            scale = (float)screenHeight / frameHeight;
+                            offsetX = (screenWidth - frameWidth * scale) / 2.0f;
+                            offsetY = 0.0f;
+                        } else {
+                            // Frame is taller
+                            scale = (float)screenWidth / frameWidth;
+                            offsetX = 0.0f;
+                            offsetY = (screenHeight - frameHeight * scale) / 2.0f;
+                        }
 
                         context.getMatrices().push();
-                        context.getMatrices().scale((float)i / width, (float)j / height, 1.0f);
-                        context.drawTexture(id, 0, 0, 0, 0, width, height, width, height);
+                        context.getMatrices().scale(scale, scale, 1.0f);
+                        context.getMatrices().translate(offsetX / scale, offsetY / scale, 0.0f);
+                        context.drawTexture(id, 0, 0, 0, 0, frameWidth, frameHeight,
+                                frameWidth, frameHeight);
                         context.getMatrices().pop();
                     }
                 }
@@ -69,12 +84,27 @@ public class AcademySplashOverlay {
                 if (MinecraftClient.getInstance().getTextureManager()
                         .getOrDefault(id, null) instanceof NativeImageBackedTexture texture) {
                     if (texture.getImage() != null) {
-                        int width = texture.getImage().getWidth();
-                        int height = texture.getImage().getHeight();
+                        int frameWidth = texture.getImage().getWidth();
+                        int frameHeight = texture.getImage().getHeight();
+                        float scale, offsetX, offsetY;
+
+                        if (frameWidth * screenHeight > frameHeight * screenWidth) {
+                            // Frame is wider
+                            scale = (float)screenHeight / frameHeight;
+                            offsetX = (screenWidth - frameWidth * scale) / 2.0f;
+                            offsetY = 0.0f;
+                        } else {
+                            // Frame is taller
+                            scale = (float)screenWidth / frameWidth;
+                            offsetX = 0.0f;
+                            offsetY = (screenHeight - frameHeight * scale) / 2.0f;
+                        }
 
                         context.getMatrices().push();
-                        context.getMatrices().scale((float)i / width, (float)j / height, 1.0f);
-                        context.drawTexture(id, 0, 0, 0, 0, width, height, width, height);
+                        context.getMatrices().scale(scale, scale, 1.0f);
+                        context.getMatrices().translate(offsetX / scale, offsetY / scale, 0.0f);
+                        context.drawTexture(id, 0, 0, 0, 0, frameWidth, frameHeight,
+                                frameWidth, frameHeight);
                         context.getMatrices().pop();
                     }
                 }
@@ -94,12 +124,27 @@ public class AcademySplashOverlay {
                 if (MinecraftClient.getInstance().getTextureManager()
                         .getOrDefault(id, null) instanceof NativeImageBackedTexture texture) {
                     if (texture.getImage() != null) {
-                        int width = texture.getImage().getWidth();
-                        int height = texture.getImage().getHeight();
+                        int frameWidth = texture.getImage().getWidth();
+                        int frameHeight = texture.getImage().getHeight();
+                        float scale, offsetX, offsetY;
+
+                        if (frameWidth * screenHeight > frameHeight * screenWidth) {
+                            // Frame is wider
+                            scale = (float)screenHeight / frameHeight;
+                            offsetX = (screenWidth - frameWidth * scale) / 2.0f;
+                            offsetY = 0.0f;
+                        } else {
+                            // Frame is taller
+                            scale = (float)screenWidth / frameWidth;
+                            offsetX = 0.0f;
+                            offsetY = (screenHeight - frameHeight * scale) / 2.0f;
+                        }
 
                         context.getMatrices().push();
-                        context.getMatrices().scale((float)i / width, (float)j / height, 1.0f);
-                        context.drawTexture(id, 0, 0, 0, 0, width, height, width, height);
+                        context.getMatrices().scale(scale, scale, 1.0f);
+                        context.getMatrices().translate(offsetX / scale, offsetY / scale, 0.0f);
+                        context.drawTexture(id, 0, 0, 0, 0, frameWidth, frameHeight,
+                                frameWidth, frameHeight);
                         context.getMatrices().pop();
                     }
                 }
@@ -130,9 +175,9 @@ public class AcademySplashOverlay {
                 int height = texture.getImage().getHeight();
 
                 context.getMatrices().push();
-                float scale = (i / 2.0f) / width;
+                float scale = (screenWidth / 2.0f) / width;
                 context.getMatrices().scale(scale, scale, 1.0f);
-                context.getMatrices().translate((i - width * scale) / 2.0f / scale, (j - height * scale) / 2.0f / scale, 1.0f);
+                context.getMatrices().translate((screenWidth - width * scale) / 2.0f / scale, (screenHeight - height * scale) / 2.0f / scale, 1.0f);
 
                 context.drawTexture(logoId, 0, 0, 0, 0, width, height, width, height);
                 context.getMatrices().pop();
@@ -148,7 +193,7 @@ public class AcademySplashOverlay {
         float t = splash.reload.getProgress();
         splash.progress = MathHelper.clamp(splash.progress * 0.95F + t * 0.050000012F, 0.0F, 1.0F);
         if (f < 1.0F) {
-            splash.renderProgressBar(context, i / 2 - r, s - 5, i / 2 + r, s + 5, 1.0F - MathHelper.clamp(f, 0.0F, 1.0F));
+            splash.renderProgressBar(context, screenWidth / 2 - r, s - 5, screenWidth / 2 + r, s + 5, 1.0F - MathHelper.clamp(f, 0.0F, 1.0F));
         }
 
         if (f >= 2.0F) {
