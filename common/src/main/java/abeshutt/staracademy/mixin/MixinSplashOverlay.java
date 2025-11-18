@@ -2,6 +2,8 @@ package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.screen.overlay.AcademySplashOverlay;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import org.spongepowered.asm.mixin.Final;
@@ -22,11 +24,12 @@ public class MixinSplashOverlay {
         MOJANG_RED = 0xFFA63D55;
     }
 
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "render", at = @At("RETURN"))
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (ModConfigs.SCREEN.isEnabled()) {
+            GlStateManager._clearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            GlStateManager._clear(16384, MinecraftClient.IS_SYSTEM_MAC);
             AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
-            ci.cancel();
         }
     }
 
