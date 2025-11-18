@@ -66,7 +66,7 @@ public abstract class MixinTitleScreen extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     protected void init(CallbackInfo ci) {
-        if (!ModConfigs.SCREEN.isEnabled()) {
+        if (!ModConfigs.SCREEN.isEnabled() || !ModConfigs.SCREEN.hasTitleButtons()) {
             return;
         }
 
@@ -149,7 +149,7 @@ public abstract class MixinTitleScreen extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (!ModConfigs.SCREEN.isEnabled()) {
+        if (!ModConfigs.SCREEN.isEnabled() || (!ModConfigs.SCREEN.hasTitleButtons() && !ModConfigs.SCREEN.hasTitleLogo())) {
             return;
         }
 
