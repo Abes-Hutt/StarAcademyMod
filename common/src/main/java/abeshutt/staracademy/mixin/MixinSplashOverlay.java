@@ -27,8 +27,6 @@ public class MixinSplashOverlay {
     @Inject(method = "render", at = @At("RETURN"))
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (ModConfigs.SCREEN.isEnabled()) {
-            GlStateManager._clearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            GlStateManager._clear(16384, MinecraftClient.IS_SYSTEM_MAC);
             AcademySplashOverlay.render((SplashOverlay)(Object)this, context, mouseX, mouseY, delta);
         }
     }
