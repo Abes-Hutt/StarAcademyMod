@@ -152,6 +152,7 @@ public class ModItems extends ModRegistries {
         register("lootbag_megastone", () -> new LootBagItem(0x80272A, new Item.Settings().maxCount(1)));
         register("lootbag_shinyplushie", () -> new LootBagItem(0xAAFFA0, new Item.Settings().maxCount(1)));
         register("lootbag_plushie", () -> new LootBagItem(0xFFAEFF, new Item.Settings().maxCount(1)));
+        register("lootbag_biomeblend", () -> new LootBagItem(0x4C694C, new Item.Settings().maxCount(1)));
         register("lootbag_academybiomeblend", () -> new LootBagItem(0x4C694C, new Item.Settings().maxCount(1)));
         register("lootbag_gymkey", () -> new LootBagItem(0xFFDCA1, new Item.Settings().maxCount(1)));
         register("lootbag_hats", () -> new LootBagItem(0x4F3539, new Item.Settings().maxCount(1)));
