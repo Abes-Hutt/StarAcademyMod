@@ -36,6 +36,7 @@ dependencies {
     modImplementation("dev.architectury:architectury-fabric:$rootProject.architectury_api_version")
     include(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
+    include("com.madgag:animated-gif-lib:1.4")
     implementation("com.madgag:animated-gif-lib:1.4")
 
     modImplementation("com.cobblemon:fabric:1.7.0+1.21.1")
