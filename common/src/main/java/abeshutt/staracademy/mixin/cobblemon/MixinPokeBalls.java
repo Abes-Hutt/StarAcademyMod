@@ -14,7 +14,7 @@ import java.util.List;
 public class MixinPokeBalls {
 
     @Inject(method = "all", at = @At("RETURN"), remap = false)
-    public void reload(CallbackInfoReturnable<List<PokeBall>> ci) {
+    private static void reload(CallbackInfoReturnable<List<PokeBall>> ci) {
         ci.getReturnValue().add(ModPokeBalls.GREAT_SAFARI_BALL);
         ci.getReturnValue().add(ModPokeBalls.GOLDEN_SAFARI_BALL);
     }

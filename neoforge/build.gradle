@@ -43,7 +43,7 @@ dependencies {
     modImplementation("dev.architectury:architectury-neoforge:$rootProject.architectury_api_version")
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.3.3"))
 
-    modImplementation("com.cobblemon:neoforge:1.6.1+1.21.1")
+    modImplementation("com.cobblemon:neoforge:1.7.0+1.21.1")
 
     modImplementation("maven.modrinth:enhanced-celestials:6.0.2.0-neoforge")
     modImplementation("maven.modrinth:corgilib:1.21.1-5.0.0.6-NeoForge")

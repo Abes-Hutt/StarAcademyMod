@@ -29,7 +29,7 @@ public class PartnerData extends WorldData {
     }
 
     public Optional<Species> getSelection(UUID uuid) {
-        return Optional.ofNullable(this.selections.get(uuid)).map(PokemonSpecies.INSTANCE::getByIdentifier);
+        return Optional.ofNullable(this.selections.get(uuid)).map(PokemonSpecies::getByIdentifier);
     }
 
     public void setSelection(UUID uuid, Species species) {

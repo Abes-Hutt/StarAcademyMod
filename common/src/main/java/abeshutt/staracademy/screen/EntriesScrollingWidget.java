@@ -27,6 +27,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -217,10 +218,10 @@ public class EntriesScrollingWidget extends ScrollingWidget<EntriesScrollingWidg
                     matrices.scale(2.5F, 2.5F, 1F);
 
                     PokemonGuiUtilsKt.drawProfilePokemon(
-                            new RenderablePokemon(species, new LinkedHashSet<>(aspectsToDraw)), matrices,
+                            new RenderablePokemon(species, new LinkedHashSet<>(aspectsToDraw), ItemStack.EMPTY), matrices,
                             QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, 35F, 0F)),
                             PoseType.PROFILE, state, 0F, 4.5F,
-                            true, false, 1F, 1F, 1F, 1F);
+                            true, false, 1F, 1F, 1F, 1F, 0f, 0f);
 
                     matrices.pop();
                     context.disableScissor();

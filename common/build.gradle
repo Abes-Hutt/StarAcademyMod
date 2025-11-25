@@ -1,3 +1,9 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+}
+
 architectury {
     common rootProject.enabled_platforms.split(',')
 }
@@ -13,7 +19,7 @@ dependencies {
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
     compileOnly("com.madgag:animated-gif-lib:1.4")
 
-    modCompileOnly("com.cobblemon:mod:1.6.1+1.21.1")
+    modCompileOnly("com.cobblemon:mod:1.7.0+1.21.1")
     modCompileOnly(files("jars/molang-1.1.18.jar"))
 
     modCompileOnly("maven.modrinth:numismatic-overhaul:0.3.4+1.21")

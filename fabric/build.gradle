@@ -1,7 +1,7 @@
 plugins {
     id 'com.github.johnrengelman.shadow'
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 architectury {
@@ -38,15 +38,15 @@ dependencies {
     implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.3"))
     implementation("com.madgag:animated-gif-lib:1.4")
 
-    modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
+    modImplementation("com.cobblemon:fabric:1.7.0+1.21.1")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.13.3+kotlin.2.1.21")
 
     modImplementation("maven.modrinth:numismatic-overhaul:0.3.4+1.21")
     //modImplementation("io.wispforest:owo-sentinel:0.12.15.4+1.21")
     modImplementation("io.wispforest:owo-lib:0.12.15.4+1.21")
 
-    modImplementation("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
-    modImplementation(project(":common").files("jars/toml4j-0.7.2.jar"))
+    //modImplementation("maven.modrinth:cobblemon-myths-and-legends-sidemod:1.7.2")
+    //modImplementation(project(":common").files("jars/toml4j-0.7.2.jar"))
 
     modImplementation("maven.modrinth:enhanced-celestials:6.0.2.4-fabric")
     modImplementation("maven.modrinth:corgilib:1.21.1-5.0.0.7-Fabric")
@@ -76,7 +76,7 @@ dependencies {
     modImplementation("dev.ftb.mods:ftb-library-fabric:2101.1.19")
     modImplementation("dev.ftb.mods:ftb-essentials-fabric:2101.1.6")
 
-    modImplementation("maven.modrinth:cobblemon-alpha-project:1.1")
+    //modImplementation("maven.modrinth:cobblemon-alpha-project:1.1")
 
     modImplementation("maven.modrinth:bookshelf-lib:ckzM6Bhh")
 

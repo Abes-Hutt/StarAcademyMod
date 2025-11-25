@@ -87,7 +87,7 @@ public class PokemonSlotWidget extends ClickableWidget {
                     pokemon.asRenderablePokemon(), matrices,
                     QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, 35F, 0F)),
                     PoseType.PROFILE, state, 0F, 4.5F,
-                    true, false, 1F, 1F, 1F, 1F);
+                    true, false, 1F, 1F, 1F, 1F, 0f, 0f);
         }
 
         matrices.pop();

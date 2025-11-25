@@ -9,37 +9,22 @@ import abeshutt.staracademy.init.ModConfigs;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
-import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
-import com.cobblemon.mod.common.api.spawning.SpawnBucket;
-import com.cobblemon.mod.common.api.spawning.context.SpawningContext;
-import com.cobblemon.mod.common.api.spawning.context.calculators.SpawningContextCalculator;
-import com.cobblemon.mod.common.api.spawning.detail.PokemonSpawnDetail;
-import com.cobblemon.mod.common.api.spawning.detail.SpawnAction;
-import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail;
 import com.cobblemon.mod.common.api.spawning.influence.SpawningInfluence;
 import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawnerFactory;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
-import com.cobblemon.mod.common.pokemon.IVs;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.corgitaco.enhancedcelestials.EnhancedCelestials;
 import dev.corgitaco.enhancedcelestials.api.ECLunarEventTags;
 import dev.corgitaco.enhancedcelestials.api.EnhancedCelestialsRegistry;
 import dev.corgitaco.enhancedcelestials.api.lunarevent.LunarEvent;
-import dev.corgitaco.enhancedcelestials.lunarevent.EnhancedCelestialsLunarForecastWorldData;
 import kotlin.Unit;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public class EnhancedCelestialsCompat {
 
@@ -72,11 +57,7 @@ public class EnhancedCelestialsCompat {
         });
 
         PlayerSpawnerFactory.INSTANCE.getInfluenceBuilders().add(serverPlayerEntity -> new SpawningInfluence() {
-            @Override
-            public boolean isAllowedPosition(@NotNull ServerWorld serverWorld, @NotNull BlockPos blockPos, @NotNull SpawningContextCalculator<?, ?> spawningContextCalculator) {
-                return SpawningInfluence.DefaultImpls.isAllowedPosition(this, serverWorld, blockPos, spawningContextCalculator);
-            }
-
+            /*
             @Override
             public float affectBucketWeight(@NotNull SpawnBucket spawnBucket, float v) {
                 Optional<EnhancedCelestialsLunarForecastWorldData> enhancedCelestialsLunarForecastWorldData = EnhancedCelestials.lunarForecastWorldData(serverPlayerEntity.getWorld());
@@ -142,7 +123,7 @@ public class EnhancedCelestialsCompat {
             @Override
             public void affectAction(@NotNull SpawnAction<?> spawnAction) {
                 SpawningInfluence.DefaultImpls.affectAction(this, spawnAction);
-            }
+            }*/
         });
     }
 

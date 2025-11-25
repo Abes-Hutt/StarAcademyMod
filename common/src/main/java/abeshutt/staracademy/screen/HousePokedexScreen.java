@@ -155,7 +155,7 @@ public class HousePokedexScreen extends Screen implements CobblemonRenderable {
             int index = i;
 
             PokemonSlotWidget slot = new PokemonSlotWidget(() -> {
-                return CobblemonClient.INSTANCE.getStorage().getMyParty().get(index);
+                return CobblemonClient.INSTANCE.getStorage().getParty().get(index);
             }, x + 25 + 28 * (i % 3) * 175 / 100, y + 49 + 28 * (i / 3) * 175 / 100, 1.75F);
 
             this.slots.add(slot);
