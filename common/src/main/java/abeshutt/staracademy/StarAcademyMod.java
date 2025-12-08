@@ -5,14 +5,20 @@ import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
+import abeshutt.staracademy.init.ModWorldData;
+import abeshutt.staracademy.net.ItemRegistryS2CPacket;
+import abeshutt.staracademy.world.data.save.HouseData;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.networking.NetworkManager;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
@@ -50,6 +56,10 @@ public final class StarAcademyMod {
 
         ModRegistries.register();
         Attributes.init();
+
+        PlayerEvent.PLAYER_JOIN.register(player -> {
+            NetworkManager.sendToPlayer(player, new ItemRegistryS2CPacket(Registries.ITEM.getIds()));
+        });
 
         CommonEvents.POKEMON_SENT_PRE.register(event -> {
             if(event.getLevel().getRegistryKey() == SAFARI) {

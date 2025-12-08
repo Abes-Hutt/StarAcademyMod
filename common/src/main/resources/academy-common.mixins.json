@@ -8,6 +8,7 @@
     "MixinArmorFeatureRenderer",
     "MixinBlockEntityRendererFactories",
     "MixinBuiltinModelItemRenderer",
+    "MixinClientPlayNetworkHandler",
     "MixinClientWorld",
     "MixinCreativeInventoryScreen",
     "MixinDiscreteSliderComponent",

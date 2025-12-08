@@ -7,23 +7,15 @@ import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.BoosterPackItem;
 import abeshutt.staracademy.item.CardAlbumItem;
 import abeshutt.staracademy.item.SafariTicketItem;
+import abeshutt.staracademy.proxy.ProxyItemRegistry;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.stack.EmiStack;
-import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeManager;
-import net.minecraft.registry.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 
 @EmiEntrypoint
 public class AcademyEmiPlugin implements EmiPlugin {
@@ -49,30 +41,9 @@ public class AcademyEmiPlugin implements EmiPlugin {
             return;
         }
 
-        DynamicRegistryManager registries = handler.getRegistryManager();
-        RecipeManager recipes = handler.getRecipeManager();
-
-        Set<Item> serverItems = new HashSet<>();
-
-        for (RecipeEntry<?> recipe : recipes.values()) {
-            ItemStack out = recipe.value().getResult(registries);
-
-            if (!out.isEmpty()) {
-                serverItems.add(out.getItem());
-            }
-
-            for (Ingredient ingredient : recipe.value().getIngredients()) {
-                for (ItemStack in : ingredient.getMatchingStacks()) {
-                    if (!in.isEmpty()) {
-                        serverItems.add(in.getItem());
-                    }
-                }
-            }
-        }
-
         registry.removeEmiStacks(stack -> {
-            Item item = stack.getItemStack().getItem();
-            return !serverItems.contains(item);
+            Identifier item = Registries.ITEM.getId(stack.getItemStack().getItem());
+            return !ProxyItemRegistry.getItemRegistry(handler).contains(item);
         });
     }
 
