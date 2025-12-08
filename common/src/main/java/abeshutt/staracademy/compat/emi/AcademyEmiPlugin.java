@@ -11,6 +11,10 @@ import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.block.Block;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.Item;
+import net.minecraft.registry.*;
 
 @EmiEntrypoint
 public class AcademyEmiPlugin implements EmiPlugin {
@@ -27,6 +31,14 @@ public class AcademyEmiPlugin implements EmiPlugin {
                     || stack.getItemStack().getItem() == ModBlocks.SAFARI_PORTAL.get().asItem()
                     || stack.getItemStack().getItem() == ModItems.ACCEPTANCE_LETTER.get()
                     || stack.getItemStack().getItem() == ModItems.OUTFIT.get();
+        });
+
+        MinecraftClient minecraft = MinecraftClient.getInstance();
+        DynamicRegistryManager.Immutable registries = minecraft.getNetworkHandler().getRegistryManager();
+        Registry<Item> items = registries.get(RegistryKeys.ITEM);
+
+        registry.removeEmiStacks(stack -> {
+            return !items.containsId(Registries.ITEM.getId(stack.getItemStack().getItem()));
         });
     }
 
