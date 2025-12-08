@@ -13,8 +13,17 @@ import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @EmiEntrypoint
 public class AcademyEmiPlugin implements EmiPlugin {
@@ -34,11 +43,36 @@ public class AcademyEmiPlugin implements EmiPlugin {
         });
 
         MinecraftClient minecraft = MinecraftClient.getInstance();
-        DynamicRegistryManager.Immutable registries = minecraft.getNetworkHandler().getRegistryManager();
-        Registry<Item> items = registries.get(RegistryKeys.ITEM);
+        ClientPlayNetworkHandler handler = minecraft.getNetworkHandler();
+
+        if (handler == null) {
+            return;
+        }
+
+        DynamicRegistryManager registries = handler.getRegistryManager();
+        RecipeManager recipes = handler.getRecipeManager();
+
+        Set<Item> serverItems = new HashSet<>();
+
+        for (RecipeEntry<?> recipe : recipes.values()) {
+            ItemStack out = recipe.value().getResult(registries);
+
+            if (!out.isEmpty()) {
+                serverItems.add(out.getItem());
+            }
+
+            for (Ingredient ingredient : recipe.value().getIngredients()) {
+                for (ItemStack in : ingredient.getMatchingStacks()) {
+                    if (!in.isEmpty()) {
+                        serverItems.add(in.getItem());
+                    }
+                }
+            }
+        }
 
         registry.removeEmiStacks(stack -> {
-            return !items.containsId(Registries.ITEM.getId(stack.getItemStack().getItem()));
+            Item item = stack.getItemStack().getItem();
+            return !serverItems.contains(item);
         });
     }
 
