@@ -31,10 +31,7 @@
     "cobblemon.MixinStarterSelectionScreen",
     "display.MixinBlockFrameBlockRenderer",
     "itemzoomer.MixinZoomRenderer",
-    "megashowdown.MixinBattleTargetSelection",
-    "radgyms.MixinEntityRenderers",
-    "radgyms.MixinGymEnterScreen",
-    "radgyms.ProxyDiscreteSliderComponent"
+    "megashowdown.MixinBattleTargetSelection"
   ],
   "mixins": [
     "MixinAbstractFireBlock",
@@ -97,11 +94,6 @@
     "outbreaks.MixinOutbreakPortalEntity",
     "outbreaks.MixinPlayerEntity",
     "outbreaks.MixinPortalUtils",
-    "radgyms.MixinCacheOpenPacketHandler",
-    "radgyms.MixinDataSaver",
-    "radgyms.MixinPlayerPartyStore",
-    "radgyms.MixinPlayerSpawnHelper",
-    "radgyms.MixinPokeCache",
     "shutters.MixinShutter",
     "ultrabeasts.MixinWormholeEntity"
   ],
