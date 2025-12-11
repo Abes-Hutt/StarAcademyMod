@@ -45,7 +45,7 @@ public class MixinShinyCalculationEvent {
                 Option<Rational> result = attribute.get(Option.present(value),
                         AttributeContext.random());
                 return result.isPresent() ? result.get() : value;
-            }).orElse(value).min(Rational.ONE).floatValue());
+            }).orElse(value).invert().max(Rational.ONE).floatValue());
         }
     }
 

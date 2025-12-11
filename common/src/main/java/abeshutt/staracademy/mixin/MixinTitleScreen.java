@@ -4,7 +4,6 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.screen.widget.StreamListWidget;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.architectury.platform.Platform;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
