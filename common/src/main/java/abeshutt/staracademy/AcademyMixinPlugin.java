@@ -10,12 +10,6 @@ import java.util.Set;
 
 public class AcademyMixinPlugin implements IMixinConfigPlugin {
 
-    private static final Set<String> RAD_GYMS_MIXINS = Set.of(
-            "abeshutt.staracademy.mixin.radgyms.MixinDataSaver",
-            "abeshutt.staracademy.mixin.radgyms.MixinEntityRenderers",
-            "abeshutt.staracademy.mixin.radgyms.MixinPlayerPartyStore"
-    );
-
     private static final Set<String> MYTHS_AND_LEGENDS_MIXINS = Set.of(
             "abeshutt.staracademy.mixin.mythsandlegends.MixinSingleEntitySpawnAction"
     );
@@ -44,9 +38,7 @@ public class AcademyMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (RAD_GYMS_MIXINS.contains(mixinClassName)) {
-            return Platform.isModLoaded("rad-gyms");
-        } else if (MYTHS_AND_LEGENDS_MIXINS.contains(mixinClassName)) {
+        if (MYTHS_AND_LEGENDS_MIXINS.contains(mixinClassName)) {
             return Platform.isModLoaded("mythsandlegends");
         } else if (FADING_CLOUDS_MIXINS.contains(mixinClassName)) {
             return Platform.isModLoaded("fading_clouds");
