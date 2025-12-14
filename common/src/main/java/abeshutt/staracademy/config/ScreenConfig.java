@@ -8,6 +8,7 @@ public class ScreenConfig extends FileConfig {
     @Expose private boolean enabled;
     @Expose private boolean titleButtons;
     @Expose private boolean titleLogo;
+    @Expose private boolean streams;
 
     @Override
     public String getPath() {
@@ -26,11 +27,16 @@ public class ScreenConfig extends FileConfig {
         return this.titleLogo || Platform.isDevelopmentEnvironment();
     }
 
+    public boolean hasStreams() {
+        return this.streams;
+    }
+
     @Override
     protected void reset() {
         this.enabled = false;
         this.titleButtons = false;
         this.titleLogo = false;
+        this.streams = true;
     }
 
 }

@@ -40,6 +40,10 @@ public abstract class MixinScreen {
 
     @Inject(method = { "init(Lnet/minecraft/client/MinecraftClient;II)V", "clearAndInit" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;init()V", shift = At.Shift.AFTER))
     private void init(CallbackInfo ci) {
+        if (!ModConfigs.SCREEN.hasStreams()) {
+            return;
+        }
+
         if (!((Object)this instanceof TitleScreen) && !((Object)this instanceof GameMenuScreen)) {
             return;
         }
