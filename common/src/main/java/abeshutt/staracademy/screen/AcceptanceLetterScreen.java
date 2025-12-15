@@ -24,11 +24,8 @@ public class AcceptanceLetterScreen extends Screen {
 
     private static final Identifier PAGES = StarAcademyMod.id("textures/gui/acceptance_letter.png");
 
-    private final boolean enrolled;
-
-    public AcceptanceLetterScreen(boolean enrolled) {
+    public AcceptanceLetterScreen() {
         super(Text.translatable(ModItems.ACCEPTANCE_LETTER.get().getTranslationKey()));
-        this.enrolled = enrolled;
     }
 
     @Override
@@ -37,13 +34,11 @@ public class AcceptanceLetterScreen extends Screen {
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        if(!this.enrolled) {
-            this.addDrawableChild(new EnrolButton(centerX - 60 / 2, centerY - 15 / 2 + 75,
-                    60, 15, Text.translatable("item.academy.acceptance_letter.enroll"), () -> {
-                NetworkManager.sendToServer(new ConfirmAcceptanceLetterC2SPacket());
-                this.close();
-            }));
-        }
+        this.addDrawableChild(new EnrolButton(centerX - 60 / 2, centerY - 15 / 2 + 75,
+                60, 15, Text.translatable("item.academy.acceptance_letter.enroll"), () -> {
+            NetworkManager.sendToServer(new ConfirmAcceptanceLetterC2SPacket());
+            this.close();
+        }));
     }
 
     @Override

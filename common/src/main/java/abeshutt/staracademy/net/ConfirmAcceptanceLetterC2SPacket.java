@@ -36,6 +36,7 @@ public class ConfirmAcceptanceLetterC2SPacket extends ModPacket<ServerPlayNetwor
 
         if(stack.getItem() instanceof AcceptanceLetterItem && player.getUuid()
                 .equals(stack.getOrDefault(ACCEPTANCE_LETTER_OWNER.get(), null))) {
+            /*
             HouseData data = ModWorldData.HOUSE.getGlobal(player.getWorld());
             AcademyHouse house = data.get(stack.getOrDefault(ACCEPTANCE_LETTER_HOUSE.get(), null)).orElse(null);
             if(house == null) return;
@@ -54,7 +55,10 @@ public class ConfirmAcceptanceLetterC2SPacket extends ModPacket<ServerPlayNetwor
                         .append(Text.literal(".").formatted(Formatting.GRAY)));
             }
 
-            house.addPlayer(player.getUuid());
+            house.addPlayer(player.getUuid());*/
+
+            player.getServer().getCommandManager()
+                    .executeWithPrefix(player.getCommandSource(), "/openstarterscreen " + player.getGameProfile().getName());
         }
     }
 

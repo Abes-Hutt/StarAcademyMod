@@ -31,8 +31,7 @@ public class AcceptanceLetterItem extends Item {
 
     public AcceptanceLetterItem() {
         super(new Settings().fireproof().maxCount(1)
-                .component(ACCEPTANCE_LETTER_OPEN.get(), false)
-                .component(ACCEPTANCE_LETTER_ENROLLED.get(), false));
+                .component(ACCEPTANCE_LETTER_OPEN.get(), false));
     }
 
     @Override
@@ -122,7 +121,7 @@ public class AcceptanceLetterItem extends Item {
             return TypedActionResult.fail(stack);
         }
 
-        MinecraftClient.getInstance().setScreen(new AcceptanceLetterScreen(stack.getOrDefault(ACCEPTANCE_LETTER_ENROLLED.get(), false)));
+        MinecraftClient.getInstance().setScreen(new AcceptanceLetterScreen());
         return TypedActionResult.consume(stack);
     }
 

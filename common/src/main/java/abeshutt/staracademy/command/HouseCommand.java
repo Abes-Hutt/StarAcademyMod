@@ -28,7 +28,6 @@ import net.minecraft.util.Formatting;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-import static abeshutt.staracademy.init.ModDataComponents.ACCEPTANCE_LETTER_HOUSE;
 import static abeshutt.staracademy.init.ModDataComponents.ACCEPTANCE_LETTER_OWNER;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -289,7 +288,6 @@ public class HouseCommand extends Command {
             if(player == null) continue;
             ItemStack stack = new ItemStack(ModItems.ACCEPTANCE_LETTER.get());
             stack.set(ACCEPTANCE_LETTER_OWNER.get(), player.getUuid());
-            stack.set(ACCEPTANCE_LETTER_HOUSE.get(), id);
 
             for(ServerPlayerEntity other : context.getSource().getServer().getPlayerManager().getPlayerList()) {
                 other.sendMessage(Text.empty().append(player.getDisplayName())
