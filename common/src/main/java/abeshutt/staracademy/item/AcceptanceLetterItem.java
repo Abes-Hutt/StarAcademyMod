@@ -135,4 +135,5 @@ public class AcceptanceLetterItem extends Item {
             stack.set(ACCEPTANCE_LETTER_OWNER.get(), player.getUuid());
         }
     }
+
 }

@@ -8,6 +8,7 @@ import abeshutt.staracademy.world.data.AcademyHouse;
 import abeshutt.staracademy.world.data.save.HouseData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Style;
@@ -57,8 +58,12 @@ public class ConfirmAcceptanceLetterC2SPacket extends ModPacket<ServerPlayNetwor
 
             house.addPlayer(player.getUuid());*/
 
-            player.getServer().getCommandManager()
-                    .executeWithPrefix(player.getCommandSource(), "/openstarterscreen " + player.getGameProfile().getName());
+            MinecraftServer server = player.getServer();
+
+            if (server != null) {
+                server.getCommandManager().executeWithPrefix(server.getCommandSource(),
+                        "/openstarterscreen " + player.getGameProfile().getName());
+            }
         }
     }
 
