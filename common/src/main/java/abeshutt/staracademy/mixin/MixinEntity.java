@@ -7,6 +7,7 @@ import abeshutt.staracademy.proxy.ProxyEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -43,6 +44,9 @@ public abstract class MixinEntity implements ProxyEntity {
 
     @Shadow public abstract void discard();
 
+    @Shadow
+    public abstract MinecraftServer getServer();
+
     @Override
     public boolean isInSafariPortal() {
         return this.inSafariPortal;
@@ -70,7 +74,7 @@ public abstract class MixinEntity implements ProxyEntity {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void tickHead(CallbackInfo ci) {
-        if(ModConfigs.ENTITY_YEETER.contains((Entity)(Object)this) && !this.getWorld().isClient) {
+        if(this.getServer().getTicks() % 5 == 0 && !this.getWorld().isClient && ModConfigs.ENTITY_YEETER.contains((Entity)(Object)this)) {
             this.discard();
             ci.cancel();
         }
