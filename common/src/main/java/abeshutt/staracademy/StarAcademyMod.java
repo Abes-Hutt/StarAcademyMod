@@ -6,11 +6,15 @@ import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
 import abeshutt.staracademy.net.ItemRegistryS2CPacket;
+import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.CobblemonItems;
+import com.cobblemon.mod.common.advancement.CobblemonCriteria;
 import com.cobblemon.mod.common.api.Priority;
+import com.cobblemon.mod.common.api.storage.player.GeneralPlayerData;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
@@ -21,6 +25,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -54,6 +59,21 @@ public final class StarAcademyMod {
 
         ModRegistries.register();
         Attributes.init();
+
+        TickEvent.PLAYER_POST.register(entity -> {
+            if (entity instanceof ServerPlayerEntity player && player.getServer().getTicks() % 5 == 0) {
+                GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
+
+                if (playerData.getStarterSelected()) {
+                    MinecraftServer server = player.getServer();
+
+                    if (server != null) {
+                        server.getCommandManager().executeWithPrefix(server.getCommandSource(),
+                                "/advancement grant %s only academy:root".formatted(player.getGameProfile().getName()));
+                    }
+                }
+            }
+        });
 
         PlayerEvent.PLAYER_JOIN.register(player -> {
             NetworkManager.sendToPlayer(player, new ItemRegistryS2CPacket(Registries.ITEM.getIds()));
