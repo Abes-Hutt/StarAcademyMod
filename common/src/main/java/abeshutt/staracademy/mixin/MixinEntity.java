@@ -74,7 +74,7 @@ public abstract class MixinEntity implements ProxyEntity {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void tickHead(CallbackInfo ci) {
-        if(this.getServer().getTicks() % 5 == 0 && !this.getWorld().isClient && ModConfigs.ENTITY_YEETER.contains((Entity)(Object)this)) {
+        if(!this.getWorld().isClient && this.getServer().getTicks() % 5 == 0 && ModConfigs.ENTITY_YEETER.contains((Entity)(Object)this)) {
             this.discard();
             ci.cancel();
         }
