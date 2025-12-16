@@ -61,7 +61,7 @@ public final class StarAcademyMod {
         Attributes.init();
 
         TickEvent.PLAYER_POST.register(entity -> {
-            if (entity instanceof ServerPlayerEntity player && player.getServer().getTicks() % 5 == 0) {
+            if (entity instanceof ServerPlayerEntity player && player.getServer().getTicks() % 20 == 0) {
                 GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
 
                 if (playerData.getStarterSelected()) {

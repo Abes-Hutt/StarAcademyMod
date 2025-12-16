@@ -35,6 +35,7 @@
   ],
   "mixins": [
     "MixinAbstractFireBlock",
+    "MixinAdvancementCommand",
     "MixinBundleContentsComponent",
     "MixinCommandManager",
     "MixinEntity",
