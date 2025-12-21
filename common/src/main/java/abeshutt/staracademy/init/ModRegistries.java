@@ -11,6 +11,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
@@ -29,9 +30,11 @@ public class ModRegistries {
     public static DeferredRegister<LootFunctionType<?>> LOOT_FUNCTION_TYPES = DeferredRegister.create(StarAcademyMod.ID, RegistryKeys.LOOT_FUNCTION_TYPE);
     public static DeferredRegister<ComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(StarAcademyMod.ID, RegistryKeys.DATA_COMPONENT_TYPE);
     public static DeferredRegister<MapCodec<? extends ChunkGenerator>> CHUNK_GENERATORS = DeferredRegister.create(StarAcademyMod.ID, RegistryKeys.CHUNK_GENERATOR);
+    public static DeferredRegister<ItemGroup> ITEM_GROUPS = DeferredRegister.create(StarAcademyMod.ID, RegistryKeys.ITEM_GROUP);
 
     public static void register() {
         ModDataComponents.register();
+        ModCreativeTabs.register();
         ModItems.register();
         ModBlocks.register();
         ModBlocks.Entities.register();
@@ -42,6 +45,7 @@ public class ModRegistries {
         ModChunkGenerators.register();
         ModOutfits.register();
 
+        ITEM_GROUPS.register();
         DATA_COMPONENTS.register();
         BLOCKS.register();
         ITEMS.register();

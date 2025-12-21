@@ -2,8 +2,10 @@ package abeshutt.staracademy.item;
 
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.init.ModDataComponents;
+import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.data.outfit.OutfitEntry;
+import abeshutt.staracademy.item.data.outfit.ValueOutfitEntry;
 import abeshutt.staracademy.item.renderer.OutfitItemRenderer;
 import abeshutt.staracademy.item.renderer.SpecialItemRenderer;
 import abeshutt.staracademy.math.random.JavaRandom;
@@ -29,6 +31,12 @@ public class OutfitItem extends Item implements ISpecialItemModel {
 
     public OutfitItem() {
         super(new Settings());
+    }
+
+    public static ItemStack create(String id) {
+        ItemStack stack = new ItemStack(ModItems.OUTFIT.get());
+        OutfitItem.setEntry(stack, new ValueOutfitEntry(id));
+        return stack;
     }
 
     @Override
