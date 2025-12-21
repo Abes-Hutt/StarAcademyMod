@@ -30,9 +30,7 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> CARD_ALBUM;
     public static RegistrySupplier<Item> LEGENDARY_PLACEHOLDER;
     public static RegistrySupplier<AcceptanceLetterItem> ACCEPTANCE_LETTER;
-    public static RegistrySupplier<PokeBallItem> GREAT_SAFARI_BALL;
-    public static RegistrySupplier<PokeBallItem> GOLDEN_SAFARI_BALL;
-    public static Supplier<Set<PokeBallItem>> SAFARI_BALLS = () -> Set.of(CobblemonItems.SAFARI_BALL, GREAT_SAFARI_BALL.get(), GOLDEN_SAFARI_BALL.get());
+    public static Supplier<Set<PokeBallItem>> SAFARI_BALLS = () -> Set.of(CobblemonItems.SAFARI_BALL);
 
     public static void register() {
         STAR_BADGE = register("star_badge", StarBadgeItem::new);
@@ -52,8 +50,6 @@ public class ModItems extends ModRegistries {
         CARD_ALBUM = register("card_album", CardAlbumItem::new);
         LEGENDARY_PLACEHOLDER = register("legendary_placeholder", () -> new Item(new Item.Settings().maxCount(1)));
         ACCEPTANCE_LETTER = register("acceptance_letter", AcceptanceLetterItem::new);
-        GREAT_SAFARI_BALL = register("great_safari_ball", () -> new PokeBallItem(ModPokeBalls.GREAT_SAFARI_BALL));
-        GOLDEN_SAFARI_BALL = register("golden_safari_ball", () -> new PokeBallItem(ModPokeBalls.GOLDEN_SAFARI_BALL));
 
         register("roasted_aguav_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.4f, true, false));
         register("roasted_apicot_berry", () -> new FoodItem(Rarity.COMMON, 6, 0.4f, true, false));
