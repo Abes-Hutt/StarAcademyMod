@@ -22,6 +22,8 @@ dependencies {
     modCompileOnly("com.cobblemon:mod:1.7.0+1.21.1")
     modCompileOnly(files("jars/molang-1.1.18.jar"))
 
+    modCompileOnly("maven.modrinth:jei:19.25.1.332")
+
     modCompileOnly("maven.modrinth:numismatic-overhaul:0.3.4+1.21")
     modCompileOnly(include("io.wispforest:owo-sentinel:0.12.15.4+1.21"))
     modCompileOnly(annotationProcessor("io.wispforest:owo-lib:0.12.15.4+1.21"))
