@@ -52,7 +52,6 @@ public class MixinInGameHud {
     private void academy$renderSafari(DrawContext context, float tickDelta) {
         if (StarAcademyMod.SAFARI_TIMER == null) return;
         if (Instant.now().isAfter(StarAcademyMod.SAFARI_TIMER)) return;
-        if(!MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
 
         SafariWidget widget = new SafariWidget();
         widget.render(context, 0, 0, ClientScheduler.getTick(tickDelta));

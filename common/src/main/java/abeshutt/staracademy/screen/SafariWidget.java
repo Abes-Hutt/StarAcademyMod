@@ -40,14 +40,14 @@ public class SafariWidget implements Drawable {
         int color = this.getTextColor(now, endTime);
         String text = this.formatTimeString(now, endTime);
 
-        var secondsRemaining = Duration.between(now, endTime).getSeconds();
+        var millisRemaining = Duration.between(now, endTime).getSeconds();
 
         matrices.push();
         matrices.scale(1.1F, 1.1F, 1.1F);
         context.drawText(textRenderer, text, -textRenderer.getWidth(text) / 2, 12, color, true);
         matrices.pop();
 
-        float wobble = (float)Math.sin(Math.PI * 2.0F / 80.0F * secondsRemaining * 20 * (secondsRemaining <= 60 ? 5.0F : 1.0F));
+        float wobble = (float)Math.sin(Math.PI * 2.0F / 80.0F * millisRemaining * 20000 * (millisRemaining * 1000 <= 60 ? 5.0F : 1.0F));
 
         matrices.push();
         matrices.translate(0.0F, -SAFARI_TIMER_HEIGHT / 2.0F, 0);
