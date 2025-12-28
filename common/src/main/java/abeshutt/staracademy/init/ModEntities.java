@@ -15,7 +15,6 @@ public class ModEntities extends ModRegistries {
     public static RegistrySupplier<EntityType<DuelingGloveEntity>> DUELING_GLOVE;
     public static RegistrySupplier<EntityType<SlingshotEntity>> SLINGSHOT;
     public static RegistrySupplier<EntityType<PartnerNPCEntity>> PARTNER_NPC;
-    public static RegistrySupplier<EntityType<SafariNPCEntity>> SAFARI_NPC;
     public static RegistrySupplier<EntityType<NurseNPCEntity>> NURSE_NPC;
     public static RegistrySupplier<EntityType<CardGraderNPCEntity>> CARD_GRADER_NPC;
     public static RegistrySupplier<EntityType<ShootingStarEntity>> SHOOTING_STAR;
@@ -31,9 +30,6 @@ public class ModEntities extends ModRegistries {
                 builder -> builder.dimensions(0.98F, 0.7F).maxTrackingRange(128));
 
         PARTNER_NPC = register("partner_npc", PartnerNPCEntity::new, SpawnGroup.MISC,
-                builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
-
-        SAFARI_NPC = register("safari_npc", SafariNPCEntity::new, SpawnGroup.MISC,
                 builder -> builder.dimensions(0.6F, 1.8F).maxTrackingRange(128));
 
         NURSE_NPC = register("nurse_npc", NurseNPCEntity::new, SpawnGroup.MISC,

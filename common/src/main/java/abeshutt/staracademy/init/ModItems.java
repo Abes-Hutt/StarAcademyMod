@@ -17,7 +17,6 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> HUNT;
     public static RegistrySupplier<DuelingGloveItem> DUELING_GLOVE;
     public static RegistrySupplier<OutfitItem> OUTFIT;
-    public static RegistrySupplier<SafariTicketItem> SAFARI_TICKET;
     public static RegistrySupplier<SlingshotItem> SLINGSHOT;
     public static RegistrySupplier<Item> HA_FOSSIL;
     public static RegistrySupplier<Item> MAX_IV_FOSSIL;
@@ -37,7 +36,6 @@ public class ModItems extends ModRegistries {
         HUNT = register("hunt", () -> new Item(new Item.Settings().maxCount(1).fireproof()));
         DUELING_GLOVE = register("dueling_glove", DuelingGloveItem::new);
         OUTFIT = register("outfit", OutfitItem::new);
-        SAFARI_TICKET = register("safari_ticket", SafariTicketItem::new);
         SLINGSHOT = register("slingshot", SlingshotItem::new);
         HA_FOSSIL = register("ha_fossil", () -> new Item(new Item.Settings().maxCount(1)));
         MAX_IV_FOSSIL = register("max_iv_fossil", () -> new Item(new Item.Settings().maxCount(1)));

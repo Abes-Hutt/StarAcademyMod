@@ -36,12 +36,6 @@ public class SoundEventConfig extends FileConfig {
     @Override
     protected void reset() {
         this.events = new ArrayList<>();
-        this.events.add(new DimensionEnterPlaySoundEvent(new ServerSound(
-                SoundEvents.AMBIENT_SOUL_SAND_VALLEY_LOOP.value().getId(),
-                SoundCategory.MASTER,
-                1.0F, 1.0F, new Vec3d(0, 0, 0), false, 0,
-                ServerSound.AttenuationType.NONE, true
-        ), StarAcademyMod.SAFARI.getValue()));
     }
 
 }

@@ -1,12 +1,10 @@
 package abeshutt.staracademy.compat.emi;
 
-import abeshutt.staracademy.config.SafariConfig;
 import abeshutt.staracademy.init.ModBlocks;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.BoosterPackItem;
 import abeshutt.staracademy.item.CardAlbumItem;
-import abeshutt.staracademy.item.SafariTicketItem;
 import abeshutt.staracademy.proxy.ProxyItemRegistry;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
@@ -22,14 +20,12 @@ public class AcademyEmiPlugin implements EmiPlugin {
 
     @Override
     public void register(EmiRegistry registry) {
-        this.registerSafariTickets(registry);
         this.registerBoosterPacks(registry);
         this.registerCardAlbums(registry);
 
         registry.removeEmiStacks(stack -> {
             return stack.getItemStack().getItem() == ModItems.LEGENDARY_PLACEHOLDER.get()
                     || stack.getItemStack().getItem() == ModBlocks.ERROR.get().asItem()
-                    || stack.getItemStack().getItem() == ModBlocks.SAFARI_PORTAL.get().asItem()
                     || stack.getItemStack().getItem() == ModItems.ACCEPTANCE_LETTER.get()
                     || stack.getItemStack().getItem() == ModItems.OUTFIT.get();
         });
@@ -44,19 +40,6 @@ public class AcademyEmiPlugin implements EmiPlugin {
         registry.removeEmiStacks(stack -> {
             Identifier item = Registries.ITEM.getId(stack.getItemStack().getItem());
             return !ProxyItemRegistry.getItemRegistry(handler).contains(item);
-        });
-    }
-
-    public void registerSafariTickets(EmiRegistry registry) {
-        SafariConfig.CLIENT.getTickets().forEach((id, entry) -> {
-            registry.addEmiStackAfter(EmiStack.of(SafariTicketItem.create(id)), stack -> {
-                return stack.getItemStack().getItem() == ModItems.SAFARI_TICKET.get();
-            });
-        });
-
-        registry.removeEmiStacks(stack -> {
-            return stack.getItemStack().getItem() == ModItems.SAFARI_TICKET.get()
-                    && SafariTicketItem.getEntry(stack.getItemStack(), true).isEmpty();
         });
     }
 

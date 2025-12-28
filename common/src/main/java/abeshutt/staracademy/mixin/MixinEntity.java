@@ -1,98 +1,31 @@
 package abeshutt.staracademy.mixin;
 
-import abeshutt.staracademy.block.SafariPortalBlock;
-import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.proxy.ProxyEntity;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Mixin(Entity.class)
-public abstract class MixinEntity implements ProxyEntity {
-
-    @Unique private boolean inSafariPortal;
-    @Unique private boolean safariPortalCooldown;
-    @Unique private List<Runnable> scheduledPortalTicks = new ArrayList<>();
+public abstract class MixinEntity {
 
     @Shadow public abstract World getWorld();
-    @Shadow public abstract UUID getUuid();
-
-    @Shadow public abstract boolean hasPortalCooldown();
-
-    @Shadow public abstract Box getBoundingBox();
-
-    @Shadow public abstract void readNbt(NbtCompound nbt);
-
-    @Shadow public abstract void remove(Entity.RemovalReason reason);
-
     @Shadow public abstract void discard();
-
-    @Shadow
-    public abstract MinecraftServer getServer();
-
-    @Override
-    public boolean isInSafariPortal() {
-        return this.inSafariPortal;
-    }
-
-    @Override
-    public boolean hasSafariPortalCooldown() {
-        return this.safariPortalCooldown;
-    }
-
-    @Override
-    public void setInSafariPortal(boolean inSafariPortal) {
-        this.inSafariPortal = inSafariPortal;
-    }
-
-    @Override
-    public void setSafariPortalCooldown(boolean safariPortalCooldown) {
-        this.safariPortalCooldown = safariPortalCooldown;
-    }
-
-    @Override
-    public void schedulePortalTick(Runnable runnable) {
-        this.scheduledPortalTicks.add(runnable);
-    }
+    @Shadow public abstract MinecraftServer getServer();
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void tickHead(CallbackInfo ci) {
         if(!this.getWorld().isClient && this.getServer().getTicks() % 5 == 0 && ModConfigs.ENTITY_YEETER.contains((Entity)(Object)this)) {
             this.discard();
             ci.cancel();
-        }
-
-        this.setInSafariPortal(false);
-
-        if(this.hasSafariPortalCooldown() && !this.hasPortalCooldown()) {
-            if(!this.isCollidingWithPortal()) {
-                this.setSafariPortalCooldown(false);
-            }
-        }
-    }
-
-    @Inject(method = "tickPortalCooldown", at = @At("HEAD"))
-    public void tickPortal(CallbackInfo ci) {
-        if(this.getWorld() instanceof ServerWorld) {
-            this.scheduledPortalTicks.forEach(Runnable::run);
-            this.scheduledPortalTicks.clear();
         }
     }
 
@@ -110,41 +43,5 @@ public abstract class MixinEntity implements ProxyEntity {
             ci.setReturnValue(new TeleportTarget(state.getPos(),Vec3d.ZERO, state.getYaw(), state.getPitch()));
         }
     }*/
-
-    @Inject(method = "writeNbt", at = @At("RETURN"))
-    public void writeNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> ci) {
-        Adapters.BOOLEAN.writeNbt(this.inSafariPortal).ifPresent(tag -> nbt.put("inSafariPortal", tag));
-        Adapters.BOOLEAN.writeNbt(this.safariPortalCooldown).ifPresent(tag -> nbt.put("safariPortalCooldown", tag));
-    }
-
-    @Inject(method = "readNbt", at = @At("RETURN"))
-    public void readNbt(NbtCompound nbt, CallbackInfo ci) {
-        this.inSafariPortal = Adapters.BOOLEAN.readNbt(nbt.get("inSafariPortal")).orElse(false);
-        this.safariPortalCooldown = Adapters.BOOLEAN.readNbt(nbt.get("safariPortalCooldown")).orElse(false);
-    }
-
-    private boolean isCollidingWithPortal() {
-        Box box = this.getBoundingBox();
-        BlockPos blockPos = BlockPos.ofFloored(box.minX + 1.0E-7, box.minY + 1.0E-7, box.minZ + 1.0E-7);
-        BlockPos blockPos2 = BlockPos.ofFloored(box.maxX - 1.0E-7, box.maxY - 1.0E-7, box.maxZ - 1.0E-7);
-
-        if(this.getWorld().isRegionLoaded(blockPos, blockPos2)) {
-            BlockPos.Mutable mutable = new BlockPos.Mutable();
-            for(int i = blockPos.getX(); i <= blockPos2.getX(); i++) {
-                for(int j = blockPos.getY(); j <= blockPos2.getY(); j++) {
-                    for(int k = blockPos.getZ(); k <= blockPos2.getZ(); k++) {
-                        mutable.set(i, j, k);
-                        BlockState blockState = this.getWorld().getBlockState(mutable);
-
-                        if(blockState.getBlock() instanceof SafariPortalBlock) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
 
 }

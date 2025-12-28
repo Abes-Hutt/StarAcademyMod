@@ -13,7 +13,6 @@ public class ModCommands {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment environment) {
         register(ReloadCommand::new, dispatcher, access, environment);
         register(StarterCommand::new, dispatcher, access, environment);
-        register(SafariCommand::new, dispatcher, access, environment);
         register(PartnerCommand::new, dispatcher, access, environment);
         register(WardrobeCommand::new, dispatcher, access, environment);
         register(StatsCommand::new, dispatcher, access, environment);

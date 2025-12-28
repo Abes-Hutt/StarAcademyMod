@@ -32,7 +32,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +47,8 @@ public final class StarAcademyMod {
     public static final String ID = "academy";
     public static final Logger LOGGER = LogManager.getLogger(ID);
 
-    public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));
     public static List<Runnable> CLIENT_TICKERS = new ArrayList<>();
+    @Nullable public static Instant SAFARI_TIMER;
 
     public static void init() {
         LifecycleEvent.SERVER_STARTED.register(instance -> {
@@ -78,26 +80,6 @@ public final class StarAcademyMod {
         PlayerEvent.PLAYER_JOIN.register(player -> {
             NetworkManager.sendToPlayer(player, new ItemRegistryS2CPacket(Registries.ITEM.getIds()));
         });
-
-        CommonEvents.POKEMON_SENT_PRE.register(event -> {
-            if(event.getLevel().getRegistryKey() == SAFARI) {
-                event.cancel();
-            }
-        });
-
-        CommonEvents.BATTLE_STARTED_PRE.register(event -> {
-            if(event.getBattle().getPlayers().stream().anyMatch(player -> player.getWorld().getRegistryKey() == SAFARI)) {
-                event.cancel();
-            }
-        });
-
-        CommonEvents.POKEMON_CATCH_RATE.register(event -> {
-            if(event.getThrower().getWorld().getRegistryKey() == SAFARI) {
-                if(event.getPokeBallEntity().getPokeBall().item() != CobblemonItems.SAFARI_BALL) {
-                    event.setCatchRate(0.0F);
-                }
-            }
-        }, Priority.LOWEST);
 
         CommonEvents.POKEMON_ENTITY_SPAWN.register(event -> {
             if(FORCE_SPAWNING.get()) {

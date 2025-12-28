@@ -24,7 +24,6 @@ public class ModBlocks extends ModRegistries {
 
     public static RegistrySupplier<Block> ERROR;
     public static RegistrySupplier<BetterStructureBlock> STRUCTURE_BLOCK;
-    public static RegistrySupplier<SafariPortalBlock> SAFARI_PORTAL;
     public static RegistrySupplier<Block> SAFARI_PORTAL_FRAME;
     public static RegistrySupplier<HousePokedexBlock> HOUSE_POKEDEX;
     public static RegistrySupplier<ShinyPokedollCollectorBlock> SHINY_POKEDOLL_COLLECTOR;
@@ -37,9 +36,6 @@ public class ModBlocks extends ModRegistries {
                 block -> new BlockItem(block.get(), new Item.Settings()));
 
         STRUCTURE_BLOCK = register("structure_block", BetterStructureBlock::new,
-                block -> new BlockItem(block.get(), new Item.Settings()));
-
-        SAFARI_PORTAL = register("safari_portal", SafariPortalBlock::new,
                 block -> new BlockItem(block.get(), new Item.Settings()));
 
         SAFARI_PORTAL_FRAME = register("safari_portal_frame", () -> new Block(AbstractBlock.Settings
@@ -64,14 +60,12 @@ public class ModBlocks extends ModRegistries {
 
     public static class Entities extends ModBlocks {
         public static RegistrySupplier<BlockEntityType<BetterStructureBlockEntity>> STRUCTURE_BLOCK;
-        public static RegistrySupplier<BlockEntityType<SafariPortalBlockEntity>> SAFARI_PORTAL;
         public static RegistrySupplier<BlockEntityType<HousePokedexBlockEntity>> HOUSE_POKEDEX;
         public static RegistrySupplier<BlockEntityType<ShinyPokedollCollectorBlockEntity>> SHINY_POKEDOLL_COLLECTOR;
         public static RegistrySupplier<BlockEntityType<MeteoricChunkBlockEntity>> METEORIC_CHUNK;
 
         public static void register() {
             STRUCTURE_BLOCK = register("structure_block", BetterStructureBlockEntity::new, ModBlocks.STRUCTURE_BLOCK);
-            SAFARI_PORTAL = register("safari_portal", SafariPortalBlockEntity::new, ModBlocks.SAFARI_PORTAL);
             HOUSE_POKEDEX = register("house_pokedex", HousePokedexBlockEntity::new, ModBlocks.HOUSE_POKEDEX);
             SHINY_POKEDOLL_COLLECTOR = register("shiny_pokedoll_collector", ShinyPokedollCollectorBlockEntity::new, ModBlocks.SHINY_POKEDOLL_COLLECTOR);
             METEORIC_CHUNK = register("meteoric_chunk", MeteoricChunkBlockEntity::new, ModBlocks.METEORIC_CHUNK, ModBlocks.RARE_METEORIC_CHUNK, ModBlocks.FABULOUS_METEORIC_CHUNK);

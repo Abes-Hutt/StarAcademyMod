@@ -32,8 +32,6 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), UpdatePlayerProfileS2CPacket.ID, UpdatePlayerProfileS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateStarBadgeS2CPacket.ID, UpdateStarBadgeS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateStarterRaffleS2CPacket.ID, UpdateStarterRaffleS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(NetworkManager.s2c(), UpdateSafariS2CPacket.ID, UpdateSafariS2CPacket::new, CLIENT_PLAY);
-            ModNetwork.register(NetworkManager.s2c(), UpdateSafariConfigS2CPacket.ID, UpdateSafariConfigS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateOutfitS2CPacket.ID, UpdateOutfitS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateShootingStarS2CPacket.ID, UpdateShootingStarS2CPacket::new, CLIENT_PLAY);
             ModNetwork.register(NetworkManager.s2c(), UpdateHousesS2CPacket.ID, UpdateHousesS2CPacket::new, CLIENT_PLAY);
@@ -62,8 +60,6 @@ public class ModNetwork extends ModRegistries {
             ModNetwork.register(NetworkManager.s2c(), UpdatePlayerProfileS2CPacket.ID, UpdatePlayerProfileS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateStarBadgeS2CPacket.ID, UpdateStarBadgeS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateStarterRaffleS2CPacket.ID, UpdateStarterRaffleS2CPacket::new, null);
-            ModNetwork.register(NetworkManager.s2c(), UpdateSafariS2CPacket.ID, UpdateSafariS2CPacket::new, null);
-            ModNetwork.register(NetworkManager.s2c(), UpdateSafariConfigS2CPacket.ID, UpdateSafariConfigS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateOutfitS2CPacket.ID, UpdateOutfitS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateShootingStarS2CPacket.ID, UpdateShootingStarS2CPacket::new, null);
             ModNetwork.register(NetworkManager.s2c(), UpdateHousesS2CPacket.ID, UpdateHousesS2CPacket::new, null);

@@ -7,18 +7,18 @@ import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.world.data.StarterEntry;
 import abeshutt.staracademy.world.data.StarterId;
 import abeshutt.staracademy.world.data.save.PokemonStarterData;
-import abeshutt.staracademy.world.data.save.SafariData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.time.Instant;
 
 import static abeshutt.staracademy.world.data.StarterMode.DEFAULT;
 import static abeshutt.staracademy.world.data.StarterMode.RAFFLE_ENABLED;
@@ -50,15 +50,9 @@ public class MixinInGameHud {
 
     @Unique
     private void academy$renderSafari(DrawContext context, float tickDelta) {
-        if(SafariData.CLIENT.getTimeLeft() <= 0 || SafariData.CLIENT.isPaused()) {
-            return;
-        }
-
-         ClientWorld world = MinecraftClient.getInstance().world;
-
-        if((world == null || world.getRegistryKey() != StarAcademyMod.SAFARI) && !MinecraftClient.getInstance().options.playerListKey.isPressed()) {
-            return;
-        }
+        if (StarAcademyMod.SAFARI_TIMER == null) return;
+        if (Instant.now().isAfter(StarAcademyMod.SAFARI_TIMER)) return;
+        if(!MinecraftClient.getInstance().options.playerListKey.isPressed()) return;
 
         SafariWidget widget = new SafariWidget();
         widget.render(context, 0, 0, ClientScheduler.getTick(tickDelta));
