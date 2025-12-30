@@ -28,6 +28,8 @@ dependencies {
     modCompileOnly(include("io.wispforest:owo-sentinel:0.12.15.4+1.21"))
     modCompileOnly(annotationProcessor("io.wispforest:owo-lib:0.12.15.4+1.21"))
 
+    modCompileOnly("maven.modrinth:item-obliterator:3.1.1")
+
     modCompileOnly("maven.modrinth:enhanced-celestials:6.0.2.4-fabric")
     modCompileOnly("maven.modrinth:corgilib:1.21.1-5.0.0.7-Fabric")
     modCompileOnly("maven.modrinth:data-anchor:2.0.0.12-fabric")

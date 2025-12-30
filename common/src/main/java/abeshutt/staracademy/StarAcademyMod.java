@@ -53,6 +53,10 @@ public final class StarAcademyMod {
             REGISTRIES = instance.getRegistryManager();
         });
 
+        LifecycleEvent.SERVER_STOPPED.register(instance -> {
+            REGISTRIES = null;
+        });
+
         if(Platform.isModLoaded("enhancedcelestials")) {
             EnhancedCelestialsCompat.init();
         }
