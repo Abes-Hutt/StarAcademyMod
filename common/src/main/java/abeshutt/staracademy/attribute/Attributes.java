@@ -105,7 +105,10 @@ public class Attributes {
         }, Priority.LOWEST);
 
         CommonEvents.PLAYER_TICK.register(player -> {
-            if(player.getWorld().isClient()) return;
+            if(player.getWorld().isClient() || player.getServer() == null || player.getServer().getTicks() % 20 != 0) {
+                return;
+            }
+
             Attribute<?> root = AttributeHolder.getRoot(player);
 
             root.iterate(child -> {

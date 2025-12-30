@@ -69,6 +69,7 @@
     "ftbquests.MixinItemReward",
     "ftbquests.MixinNotifyItemRewardMessage",
     "gliding.MixinGliderClientUtil",
+    "itemobliterator.MixinUtils",
     "jei.MixinGuiTextFieldFilter",
     "journeymap.MixinEntityHelper",
     "megashowdown.MixinModEvents",
