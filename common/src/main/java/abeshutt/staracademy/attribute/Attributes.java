@@ -105,7 +105,7 @@ public class Attributes {
         }, Priority.LOWEST);
 
         CommonEvents.PLAYER_TICK.register(player -> {
-            if(player.getWorld().isClient() || player.getWorld().getServer().getTicks() % 20 == 0) {
+            if(player.getWorld().isClient() || player.getServer() == null || player.getServer().getTicks() % 20 != 0) {
                 return;
             }
 
