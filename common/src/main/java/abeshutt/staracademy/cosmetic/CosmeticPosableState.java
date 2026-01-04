@@ -75,7 +75,7 @@ public class CosmeticPosableState extends PosableState {
     @Override
     public void updatePartialTicks(float partialTick) {
         super.setCurrentPartialTicks(partialTick);
-        this.getSchedulingTracker().update(partialTick);
+        this.getSchedulingTracker().update(0.0f);
     }
 
     @Override
