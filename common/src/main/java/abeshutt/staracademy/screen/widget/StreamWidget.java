@@ -1,5 +1,6 @@
 package abeshutt.staracademy.screen.widget;
 
+import abeshutt.staracademy.live.api.dto.LivestreamDisplay;
 import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
 import net.minecraft.client.MinecraftClient;
@@ -29,9 +30,7 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
     public static final int HEIGHT = 20;
 
     private final Identifier image;
-    private final String login;
-    private final String name;
-    private final boolean live;
+    private final LivestreamDisplay stream;
 
     private boolean focused;
     private boolean hovered;
@@ -40,11 +39,9 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
 
     private float hoverTime;
 
-    public StreamWidget(Identifier image, String login, String name, boolean live, int x, int y, int width) {
+    public StreamWidget(Identifier image, LivestreamDisplay stream, int x, int y, int width) {
         this.image = image;
-        this.login = login;
-        this.name = name;
-        this.live = live;
+        this.stream = stream;
 
         this.focused = false;
         this.hovered = false;
@@ -92,8 +89,8 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
         context.getMatrices().push();
         context.getMatrices().translate(23.0f, 2.0f, 0.0f);
         MutableText name = this.hovered
-                ? styleText(this.name, ClientScheduler.getTick(delta), 10.0f)
-                : Text.literal(this.name);
+                ? styleText(this.stream.getDisplayName(), ClientScheduler.getTick(delta), 10.0f)
+                : Text.literal(this.stream.getDisplayName());
 
         context.drawText(MinecraftClient.getInstance().textRenderer,
                 name.setStyle(Style.EMPTY.withObfuscated(this.hovered && this.hoverTime < 0)),
@@ -103,12 +100,10 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
         context.getMatrices().push();
         context.getMatrices().scale(0.8f, 0.8f, 0.8f);
         context.getMatrices().translate(23.0f / 0.8f, 15.0f, 0.0f);
-        Text state = this.live ? Text.empty()
-                    .append(Text.literal("Live ").formatted(Formatting.GRAY))
-                    .append(Text.literal("⬤").setStyle(Style.EMPTY.withColor(0x6441A5)))
-                : Text.empty()
-                    .append(Text.literal("Offline ").formatted(Formatting.GRAY))
-                    .append(Text.literal("⬤").formatted(Formatting.GRAY));
+
+        Text state = Text.empty()
+                .append(Text.literal(this.stream.getDisplayHint()).formatted(Formatting.GRAY))
+                .append(Text.literal(" ⬤").setStyle(Style.EMPTY.withColor(this.stream.getDisplayStatusColor())));
         context.drawText(MinecraftClient.getInstance().textRenderer,
                 state, 0, 0, 0xFFFFFF, true);
         context.getMatrices().pop();
@@ -142,7 +137,7 @@ public class StreamWidget implements Drawable, Element, Widget, Selectable {
                     .play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
             try {
-                Util.getOperatingSystem().open(new URL("https://www.twitch.tv/" + this.login).toURI());
+                Util.getOperatingSystem().open(new URL(this.stream.getPageUrl()).toURI());
             } catch (MalformedURLException | URISyntaxException ignored) {
 
             }

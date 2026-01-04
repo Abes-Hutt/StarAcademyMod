@@ -1,0 +1,36 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.moltres_wings.idle": {
+      "loop": true,
+      "animation_length": 45.2917,
+      "bones": {
+        "moltres_wings": {
+          "position": {
+            "0.0": [0, -5, -1],
+            "44.7083": [0, -5, -1]
+          },
+          "scale": 0.6
+        },
+        "wing_right": {
+          "rotation": ["43.3645-math.sin(q.anim_time*40*2)*10", 16.76559, "-11.0653+math.sin(q.anim_time*40*2)*15"]
+        },
+        "wing_right2": {
+          "rotation": [0, "math.sin(q.anim_time*40*2-60)*22", 0]
+        },
+        "wing_right3": {
+          "rotation": [0, "math.sin(q.anim_time*40*2-40)*16", 0]
+        },
+        "wing_left": {
+          "rotation": ["43.3645-math.sin(q.anim_time*40*2)*10", -16.76559, "11.0653-math.sin(q.anim_time*40*2)*15"]
+        },
+        "wing_left2": {
+          "rotation": [0, "-math.sin(q.anim_time*40*2-60)*22", 0]
+        },
+        "wing_left3": {
+          "rotation": [0, "-math.sin(q.anim_time*40*2-40)*16", 0]
+        }
+      }
+    }
+  }
+}

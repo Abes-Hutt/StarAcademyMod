@@ -1,7 +1,7 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.api.OutfitManager;
+import abeshutt.staracademy.live.OutfitManager;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.data.outfit.ValueOutfitEntry;

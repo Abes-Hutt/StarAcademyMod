@@ -1,6 +1,6 @@
 package abeshutt.staracademy.proxy;
 
-import abeshutt.staracademy.api.AcademyClient;
+import abeshutt.staracademy.live.AcademyClient;
 
 public interface ProxyAcademyClient {
 

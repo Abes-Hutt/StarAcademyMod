@@ -2,6 +2,7 @@ package abeshutt.staracademy;
 
 import abeshutt.staracademy.attribute.Attributes;
 import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
+import abeshutt.staracademy.cosmetic.CosmeticsResources;
 import abeshutt.staracademy.event.CommonEvents;
 import abeshutt.staracademy.init.ModConfigs;
 import abeshutt.staracademy.init.ModRegistries;
@@ -40,9 +41,12 @@ public final class StarAcademyMod {
 
     public static final ThreadLocal<Boolean> FORCE_SPAWNING = ThreadLocal.withInitial(() -> false);
     public static final ThreadLocal<Long> QUEST_ID = ThreadLocal.withInitial(() -> 0L);
+    public static CosmeticsResources RESOURCES = null;
     public static RegistryWrapper.WrapperLookup REGISTRIES;
 
     public static final String ID = "academy";
+    public static final String VERSION = "1.4.0";
+
     public static final Logger LOGGER = LogManager.getLogger(ID);
 
     public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));

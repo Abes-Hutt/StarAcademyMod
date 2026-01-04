@@ -1,6 +1,6 @@
 package abeshutt.staracademy.block.entity.renderer;
 
-import abeshutt.staracademy.api.RenderUtil;
+import abeshutt.staracademy.live.RenderUtil;
 import abeshutt.staracademy.block.entity.ShinyPokedollCollectorBlockEntity;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.VertexConsumerProvider;

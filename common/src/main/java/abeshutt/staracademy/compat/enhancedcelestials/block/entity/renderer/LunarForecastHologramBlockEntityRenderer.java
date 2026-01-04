@@ -1,7 +1,7 @@
 package abeshutt.staracademy.compat.enhancedcelestials.block.entity.renderer;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.api.RenderUtil;
+import abeshutt.staracademy.live.RenderUtil;
 import abeshutt.staracademy.compat.enhancedcelestials.block.LunarForecastHologramBlock;
 import abeshutt.staracademy.compat.enhancedcelestials.block.entity.LunarForecastHologramBlockEntity;
 import dev.corgitaco.enhancedcelestials.EnhancedCelestials;

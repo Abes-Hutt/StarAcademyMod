@@ -1,8 +1,8 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.api.AcademyClient;
-import abeshutt.staracademy.api.packet.AcademyPackets;
+import abeshutt.staracademy.live.AcademyClient;
+import abeshutt.staracademy.live.api.dto.DisconnectReason;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import abeshutt.staracademy.screen.overlay.SplashLoader;
 import net.minecraft.client.MinecraftClient;
@@ -25,7 +25,6 @@ public abstract class MixinMinecraftClient implements ProxyAcademyClient {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;createUserApiService(Lcom/mojang/authlib/yggdrasil/YggdrasilAuthenticationService;Lnet/minecraft/client/RunArgs;)Lcom/mojang/authlib/minecraft/UserApiService;", shift = At.Shift.AFTER))
     private void init(RunArgs args, CallbackInfo ci) {
-        AcademyPackets.register();
         this.client = new AcademyClient((MinecraftClient)(Object)this);
         this.client.connect();
         this.client.awaitCodex();
@@ -41,7 +40,7 @@ public abstract class MixinMinecraftClient implements ProxyAcademyClient {
 
     @Inject(method = "stop", at = @At("HEAD"))
     private void stop(CallbackInfo ci) {
-        this.client.disconnect();
+        this.client.disconnect(DisconnectReason.UNKNOWN);
     }
 
 }

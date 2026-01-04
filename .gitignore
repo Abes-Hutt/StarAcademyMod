@@ -1,6 +1,11 @@
 build/
 *.ipr
-run/
+/fabric/run/**
+/neoforge/run/**
+!/fabric/run/config/
+!/fabric/run/config/academy/
+!/fabric/run/config/academy/assets/
+!/fabric/run/config/academy/assets/**
 *.iws
 out/
 *.iml

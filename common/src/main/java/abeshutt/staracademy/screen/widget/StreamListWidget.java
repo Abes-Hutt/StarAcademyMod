@@ -1,7 +1,7 @@
 package abeshutt.staracademy.screen.widget;
 
-import abeshutt.staracademy.api.TwitchManager;
-import abeshutt.staracademy.api.twitch.TwitchStream;
+import abeshutt.staracademy.live.LivestreamManager;
+import abeshutt.staracademy.live.api.dto.LivestreamDisplay;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -56,8 +56,8 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         this.alpha = alpha;
     }
 
-    public void add(Identifier image, String login, String name, boolean live) {
-        this.streams.add(new StreamWidget(image, login, name, live, 0, 0, this.width - MARGIN));
+    public void add(Identifier image, LivestreamDisplay stream) {
+        this.streams.add(new StreamWidget(image, stream, 0, 0, this.width - MARGIN));
     }
 
     public void clear() {
@@ -70,13 +70,13 @@ public class StreamListWidget implements Drawable, Element, Widget, Selectable {
         RenderSystem.enableBlend();
         context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
 
-        TwitchManager twitch = ProxyAcademyClient.get(MinecraftClient.getInstance()).getTwitch();
+        LivestreamManager twitch = ProxyAcademyClient.get(MinecraftClient.getInstance()).getStreams();
 
         if (this.iteration != twitch.getIteration()) {
             this.clear();
 
-            for (TwitchStream stream : twitch.getStreams()) {
-                this.add(stream.getProfilePicture().getId(), stream.getLogin(), stream.getName(), stream.isLive());
+            for (LivestreamManager.Entry stream : twitch.getStreams()) {
+                this.add(stream.getProfilePictureTexture(), stream.getStream());
             }
 
             this.iteration = twitch.getIteration();

@@ -46,6 +46,7 @@ public class ModConfigs extends ModRegistries {
     public static IslandConfig ISLAND;
     public static StarterKitConfig STARTER_KIT;
     public static ScreenConfig SCREEN;
+    public static APIConfig API;
 
     public static void register(boolean initialization) {
         try {
@@ -91,6 +92,7 @@ public class ModConfigs extends ModRegistries {
         ISLAND = new IslandConfig().read();
         STARTER_KIT = new StarterKitConfig().read();
         SCREEN = new ScreenConfig();
+        API = new APIConfig().read();
 
         if(!initialization) {
             ArrayList<Runnable> actions = new ArrayList<>(POST_LOAD);
