@@ -1,10 +1,7 @@
 package abeshutt.staracademy.mixin;
 
 import abeshutt.staracademy.proxy.ProxyStarBadges;
-import abeshutt.staracademy.screen.StarBadgeSlot;
-import abeshutt.staracademy.screen.StarBadgeWidget;
-import abeshutt.staracademy.screen.WardrobeScreen;
-import abeshutt.staracademy.screen.WardrobeWidget;
+import abeshutt.staracademy.screen.*;
 import abeshutt.staracademy.world.data.save.StarBadgeData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -44,7 +41,7 @@ public abstract class MixinInventoryScreen extends AbstractInventoryScreen<Playe
         }));
 
         this.wardrobeButton = this.addDrawableChild(new WardrobeWidget(this, this.x + 160 - 14 - 120 + 1, this.y + 5 + 14 + 48, widget -> {
-            MinecraftClient.getInstance().setScreen(new WardrobeScreen());
+            MinecraftClient.getInstance().setScreen(new CosmeticsScreen());
         }));
 
         this.addSelectableChild(this.starBadgeButton);
