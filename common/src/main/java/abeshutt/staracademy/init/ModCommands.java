@@ -19,7 +19,7 @@ public class ModCommands {
         register(StatsCommand::new, dispatcher, access, environment);
         register(HouseCommand::new, dispatcher, access, environment);
         register(SummaryCommand::new, dispatcher, access, environment);
-        register(NickCommand::new, dispatcher, access, environment);
+        //register(NickCommand::new, dispatcher, access, environment);
     }
 
     private static <T extends Command> T register(Supplier<T> supplier, CommandDispatcher<ServerCommandSource> dispatcher,
