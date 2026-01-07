@@ -132,7 +132,7 @@ public class CosmeticsScreen extends Screen {
         if (player != null) {
             context.getMatrices().push();
             context.enableScissor(this.minX + 185, this.minY + 28, this.minX + 318, this.minY + 180);
-            this.drawEntity(context, this.minX + BACKGROUND_SIZE_X - 90, this.minY + 162, size,
+            this.drawEntity(context, this.minX + 185 + (318 - 185) / 2, this.minY + 162, size,
                     this.minX + BACKGROUND_SIZE_X - 90 - mouseX,
                     this.minY + 85 - mouseY, player, delta);
             context.disableScissor();

@@ -100,8 +100,7 @@ public class CosmeticButtonWidget extends ButtonWidget {
                 context.getMatrices().push();
                 context.getMatrices().translate(this.getX(), this.getY(), 0);
                 context.getMatrices().scale(22.0f / 16.0f, 22.0f / 16.0f, 1.0f);
-                context.getMatrices().translate(-this.getX(), -this.getY(), 0)
-                ;
+                context.getMatrices().translate(-this.getX(), -this.getY(), 0);
                 context.drawTexture(cosmetic.getIcon(),
                         (int)(this.getX() + 3 * 16.0f / 22.0f),
                         (int)(this.getY() + 3 * 16.0f / 22.0f),
