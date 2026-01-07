@@ -47,7 +47,6 @@ public class CosmeticData implements JsonSerializable {
         JsonObject slots = new JsonObject();
 
         this.slots.forEach((slot, cosmetic) -> {
-            if (cosmetic == null) return;
             slots.add(slot, adapter.writeString(cosmetic));
         });
 
