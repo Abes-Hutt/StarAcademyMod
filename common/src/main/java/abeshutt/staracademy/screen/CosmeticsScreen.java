@@ -3,6 +3,8 @@ package abeshutt.staracademy.screen;
 import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.cosmetic.Cosmetic;
 import abeshutt.staracademy.cosmetic.CosmeticSlot;
+import abeshutt.staracademy.live.CosmeticsManager;
+import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import abeshutt.staracademy.screen.widget.CosmeticButtonWidget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -18,10 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CosmeticsScreen extends Screen {
 
@@ -39,6 +38,7 @@ public class CosmeticsScreen extends Screen {
     private boolean draggingAvatar;
     private final Map<String, CosmeticButtonWidget> slotButtons;
     private final Map<String, CosmeticButtonWidget> cosmeticButtons;
+    private String triggeredSlot;
 
     public CosmeticsScreen() {
         super(Text.literal("Cosmetics"));
@@ -89,6 +89,7 @@ public class CosmeticsScreen extends Screen {
                 slotButton.setTriggered(false);
             }
 
+            this.triggeredSlot = slotId;
             clickedButton.setTriggered(true);
         }
 
@@ -112,23 +113,43 @@ public class CosmeticsScreen extends Screen {
         }
     }
 
-    public void triggerInventoryCosmeticSlot(String slotId) {
-        CosmeticButtonWidget clickedButton = this.cosmeticButtons.get(slotId);
+    public void triggerInventoryCosmeticSlot(String cosmeticId) {
+        CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-        if (clickedButton != null) {
-            for (CosmeticButtonWidget slotButton : this.cosmeticButtons.values()) {
-                slotButton.setTriggered(false);
+        if (player != null) {
+            String cosmetic = outfits.getEquipped(player.getUuid()).get(this.triggeredSlot);
+
+            if (Objects.equals(cosmetic, cosmeticId)) {
+                outfits.setEquipped(this.triggeredSlot, null);
+            } else {
+                outfits.setEquipped(this.triggeredSlot, cosmeticId);
             }
-
-            clickedButton.setTriggered(true);
         }
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player != null) {
+            String cosmetic = outfits.getEquipped(player.getUuid()).get(this.triggeredSlot);
+
+            for (CosmeticButtonWidget slotButton : this.cosmeticButtons.values()) {
+                slotButton.setTriggered(false);
+            }
+
+            CosmeticButtonWidget clickedButton = this.cosmeticButtons.get(cosmetic);
+
+            if (clickedButton != null) {
+                clickedButton.setTriggered(true);
+            }
+        }
+
         super.render(context, mouseX, mouseY, delta);
         int size = 60;
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        player = MinecraftClient.getInstance().player;
         if (player != null) {
             context.enableScissor(this.minX + 185, this.minY + 28, this.minX + 318, this.minY + 180);
             this.drawEntity(context, this.minX + 185 + (318 - 185) / 2, this.minY + 162, size,

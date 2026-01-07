@@ -52,12 +52,13 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         return WardrobeData.CLIENT.get(player.getUuid()).orElse(new WardrobeData.Entry());
     }
 
+    /*
     protected CosmeticsManager.Entry getGlobalWardrobe() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if(player == null) return new CosmeticsManager.Entry();
         CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
         return outfits.getEntries().getOrDefault(player.getUuid(), new CosmeticsManager.Entry());
-    }
+    }*/
 
     @Override
     protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
@@ -80,7 +81,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         int pointerY = (int) (mouseY + getScrollY());
 
         WardrobeData.Entry serverWardrobe = getServerWardrobe();
-        CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
+        //CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
 
         int i = 0;
         for (String outfitId : this.unlockedOutfits) {
@@ -94,10 +95,10 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
                 if(serverWardrobe.getUnlocked().contains(outfitId)) {
                     NetworkManager.sendToServer(new UpdateOutfitC2SPacket(outfitId,
                             !serverWardrobe.getEquipped().contains(outfitId)));
-                } else if(globalWardrobe.getUnlocked().contains(outfitId)) {
-                    CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
-                    outfits.setEquipped(outfitId, !globalWardrobe.getEquipped().contains(outfitId));
-                }
+                } //else if(globalWardrobe.getUnlocked().contains(outfitId)) {
+                  //  CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
+                  //  outfits.setEquipped(outfitId, !globalWardrobe.getEquipped().contains(outfitId));
+                //}
 
                 break;
             }
@@ -111,10 +112,10 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         WardrobeData.Entry serverWardrobe = getServerWardrobe();
-        CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
+        //CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
         Set<String> unlocked = new LinkedHashSet<>();
         unlocked.addAll(serverWardrobe.getUnlocked());
-        unlocked.addAll(globalWardrobe.getUnlocked());
+        //unlocked.addAll(globalWardrobe.getUnlocked());
         this.unlockedOutfits = new ArrayList<>(unlocked);
         super.renderWidget(context, mouseX, mouseY, delta);
     }
@@ -162,7 +163,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         WardrobeData.Entry serverWardrobe = getServerWardrobe();
-        CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
+       // CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
 
         int i = 0;
 
@@ -196,9 +197,9 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
 
             if(serverWardrobe.getEquipped().contains(outfitId)) {
                 context.drawTexture(TEXTURE, x + width - 26, y + 11, 0, 39, 7, 6);
-            } else if(globalWardrobe.getEquipped().contains(outfitId)) {
-                context.drawTexture(TEXTURE, x + width - 26, y + 11, 0, 39, 7, 6);
-            }
+            } //else if(globalWardrobe.getEquipped().contains(outfitId)) {
+              //  context.drawTexture(TEXTURE, x + width - 26, y + 11, 0, 39, 7, 6);
+            //}
 
             i++;
         }

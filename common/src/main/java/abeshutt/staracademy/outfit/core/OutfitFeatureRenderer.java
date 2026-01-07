@@ -1,9 +1,10 @@
 package abeshutt.staracademy.outfit.core;
 
-import abeshutt.staracademy.live.CosmeticsManager;
+import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.cosmetic.CosmeticPosableState;
 import abeshutt.staracademy.cosmetic.CosmeticRenderer;
+import abeshutt.staracademy.live.CosmeticsManager;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
-import abeshutt.staracademy.world.data.save.WardrobeData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -12,9 +13,6 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPlayerEntity>> extends FeatureRenderer<AbstractClientPlayerEntity, M> {
 
@@ -32,25 +30,20 @@ public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPla
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
                        AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta,
                        float animationProgress, float headYaw, float headPitch) {
-        CosmeticRenderer.testRender(entity, this.getContextModel(), tickDelta, matrices, vertexConsumers, light, this.slim);
-
         CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
-        Set<String> equipped = new HashSet<>(outfits.getEquipped(entity.getUuid()));
 
-        WardrobeData.CLIENT.get(entity.getUuid()).ifPresent(entry -> {
-            equipped.addAll(entry.getEquipped());
+        outfits.getEquipped(entity.getUuid()).forEach((slot, cosmeticId) -> {
+            if(cosmeticId == null) return;
+            CosmeticPosableState state = new CosmeticPosableState(entity);
+            state.updatePartialTicks(tickDelta);
+
+            StarAcademyMod.RESOURCES.getCosmetic(cosmeticId).ifPresent(cosmetic -> {
+                CosmeticRenderer.render(cosmetic.getModel(), cosmetic.getAnimation(),
+                        "animation.moltres_wings.idle", cosmetic.getTexture(), state, matrices,
+                        vertexConsumers, light, StarAcademyMod.RESOURCES,
+                        this.getContextModel(), this.slim);
+            });
         });
-
-        /*
-        for(String id : equipped) {
-            DynamicOutfit outfit = outfits.getRegistry().get(id);
-            if(outfit == null) continue;
-            Identifier texture = outfit.getTexture(this.slim);
-            PlayerEntityModel<AbstractClientPlayerEntity> model = outfit.getModel(this.ctx, this.slim);
-            this.getContextModel().copyBipedStateTo(model);
-            VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getArmorCutoutNoCull(texture));
-            model.render(matrices, vertices, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
-        }*/
     }
 
 }

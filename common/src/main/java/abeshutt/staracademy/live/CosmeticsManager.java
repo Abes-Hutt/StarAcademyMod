@@ -99,16 +99,17 @@ public class CosmeticsManager {
 
     public void setEquipped(String slot, String cosmetic) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if(player == null) return;
+        if(player == null || slot == null) return;
+        CosmeticData entry = this.entries.computeIfAbsent(player.getUuid(), uuid -> new CosmeticData());
 
-        CosmeticData entry = this.entries.get(player.getUuid());
+        Map<String, String> update = new HashMap<>();
+        update.put(slot, cosmetic);
 
-        if(entry != null) {
-            if (!Objects.equals(entry.getSlots().get(slot), cosmetic)) {
-                this.client.send(new UpdateCosmeticsPacket(Map.of(
-                        player.getUuid(), new CosmeticData(Map.of(slot, cosmetic),
-                                new HashSet<>(), true)), true));
-            }
+        if (!Objects.equals(entry.getSlots().get(slot), cosmetic)) {
+            this.client.send(new UpdateCosmeticsPacket(Map.of(
+                    player.getUuid(), new CosmeticData(update,
+                            new HashSet<>(), true)), true));
+            entry.getSlots().put(slot, cosmetic);
         }
     }
 
