@@ -1,22 +1,17 @@
 package abeshutt.staracademy.outfit.core;
 
-import abeshutt.staracademy.live.OutfitManager;
-import abeshutt.staracademy.block.entity.renderer.DynamicOutfit;
+import abeshutt.staracademy.live.CosmeticsManager;
 import abeshutt.staracademy.cosmetic.CosmeticRenderer;
 import abeshutt.staracademy.proxy.ProxyAcademyClient;
 import abeshutt.staracademy.world.data.save.WardrobeData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +34,7 @@ public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPla
                        float animationProgress, float headYaw, float headPitch) {
         CosmeticRenderer.testRender(entity, this.getContextModel(), tickDelta, matrices, vertexConsumers, light, this.slim);
 
-        OutfitManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getOutfits();
+        CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
         Set<String> equipped = new HashSet<>(outfits.getEquipped(entity.getUuid()));
 
         WardrobeData.CLIENT.get(entity.getUuid()).ifPresent(entry -> {

@@ -1,7 +1,7 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
-import abeshutt.staracademy.live.OutfitManager;
+import abeshutt.staracademy.live.CosmeticsManager;
 import abeshutt.staracademy.init.ModDataComponents;
 import abeshutt.staracademy.init.ModItems;
 import abeshutt.staracademy.item.data.outfit.ValueOutfitEntry;
@@ -52,11 +52,11 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         return WardrobeData.CLIENT.get(player.getUuid()).orElse(new WardrobeData.Entry());
     }
 
-    protected OutfitManager.Entry getGlobalWardrobe() {
+    protected CosmeticsManager.Entry getGlobalWardrobe() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if(player == null) return new OutfitManager.Entry();
-        OutfitManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getOutfits();
-        return outfits.getEntries().getOrDefault(player.getUuid(), new OutfitManager.Entry());
+        if(player == null) return new CosmeticsManager.Entry();
+        CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
+        return outfits.getEntries().getOrDefault(player.getUuid(), new CosmeticsManager.Entry());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         int pointerY = (int) (mouseY + getScrollY());
 
         WardrobeData.Entry serverWardrobe = getServerWardrobe();
-        OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
+        CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
 
         int i = 0;
         for (String outfitId : this.unlockedOutfits) {
@@ -95,7 +95,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
                     NetworkManager.sendToServer(new UpdateOutfitC2SPacket(outfitId,
                             !serverWardrobe.getEquipped().contains(outfitId)));
                 } else if(globalWardrobe.getUnlocked().contains(outfitId)) {
-                    OutfitManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getOutfits();
+                    CosmeticsManager outfits = ProxyAcademyClient.get(MinecraftClient.getInstance()).getCosmetics();
                     outfits.setEquipped(outfitId, !globalWardrobe.getEquipped().contains(outfitId));
                 }
 
@@ -111,7 +111,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         WardrobeData.Entry serverWardrobe = getServerWardrobe();
-        OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
+        CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
         Set<String> unlocked = new LinkedHashSet<>();
         unlocked.addAll(serverWardrobe.getUnlocked());
         unlocked.addAll(globalWardrobe.getUnlocked());
@@ -162,7 +162,7 @@ public class WardrobeOutfitsWidget extends ScrollableWidget {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         WardrobeData.Entry serverWardrobe = getServerWardrobe();
-        OutfitManager.Entry globalWardrobe = getGlobalWardrobe();
+        CosmeticsManager.Entry globalWardrobe = getGlobalWardrobe();
 
         int i = 0;
 

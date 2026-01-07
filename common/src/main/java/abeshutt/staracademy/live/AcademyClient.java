@@ -24,7 +24,7 @@ public class AcademyClient {
     private int timeout;
     private final AuthManager auth;
     private final CodexManager codex;
-    private final OutfitManager outfits;
+    private final CosmeticsManager cosmetics;
     private final LivestreamManager streams;
 
     public AcademyClient(MinecraftClient minecraft) {
@@ -51,7 +51,7 @@ public class AcademyClient {
 
         this.auth = new AuthManager();
         this.codex = new CodexManager();
-        this.outfits = new OutfitManager();
+        this.cosmetics = new CosmeticsManager(this);
         this.streams = new LivestreamManager();
     }
 
@@ -59,8 +59,8 @@ public class AcademyClient {
         return this.minecraft;
     }
 
-    public OutfitManager getOutfits() {
-        return this.outfits;
+    public CosmeticsManager getCosmetics() {
+        return this.cosmetics;
     }
 
     public CodexManager getCodex() {
@@ -81,7 +81,7 @@ public class AcademyClient {
     }
 
     public void disconnect(DisconnectReason reason) {
-        this.outfits.getTracked().clear();
+        this.cosmetics.getTracked().clear();
 
         if (this.socket.isConnected()) {
             this.send(new DisconnectPacket(reason));
@@ -106,7 +106,7 @@ public class AcademyClient {
             return;
         }
 
-        this.outfits.tick(this);
+        this.cosmetics.tick(this);
         this.streams.tick(this);
     }
 
@@ -137,6 +137,8 @@ public class AcademyClient {
             this.auth.challenge(this, payload.getServerId());
         } else if(packet instanceof UpdateCodexPacket payload) {
             this.codex.receive(this, payload.getZip());
+        } else if(packet instanceof UpdateCosmeticsPacket payload) {
+            this.cosmetics.receive(payload.isDelta(), payload.getEntries());
         } else if(packet instanceof UpdateLivestreamsPacket payload) {
             this.streams.update(payload.getLivestreams());
         }
