@@ -89,11 +89,19 @@ public class CosmeticRenderer {
         CosmeticPosableState state = new CosmeticPosableState(entity);
         state.updatePartialTicks(tickDelta);
 
-        CosmeticRenderer.render(StarAcademyMod.id("cosmetics/models/moltres_wings"),
-                StarAcademyMod.id("cosmetics/animations/moltres_wings"),
-                "animation.moltres_wings.idle",
-                StarAcademyMod.id("cosmetics/textures/moltres_wings.png"), state, matrices,
-                vertexConsumers, light, StarAcademyMod.RESOURCES, contextModel, slim);
+        StarAcademyMod.RESOURCES.getCosmetic("moltres_wings").ifPresent(cosmetic -> {
+            CosmeticRenderer.render(cosmetic.getModel(), cosmetic.getAnimation(),
+                    "animation.moltres_wings.idle", cosmetic.getTexture(), state, matrices,
+                    vertexConsumers, light, StarAcademyMod.RESOURCES, contextModel, slim);
+        });
+
+        /*
+        *             CosmeticRenderer.render(StarAcademyMod.id("cosmetics/models/moltres_wings"),
+                    StarAcademyMod.id("cosmetics/animFailed to connect toations/moltres_wings"),
+                    "animation.moltres_wings.idle",
+                    StarAcademyMod.id("cosmetics/textures/moltres_wings.png"), state, matrices,
+                    vertexConsumers, light, StarAcademyMod.RESOURCES, contextModel, slim);
+        * */
     }
 
 }

@@ -11,17 +11,29 @@ import java.util.Optional;
 
 public class CosmeticsResources {
 
+    private final Map<String, Cosmetic> cosmetics;
+    private final Map<String, CosmeticSlot> slots;
     private final Map<Identifier, ModelPart> bakedModels;
     private final Map<Identifier, PosableModel> posableModels;
     private final Map<Identifier, BedrockAnimationGroup> animations;
     private final Map<Identifier, ModelTextureSupplier> textureAnimations;
 
-    public CosmeticsResources(Map<Identifier, ModelPart> bakedModels, Map<Identifier, PosableModel> posableModels,
+    public CosmeticsResources(Map<String, Cosmetic> cosmetics, Map<String, CosmeticSlot> slots, Map<Identifier, ModelPart> bakedModels, Map<Identifier, PosableModel> posableModels,
                               Map<Identifier, BedrockAnimationGroup> animations, Map<Identifier,ModelTextureSupplier> textureAnimations) {
+        this.cosmetics = cosmetics;
+        this.slots = slots;
         this.bakedModels = bakedModels;
         this.posableModels = posableModels;
         this.animations = animations;
         this.textureAnimations = textureAnimations;
+    }
+
+    public Map<String, Cosmetic> getCosmetics() {
+        return this.cosmetics;
+    }
+
+    public Map<String, CosmeticSlot> getSlots() {
+        return this.slots;
     }
 
     public Map<Identifier, ModelPart> getBakedModels() {
@@ -38,6 +50,14 @@ public class CosmeticsResources {
 
     public Map<Identifier, ModelTextureSupplier> getTextureAnimations() {
         return this.textureAnimations;
+    }
+
+    public Optional<Cosmetic> getCosmetic(String id) {
+        return Optional.ofNullable(this.cosmetics.get(id));
+    }
+
+    public Optional<CosmeticSlot> getSlot(String id) {
+        return Optional.ofNullable(this.slots.get(id));
     }
 
     public Optional<ModelPart> getBakedModel(Identifier id) {

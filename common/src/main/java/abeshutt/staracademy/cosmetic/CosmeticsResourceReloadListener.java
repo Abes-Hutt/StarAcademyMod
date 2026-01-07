@@ -8,21 +8,23 @@ import com.cobblemon.mod.common.client.render.models.blockbench.bedrock.animatio
 import com.cobblemon.mod.common.client.render.models.blockbench.bedrock.animation.BedrockAnimationAdapter;
 import com.cobblemon.mod.common.client.render.models.blockbench.bedrock.animation.BedrockAnimationGroup;
 import com.cobblemon.mod.common.client.render.models.blockbench.pose.Bone;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class CosmeticsResourceReloadListener implements ResourceReloader {
+
+    private static final Gson GSON = new GsonBuilder().create();
 
     private static final Gson MODEL_GSON = TexturedModel.Companion.getGSON();
 
@@ -41,18 +43,58 @@ public class CosmeticsResourceReloadListener implements ResourceReloader {
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler,
                                           Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
-        return CompletableFuture.supplyAsync(() -> prepare(manager, prepareProfiler), prepareExecutor)
+        return CompletableFuture
+                .supplyAsync(() -> this.prepare(manager, prepareProfiler), prepareExecutor)
                 .thenCompose(synchronizer::whenPrepared)
                 .thenCompose(resources ->
-                        CompletableFuture.runAsync(() -> apply(resources, manager, applyProfiler), applyExecutor)
+                        CompletableFuture.runAsync(() -> this.apply(resources, manager, applyProfiler), applyExecutor)
                 );
     }
 
     public CosmeticsResources prepare(ResourceManager manager, Profiler profiler) {
+        Map<String, Cosmetic> cosmetics = new LinkedHashMap<>();
+        Map<String, CosmeticSlot> slots = new LinkedHashMap<>();
         Map<Identifier, ModelPart> bakedModels = new HashMap<>();
         Map<Identifier, PosableModel> posableModels = new  HashMap<>();
         Map<Identifier, BedrockAnimationGroup> animations = new HashMap<>();
         Map<Identifier, ModelTextureSupplier> textureAnimations = new HashMap<>();
+
+        manager.findAllResources("cosmetics", path -> {
+                    return path.getPath().equals("cosmetics/registry.json");
+                })
+                .forEach((path, resources) -> {
+                    for (Resource resource : resources) {
+                        try {
+                            JsonElement rawJson = JsonParser.parseReader(resource.getReader());
+
+                            if (rawJson instanceof JsonObject json) {
+                                if (json.get("cosmetics") instanceof JsonArray cosmeticsJson) {
+                                    for (JsonElement cosmeticJson : cosmeticsJson) {
+                                        Cosmetic cosmetic = new Cosmetic();
+                                        cosmetic.readJson(cosmeticJson);
+
+                                        if (cosmetic.getId() != null) {
+                                            cosmetics.put(cosmetic.getId(), cosmetic);
+                                        }
+                                    }
+                                }
+
+                                if (json.get("slots") instanceof JsonArray slotsJson) {
+                                    for (JsonElement slotJson : slotsJson) {
+                                        CosmeticSlot slot = new CosmeticSlot();
+                                        slot.readJson(slotJson);
+
+                                        if (slot.getId() != null) {
+                                            slots.put(slot.getId(), slot);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            StarAcademyMod.LOGGER.error("Failed to load registry " + path, e);
+                        }
+                    }
+                });
 
         manager.findResources("cosmetics/models", path -> path.getPath().endsWith(".geo.json"))
                 .forEach((path, resource) -> {
@@ -61,10 +103,8 @@ public class CosmeticsResourceReloadListener implements ResourceReloader {
                         Object bakedModel = rawModel.create().createModel(); // Cobblemon has an extension on ModelPart
                         PosableModel posableModel = new PosableModel((Bone)bakedModel);
                         posableModel.registerPartAndAllNamedChildren("root", (Bone)bakedModel);
-                        Identifier id = Identifier.of(path.getNamespace(),
-                                path.getPath().replace(".geo.json", ""));
-                        bakedModels.put(id, (ModelPart)bakedModel);
-                        posableModels.put(id, posableModel);
+                        bakedModels.put(path, (ModelPart)bakedModel);
+                        posableModels.put(path, posableModel);
                     } catch (Exception e) {
                         StarAcademyMod.LOGGER.error("Failed to load model " + path, e);
                     }
@@ -86,9 +126,7 @@ public class CosmeticsResourceReloadListener implements ResourceReloader {
                             }
                         });
 
-                        Identifier id = Identifier.of(path.getNamespace(),
-                                path.getPath().replace(".animation.json", ""));
-                        animations.put(id, animationGroup);
+                        animations.put(path, animationGroup);
                     } catch (Exception e) {
                         StarAcademyMod.LOGGER.error("Failed to load animation " + path, e);
                     }
@@ -99,15 +137,13 @@ public class CosmeticsResourceReloadListener implements ResourceReloader {
                     try {
                         ModelTextureSupplier textureAnimation = TEXTURE_ANIMATION_GSON
                                 .fromJson(resource.getReader(), ModelTextureSupplier.class);
-                        Identifier id = Identifier.of(path.getNamespace(),
-                                path.getPath().replace(".json", ""));
-                        textureAnimations.put(id, textureAnimation);
+                        textureAnimations.put(path, textureAnimation);
                     } catch (Exception e) {
                         StarAcademyMod.LOGGER.error("Failed to load texture animation " + path, e);
                     }
                 });
 
-        return new CosmeticsResources(bakedModels, posableModels, animations, textureAnimations);
+        return new CosmeticsResources(cosmetics, slots, bakedModels, posableModels, animations, textureAnimations);
     }
 
     public void apply(CosmeticsResources resources, ResourceManager manager, Profiler profiler) {
