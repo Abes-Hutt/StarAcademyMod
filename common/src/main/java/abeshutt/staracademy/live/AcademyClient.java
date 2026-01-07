@@ -139,8 +139,10 @@ public class AcademyClient {
             this.codex.receive(this, payload.getZip());
         } else if(packet instanceof UpdateCosmeticsPacket payload) {
             this.cosmetics.receive(payload.isDelta(), payload.getEntries());
+            this.codex.setComplete(true);
         } else if(packet instanceof UpdateLivestreamsPacket payload) {
             this.streams.update(payload.getLivestreams());
+            this.codex.setComplete(true);
         }
     }
 
