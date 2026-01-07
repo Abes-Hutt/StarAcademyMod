@@ -16,7 +16,7 @@ import net.minecraft.client.session.Session;
 
 public class AcademyClient {
 
-    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
+    private static final Gson GSON = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
 
     private final MinecraftClient minecraft;
     private final WebSocketClient socket;
