@@ -5,6 +5,8 @@ import abeshutt.staracademy.data.serializable.IJsonSerializable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.LinkedHashSet;
@@ -19,6 +21,7 @@ public class Cosmetic implements IJsonSerializable<JsonElement> {
     private Identifier model;
     private Identifier animation;
     private Identifier texture;
+    private Identifier icon;
     private final Set<String> slots;
 
     public Cosmetic() {
@@ -33,8 +36,16 @@ public class Cosmetic implements IJsonSerializable<JsonElement> {
         return this.name;
     }
 
+    public MutableText getNameText() {
+        return Text.translatable(this.name);
+    }
+
     public String getDescription() {
         return this.description;
+    }
+
+    public MutableText getDescriptionText() {
+        return Text.translatable(this.description);
     }
 
     public Identifier getModel() {
@@ -47,6 +58,10 @@ public class Cosmetic implements IJsonSerializable<JsonElement> {
 
     public Identifier getTexture() {
         return this.texture;
+    }
+
+    public Identifier getIcon() {
+        return this.icon;
     }
 
     public Set<String> getSlots() {
@@ -62,6 +77,7 @@ public class Cosmetic implements IJsonSerializable<JsonElement> {
             Adapters.IDENTIFIER.writeJson(this.model).ifPresent(value -> json.add("model", value));
             Adapters.IDENTIFIER.writeJson(this.animation).ifPresent(value -> json.add("animation", value));
             Adapters.IDENTIFIER.writeJson(this.texture).ifPresent(value -> json.add("texture", value));
+            Adapters.IDENTIFIER.writeJson(this.icon).ifPresent(value -> json.add("icon", value));
             JsonArray slots = new JsonArray();
 
             for (String slot : this.slots) {
@@ -82,6 +98,7 @@ public class Cosmetic implements IJsonSerializable<JsonElement> {
             this.model = Adapters.IDENTIFIER.readJson(object.get("model")).orElse(null);
             this.animation = Adapters.IDENTIFIER.readJson(object.get("animation")).orElse(null);
             this.texture = Adapters.IDENTIFIER.readJson(object.get("texture")).orElse(null);
+            this.icon = Adapters.IDENTIFIER.readJson(object.get("icon")).orElse(null);
             this.slots.clear();
 
             if (object.get("slots") instanceof JsonArray slots) {

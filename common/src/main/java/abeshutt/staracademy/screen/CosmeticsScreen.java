@@ -1,8 +1,9 @@
 package abeshutt.staracademy.screen;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.cosmetic.Cosmetic;
 import abeshutt.staracademy.cosmetic.CosmeticSlot;
-import abeshutt.staracademy.screen.widget.CosmeticSlotWidget;
+import abeshutt.staracademy.screen.widget.CosmeticButtonWidget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -27,7 +28,7 @@ public class CosmeticsScreen extends Screen {
     public static final Identifier BACKGROUND = StarAcademyMod.id("textures/gui/cosmetics/background.png");
     public static final Identifier INVENTORY_BUTTON = StarAcademyMod.id("textures/gui/cosmetics/inv_button.png");
     public static final Identifier SHOP_BUTTON = StarAcademyMod.id("textures/gui/cosmetics/shop_button.png");
-
+    public static final Identifier COSMETIC_TILE = StarAcademyMod.id("textures/gui/cosmetics/tile.png");
 
     public static final int BACKGROUND_SIZE_X = 345;
     public static final int BACKGROUND_SIZE_Y = 207;
@@ -36,12 +37,14 @@ public class CosmeticsScreen extends Screen {
     private int minY;
     private Float yaw;
     private boolean draggingAvatar;
-    private final Map<String, CosmeticSlotWidget> slotButtons;
+    private final Map<String, CosmeticButtonWidget> slotButtons;
+    private final Map<String, CosmeticButtonWidget> cosmeticButtons;
 
     public CosmeticsScreen() {
         super(Text.literal("Cosmetics"));
         this.yaw = null;
         this.slotButtons = new HashMap<>();
+        this.cosmeticButtons = new HashMap<>();
     }
 
     @Override
@@ -58,29 +61,62 @@ public class CosmeticsScreen extends Screen {
             int x = this.minX + 21;
             int y = this.minY + 46 + 18 * i + 1;
 
-            CosmeticSlotWidget button = CosmeticSlotWidget.ofSlotButton(x, y, slot,
-                    clicked -> this.trigger(slot.getId()));
+            CosmeticButtonWidget button = CosmeticButtonWidget.ofSlot(x, y, slot,
+                    clicked -> this.triggerInventorySlot(slot.getId()));
 
             this.slotButtons.put(slot.getId(), button);
             this.addDrawableChild(button);
         }
 
-        this.addDrawableChild(CosmeticSlotWidget.ofTabButton(
-            this.minX + 15 + 3, this.minY + 15 + 3, "Inventory", "All your cosmetics are here bruv.",
-            INVENTORY_BUTTON, cosmeticSlotWidget -> {}
+        this.addDrawableChild(CosmeticButtonWidget.ofTab(
+            this.minX + 15 + 3, this.minY + 15 + 3, "Inventory", "All your cosmetics are here.",
+            INVENTORY_BUTTON, button -> {}
         ).setTriggered(true));
 
-        this.addDrawableChild(CosmeticSlotWidget.ofTabButton(
+        this.addDrawableChild(CosmeticButtonWidget.ofTab(
             this.minX + 47 + 3, this.minY + 15 + 3, "Shop", "Coming soon!",
-            SHOP_BUTTON, cosmeticSlotWidget -> {}
+            SHOP_BUTTON, button -> {}
         ).setTriggered(false));
+
+        this.triggerInventorySlot(slots.getFirst().getId());
     }
 
-    public void trigger(String slotId) {
-        CosmeticSlotWidget clickedButton = this.slotButtons.get(slotId);
+    public void triggerInventorySlot(String slotId) {
+        CosmeticButtonWidget clickedButton = this.slotButtons.get(slotId);
 
         if (clickedButton != null) {
-            for (CosmeticSlotWidget slotButton : this.slotButtons.values()) {
+            for (CosmeticButtonWidget slotButton : this.slotButtons.values()) {
+                slotButton.setTriggered(false);
+            }
+
+            clickedButton.setTriggered(true);
+        }
+
+        List<Cosmetic> cosmetics = StarAcademyMod.RESOURCES.getCosmetics().values().stream()
+                .filter(cosmetic -> cosmetic.getSlots().contains(slotId))
+                .toList();
+
+        this.cosmeticButtons.values().forEach(this::remove);
+        this.cosmeticButtons.clear();
+
+        for (int i = 0; i < cosmetics.size(); i++) {
+            Cosmetic cosmetic = cosmetics.get(i);
+            int x = this.minX + 46 + 4 + (i % 4) * 30;
+            int y = this.minY + 46 + 4 + (i / 4) * 30;
+
+            CosmeticButtonWidget button = CosmeticButtonWidget.ofTile(x, y, cosmetic, COSMETIC_TILE,
+                    clicked -> this.triggerInventoryCosmeticSlot(cosmetic.getId()));
+
+            this.cosmeticButtons.put(cosmetic.getId(), button);
+            this.addDrawableChild(button);
+        }
+    }
+
+    public void triggerInventoryCosmeticSlot(String slotId) {
+        CosmeticButtonWidget clickedButton = this.cosmeticButtons.get(slotId);
+
+        if (clickedButton != null) {
+            for (CosmeticButtonWidget slotButton : this.cosmeticButtons.values()) {
                 slotButton.setTriggered(false);
             }
 
@@ -203,6 +239,5 @@ public class CosmeticsScreen extends Screen {
         context.getMatrices().pop();
         DiffuseLighting.enableGuiDepthLighting();
     }
-
 
 }
