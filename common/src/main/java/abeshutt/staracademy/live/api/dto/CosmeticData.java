@@ -72,9 +72,7 @@ public class CosmeticData implements JsonSerializable {
 
         if (json.get("slots") instanceof JsonObject slots) {
             for (String slot : slots.keySet()) {
-                adapter.readString(slots.get(slot)).ifPresent(cosmetic -> {
-                    this.slots.put(slot, cosmetic);
-                });
+                this.slots.put(slot, adapter.readString(slots.get(slot)).orElse(null));
             }
         }
 

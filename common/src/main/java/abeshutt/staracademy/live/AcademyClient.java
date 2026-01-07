@@ -88,7 +88,7 @@ public class AcademyClient {
         }
 
         this.socket.close();
-        this.timeout = 20 * 10;
+        this.timeout = 20 * 20;
     }
 
     public void tick() {
