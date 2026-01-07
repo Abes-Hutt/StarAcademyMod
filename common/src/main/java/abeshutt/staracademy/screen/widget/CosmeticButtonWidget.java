@@ -79,7 +79,7 @@ public class CosmeticButtonWidget extends ButtonWidget {
                 .append("\n").append(cosmetic.getDescriptionText().formatted(Formatting.GRAY));
 
         return new CosmeticButtonWidget(x, y, 28, 28, cosmetic.getNameText(),
-                texture, 28, 28, button -> {
+                texture, 28, 84, button -> {
             int u = 0;
             int v = 0;
 
@@ -93,6 +93,12 @@ public class CosmeticButtonWidget extends ButtonWidget {
         }, Tooltip.of(tooltip, tooltip), onPress) {
             @Override
             protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+                context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+                RenderSystem.enableBlend();
+                RenderSystem.enableDepthTest();
+                context.drawTexture(texture, this.getX(), this.getY(),
+                        0, 0, this.width, this.height, 28, 84);
+                context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 super.renderWidget(context, mouseX, mouseY, delta);
                 context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
                 RenderSystem.enableBlend();

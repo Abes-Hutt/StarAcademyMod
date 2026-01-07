@@ -45,7 +45,7 @@ public final class StarAcademyMod {
     public static RegistryWrapper.WrapperLookup REGISTRIES;
 
     public static final String ID = "academy";
-    public static final String VERSION = "1.4.0";
+    public static final String VERSION = "2.0.0";
 
     public static final Logger LOGGER = LogManager.getLogger(ID);
 

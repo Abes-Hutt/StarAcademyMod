@@ -48,8 +48,9 @@ public class CosmeticsManager {
                     } else {
                         existing.getSlots().forEach((slot, cosmetic) -> {
                             existing.getSlots().put(slot, cosmetic);
-                            existing.getUnlocked().addAll(entry.getUnlocked());
                         });
+
+                        existing.getUnlocked().addAll(entry.getUnlocked());
                     }
                 } else {
                     this.entries.put(uuid, entry);
@@ -109,7 +110,7 @@ public class CosmeticsManager {
             this.client.send(new UpdateCosmeticsPacket(Map.of(
                     player.getUuid(), new CosmeticData(update,
                             new HashSet<>(), true)), true));
-            entry.getSlots().put(slot, cosmetic);
+            //entry.getSlots().put(slot, cosmetic);
         }
     }
 
