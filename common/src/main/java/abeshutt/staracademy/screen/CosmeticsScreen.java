@@ -78,7 +78,9 @@ public class CosmeticsScreen extends Screen {
             SHOP_BUTTON, button -> {}
         ).setTriggered(false));
 
-        this.triggerInventorySlot(slots.getFirst().getId());
+        if (!slots.isEmpty()) {
+            this.triggerInventorySlot(slots.getFirst().getId());
+        }
     }
 
     public void triggerInventorySlot(String slotId) {
