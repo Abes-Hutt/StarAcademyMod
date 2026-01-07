@@ -18,44 +18,12 @@ public class OutfitManager {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-    private final AcademyClient client;
-    private final Map<String, DynamicOutfit> registry;
     private final Map<UUID, Entry> entries;
     private final Set<UUID> tracked;
 
-    public OutfitManager(AcademyClient client) {
-        this.client = client;
-        this.registry = new HashMap<>();
+    public OutfitManager() {
         this.entries = new HashMap<>();
         this.tracked = new HashSet<>();
-
-        Path path = Paths.get("codex", "outfits");
-
-        if(Files.exists(path)) {
-            try {
-                Files.list(path).forEach(child -> {
-                    if(Files.isDirectory(child)) return;
-                    if(!child.toString().endsWith(".json")) return;
-                    String id = child.getFileName().toString().replace(".json", "");
-
-                    try {
-                        JsonElement json = JsonParser.parseString(Files.readString(child));
-
-                        Adapters.DYNAMIC_OUTFIT.readJson(json).ifPresent(outfit -> {
-                            this.registry.put(id, outfit);
-                        });
-                    } catch(IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } catch(IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    public Map<String, DynamicOutfit> getRegistry() {
-        return this.registry;
     }
 
     public Map<UUID, Entry> getEntries() {
@@ -75,6 +43,7 @@ public class OutfitManager {
     }
 
     public void receive(Map<String, DynamicOutfit> registry) {
+        /*
         this.registry.clear();
         this.registry.putAll(registry);
 
@@ -90,7 +59,7 @@ public class OutfitManager {
                     e.printStackTrace();
                 }
             });
-        });
+        });*/
     }
 
     public void tick(AcademyClient client) {

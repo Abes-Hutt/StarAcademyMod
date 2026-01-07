@@ -28,7 +28,6 @@ public abstract class MixinMinecraftClient implements ProxyAcademyClient {
         this.client = new AcademyClient((MinecraftClient)(Object)this);
         this.client.connect();
         this.client.awaitCodex();
-        this.client.getCodex().setComplete(true);
         SplashLoader.load((MinecraftClient)(Object)this);
     }
 

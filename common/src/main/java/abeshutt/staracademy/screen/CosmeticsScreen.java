@@ -130,13 +130,11 @@ public class CosmeticsScreen extends Screen {
         int size = 60;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
-            context.getMatrices().push();
             context.enableScissor(this.minX + 185, this.minY + 28, this.minX + 318, this.minY + 180);
             this.drawEntity(context, this.minX + 185 + (318 - 185) / 2, this.minY + 162, size,
-                    this.minX + BACKGROUND_SIZE_X - 90 - mouseX,
+                    this.minX + 185 + (318 - 185) / 2 - mouseX,
                     this.minY + 85 - mouseY, player, delta);
             context.disableScissor();
-            context.getMatrices().pop();
         }
     }
 

@@ -72,13 +72,14 @@ public class WebSocketClient extends WebSocketListener {
 
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
-        StarAcademyMod.LOGGER.warn("Socket connection closed: [{}] {}", code, reason);
+        StarAcademyMod.LOGGER.warn("Socket connection closed: [{}]{}.", code,
+                reason == null || reason.isBlank() ? "" : " " + reason);
         this.close();
     }
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable error, Response response) {
-        StarAcademyMod.LOGGER.error("Failed to read from or write to the web socket.", error);
+        StarAcademyMod.LOGGER.error("Failed to read from or write to the web socket.");
         this.close();
     }
     

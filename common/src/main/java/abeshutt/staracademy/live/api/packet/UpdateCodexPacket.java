@@ -15,6 +15,10 @@ public class UpdateCodexPacket extends Packet {
         this.zip = zip;
     }
 
+    public byte[] getZip() {
+        return this.zip;
+    }
+
     @Override
     public void writeJson(JsonAdapter adapter, JsonObject json) {
         super.writeJson(adapter, json);

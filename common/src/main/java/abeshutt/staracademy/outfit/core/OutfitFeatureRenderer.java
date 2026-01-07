@@ -46,6 +46,7 @@ public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPla
             equipped.addAll(entry.getEquipped());
         });
 
+        /*
         for(String id : equipped) {
             DynamicOutfit outfit = outfits.getRegistry().get(id);
             if(outfit == null) continue;
@@ -54,7 +55,7 @@ public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPla
             this.getContextModel().copyBipedStateTo(model);
             VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayer.getArmorCutoutNoCull(texture));
             model.render(matrices, vertices, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
-        }
+        }*/
     }
 
 }

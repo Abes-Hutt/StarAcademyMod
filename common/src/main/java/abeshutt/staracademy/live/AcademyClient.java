@@ -4,12 +4,9 @@ import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.live.api.Protocol;
 import abeshutt.staracademy.live.api.adapter.JsonAdapter;
 import abeshutt.staracademy.live.api.dto.DisconnectReason;
+import abeshutt.staracademy.live.api.dto.Hash;
 import abeshutt.staracademy.live.api.dto.agent.MinecraftGameAgent;
-import abeshutt.staracademy.live.api.packet.ChallengeMcAuthPacket;
-import abeshutt.staracademy.live.api.packet.DisconnectPacket;
-import abeshutt.staracademy.live.api.packet.HelloPacket;
-import abeshutt.staracademy.live.api.packet.Packet;
-import abeshutt.staracademy.live.api.packet.UpdateLivestreamsPacket;
+import abeshutt.staracademy.live.api.packet.*;
 import abeshutt.staracademy.live.api.registry.Registries;
 import abeshutt.staracademy.config.APIConfig;
 import abeshutt.staracademy.init.ModConfigs;
@@ -54,7 +51,7 @@ public class AcademyClient {
 
         this.auth = new AuthManager();
         this.codex = new CodexManager();
-        this.outfits = new OutfitManager(this);
+        this.outfits = new OutfitManager();
         this.streams = new LivestreamManager();
     }
 
@@ -79,7 +76,8 @@ public class AcademyClient {
         this.socket.connect();
         Session session = this.getMinecraft().getSession();
         this.send(new HelloPacket(1, new MinecraftGameAgent(StarAcademyMod.VERSION,
-                session.getUuidOrNull(), session.getUsername(), null)));
+                session.getUuidOrNull(), session.getUsername(),
+                this.codex.getCodexHash(Hash.Algorithm.MURMUR3_32).orElse(null))));
     }
 
     public void disconnect(DisconnectReason reason) {
@@ -113,7 +111,6 @@ public class AcademyClient {
     }
 
     public void awaitCodex() {
-        /*
         while(this.socket.isConnected()) {
             if(this.codex.isComplete()) {
                 break;
@@ -121,7 +118,7 @@ public class AcademyClient {
 
             try { Thread.sleep(1); }
             catch(InterruptedException ignored) { }
-        }*/
+        }
     }
 
     public synchronized void send(Packet packet) {
@@ -138,6 +135,8 @@ public class AcademyClient {
                     .formatted(payload.getReason().getCode(), payload.getReason().getMessage()));
         } else if(packet instanceof ChallengeMcAuthPacket payload) {
             this.auth.challenge(this, payload.getServerId());
+        } else if(packet instanceof UpdateCodexPacket payload) {
+            this.codex.receive(this, payload.getZip());
         } else if(packet instanceof UpdateLivestreamsPacket payload) {
             this.streams.update(payload.getLivestreams());
         }
