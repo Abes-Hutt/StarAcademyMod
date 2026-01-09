@@ -245,8 +245,11 @@ public class PokemonStarterData extends WorldData {
             }
         }
 
-        NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(starters, message,
-                this.timeInterval, this.timeLeft, this.mode, this.allocations));
+        if (message.containsKey(player.getUuid())) {
+            NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(starters,
+                    Map.of(player.getUuid(), message.get(player.getUuid())),
+                    this.timeInterval, this.timeLeft, this.mode, this.allocations));
+        }
     }
 
     private void onRaffle(MinecraftServer server) {
