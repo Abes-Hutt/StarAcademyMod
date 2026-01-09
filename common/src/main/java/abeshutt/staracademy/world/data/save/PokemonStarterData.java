@@ -163,7 +163,7 @@ public class PokemonStarterData extends WorldData {
 
         for(Map.Entry<UUID, StarterEntry> entry : this.entries.entrySet()) {
             if (starter.equals(entry.getValue().getGranted())) {
-                allocations++;
+                //allocations++;
             }
         }
 
@@ -258,7 +258,8 @@ public class PokemonStarterData extends WorldData {
         });
 
         picks.forEach((pick, pickers) -> {
-            if(pickers.size() > this.getRemainingAllocations(pick)) {
+            //if(pickers.size() > this.getRemainingAllocations(pick)) {
+            if (pickers.size() > 1) {
                 return;
             }
 

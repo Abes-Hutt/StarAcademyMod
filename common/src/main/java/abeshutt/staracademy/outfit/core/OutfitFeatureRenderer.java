@@ -39,7 +39,7 @@ public class OutfitFeatureRenderer<M extends PlayerEntityModel<AbstractClientPla
 
             StarAcademyMod.RESOURCES.getCosmetic(cosmeticId).ifPresent(cosmetic -> {
                 CosmeticRenderer.render(cosmetic.getModel(), cosmetic.getAnimation(),
-                        "idle", cosmetic.getTexture(), state, matrices,
+                        "animation.moltres_wings.idle", cosmetic.getTexture(), state, matrices,
                         vertexConsumers, light, StarAcademyMod.RESOURCES,
                         this.getContextModel(), this.slim);
             });
