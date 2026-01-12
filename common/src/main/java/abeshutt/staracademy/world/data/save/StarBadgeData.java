@@ -68,6 +68,7 @@ public class StarBadgeData extends WorldData {
     }
 
     public void onTick(MinecraftServer server) {
+        /*
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             this.getOrCreate(player);
         }
@@ -100,7 +101,7 @@ public class StarBadgeData extends WorldData {
                 //NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
                 //        new UpdateStarBadgeS2CPacket(this.enabled, uuid, this.inventories.get(uuid)));
             }
-        }
+        }*/
 
         if(ModConfigs.STAR_BADGE.isEnabled() != this.enabled) {
             this.enabled = ModConfigs.STAR_BADGE.isEnabled();
