@@ -60,8 +60,8 @@ public class StarBadgeData extends WorldData {
         this.markDirty();
 
         if(player.getServer() != null) {
-            NetworkManager.sendToPlayers(player.getServer().getPlayerManager().getPlayerList(),
-                    new UpdateStarBadgeS2CPacket(this.enabled, player.getUuid(), inventory));
+            //NetworkManager.sendToPlayers(player.getServer().getPlayerManager().getPlayerList(),
+            //        new UpdateStarBadgeS2CPacket(this.enabled, player.getUuid(), inventory));
         }
 
         return inventory;
@@ -97,22 +97,22 @@ public class StarBadgeData extends WorldData {
 
         if(!changed.isEmpty()) {
             for(UUID uuid : changed) {
-                NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
-                        new UpdateStarBadgeS2CPacket(this.enabled, uuid, this.inventories.get(uuid)));
+                //NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                //        new UpdateStarBadgeS2CPacket(this.enabled, uuid, this.inventories.get(uuid)));
             }
         }
 
         if(ModConfigs.STAR_BADGE.isEnabled() != this.enabled) {
             this.enabled = ModConfigs.STAR_BADGE.isEnabled();
 
-            NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
-                    new UpdateStarBadgeS2CPacket(this.enabled, new HashMap<>()));
+            //NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
+            //        new UpdateStarBadgeS2CPacket(this.enabled, new HashMap<>()));
         }
     }
 
     private void onJoin(ServerPlayerEntity player) {
-        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.enabled, null));
-        NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.enabled, this.inventories));
+        //NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.enabled, null));
+        //NetworkManager.sendToPlayer(player, new UpdateStarBadgeS2CPacket(this.enabled, this.inventories));
     }
 
     @Override
