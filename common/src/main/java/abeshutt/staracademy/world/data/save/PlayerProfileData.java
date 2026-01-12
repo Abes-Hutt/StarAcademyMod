@@ -54,8 +54,8 @@ public class PlayerProfileData extends WorldData {
                 this.profiles.put(uuid, profile);
                 this.futures.remove(uuid);
                 this.markDirty();
-                NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
-                        new UpdatePlayerProfileS2CPacket(uuid, profile));
+                //NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                //        new UpdatePlayerProfileS2CPacket(uuid, profile));
                 return profile;
             });
 
@@ -68,7 +68,7 @@ public class PlayerProfileData extends WorldData {
     private void onJoin(ServerPlayerEntity player) {
         this.profiles.remove(player.getUuid());
         this.getProfileAsync(player.getServer(), player.getUuid());
-        NetworkManager.sendToPlayer(player, new UpdatePlayerProfileS2CPacket(this.profiles));
+        //NetworkManager.sendToPlayer(player, new UpdatePlayerProfileS2CPacket(this.profiles));
     }
 
     private void onTick(MinecraftServer server) {
@@ -79,8 +79,8 @@ public class PlayerProfileData extends WorldData {
                 ProxyGameProfile.of(profile).ifPresent(proxy -> {
                     proxy.setName(player.getGameProfile().getName());
                     this.markDirty();
-                    NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
-                            new UpdatePlayerProfileS2CPacket(player.getUuid(), profile));
+                    //NetworkManager.sendToPlayers(server.getPlayerManager().getPlayerList(),
+                    // new UpdatePlayerProfileS2CPacket(player.getUuid(), profile));
                 });
             }
         }
