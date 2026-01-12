@@ -35,8 +35,7 @@ import net.minecraft.util.Formatting;
 import java.util.*;
 
 import static abeshutt.staracademy.data.adapter.basic.EnumAdapter.Mode.NAME;
-import static abeshutt.staracademy.world.data.StarterMode.RAFFLE_ENABLED;
-import static abeshutt.staracademy.world.data.StarterMode.RAFFLE_PAUSED;
+import static abeshutt.staracademy.world.data.StarterMode.*;
 
 public class PokemonStarterData extends WorldData {
 
@@ -191,35 +190,37 @@ public class PokemonStarterData extends WorldData {
 
         this.setAllocations(ModConfigs.STARTER_RAFFLE.getAllocations());
 
-        for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            StarterEntry entry = this.getEntries().get(player.getUuid());
-            if(entry == null) continue;
-            GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
-            entry.setAvailable(!playerData.getStarterSelected() && !playerData.getStarterLocked());
-        }
-
-        Map<UUID, StarterEntry> changes = new HashMap<>();
-
-        this.entries.forEach((uuid, entry) -> {
-            if(entry.isChanged()) {
-                changes.put(uuid, entry);
-                entry.setChanged(false);
-                this.markDirty();
-            }
-        });
-
-        if(!changes.isEmpty() || this.isChanged()) {
+        if (this.mode != DEFAULT) {
             for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                Map<UUID, StarterEntry> message = new HashMap<>();
+                StarterEntry entry = this.getEntries().get(player.getUuid());
+                if(entry == null) continue;
+                GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
+                entry.setAvailable(!playerData.getStarterSelected() && !playerData.getStarterLocked());
+            }
 
-                changes.forEach((uuid, entry) -> {
-                    if(entry.getGranted() != null || player.getUuid().equals(uuid)) {
-                        message.put(uuid, entry);
-                    }
-                });
+            Map<UUID, StarterEntry> changes = new HashMap<>();
 
-                NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(null,
-                        message, this.timeInterval, this.timeLeft, this.mode, this.allocations));
+            this.entries.forEach((uuid, entry) -> {
+                if(entry.isChanged()) {
+                    changes.put(uuid, entry);
+                    entry.setChanged(false);
+                    this.markDirty();
+                }
+            });
+
+            if(!changes.isEmpty() || this.isChanged()) {
+                for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                    Map<UUID, StarterEntry> message = new HashMap<>();
+
+                    changes.forEach((uuid, entry) -> {
+                        if(entry.getGranted() != null || player.getUuid().equals(uuid)) {
+                            message.put(uuid, entry);
+                        }
+                    });
+
+                    NetworkManager.sendToPlayer(player, new UpdateStarterRaffleS2CPacket(null,
+                            message, this.timeInterval, this.timeLeft, this.mode, this.allocations));
+                }
             }
         }
     }
