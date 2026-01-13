@@ -60,8 +60,6 @@
     "cobblemon.MixinCodecUtils",
     "cobblemon.MixinFormDexRecord",
     "cobblemon.MixinPlayerSpawnerFactory",
-    "cobblemon.MixinPokeBallItem",
-    "cobblemon.MixinPokeBalls",
     "cobblemon.MixinPokemonBattle",
     "cobblemon.MixinPokemonEntity",
     "cobblemon.MixinShinyCalculationEvent",
