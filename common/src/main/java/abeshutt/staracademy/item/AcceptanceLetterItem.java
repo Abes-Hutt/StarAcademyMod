@@ -5,6 +5,7 @@ import abeshutt.staracademy.util.ClientScheduler;
 import abeshutt.staracademy.util.ColorBlender;
 import abeshutt.staracademy.world.data.save.PlayerProfileData;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,6 +26,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static abeshutt.staracademy.init.ModDataComponents.*;
@@ -96,7 +98,14 @@ public class AcceptanceLetterItem extends Item {
 
         if(uuid != null) {
             String name = PlayerProfileData.CLIENT.getProfile(uuid)
-                    .map(GameProfile::getName).orElse("Unknown");
+                    .map(GameProfile::getName).orElseGet(() -> {
+                        if (Platform.getEnv() == EnvType.CLIENT) {
+                            return this.getNameFor(uuid).orElse("Unknown");
+                        }
+
+                        return "Unknown";
+                    });
+
             double time = 0.0D;
 
             if(Platform.getEnv() == EnvType.CLIENT) {
@@ -109,6 +118,13 @@ public class AcceptanceLetterItem extends Item {
             text.append(styleText(name, time, 10.0F));
             tooltip.add(text);
         }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Optional<String> getNameFor(UUID uuid) {
+        ProfileResult profile = MinecraftClient.getInstance().getSessionService()
+                .fetchProfile(uuid, false);
+        return Optional.ofNullable(profile).map(ProfileResult::profile).map(GameProfile::getName);
     }
 
     @Environment(EnvType.CLIENT)
