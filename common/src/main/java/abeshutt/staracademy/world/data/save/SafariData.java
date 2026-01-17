@@ -270,9 +270,9 @@ public class SafariData extends WorldData {
 
         for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             if(dirty.contains(player.getUuid())) {
-                NetworkManager.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, player.getUuid(), this.entries.get(player.getUuid())));
+                //NetworkManager.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, player.getUuid(), this.entries.get(player.getUuid())));
             } else {
-                NetworkManager.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, new HashMap<>()));
+                //NetworkManager.sendToPlayer(player, new UpdateSafariS2CPacket(this.timeLeft, this.paused, new HashMap<>()));
             }
         }
 
