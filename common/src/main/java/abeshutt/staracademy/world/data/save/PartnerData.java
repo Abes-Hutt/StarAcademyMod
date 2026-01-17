@@ -110,7 +110,7 @@ public class PartnerData extends WorldData {
     public static void init() {
         TickEvent.SERVER_POST.register(server -> {
             PartnerData data = ModWorldData.PARTNER.getGlobal(server);
-            data.onTick(server);
+            //data.onTick(server);
         });
     }
 
