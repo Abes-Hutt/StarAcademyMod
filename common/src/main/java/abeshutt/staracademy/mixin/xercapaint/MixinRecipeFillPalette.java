@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = { "xerca.xercapaint.item.crafting.RecipeFillPalette" })
+@Mixin(targets = { "xerca.xercapaint.item.crafting.RecipeFillPalette", "xerca.xercapaint.item.crafting.RecipeCraftPalette" })
 public class MixinRecipeFillPalette {
 
     @Inject(method = "isDye", at = @At("HEAD"), cancellable = true)
