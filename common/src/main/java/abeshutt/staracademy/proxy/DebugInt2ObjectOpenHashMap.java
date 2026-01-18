@@ -18,10 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class DebugInt2ObjectOpenHashMap<T> extends Int2ObjectOpenHashMap<T> {
 
@@ -59,6 +56,198 @@ public class DebugInt2ObjectOpenHashMap<T> extends Int2ObjectOpenHashMap<T> {
     public T remove(Object key) {
         this.check();
         return super.remove(key);
+    }
+
+    @Override
+    public void ensureCapacity(int capacity) {
+        this.check();
+        super.ensureCapacity(capacity);
+    }
+
+    @Override
+    public void putAll(Map<? extends Integer, ? extends T> m) {
+        this.check();
+        super.putAll(m);
+    }
+
+    @Override
+    public T put(int k, T t) {
+        this.check();
+        return super.put(k, t);
+    }
+
+    @Override
+    public T remove(int k) {
+        this.check();
+        return super.remove(k);
+    }
+
+    @Override
+    public T get(int k) {
+        this.check();
+        return super.get(k);
+    }
+
+    @Override
+    public boolean containsKey(int k) {
+        this.check();
+        return super.containsKey(k);
+    }
+
+    @Override
+    public boolean containsValue(Object v) {
+        this.check();
+        return super.containsValue(v);
+    }
+
+    @Override
+    public T getOrDefault(int k, T defaultValue) {
+        this.check();
+        return super.getOrDefault(k, defaultValue);
+    }
+
+    @Override
+    public T putIfAbsent(int k, T t) {
+        this.check();
+        return super.putIfAbsent(k, t);
+    }
+
+    @Override
+    public boolean remove(int k, Object v) {
+        this.check();
+        return super.remove(k, v);
+    }
+
+    @Override
+    public boolean replace(int k, T oldValue, T t) {
+        this.check();
+        return super.replace(k, oldValue, t);
+    }
+
+    @Override
+    public T replace(int k, T t) {
+        this.check();
+        return super.replace(k, t);
+    }
+
+    @Override
+    public T computeIfAbsent(int k, IntFunction<? extends T> mappingFunction) {
+        this.check();
+        return super.computeIfAbsent(k, mappingFunction);
+    }
+
+    @Override
+    public T computeIfAbsent(int key, Int2ObjectFunction<? extends T> mappingFunction) {
+        this.check();
+        return super.computeIfAbsent(key, mappingFunction);
+    }
+
+    @Override
+    public T computeIfPresent(int k, BiFunction<? super Integer, ? super T, ? extends T> remappingFunction) {
+        this.check();
+        return super.computeIfPresent(k, remappingFunction);
+    }
+
+    @Override
+    public T compute(int k, BiFunction<? super Integer, ? super T, ? extends T> remappingFunction) {
+        this.check();
+        return super.compute(k, remappingFunction);
+    }
+
+    @Override
+    public T merge(int k, T t, BiFunction<? super T, ? super T, ? extends T> remappingFunction) {
+        this.check();
+        return super.merge(k, t, remappingFunction);
+    }
+
+    @Override
+    public void clear() {
+        this.check();
+        super.clear();
+    }
+
+    @Override
+    public int size() {
+        this.check();
+        return super.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        this.check();
+        return super.isEmpty();
+    }
+
+    @Override
+    public FastEntrySet<T> int2ObjectEntrySet() {
+        this.check();
+        return super.int2ObjectEntrySet();
+    }
+
+    @Override
+    public IntSet keySet() {
+        this.check();
+        return super.keySet();
+    }
+
+    @Override
+    public ObjectCollection<T> values() {
+        this.check();
+        return super.values();
+    }
+
+    @Override
+    public boolean trim() {
+        this.check();
+        return super.trim();
+    }
+
+    @Override
+    public boolean trim(int n) {
+        this.check();
+        return super.trim(n);
+    }
+
+    @Override
+    protected void rehash(int newN) {
+        this.check();
+        super.rehash(newN);
+    }
+
+    @Override
+    public Int2ObjectOpenHashMap<T> clone() {
+        this.check();
+        return super.clone();
+    }
+
+    @Override
+    public int hashCode() {
+        this.check();
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        this.check();
+        return super.equals(o);
+    }
+
+    @Override
+    public String toString() {
+        this.check();
+        return super.toString();
+    }
+
+    @Override
+    public void defaultReturnValue(T rv) {
+        this.check();
+        super.defaultReturnValue(rv);
+    }
+
+    @Override
+    public T defaultReturnValue() {
+        this.check();
+        return super.defaultReturnValue();
     }
 
     @Override
