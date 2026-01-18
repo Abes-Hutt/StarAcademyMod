@@ -49,6 +49,7 @@
     "MixinPlayerEntity",
     "MixinPlayerScreenHandler",
     "MixinSellMapFactory",
+    "MixinServerChunkLoadingManager",
     "MixinServerPlayerEntity",
     "MixinServerWorld",
     "MixinSpeciesDexRecord",
