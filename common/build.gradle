@@ -91,4 +91,6 @@ dependencies {
     modCompileOnly("maven.modrinth:cobblemon-mass-outbreaks:1.0.0-1.21.1-fabric")
 
     modCompileOnly("maven.modrinth:moonrise-opt:5IV5gcdA")
+
+    modCompileOnly(files("jars/xercapaint-1.21.1-1.0.1.jar"))
 }

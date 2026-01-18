@@ -96,7 +96,8 @@
     "outbreaks.MixinPlayerEntity",
     "outbreaks.MixinPortalUtils",
     "shutters.MixinShutter",
-    "ultrabeasts.MixinWormholeEntity"
+    "ultrabeasts.MixinWormholeEntity",
+    "xercapaint.MixinRecipeFillPalette"
   ],
   "injectors": {
     "defaultRequire": 1
