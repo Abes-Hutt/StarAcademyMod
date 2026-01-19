@@ -93,4 +93,6 @@ dependencies {
     modCompileOnly("maven.modrinth:moonrise-opt:5IV5gcdA")
 
     modCompileOnly(files("jars/xercapaint-1.21.1-1.0.1.jar"))
+
+    modCompileOnly("maven.modrinth:cobblemon-scoremons:3.1")
 }

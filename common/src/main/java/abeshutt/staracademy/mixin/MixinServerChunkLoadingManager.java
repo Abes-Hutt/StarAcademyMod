@@ -30,7 +30,7 @@ public class MixinServerChunkLoadingManager {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureTemplateManager structureTemplateManager, Executor executor, ThreadExecutor mainThreadExecutor, ChunkProvider chunkProvider, ChunkGenerator chunkGenerator, WorldGenerationProgressListener worldGenerationProgressListener, ChunkStatusChangeListener chunkStatusChangeListener, Supplier persistentStateManagerFactory, int viewDistance, boolean dsync, CallbackInfo ci) {
-        this.entityTrackers = new DebugInt2ObjectOpenHashMap<>(() -> world.getServer().getThread());
+        //this.entityTrackers = new DebugInt2ObjectOpenHashMap<>(() -> world.getServer().getThread());
     }
 
 }
