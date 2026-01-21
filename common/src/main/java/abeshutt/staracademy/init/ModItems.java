@@ -22,6 +22,7 @@ public class ModItems extends ModRegistries {
     public static RegistrySupplier<Item> HA_FOSSIL;
     public static RegistrySupplier<Item> MAX_IV_FOSSIL;
     public static RegistrySupplier<Item> SHINY_FOSSIL;
+    public static RegistrySupplier<Item> RADIANT_FOSSIL;
     public static RegistrySupplier<Item> SHINY_INCENSE;
     public static RegistrySupplier<Item> STRONG_SHINY_INCENSE;
     public static RegistrySupplier<Item> UBER_SHINY_INCENSE;
@@ -42,6 +43,7 @@ public class ModItems extends ModRegistries {
         HA_FOSSIL = register("ha_fossil", () -> new Item(new Item.Settings().maxCount(1)));
         MAX_IV_FOSSIL = register("max_iv_fossil", () -> new Item(new Item.Settings().maxCount(1)));
         SHINY_FOSSIL = register("shiny_fossil", () -> new Item(new Item.Settings().maxCount(1)));
+        RADIANT_FOSSIL = register("radiant_fossil", () -> new Item(new Item.Settings().maxCount(1)));
         SHINY_INCENSE = register("shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         STRONG_SHINY_INCENSE = register("strong_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
         UBER_SHINY_INCENSE = register("uber_shiny_incense", () -> new Item(new Item.Settings().maxCount(1)));
