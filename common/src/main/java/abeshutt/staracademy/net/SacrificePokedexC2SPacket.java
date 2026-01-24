@@ -42,7 +42,11 @@ public class SacrificePokedexC2SPacket extends ModPacket<ServerPlayNetworkHandle
 
             for(Integer slot : this.slots) {
                 Pokemon pokemon = party.get(slot);
-                if(pokemon == null) continue;
+                if(pokemon == null || !pokemon.getShiny()) {
+                    continue;
+                }
+
+
 
                 if(house.getPokedex().getSpeciesRecord(pokemon.getSpecies().resourceIdentifier) != null) {
                     continue;
