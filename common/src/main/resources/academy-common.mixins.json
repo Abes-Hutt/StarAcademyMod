@@ -55,7 +55,6 @@
     "MixinSpeciesDexRecord",
     "MixinStructureTemplate",
     "MixinTeleportTarget",
-    "alphas.MixinAlphaSpawner",
     "bookshelf.MixinFabricMod",
     "cobblemon.MixinCobblemonTooltipGenerator",
     "cobblemon.MixinCodecUtils",
