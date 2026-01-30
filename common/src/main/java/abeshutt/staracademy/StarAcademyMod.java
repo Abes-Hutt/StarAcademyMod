@@ -68,6 +68,7 @@ public final class StarAcademyMod {
         ModRegistries.register();
         Attributes.init();
 
+        /*
         TickEvent.PLAYER_POST.register(entity -> {
             if (entity instanceof ServerPlayerEntity player && player.getServer().getTicks() % 20 == 0) {
                 GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
@@ -81,7 +82,7 @@ public final class StarAcademyMod {
                     }
                 }
             }
-        });
+        });*/
 
         PlayerEvent.PLAYER_JOIN.register(player -> {
             NetworkManager.sendToPlayer(player, new ItemRegistryS2CPacket(Registries.ITEM.getIds()));

@@ -344,6 +344,7 @@ public class SafariData extends WorldData {
     }
 
     public static void init() {
+        /*
         PlayerEvent.PLAYER_JOIN.register(player -> {
             SafariData data = ModWorldData.SAFARI.getGlobal(player.getWorld());
             data.onJoin(player);
@@ -352,7 +353,7 @@ public class SafariData extends WorldData {
         TickEvent.SERVER_POST.register(server -> {
             SafariData data = ModWorldData.SAFARI.getGlobal(server);
             data.onTick(server);
-        });
+        });*/
     }
 
     public static class Entry implements ISerializable<NbtCompound, JsonObject> {

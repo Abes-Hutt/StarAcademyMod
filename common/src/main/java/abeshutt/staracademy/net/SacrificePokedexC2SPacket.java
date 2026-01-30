@@ -46,8 +46,6 @@ public class SacrificePokedexC2SPacket extends ModPacket<ServerPlayNetworkHandle
                     continue;
                 }
 
-
-
                 if(house.getPokedex().getSpeciesRecord(pokemon.getSpecies().resourceIdentifier) != null) {
                     continue;
                 }
