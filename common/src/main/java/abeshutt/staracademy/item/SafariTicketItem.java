@@ -42,6 +42,7 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
         }).orElseGet(() -> super.getName(stack));
     }
 
+    /*
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
@@ -64,7 +65,7 @@ public class SafariTicketItem extends Item implements ISpecialItemModel {
         });
 
         return TypedActionResult.success(stack);
-    }
+    }*/
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
