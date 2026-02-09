@@ -114,6 +114,8 @@
   "item.academy.acceptance_letter.recipient": "Recipient: ",
   "item.academy.acceptance_letter.enroll": "Enroll",
   "item.academy.acceptance_letter.content": "\nDear recipient,\n\nOn behalf of the Academy, I am pleased to announce your admission to our second season of classes!\n\nWe extend a heartfelt congratulations, and hope that you'll find great success in this next chapter of your training journey.\n\n Warmest regards, \n Dean of Admissions",
+  "item.academy.safari_ticket_base": "Safari Ticket",
+  "item.academy.safari_ticket_base.tooltip": "Grants 30:00 to the Safari",
   "cobblemon.ui.starter.choosebutton.same": "I don't choose you!",
   "entity.academy.partner_npc": "Partner NPC",
   "entity.academy.safari_npc": "Safari NPC",
