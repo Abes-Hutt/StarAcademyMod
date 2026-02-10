@@ -94,5 +94,8 @@ dependencies {
 
     modCompileOnly(files("jars/xercapaint-1.21.1-1.0.1.jar"))
 
+    modCompileOnly("maven.modrinth:sophisticated-storage-(unofficial-fabric-port):1.21.1-1.3.7.9.139")
+    modCompileOnly("maven.modrinth:sophisticated-core-(unofficial-fabric-port):1.21.1-1.2.9.21.168")
+
     modCompileOnly("maven.modrinth:cobblemon-scoremons:3.1")
 }
