@@ -13,7 +13,7 @@ public class MixinBundleContentsComponent {
 
     @Inject(method = "getOccupancy(Lnet/minecraft/item/ItemStack;)Lorg/apache/commons/lang3/math/Fraction;", at = @At("RETURN"), cancellable = true)
     private static void getOccupancy(ItemStack stack, CallbackInfoReturnable<Fraction> ci) {
-        ci.setReturnValue(Fraction.getFraction(1, Integer.MAX_VALUE));
+        //ci.setReturnValue(Fraction.getFraction(1, Integer.MAX_VALUE));
     }
 
 }
