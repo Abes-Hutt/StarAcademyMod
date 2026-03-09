@@ -96,6 +96,7 @@
     "outbreaks.MixinPlayerEntity",
     "outbreaks.MixinPortalUtils",
     "shutters.MixinShutter",
+    "sophisticated.MixinCookingLogic",
     "sophisticated.MixinHopperUpgradeWrapper",
     "ultrabeasts.MixinWormholeEntity",
     "xercapaint.MixinRecipeFillPalette"
