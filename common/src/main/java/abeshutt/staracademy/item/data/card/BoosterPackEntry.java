@@ -1,5 +1,6 @@
 package abeshutt.staracademy.item.data.card;
 
+import abeshutt.staracademy.StarAcademyMod;
 import abeshutt.staracademy.data.adapter.Adapters;
 import abeshutt.staracademy.data.serializable.ISerializable;
 import abeshutt.staracademy.init.ModConfigs;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class BoosterPackEntry implements ISerializable<NbtCompound, JsonObject> {
+
+    private static final int MAX_ROLL_ATTEMPTS = 32;
 
     private Identifier modelBase;
     private Identifier modelRipped;
@@ -87,16 +90,27 @@ public class BoosterPackEntry implements ISerializable<NbtCompound, JsonObject> 
             int count = pool.count.get(random).intValue();
 
             for(int i = 0; i < count; i++) {
-                String id = ModConfigs.CARD_ENTRIES.flatten(pool.entry, random).orElse(null);
-                if(id == null) continue;
-
-                ModConfigs.CARD_ENTRIES.get(id).ifPresent(entry -> {
-                    cards.add(entry.generate(random));
-                });
+                this.generateCard(pool, random).ifPresent(cards::add);
             }
         }
 
         return cards;
+    }
+
+    private Optional<CardData> generateCard(Pool pool, RandomSource random) {
+        for(int attempts = 0; attempts < MAX_ROLL_ATTEMPTS; attempts++) {
+            String id = ModConfigs.CARD_ENTRIES.flatten(pool.entry, random).orElse(null);
+            if(id == null) continue;
+
+            Optional<CardEntry> entry = ModConfigs.CARD_ENTRIES.get(id);
+            if(entry.isPresent()) {
+                return entry.map(value -> value.generate(random));
+            }
+        }
+
+        StarAcademyMod.LOGGER.warn("Failed to generate a card from booster pool {} after {} attempts. Check card entry config references.",
+                pool.entry, MAX_ROLL_ATTEMPTS);
+        return Optional.empty();
     }
 
     public static class Pool implements ISerializable<NbtCompound, JsonObject> {

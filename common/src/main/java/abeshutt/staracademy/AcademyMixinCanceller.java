@@ -17,6 +17,10 @@ public class AcademyMixinCanceller implements MixinCanceller {
             }
         }
 
+        if (Platform.isModLoaded("exposure")) {
+            return "io.github.mortuusars.exposure.mixin.client.AnvilScreenMixin".equals(mixinClassName);
+        }
+
         return false;
     }
 
