@@ -12,7 +12,6 @@ public class ModWorldData extends ModRegistries {
     public static WorldDataType<WardrobeData> WARDROBE;
     public static WorldDataType<PartnerData> PARTNER;
     public static WorldDataType<HouseData> HOUSE;
-    public static WorldDataType<CardGradingData> CARD_GRADING;
     public static WorldDataType<LegendaryItemData> LEGENDARY_ITEM;
     public static WorldDataType<VirtualWorldData> VIRTUAL_WORLD;
     public static WorldDataType<AcceptanceLetterData> ACCEPTANCE_LETTER;
@@ -28,7 +27,6 @@ public class ModWorldData extends ModRegistries {
         WARDROBE = new WorldDataType<>(StarAcademyMod.ID + ".wardrobe", WardrobeData::new);
         PARTNER = new WorldDataType<>(StarAcademyMod.ID + ".partner", PartnerData::new);
         HOUSE = new WorldDataType<>(StarAcademyMod.ID + ".house", HouseData::new);
-        CARD_GRADING = new WorldDataType<>(StarAcademyMod.ID + ".card_grading", CardGradingData::new);
         LEGENDARY_ITEM = new WorldDataType<>(StarAcademyMod.ID + ".legendary_item", LegendaryItemData::new);
         VIRTUAL_WORLD = new WorldDataType<>(StarAcademyMod.ID + ".virtual_world", VirtualWorldData::new);
         ACCEPTANCE_LETTER = new WorldDataType<>(StarAcademyMod.ID + ".acceptance_letter", AcceptanceLetterData::new);
@@ -43,7 +41,6 @@ public class ModWorldData extends ModRegistries {
         WardrobeData.init();
         PartnerData.init();
         HouseData.init();
-        CardGradingData.init();
         VirtualWorldData.init();
         ArmorDisplayData.init();
         StarterKitData.init();

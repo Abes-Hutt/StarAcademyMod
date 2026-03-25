@@ -1,16 +1,14 @@
 package abeshutt.staracademy.entity;
 
 import abeshutt.staracademy.StarAcademyMod;
+import abeshutt.staracademy.card.CardGradingData;
 import abeshutt.staracademy.init.ModConfigs;
-import abeshutt.staracademy.init.ModWorldData;
 import abeshutt.staracademy.item.CardItem;
 import abeshutt.staracademy.math.random.JavaRandom;
 import abeshutt.staracademy.math.random.RandomSource;
-import abeshutt.staracademy.world.data.save.CardGradingData;
-import com.glisco.numismaticoverhaul.ModComponents;
-import com.glisco.numismaticoverhaul.currency.CurrencyComponent;
+import abeshutt.staracademy.net.UpdateCardGradingS2CPacket;
 import dev.architectury.hooks.item.ItemStackHooks;
-import dev.architectury.platform.Platform;
+import dev.architectury.networking.NetworkManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -32,6 +30,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.function.Function;
 
 public class CardGraderNPCEntity extends HumanEntity {
@@ -78,7 +79,12 @@ public class CardGraderNPCEntity extends HumanEntity {
     private void equipCard() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if(player == null) return;
-        this.setStackInHand(Hand.MAIN_HAND, CardGradingData.CLIENT.getStack(player.getUuid()));
+        if (CardGradingData.CLIENT == null) {
+            this.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+        }
+        else {
+            this.setStackInHand(Hand.MAIN_HAND, CardGradingData.CLIENT.getStack());
+        }
     }
 
     @Environment(EnvType.CLIENT)
@@ -90,14 +96,12 @@ public class CardGraderNPCEntity extends HumanEntity {
             return;
         }
 
-        ItemStack stack = CardGradingData.CLIENT.getStack(player.getUuid());
-
-        if(stack.isEmpty()) {
+        if(CardGradingData.CLIENT == null || CardGradingData.CLIENT.getStack().isEmpty()) {
             this.setCustomNameVisible(false);
             return;
         }
 
-        long millis = Math.max(CardGradingData.CLIENT.getTimeLeft(player.getUuid()), 0);
+        long millis = Math.max(Duration.between(Instant.now(), CardGradingData.CLIENT.getCompletionTime()).toMillis(), 0);
         long hours = millis / 1000 / 3600;
         long minutes = millis / 1000 % 3600 / 60;
         long seconds = millis / 1000 % 60;
@@ -106,59 +110,70 @@ public class CardGraderNPCEntity extends HumanEntity {
         this.setCustomName(Text.literal(time));
     }
 
-    @Override
-    protected ActionResult interactMob(PlayerEntity user, Hand hand) {
+    private void onRemoveGradedCard(CardGradingData data, ServerPlayerEntity player) {
+        if (StarAcademyMod.cardGradingService == null) return; // TODO: Remove this check, make flatfile fallback.
+
         RandomSource random = JavaRandom.ofNanoTime();
 
-        if(user instanceof ServerPlayerEntity player) {
-            ItemStack stack = player.getStackInHand(hand);
-            CardGradingData data = ModWorldData.CARD_GRADING.getGlobal(player.getWorld());
+        if (Instant.now().isAfter(data.getCompletionTime())) {
+            var returned = data.getStack();
+            int grade = ModConfigs.CARD_SCALARS.getGrade(random);
 
-            if(data.has(player.getUuid())) {
-                if(data.getTimeLeft(player.getUuid()) < 0) {
-                    ItemStack returned = data.getStack(player.getUuid());
-                    int grade = ModConfigs.CARD_SCALARS.getGrade(random);
-
-                    if(returned.getItem() instanceof CardItem) {
-                        CardItem.get(returned).ifPresent(card -> card.setGrade(grade));
-                    }
-
-                    ItemStackHooks.giveItem(player, returned);
-                    player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
-                            SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
-                            ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    player.sendMessage(Text.empty().append(Text.translatable(REQUEST_COMPLETE.apply(random))
-                            .formatted(Formatting.GRAY)));
-                    data.remove(player.getUuid());
-                } else {
-                    player.sendMessage(Text.empty().append(Text.translatable(REQUEST_IMPATIENT.apply(random))
-                            .formatted(Formatting.GRAY)));
-                }
-            } else if(stack.getItem() instanceof CardItem && CardItem.get(stack).map(card -> card.getGrade() == 0).orElse(false)) {
-                if(Platform.isModLoaded("numismatic-overhaul")) {
-                    CurrencyComponent purse = ModComponents.CURRENCY.get(player);
-
-                    if(purse.getValue() < ModConfigs.NPC.getGradingCurrencyCost()) {
-                        player.sendMessage(Text.empty().append(Text.translatable(INITIAL_BROKE.apply(random))
-                                .formatted(Formatting.GRAY)));
-                    } else {
-                        purse.pushTransaction(-ModConfigs.NPC.getGradingCurrencyCost());
-                        purse.commitTransactions();
-                        data.add(player.getUuid(), stack.copy());
-                        player.setStackInHand(hand, ItemStack.EMPTY);
-                        player.sendMessage(Text.empty().append(Text.translatable(INITIAL_CARD.apply(random))
-                                .formatted(Formatting.GRAY)));
-                    }
-                } else {
-                    data.add(player.getUuid(), stack.copy());
-                    player.setStackInHand(hand, ItemStack.EMPTY);
-                    player.sendMessage(Text.empty().append(Text.translatable(INITIAL_CARD.apply(random))
-                            .formatted(Formatting.GRAY)));
-                }
-            } else {
-                player.sendMessage(Text.empty().append(Text.translatable(INITIAL_NO_CARD.apply(random))
-                        .formatted(Formatting.GRAY)));
+            if(returned.getItem() instanceof CardItem) {
+                CardItem.get(returned).ifPresent(card -> card.setGrade(grade));
             }
+
+            ItemStackHooks.giveItem(player, returned);
+            player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
+                    ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            player.sendMessage(Text.empty().append(Text.translatable(REQUEST_COMPLETE.apply(random))
+                    .formatted(Formatting.GRAY)));
+            StarAcademyMod.cardGradingService.removeCardData(player);
+            NetworkManager.sendToPlayer(player, new UpdateCardGradingS2CPacket(null));
+        }
+        else {
+            player.sendMessage(Text.empty().append(Text.translatable(REQUEST_IMPATIENT.apply(random))
+                    .formatted(Formatting.GRAY)));
+        }
+    }
+
+    private void onStartCardGrading(ServerPlayerEntity player, Hand hand) {
+        if (StarAcademyMod.cardGradingService == null) return; // TODO: Remove this check, make flatfile fallback.
+
+        RandomSource random = JavaRandom.ofNanoTime();
+        ItemStack stack = player.getStackInHand(hand);
+        if(stack.getItem() instanceof CardItem && CardItem.get(stack).map(card -> card.getGrade() == 0).orElse(false)) {
+            var cardGradingData = new CardGradingData(Instant.now().plus(ModConfigs.NPC.getGradingTimeMillis(), ChronoUnit.MILLIS), stack);
+            StarAcademyMod.LOGGER.info("insertCardData");
+            StarAcademyMod.cardGradingService.insertCardData(player, hand, cardGradingData).thenAccept(data -> {
+                NetworkManager.sendToPlayer(player, new UpdateCardGradingS2CPacket(data));
+            });
+        }
+        else {
+            player.sendMessage(Text.empty().append(Text.translatable(INITIAL_NO_CARD.apply(random))
+                    .formatted(Formatting.GRAY)));
+        }
+    }
+
+    @Override
+    protected ActionResult interactMob(PlayerEntity user, Hand hand) {
+        // TODO: Remove this check, make flatfile fallback.
+        if (StarAcademyMod.cardGradingService == null) return ActionResult.SUCCESS;
+
+        if(user instanceof ServerPlayerEntity player) {
+            StarAcademyMod.cardGradingService.getCardData(player).thenAccept(data -> {
+                var cardData = data.orElse(null);
+                if (cardData != null) {
+                    player.server.execute(() -> onRemoveGradedCard(cardData, player));
+                }
+                else {
+                    player.server.execute(() -> onStartCardGrading(player, hand));
+                }
+            }).exceptionally(x -> {
+                StarAcademyMod.LOGGER.error("Failed to get card data", x);
+                return null;
+            });
         }
 
         return ActionResult.SUCCESS;

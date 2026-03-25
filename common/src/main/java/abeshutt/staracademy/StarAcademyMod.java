@@ -1,6 +1,7 @@
 package abeshutt.staracademy;
 
 import abeshutt.staracademy.attribute.Attributes;
+import abeshutt.staracademy.card.CardGradingService;
 import abeshutt.staracademy.compat.enhancedcelestials.EnhancedCelestialsCompat;
 import abeshutt.staracademy.cosmetic.CosmeticsResources;
 import abeshutt.staracademy.event.CommonEvents;
@@ -9,7 +10,6 @@ import abeshutt.staracademy.init.ModRegistries;
 import abeshutt.staracademy.net.ItemRegistryS2CPacket;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.CobblemonItems;
-import com.cobblemon.mod.common.advancement.CobblemonCriteria;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.storage.player.GeneralPlayerData;
 import com.cobblemon.mod.common.pokemon.Pokemon;
@@ -51,6 +51,7 @@ public final class StarAcademyMod {
 
     public static final RegistryKey<World> SAFARI = RegistryKey.of(RegistryKeys.WORLD, StarAcademyMod.id("safari"));
     public static List<Runnable> CLIENT_TICKERS = new ArrayList<>();
+    public static CardGradingService cardGradingService;
 
     public static void init() {
         LifecycleEvent.SERVER_STARTED.register(instance -> {
