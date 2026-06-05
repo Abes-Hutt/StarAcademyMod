@@ -76,6 +76,13 @@ public class LunarForecastHologramBlock extends BlockWithEntity {
     }
 
     @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.isOf(newState.getBlock())) {
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
+    }
+
+    @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (state.get(LIT)) {
             if (player.isSneaking()) {

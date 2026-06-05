@@ -33,9 +33,15 @@ import net.minecraft.world.World;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 public class CardGraderNPCEntity extends HumanEntity {
+
+    private Set<UUID> locked = ConcurrentHashMap.newKeySet();
 
     public CardGraderNPCEntity(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -111,8 +117,6 @@ public class CardGraderNPCEntity extends HumanEntity {
     }
 
     private void onRemoveGradedCard(CardGradingData data, ServerPlayerEntity player) {
-        if (StarAcademyMod.cardGradingService == null) return; // TODO: Remove this check, make flatfile fallback.
-
         RandomSource random = JavaRandom.ofNanoTime();
 
         if (Instant.now().isAfter(data.getCompletionTime())) {
@@ -129,30 +133,33 @@ public class CardGraderNPCEntity extends HumanEntity {
                     ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             player.sendMessage(Text.empty().append(Text.translatable(REQUEST_COMPLETE.apply(random))
                     .formatted(Formatting.GRAY)));
-            StarAcademyMod.cardGradingService.removeCardData(player);
+            StarAcademyMod.cardGradingService.removeCardData(player).thenAccept(x -> {
+                locked.remove(player.getUuid());
+            });
             NetworkManager.sendToPlayer(player, new UpdateCardGradingS2CPacket(null));
         }
         else {
             player.sendMessage(Text.empty().append(Text.translatable(REQUEST_IMPATIENT.apply(random))
                     .formatted(Formatting.GRAY)));
+            locked.remove(player.getUuid());
         }
     }
 
     private void onStartCardGrading(ServerPlayerEntity player, Hand hand) {
-        if (StarAcademyMod.cardGradingService == null) return; // TODO: Remove this check, make flatfile fallback.
-
         RandomSource random = JavaRandom.ofNanoTime();
         ItemStack stack = player.getStackInHand(hand);
+
         if(stack.getItem() instanceof CardItem && CardItem.get(stack).map(card -> card.getGrade() == 0).orElse(false)) {
             var cardGradingData = new CardGradingData(Instant.now().plus(ModConfigs.NPC.getGradingTimeMillis(), ChronoUnit.MILLIS), stack);
-            StarAcademyMod.LOGGER.info("insertCardData");
             StarAcademyMod.cardGradingService.insertCardData(player, hand, cardGradingData).thenAccept(data -> {
                 NetworkManager.sendToPlayer(player, new UpdateCardGradingS2CPacket(data));
+                locked.remove(player.getUuid());
             });
         }
         else {
             player.sendMessage(Text.empty().append(Text.translatable(INITIAL_NO_CARD.apply(random))
                     .formatted(Formatting.GRAY)));
+            locked.remove(player.getUuid());
         }
     }
 
@@ -160,8 +167,13 @@ public class CardGraderNPCEntity extends HumanEntity {
     protected ActionResult interactMob(PlayerEntity user, Hand hand) {
         // TODO: Remove this check, make flatfile fallback.
         if (StarAcademyMod.cardGradingService == null) return ActionResult.SUCCESS;
+        if (locked.contains(user.getUuid())) {
+            StarAcademyMod.LOGGER.warn("Player {} tried to interact with card grader while already locked.", user.getName());
+            return ActionResult.SUCCESS;
+        }
 
         if(user instanceof ServerPlayerEntity player) {
+            locked.add(player.getUuid());
             StarAcademyMod.cardGradingService.getCardData(player).thenAccept(data -> {
                 var cardData = data.orElse(null);
                 if (cardData != null) {
@@ -172,6 +184,7 @@ public class CardGraderNPCEntity extends HumanEntity {
                 }
             }).exceptionally(x -> {
                 StarAcademyMod.LOGGER.error("Failed to get card data", x);
+                locked.remove(player.getUuid());
                 return null;
             });
         }
