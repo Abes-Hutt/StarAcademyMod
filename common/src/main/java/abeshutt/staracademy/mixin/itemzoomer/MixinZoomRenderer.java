@@ -2,8 +2,11 @@ package abeshutt.staracademy.mixin.itemzoomer;
 
 import abeshutt.staracademy.item.CardItem;
 import abeshutt.staracademy.screen.handler.CardAlbumScreenHandler;
+import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,9 +19,14 @@ public class MixinZoomRenderer {
 
     @Inject(method = "renderZoomedItem", at = @At("HEAD"), remap = false, cancellable = true)
     private static void render(DrawContext context, ItemStack stack, int x, int y, int size, CallbackInfo ci) {
-        if(!(stack.getItem() instanceof CardItem)) {
-            ci.cancel();
+        if (stack.getItem() instanceof CardItem) return;
+        if (stack.getItem() instanceof PokemonItem) return;
+        if (stack.getItem() == Items.PAPER) {
+            var customData = stack.get(DataComponentTypes.CUSTOM_DATA);
+            if (customData != null && customData.contains("plushie")) return;
+
         }
+        ci.cancel();
     }
 
     @Inject(method = "isMouseOverSlot", at = @At("RETURN"), remap = false, cancellable = true)
