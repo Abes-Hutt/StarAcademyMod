@@ -69,6 +69,21 @@ public final class StarAcademyMod {
         ModRegistries.register();
         Attributes.init();
 
+        TickEvent.PLAYER_POST.register(entity -> {
+            if (entity instanceof ServerPlayerEntity player && player.getServer().getTicks() % 40 == 0) {
+                GeneralPlayerData playerData = Cobblemon.playerDataManager.getGenericData(player);
+
+                if (playerData.getStarterSelected()) {
+                    MinecraftServer server = player.getServer();
+
+                    if (server != null) {
+                        server.getCommandManager().executeWithPrefix(server.getCommandSource(),
+                                "/advancement grant %s only academy:root".formatted(player.getGameProfile().getName()));
+                    }
+                }
+            }
+        });
+
         PlayerEvent.PLAYER_JOIN.register(player -> {
             NetworkManager.sendToPlayer(player, new ItemRegistryS2CPacket(Registries.ITEM.getIds()));
         });
