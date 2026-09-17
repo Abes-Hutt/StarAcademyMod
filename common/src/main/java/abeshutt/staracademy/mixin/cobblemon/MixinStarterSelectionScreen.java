@@ -8,7 +8,7 @@ import abeshutt.staracademy.world.data.StarterMode;
 import abeshutt.staracademy.world.data.save.PokemonStarterData;
 import com.cobblemon.mod.common.client.gui.startselection.StarterSelectionScreen;
 import com.cobblemon.mod.common.client.gui.startselection.widgets.CategoryList;
-import com.cobblemon.mod.common.client.gui.startselection.widgets.preview.SelectionButton;
+import com.cobblemon.mod.common.client.gui.startselection.widgets.SelectionButton;
 import com.cobblemon.mod.common.config.starter.RenderableStarterCategory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -49,8 +49,11 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
     }
 
     @Shadow protected abstract void init();
-    @Shadow protected abstract void updateSelection();
-    @Shadow public abstract void changeCategory(@NotNull RenderableStarterCategory category);
+    @Shadow protected abstract void setCurrentSelection();
+    @Shadow public abstract void setCurrentCategory(@NotNull RenderableStarterCategory category);
+
+    @Shadow
+    public abstract int getCurrentSelection();
 
     @Override
     public int getSelection() {
@@ -60,7 +63,6 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
     @Override
     public void setSelection(int selection) {
         this.currentSelection = MathHelper.clamp(selection, 0, this.currentCategory.getPokemon().size() - 1);
-        this.updateSelection();
     }
 
     @Inject(method = "init", at = @At("RETURN"))
@@ -122,8 +124,8 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
 
             if(SELECTED_CATEGORY >= 0) {
                 int index = MathHelper.clamp(SELECTED_CATEGORY, 0, this.children().size() - 1);
-                this.list.setSelected(this.list.children().get(index));
-                this.changeCategory(this.categories.get(index));
+                this.setSelection(index);
+                this.setCurrentCategory(this.categories.get(index));
             }
 
             if(SELECTED_POKEMON >= 0) {
@@ -134,8 +136,8 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
         }
 
         SCROLL_AMOUNT = this.list.getScrollAmount();
-        SELECTED_CATEGORY = IntStream.range(0, this.list.children().size())
-                .filter(i -> Objects.equals(this.list.getSelectedOrNull(), this.list.children().get(i)))
+        SELECTED_CATEGORY = IntStream.range(0, this.categories.size())
+                .filter(i -> Objects.equals(this.getCurrentSelection(), this.categories.get(i)))
                 .findFirst().orElse(-1);
 
         SELECTED_POKEMON = this.getSelection();

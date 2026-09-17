@@ -272,194 +272,194 @@ public class InfoWidget extends SoundlessWidget {
 
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        if(this.currentEntry == null) {
-            return;
-        }
-
-        boolean hasKnowledge = this.pokedex.getKnowledgeForSpecies(this.currentEntry.getSpeciesId()) != PokedexEntryProgress.NONE;
-        Species species = PokemonSpecies.INSTANCE.getByIdentifier(currentEntry.getSpeciesId());
-
-        if(species == null) {
-            return;
-        }
-
-        MatrixStack matrices = context.getMatrices();
-
-        blitk(matrices, backgroundOverlay, this.x, this.y, HALF_OVERLAY_HEIGHT, HALF_OVERLAY_WIDTH);
-
-        blitk(matrices, pokeBallOverlay, this.x + 15, this.y + 25,
-                PORTRAIT_POKE_BALL_HEIGHT, PORTRAIT_POKE_BALL_WIDTH, 0, (pokeBallBackgroundFrame * 109) + 20,
-                1744);
-
-        RenderHelperKt.drawScaledText(context,
-                CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
-                TextKt.bold(this.speciesNumber.copy()),
-                this.x + 3,
-                this.y + 1,
-                1.0F,
-                1.0F,
-                Integer.MAX_VALUE,
-                0xFFFFFFFF,
-                false,
-                true,
-                null,
-                null);
-
-        if(hasKnowledge) {
-            RenderHelperKt.drawScaledText(context,
-                    CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
-                    TextKt.bold(this.speciesName.copy()),
-                    this.x + 26,
-                    this.y + 1,
-                    1.0F,
-                    1.0F,
-                    Integer.MAX_VALUE,
-                    0xFF606B6E,
-                    false,
-                    true,
-                    null,
-                    null);
-        }
-
-        // Caught icon
-        if(this.isSelectedPokemonOwned()) {
-            blitk(matrices, caughtIcon, (this.x + 129) / SCALE, (this.y + 2) / SCALE,
-                    14, 14, 0, 0, 14, 14, 0,
-                    1, 1, 1, 1, true, SCALE);
-        }
-
-        // Platform
-        blitk(matrices, platformBase, this.x + 13, this.y + 69,
-                24, 113, 0, 0, 113, 30);
-
-        Identifier platformType = this.getPlatformResource();
-
-        if(platformType != null && this.isSelectedPokemonOwned()) {
-            blitk(matrices, platformType,
-                    this.x + 13, this.y + 66, 27, 113,
-                    0, 0, 113, 30);
-        }
-
-        blitk(matrices, platformShadow, (this.x + 47) / SCALE, (this.y + 76.5F) / SCALE,
-                20, 90, 0, 0, 90, 20, 0,
-                1, 1, 1, 1, true, SCALE);
-
-        if(hasKnowledge && this.renderablePokemon != null) {
-            context.enableScissor(this.x + 1, this.y + portraitStartY,
-                    this.x + POKEMON_PORTRAIT_WIDTH + 1, this.y + portraitStartY + POKEMON_PORTRAIT_HEIGHT);
-
-            matrices.push();
-
-            matrices.translate(
-                    (double)this.x + (POKEMON_PORTRAIT_WIDTH + 2.0D) / 2,
-                    (double)this.y + portraitStartY - 12,
-                    1000.0 // Prevent model from clipping into background
-            );
-
-            matrices.scale(scaleAmount, scaleAmount, scaleAmount);
-            Vector3f rotationVector = new Vector3f(13F, this.rotationY, 0F);
-
-            PokemonGuiUtilsKt.drawProfilePokemon(this.renderablePokemon, matrices,
-                    QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), rotationVector),
-                    this.poseList.get(this.selectedPoseIndex), this.state, delta, 20F,
-                    true, false, 1F, 1F, 1F, 1F, 0f, 0f);
-
-            matrices.pop();
-            context.disableScissor();
-        } else {
-            // Render question mark
-            blitk(matrices, platformUnknown, this.x + 50.5, this.y + 39, 45, 39);
-        }
-
-        // Ensure elements are not hidden behind Pokémon render
-        matrices.push();
-        matrices.translate(0.0, 0.0, 2000.0);
-
-        if(this.isSelectedPokemonOwned()) {
-            ElementalType primaryType = this.type[0];
-            ElementalType secondaryType = this.type[1];
-
-            blitk(matrices, secondaryType != null ? typeBarDouble : typeBar,
-                    this.x, this.y + 14, 25, HALF_OVERLAY_WIDTH);
-
-            if(primaryType != null) {
-                new TypeIcon(this.x + 3, this.y + 17, primaryType, secondaryType, false, false,
-                        15F, 7.5F, 1F).render(context);
-            }
-        } else {
-            blitk(matrices, typeBar, this.x, this.y + 14, 25, HALF_OVERLAY_WIDTH);
-        }
-
-        if(hasKnowledge) {
-            if(this.gender != Gender.GENDERLESS) {
-                this.genderButton.render(context, mouseX, mouseY, delta);
-            }
-
-            this.shinyButton.render(context, mouseX, mouseY, delta);
-
-            for(VariationButtonWrapper button : this.variationButtons) {
-                button.getWidget().render(context, mouseX, mouseY, delta);
-
-                // Tooltip
-                if(button.isVisible() && button.getWidget().isButtonHovered(mouseX, mouseY)) {
-                    MutableText variationText = TextKt.bold(MiscUtilsKt.asTranslated(
-                            button.variation.getDisplayName()));
-
-                    int variationTextWidth = MinecraftClient.getInstance().textRenderer.getWidth(TextKt
-                            .font(variationText, CobblemonResources.INSTANCE.getDEFAULT_LARGE()));
-                    int tooltipWidth = variationTextWidth + 6;
-
-                    blitk(matrices, tooltipEdge, mouseX - (tooltipWidth / 2) - 1, mouseY + 8, 11, 1);
-                    blitk(matrices, tooltipBackground, mouseX - (tooltipWidth / 2), mouseY + 8, 11, tooltipWidth);
-                    blitk(matrices, tooltipEdge, mouseX + (tooltipWidth / 2), mouseY + 8, 11, 1);
-
-                    RenderHelperKt.drawScaledText(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
-                            variationText, mouseX, mouseY + 9, 1.0F, 1.0F,
-                            Integer.MAX_VALUE, 0xFFFFFFFF,
-                            true, true, null, null);
-                }
-            }
-
-            // Forms
-            List<PokedexForm> showableForms = this.pokedex.getEncounteredForms(this.currentEntry);
-
-            if(showableForms.size() > 1 && showableForms.size() > this.selectedFormIndex) {
-                this.formLeftButton.render(context,mouseX, mouseY, delta);
-                this.formRightButton.render(context,mouseX, mouseY, delta);
-
-                PokedexForm form = showableForms.get(this.selectedFormIndex);
-
-                RenderHelperKt.drawScaledTextJustifiedRight(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
-                        TextKt.bold(lang("ui.pokedex.info.form." + form.getDisplayForm().toLowerCase())),
-                        this.x + 136, this.y + 15, 1F, 1F, Integer.MAX_VALUE,
-                        0xFFFFFFFF, true);
-            }
-
-            // Cry
-            blitk(matrices, buttonCryBase, (this.x + 114) / SCALE, (this.y + 81) / SCALE,
-                    20, 44, 0, 0, 44, 20,
-                    0, 1, 1, 1, 1, true, SCALE);
-
-            this.cryButton.render(context, mouseX, mouseY, delta);
-
-            // Animation
-            blitk(matrices, buttonAnimationBase, (this.x + 3) / SCALE, (this.y + 81) / SCALE,
-                    20, 44, 0, 0, 44, 20,
-                    0, 1, 1, 1, 1, true, SCALE);
-
-            this.animationLeftButton.render(context, mouseX, mouseY, delta);
-            this.animationRightButton.render(context, mouseX, mouseY, delta);
-        } else if(this.renderablePokemon == null) {
-            // Render unimplemented label
-            if (!species.getImplemented()) {
-                RenderHelperKt.drawScaledTextJustifiedRight(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
-                        TextKt.bold(lang("ui.pokedex.info.unimplemented")),
-                        this.x + 136, this.y + 15, 1F, 1F, Integer.MAX_VALUE,
-                        0xFFFFFFFF, true);
-            }
-        }
-
-        matrices.pop();
+//        if(this.currentEntry == null) {
+//            return;
+//        }
+//
+//        boolean hasKnowledge = this.pokedex.getKnowledgeForSpecies(this.currentEntry.getSpeciesId()) != PokedexEntryProgress.NONE;
+//        Species species = PokemonSpecies.INSTANCE.getByIdentifier(currentEntry.getSpeciesId());
+//
+//        if(species == null) {
+//            return;
+//        }
+//
+//        MatrixStack matrices = context.getMatrices();
+//
+//        blitk(matrices, backgroundOverlay, this.x, this.y, HALF_OVERLAY_HEIGHT, HALF_OVERLAY_WIDTH);
+//
+//        blitk(matrices, pokeBallOverlay, this.x + 15, this.y + 25,
+//                PORTRAIT_POKE_BALL_HEIGHT, PORTRAIT_POKE_BALL_WIDTH, 0, (pokeBallBackgroundFrame * 109) + 20,
+//                1744);
+//
+//        RenderHelperKt.drawScaledText(context,
+//                CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
+//                TextKt.bold(this.speciesNumber.copy()),
+//                this.x + 3,
+//                this.y + 1,
+//                1.0F,
+//                1.0F,
+//                Integer.MAX_VALUE,
+//                0xFFFFFFFF,
+//                false,
+//                true,
+//                null,
+//                null);
+//
+//        if(hasKnowledge) {
+//            RenderHelperKt.drawScaledText(context,
+//                    CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
+//                    TextKt.bold(this.speciesName.copy()),
+//                    this.x + 26,
+//                    this.y + 1,
+//                    1.0F,
+//                    1.0F,
+//                    Integer.MAX_VALUE,
+//                    0xFF606B6E,
+//                    false,
+//                    true,
+//                    null,
+//                    null);
+//        }
+//
+//        // Caught icon
+//        if(this.isSelectedPokemonOwned()) {
+//            blitk(matrices, caughtIcon, (this.x + 129) / SCALE, (this.y + 2) / SCALE,
+//                    14, 14, 0, 0, 14, 14, 0,
+//                    1, 1, 1, 1, true, SCALE);
+//        }
+//
+//        // Platform
+//        blitk(matrices, platformBase, this.x + 13, this.y + 69,
+//                24, 113, 0, 0, 113, 30);
+//
+//        Identifier platformType = this.getPlatformResource();
+//
+//        if(platformType != null && this.isSelectedPokemonOwned()) {
+//            blitk(matrices, platformType,
+//                    this.x + 13, this.y + 66, 27, 113,
+//                    0, 0, 113, 30);
+//        }
+//
+//        blitk(matrices, platformShadow, (this.x + 47) / SCALE, (this.y + 76.5F) / SCALE,
+//                20, 90, 0, 0, 90, 20, 0,
+//                1, 1, 1, 1, true, SCALE);
+//
+//        if(hasKnowledge && this.renderablePokemon != null) {
+//            context.enableScissor(this.x + 1, this.y + portraitStartY,
+//                    this.x + POKEMON_PORTRAIT_WIDTH + 1, this.y + portraitStartY + POKEMON_PORTRAIT_HEIGHT);
+//
+//            matrices.push();
+//
+//            matrices.translate(
+//                    (double)this.x + (POKEMON_PORTRAIT_WIDTH + 2.0D) / 2,
+//                    (double)this.y + portraitStartY - 12,
+//                    1000.0 // Prevent model from clipping into background
+//            );
+//
+//            matrices.scale(scaleAmount, scaleAmount, scaleAmount);
+//            Vector3f rotationVector = new Vector3f(13F, this.rotationY, 0F);
+//
+//            PokemonGuiUtilsKt.drawProfilePokemon(this.renderablePokemon, matrices,
+//                    QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), rotationVector),
+//                    this.poseList.get(this.selectedPoseIndex), this.state, delta, 20F,
+//                    true, false, 1F, 1F, 1F, 1F, 0f, 0f);
+//
+//            matrices.pop();
+//            context.disableScissor();
+//        } else {
+//            // Render question mark
+//            blitk(matrices, platformUnknown, this.x + 50.5, this.y + 39, 45, 39);
+//        }
+//
+//        // Ensure elements are not hidden behind Pokémon render
+//        matrices.push();
+//        matrices.translate(0.0, 0.0, 2000.0);
+//
+//        if(this.isSelectedPokemonOwned()) {
+//            ElementalType primaryType = this.type[0];
+//            ElementalType secondaryType = this.type[1];
+//
+//            blitk(matrices, secondaryType != null ? typeBarDouble : typeBar,
+//                    this.x, this.y + 14, 25, HALF_OVERLAY_WIDTH);
+//
+//            if(primaryType != null) {
+//                new TypeIcon(this.x + 3, this.y + 17, primaryType, secondaryType, false, false,
+//                        15F, 7.5F, 1F).render(context);
+//            }
+//        } else {
+//            blitk(matrices, typeBar, this.x, this.y + 14, 25, HALF_OVERLAY_WIDTH);
+//        }
+//
+//        if(hasKnowledge) {
+//            if(this.gender != Gender.GENDERLESS) {
+//                this.genderButton.render(context, mouseX, mouseY, delta);
+//            }
+//
+//            this.shinyButton.render(context, mouseX, mouseY, delta);
+//
+//            for(VariationButtonWrapper button : this.variationButtons) {
+//                button.getWidget().render(context, mouseX, mouseY, delta);
+//
+//                // Tooltip
+//                if(button.isVisible() && button.getWidget().isButtonHovered(mouseX, mouseY)) {
+//                    MutableText variationText = TextKt.bold(MiscUtilsKt.asTranslated(
+//                            button.variation.getDisplayName()));
+//
+//                    int variationTextWidth = MinecraftClient.getInstance().textRenderer.getWidth(TextKt
+//                            .font(variationText, CobblemonResources.INSTANCE.getDEFAULT_LARGE()));
+//                    int tooltipWidth = variationTextWidth + 6;
+//
+//                    blitk(matrices, tooltipEdge, mouseX - (tooltipWidth / 2) - 1, mouseY + 8, 11, 1);
+//                    blitk(matrices, tooltipBackground, mouseX - (tooltipWidth / 2), mouseY + 8, 11, tooltipWidth);
+//                    blitk(matrices, tooltipEdge, mouseX + (tooltipWidth / 2), mouseY + 8, 11, 1);
+//
+//                    RenderHelperKt.drawScaledText(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
+//                            variationText, mouseX, mouseY + 9, 1.0F, 1.0F,
+//                            Integer.MAX_VALUE, 0xFFFFFFFF,
+//                            true, true, null, null);
+//                }
+//            }
+//
+//            // Forms
+//            List<PokedexForm> showableForms = this.pokedex.getEncounteredForms(this.currentEntry);
+//
+//            if(showableForms.size() > 1 && showableForms.size() > this.selectedFormIndex) {
+//                this.formLeftButton.render(context,mouseX, mouseY, delta);
+//                this.formRightButton.render(context,mouseX, mouseY, delta);
+//
+//                PokedexForm form = showableForms.get(this.selectedFormIndex);
+//
+//                RenderHelperKt.drawScaledTextJustifiedRight(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
+//                        TextKt.bold(lang("ui.pokedex.info.form." + form.getDisplayForm().toLowerCase())),
+//                        this.x + 136, this.y + 15, 1F, 1F, Integer.MAX_VALUE,
+//                        0xFFFFFFFF, true);
+//            }
+//
+//            // Cry
+//            blitk(matrices, buttonCryBase, (this.x + 114) / SCALE, (this.y + 81) / SCALE,
+//                    20, 44, 0, 0, 44, 20,
+//                    0, 1, 1, 1, 1, true, SCALE);
+//
+//            this.cryButton.render(context, mouseX, mouseY, delta);
+//
+//            // Animation
+//            blitk(matrices, buttonAnimationBase, (this.x + 3) / SCALE, (this.y + 81) / SCALE,
+//                    20, 44, 0, 0, 44, 20,
+//                    0, 1, 1, 1, 1, true, SCALE);
+//
+//            this.animationLeftButton.render(context, mouseX, mouseY, delta);
+//            this.animationRightButton.render(context, mouseX, mouseY, delta);
+//        } else if(this.renderablePokemon == null) {
+//            // Render unimplemented label
+//            if (!species.getImplemented()) {
+//                RenderHelperKt.drawScaledTextJustifiedRight(context, CobblemonResources.INSTANCE.getDEFAULT_LARGE(),
+//                        TextKt.bold(lang("ui.pokedex.info.unimplemented")),
+//                        this.x + 136, this.y + 15, 1F, 1F, Integer.MAX_VALUE,
+//                        0xFFFFFFFF, true);
+//            }
+//        }
+//
+//        matrices.pop();
     }
 
     public void setDexEntry(PokedexEntry pokedexEntry) {
@@ -497,59 +497,59 @@ public class InfoWidget extends SoundlessWidget {
     }
 
     private void setupButtons(PokedexEntry pokedexEntry, PokedexForm pokedexForm) {
-        Species species = PokemonSpecies.INSTANCE.getByIdentifier(pokedexEntry.getSpeciesId());
-
-        if(species == null) {
-            return;
-        }
-
-        for(VariationButtonWrapper button : this.variationButtons) {
-            this.removeWidget(button.getWidget());
-        }
-
-        this.variationButtons.clear();
-
-        this.seenShinyStates = new ArrayList<>(this.pokedex.getSeenShinyStates(pokedexEntry, pokedexForm));
-        this.shiny = this.seenShinyStates.size() == 1 && seenShinyStates.getFirst().equals("shiny");
-
-        this.shinyButton.setResource(this.shiny ? buttonShiny : buttonNone);
-        this.shinyButton.visible = shiny || seenShinyStates.size() > 1;
-        this.shinyButton.active = seenShinyStates.size() > 1;
-
-        FormData form = species.getForms().stream().filter(data -> {
-            return data.getName().equalsIgnoreCase(pokedexForm.getDisplayForm());
-        }).findFirst().orElseGet(species::getStandardForm);
-
-        this.maleRatio = form.getMaleRatio();
-
-        List<Gender> seenGenders = new ArrayList<>(this.pokedex.getSeenGenders(pokedexEntry, pokedexForm));
-
-        if(seenGenders.isEmpty()) {
-            this.genderButton.visible = false;
-            this.genderButton.active = false;
-        } else {
-            this.gender = seenGenders.getFirst();
-            this.genderButton.visible = true;
-            this.genderButton.active = seenGenders.size() > 1;
-        }
-
-        this.genderButton.setButtonX(this.x + (this.shinyButton.visible ? 114F : 126F));
-
-        if(this.pokedex.getHighestKnowledgeFor(pokedexEntry) == PokedexEntryProgress.NONE) {
-            return;
-        }
-
-        int startPosition = this.shinyButton.visible ? 1 : 0;
-        startPosition += (this.genderButton.visible || species.getMaleRatio() == -1F) ? 1 : 0;
-
-        for(int i = 0; i < pokedexEntry.getVariations().size(); i++) {
-            PokedexCosmeticVariation variation = pokedexEntry.getVariations().get(i);
-            Pair<Float, Float> pos = this.possibleVariationButtonPositions.get(i + startPosition);
-            VariationButtonWrapper button = new VariationButtonWrapper(this, this.x + pos.getFirst(), this.y + pos.getSecond());
-            button.show(variation);
-            addWidget(button.getWidget());
-            this.variationButtons.add(button);
-        }
+//        Species species = PokemonSpecies.INSTANCE.getByIdentifier(pokedexEntry.getSpeciesId());
+//
+//        if(species == null) {
+//            return;
+//        }
+//
+//        for(VariationButtonWrapper button : this.variationButtons) {
+//            this.removeWidget(button.getWidget());
+//        }
+//
+//        this.variationButtons.clear();
+//
+//        this.seenShinyStates = new ArrayList<>(this.pokedex.getSeenShinyStates(pokedexEntry, pokedexForm));
+//        this.shiny = this.seenShinyStates.size() == 1 && seenShinyStates.getFirst().equals("shiny");
+//
+//        this.shinyButton.setResource(this.shiny ? buttonShiny : buttonNone);
+//        this.shinyButton.visible = shiny || seenShinyStates.size() > 1;
+//        this.shinyButton.active = seenShinyStates.size() > 1;
+//
+//        FormData form = species.getForms().stream().filter(data -> {
+//            return data.getName().equalsIgnoreCase(pokedexForm.getDisplayForm());
+//        }).findFirst().orElseGet(species::getStandardForm);
+//
+//        this.maleRatio = form.getMaleRatio();
+//
+//        List<Gender> seenGenders = new ArrayList<>(this.pokedex.getSeenGenders(pokedexEntry, pokedexForm));
+//
+//        if(seenGenders.isEmpty()) {
+//            this.genderButton.visible = false;
+//            this.genderButton.active = false;
+//        } else {
+//            this.gender = seenGenders.getFirst();
+//            this.genderButton.visible = true;
+//            this.genderButton.active = seenGenders.size() > 1;
+//        }
+//
+//        this.genderButton.setButtonX(this.x + (this.shinyButton.visible ? 114F : 126F));
+//
+//        if(this.pokedex.getHighestKnowledgeFor(pokedexEntry) == PokedexEntryProgress.NONE) {
+//            return;
+//        }
+//
+//        int startPosition = this.shinyButton.visible ? 1 : 0;
+//        startPosition += (this.genderButton.visible || species.getMaleRatio() == -1F) ? 1 : 0;
+//
+//        for(int i = 0; i < pokedexEntry.getVariations().size(); i++) {
+//            PokedexCosmeticVariation variation = pokedexEntry.getVariations().get(i);
+//            Pair<Float, Float> pos = this.possibleVariationButtonPositions.get(i + startPosition);
+//            VariationButtonWrapper button = new VariationButtonWrapper(this, this.x + pos.getFirst(), this.y + pos.getSecond());
+//            button.show(variation);
+//            addWidget(button.getWidget());
+//            this.variationButtons.add(button);
+//        }
     }
 
     private void updateType(Species species, FormData form) {
@@ -687,14 +687,6 @@ public class InfoWidget extends SoundlessWidget {
                 && this.getChildren().stream().anyMatch(element -> {
                         return element.isMouseOver(mouseX, mouseY) && element instanceof ScaledButton;
                     });
-    }
-
-    private boolean isSelectedPokemonOwned() {
-        if(this.currentEntry == null) {
-            return false;
-        }
-
-        return this.pokedex.getKnowledgeForSpecies(this.currentEntry.getSpeciesId()) == PokedexEntryProgress.CAUGHT;
     }
 
     private void playSound(SoundEvent soundEvent) {

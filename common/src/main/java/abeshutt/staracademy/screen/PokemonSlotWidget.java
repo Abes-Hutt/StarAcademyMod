@@ -55,67 +55,67 @@ public class PokemonSlotWidget extends ClickableWidget {
 
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        FloatingState state = new FloatingState();
-        Pokemon pokemon = this.pokemon.get();
-
-        MatrixStack matrices = context.getMatrices();
-
-        matrices.push();
-        matrices.translate(this.getX(), this.getY(), 0);
-        matrices.scale(this.scale, this.scale, 1.0F);
-        blitk(matrices, slotResource, 0, 0,
-                SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE);
-
-        if(this.isTriggered()) {
-            blitk(matrices, slotHighlight, 0, 0,
-                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE, 0, 0,
-                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE * 2);
-        } else if(this.isHovered()) {
-            blitk(matrices, slotHighlight, 0, 0,
-                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE, 0, SCROLL_SLOT_SIZE,
-                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE * 2);
-        }
-
-        //context.enableScissor(1, 1, SCROLL_SLOT_SIZE - 1, SCROLL_SLOT_SIZE - 2);
-
-        matrices.push();
-        matrices.translate(SCROLL_SLOT_SIZE / 2.0, 1.0, 0.0);
-        matrices.scale(2.5F, 2.5F, 1F);
-
-        if(pokemon != null) {
-            PokemonGuiUtilsKt.drawProfilePokemon(
-                    pokemon.asRenderablePokemon(), matrices,
-                    QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, 35F, 0F)),
-                    PoseType.PROFILE, state, 0F, 4.5F,
-                    true, false, 1F, 1F, 1F, 1F, 0f, 0f);
-        }
-
-        matrices.pop();
-        //context.disableScissor();
-
-        // Ensure elements are not hidden behind Pokémon render
-        matrices.push();
-        matrices.translate(0.0, 0.0, 100.0);
-
-        if(pokemon != null) {
-            Species species = pokemon.getSpecies();
-            String pokemonNumber = species.getNationalPokedexNumber() + "";
-            pokemonNumber = StringsKt.padStart(pokemonNumber, 4, '0');
-            MutableText speciesNumber = TextKt.text(pokemonNumber);
-            RenderHelperKt.drawScaledText(context,
-                    null, speciesNumber,
-                    1.5,//2,
-                    2.5,//2
-                    SCALE, 1F, Integer.MAX_VALUE, 0xFFFFFFFF,
-                    false, true, null, null);
-        }
-
-        //blitk(matrices, caughtIcon, (0 + 18) / SCALE, (0 + 1.5) / SCALE,
-        //                    11, 11, 0, 0, 11, 11, 0,
-        //                    1, 1, 1, 1, true, SCALE);
-
-        matrices.pop();
-        matrices.pop();
+//        FloatingState state = new FloatingState();
+//        Pokemon pokemon = this.pokemon.get();
+//
+//        MatrixStack matrices = context.getMatrices();
+//
+//        matrices.push();
+//        matrices.translate(this.getX(), this.getY(), 0);
+//        matrices.scale(this.scale, this.scale, 1.0F);
+//        blitk(matrices, slotResource, 0, 0,
+//                SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE);
+//
+//        if(this.isTriggered()) {
+//            blitk(matrices, slotHighlight, 0, 0,
+//                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE, 0, 0,
+//                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE * 2);
+//        } else if(this.isHovered()) {
+//            blitk(matrices, slotHighlight, 0, 0,
+//                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE, 0, SCROLL_SLOT_SIZE,
+//                    SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE * 2);
+//        }
+//
+//        //context.enableScissor(1, 1, SCROLL_SLOT_SIZE - 1, SCROLL_SLOT_SIZE - 2);
+//
+//        matrices.push();
+//        matrices.translate(SCROLL_SLOT_SIZE / 2.0, 1.0, 0.0);
+//        matrices.scale(2.5F, 2.5F, 1F);
+//
+//        if(pokemon != null) {
+//            PokemonGuiUtilsKt.drawProfilePokemon(
+//                    pokemon.asRenderablePokemon(), matrices,
+//                    QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, 35F, 0F)),
+//                    PoseType.PROFILE, state, 0F, 4.5F,
+//                    true, false, 1F, 1F, 1F, 1F, 0f, 0f);
+//        }
+//
+//        matrices.pop();
+//        //context.disableScissor();
+//
+//        // Ensure elements are not hidden behind Pokémon render
+//        matrices.push();
+//        matrices.translate(0.0, 0.0, 100.0);
+//
+//        if(pokemon != null) {
+//            Species species = pokemon.getSpecies();
+//            String pokemonNumber = species.getNationalPokedexNumber() + "";
+//            pokemonNumber = StringsKt.padStart(pokemonNumber, 4, '0');
+//            MutableText speciesNumber = TextKt.text(pokemonNumber);
+//            RenderHelperKt.drawScaledText(context,
+//                    null, speciesNumber,
+//                    1.5,//2,
+//                    2.5,//2
+//                    SCALE, 1F, Integer.MAX_VALUE, 0xFFFFFFFF,
+//                    false, true, null, null);
+//        }
+//
+//        //blitk(matrices, caughtIcon, (0 + 18) / SCALE, (0 + 1.5) / SCALE,
+//        //                    11, 11, 0, 0, 11, 11, 0,
+//        //                    1, 1, 1, 1, true, SCALE);
+//
+//        matrices.pop();
+//        matrices.pop();
     }
 
     @Override

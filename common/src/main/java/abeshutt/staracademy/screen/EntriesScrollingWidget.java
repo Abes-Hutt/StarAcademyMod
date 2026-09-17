@@ -149,112 +149,112 @@ public class EntriesScrollingWidget extends ScrollingWidget<EntriesScrollingWidg
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight,
                 int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            for(int i = 0; i < this.dexDataList.size(); i++) {
-                PokedexEntry dexData = this.dexDataList.get(i);
-                FloatingState state = new FloatingState();
-
-                Species species = PokemonSpecies.INSTANCE.getByIdentifier(dexData.getSpeciesId());
-                //FIXME: This may not work properly when accounting for custom pokemon with the same dex number
-                String pokemonNumber = species != null ? species.getNationalPokedexNumber() + "" : "0";
-                pokemonNumber = StringsKt.padStart(pokemonNumber, 4, '0');
-
-                MutableText speciesNumber = TextKt.text(pokemonNumber);
-                PokedexEntryProgress discoveryLevel = this.discoveryLevelList.get(i);
-                List<PokedexForm> forms = this.pokedex.getEncounteredForms(dexData);
-                PokedexForm firstVisibleForm = forms.isEmpty() ? null : forms.getFirst();
-                boolean shouldDrawMon = firstVisibleForm != null;
-
-                if (species == null) {
-                    continue;
-                }
-
-                MatrixStack matrices = context.getMatrices();
-
-                int startPosX = x + ((SCROLL_SLOT_SPACING + SCROLL_SLOT_SIZE) * i);
-                int startPosY = y + SCROLL_SLOT_SPACING + 1;
-
-                blitk(matrices, slotResource, startPosX, startPosY,
-                        SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE);
-
-                if(this.getHoveredSlotIndex(mouseX, mouseY) == i) {
-                    blitk(matrices, slotHighlight, startPosX, startPosY,
-                            SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE, 0, SCROLL_SLOT_SIZE,
-                            SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE * 2);
-                }
-
-                if(shouldDrawMon) {
-                    List<Gender> genders = new ArrayList<>(this.pokedex.getSeenGenders(dexData, firstVisibleForm));
-                    Gender firstVisibleGender = genders.isEmpty() ? null : genders.getFirst();
-                    List<String> shinyStates = new ArrayList<>(this.pokedex.getSeenShinyStates(dexData, firstVisibleForm));
-                    boolean firstVisibleShiny = shinyStates.size() == 1 && shinyStates.getFirst().equals("shiny");
-
-                    List<String> formAspects = species.getForms().stream()
-                            .filter(form -> form.getName().equalsIgnoreCase(firstVisibleForm.getDisplayForm()))
-                            .findFirst()
-                            .orElseGet(species::getStandardForm)
-                            .getAspects();
-
-                    Set<String> seenAspects = this.pokedex.getSeenAspects(dexData);
-
-                    List<String> variationAspects = dexData.getVariations().stream().map(var -> {
-                        return var.getAspects().stream().filter(seenAspects::contains).findFirst().orElse(null);
-                    }).filter(Objects::nonNull).toList();
-
-                    context.enableScissor(startPosX + 1, startPosY + 1,
-                            startPosX + SCROLL_SLOT_SIZE - 1, startPosY + SCROLL_SLOT_SIZE - 2);
-
-                    List<String> aspectsToDraw = new ArrayList<>();
-                    aspectsToDraw.addAll(dexData.getDisplayAspects());
-                    aspectsToDraw.addAll(variationAspects);
-                    aspectsToDraw.addAll(formAspects);
-                    aspectsToDraw.add((firstVisibleGender != null ? firstVisibleGender : Gender.GENDERLESS).name().toLowerCase());
-
-                    if(firstVisibleShiny) {
-                        aspectsToDraw.add("shiny");
-                    }
-
-                    matrices.push();
-                    matrices.translate(startPosX + (SCROLL_SLOT_SIZE / 2.0), startPosY + 1.0, 0.0);
-                    matrices.scale(2.5F, 2.5F, 1F);
-
-                    PokemonGuiUtilsKt.drawProfilePokemon(
-                            new RenderablePokemon(species, new LinkedHashSet<>(aspectsToDraw), ItemStack.EMPTY), matrices,
-                            QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, 35F, 0F)),
-                            PoseType.PROFILE, state, 0F, 4.5F,
-                            true, false, 1F, 1F, 1F, 1F, 0f, 0f);
-
-                    matrices.pop();
-                    context.disableScissor();
-                } else {
-                    blitk(matrices, unknownIcon, startPosX + 8.5, startPosY + 9, 10, 8);
-
-                    if(!species.getImplemented()) {
-                        blitk(matrices, unimplementedIcon,
-                                (startPosX + 14) / SCALE, (startPosY + 15.5) / SCALE,
-                                7, 7, 0, 0, 7, 7,
-                                0, 1, 1, 1, 1, true, SCALE);
-                    }
-                }
-
-                // Ensure elements are not hidden behind Pokémon render
-                matrices.push();
-                matrices.translate(0.0, 0.0, 100.0);
-
-                RenderHelperKt.drawScaledText(context,
-                        null, speciesNumber,
-                        startPosX + 1.5,//2,
-                        startPosY + 2.5,//2
-                        SCALE, 1F, Integer.MAX_VALUE, 0xFFFFFFFF,
-                        false, true, null, null);
-
-                if(discoveryLevel == PokedexEntryProgress.CAUGHT) {
-                    blitk(matrices, caughtIcon, (startPosX + 18) / SCALE, (startPosY + 1.5) / SCALE,
-                            11, 11, 0, 0, 11, 11, 0,
-                            1, 1, 1, 1, true, SCALE);
-                }
-
-                matrices.pop();
-            }
+//            for(int i = 0; i < this.dexDataList.size(); i++) {
+//                PokedexEntry dexData = this.dexDataList.get(i);
+//                FloatingState state = new FloatingState();
+//
+//                Species species = PokemonSpecies.INSTANCE.getByIdentifier(dexData.getSpeciesId());
+//                //FIXME: This may not work properly when accounting for custom pokemon with the same dex number
+//                String pokemonNumber = species != null ? species.getNationalPokedexNumber() + "" : "0";
+//                pokemonNumber = StringsKt.padStart(pokemonNumber, 4, '0');
+//
+//                MutableText speciesNumber = TextKt.text(pokemonNumber);
+//                PokedexEntryProgress discoveryLevel = this.discoveryLevelList.get(i);
+//                List<PokedexForm> forms = this.pokedex.getEncounteredForms(dexData);
+//                PokedexForm firstVisibleForm = forms.isEmpty() ? null : forms.getFirst();
+//                boolean shouldDrawMon = firstVisibleForm != null;
+//
+//                if (species == null) {
+//                    continue;
+//                }
+//
+//                MatrixStack matrices = context.getMatrices();
+//
+//                int startPosX = x + ((SCROLL_SLOT_SPACING + SCROLL_SLOT_SIZE) * i);
+//                int startPosY = y + SCROLL_SLOT_SPACING + 1;
+//
+//                blitk(matrices, slotResource, startPosX, startPosY,
+//                        SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE);
+//
+//                if(this.getHoveredSlotIndex(mouseX, mouseY) == i) {
+//                    blitk(matrices, slotHighlight, startPosX, startPosY,
+//                            SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE, 0, SCROLL_SLOT_SIZE,
+//                            SCROLL_SLOT_SIZE, SCROLL_SLOT_SIZE * 2);
+//                }
+//
+//                if(shouldDrawMon) {
+//                    List<Gender> genders = new ArrayList<>(this.pokedex.getSeenGenders(dexData, firstVisibleForm));
+//                    Gender firstVisibleGender = genders.isEmpty() ? null : genders.getFirst();
+//                    List<String> shinyStates = new ArrayList<>(this.pokedex.getSeenShinyStates(dexData, firstVisibleForm));
+//                    boolean firstVisibleShiny = shinyStates.size() == 1 && shinyStates.getFirst().equals("shiny");
+//
+//                    List<String> formAspects = species.getForms().stream()
+//                            .filter(form -> form.getName().equalsIgnoreCase(firstVisibleForm.getDisplayForm()))
+//                            .findFirst()
+//                            .orElseGet(species::getStandardForm)
+//                            .getAspects();
+//
+//                    Set<String> seenAspects = this.pokedex.getSeenAspects(dexData);
+//
+//                    List<String> variationAspects = dexData.getVariations().stream().map(var -> {
+//                        return var.getAspects().stream().filter(seenAspects::contains).findFirst().orElse(null);
+//                    }).filter(Objects::nonNull).toList();
+//
+//                    context.enableScissor(startPosX + 1, startPosY + 1,
+//                            startPosX + SCROLL_SLOT_SIZE - 1, startPosY + SCROLL_SLOT_SIZE - 2);
+//
+//                    List<String> aspectsToDraw = new ArrayList<>();
+//                    aspectsToDraw.addAll(dexData.getDisplayAspects());
+//                    aspectsToDraw.addAll(variationAspects);
+//                    aspectsToDraw.addAll(formAspects);
+//                    aspectsToDraw.add((firstVisibleGender != null ? firstVisibleGender : Gender.GENDERLESS).name().toLowerCase());
+//
+//                    if(firstVisibleShiny) {
+//                        aspectsToDraw.add("shiny");
+//                    }
+//
+//                    matrices.push();
+//                    matrices.translate(startPosX + (SCROLL_SLOT_SIZE / 2.0), startPosY + 1.0, 0.0);
+//                    matrices.scale(2.5F, 2.5F, 1F);
+//
+//                    PokemonGuiUtilsKt.drawProfilePokemon(
+//                            new RenderablePokemon(species, new LinkedHashSet<>(aspectsToDraw), ItemStack.EMPTY), matrices,
+//                            QuaternionUtilsKt.fromEulerXYZDegrees(new Quaternionf(), new Vector3f(13F, 35F, 0F)),
+//                            PoseType.PROFILE, state, 0F, 4.5F,
+//                            true, false, 1F, 1F, 1F, 1F, 0f, 0f);
+//
+//                    matrices.pop();
+//                    context.disableScissor();
+//                } else {
+//                    blitk(matrices, unknownIcon, startPosX + 8.5, startPosY + 9, 10, 8);
+//
+//                    if(!species.getImplemented()) {
+//                        blitk(matrices, unimplementedIcon,
+//                                (startPosX + 14) / SCALE, (startPosY + 15.5) / SCALE,
+//                                7, 7, 0, 0, 7, 7,
+//                                0, 1, 1, 1, 1, true, SCALE);
+//                    }
+//                }
+//
+//                // Ensure elements are not hidden behind Pokémon render
+//                matrices.push();
+//                matrices.translate(0.0, 0.0, 100.0);
+//
+//                RenderHelperKt.drawScaledText(context,
+//                        null, speciesNumber,
+//                        startPosX + 1.5,//2,
+//                        startPosY + 2.5,//2
+//                        SCALE, 1F, Integer.MAX_VALUE, 0xFFFFFFFF,
+//                        false, true, null, null);
+//
+//                if(discoveryLevel == PokedexEntryProgress.CAUGHT) {
+//                    blitk(matrices, caughtIcon, (startPosX + 18) / SCALE, (startPosY + 1.5) / SCALE,
+//                            11, 11, 0, 0, 11, 11, 0,
+//                            1, 1, 1, 1, true, SCALE);
+//                }
+//
+//                matrices.pop();
+//            }
         }
 
         @Override

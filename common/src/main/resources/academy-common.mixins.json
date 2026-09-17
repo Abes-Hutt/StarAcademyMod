@@ -15,7 +15,6 @@
     "MixinEnderDragonEntityRenderer",
     "MixinHandledScreen",
     "MixinInGameHud",
-    "MixinInventoryScreen",
     "MixinMinecraftClient",
     "MixinModelLoader",
     "MixinPlayerEntityRenderer",
@@ -30,6 +29,7 @@
     "cobblemon.MixinSelectionButton",
     "cobblemon.MixinStarterSelectionScreen",
     "display.MixinBlockFrameBlockRenderer",
+    "emojiful.TextRendererMixin",
     "itemzoomer.MixinZoomRenderer",
     "megashowdown.MixinBattleTargetSelection"
   ],
@@ -61,7 +61,6 @@
     "cobblemon.MixinFormDexRecord",
     "cobblemon.MixinPlayerSpawnerFactory",
     "cobblemon.MixinPokemonBattle",
-    "cobblemon.MixinPokemonEntity",
     "cobblemon.MixinShinyCalculationEvent",
     "eternalstarlight.MixinESChunkGenerator",
     "extraquests.MixinTimerProvider",

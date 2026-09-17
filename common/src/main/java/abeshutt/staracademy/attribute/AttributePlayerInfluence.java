@@ -2,7 +2,6 @@ package abeshutt.staracademy.attribute;
 
 import abeshutt.staracademy.math.Rational;
 import abeshutt.staracademy.proxy.AttributeHolder;
-import com.cobblemon.mod.common.api.spawning.SpawnBucket;
 import com.cobblemon.mod.common.api.spawning.detail.SpawnAction;
 import com.cobblemon.mod.common.api.spawning.detail.SpawnDetail;
 import com.cobblemon.mod.common.api.spawning.influence.SpawningInfluence;
@@ -63,10 +62,10 @@ public class AttributePlayerInfluence implements SpawningInfluence {
     }
 
     @Override
-    public void affectBucketWeights(@NotNull Map<SpawnBucket, Float> bucketWeights) {
-        for (SpawnBucket bucket : bucketWeights.keySet()) {
+    public void affectBucketWeights(@NotNull Map<String, Float> bucketWeights) {
+        for (String bucket : bucketWeights.keySet()) {
             float weight = bucketWeights.get(bucket);
-            float newWeight = AttributeHolder.getRoot(this.player).path(ofBucketWeight(bucket.getName())).map(attribute -> {
+            float newWeight = AttributeHolder.getRoot(this.player).path(ofBucketWeight(bucket)).map(attribute -> {
                 Option<Rational> result = attribute.get(Option.present(Rational.of(weight)), AttributeContext.random());
                 return result.isPresent() ? result.get().floatValue() : weight;
             }).orElse(weight);
