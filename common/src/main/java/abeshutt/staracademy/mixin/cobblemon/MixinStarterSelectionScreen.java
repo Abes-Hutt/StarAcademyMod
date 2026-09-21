@@ -49,7 +49,6 @@ public abstract class MixinStarterSelectionScreen extends Screen implements Prox
     }
 
     @Shadow protected abstract void init();
-    @Shadow protected abstract void setCurrentSelection();
     @Shadow public abstract void setCurrentCategory(@NotNull RenderableStarterCategory category);
 
     @Shadow
