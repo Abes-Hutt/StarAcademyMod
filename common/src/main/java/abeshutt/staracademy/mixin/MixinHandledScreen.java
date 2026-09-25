@@ -61,7 +61,8 @@ public class MixinHandledScreen {
     @Inject(method = "render", at = @At("RETURN"))
     protected void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         long handle = MinecraftClient.getInstance().getWindow().getHandle();
-        boolean broadcastPressed = InputUtil.isKeyPressed(handle, ModKeyBindings.BROADCAST_ITEM.boundKey.getCode());
+        var broadcastCode = ModKeyBindings.BROADCAST_ITEM.boundKey.getCode();
+        boolean broadcastPressed = broadcastCode != -1 && InputUtil.isKeyPressed(handle, broadcastCode);
 
         if(this.focusedSlot != null && !this.academy$broadcastKeyDown && broadcastPressed) {
             NetworkManager.sendToServer(new BroadcastItemC2SPacket(this.focusedSlot.id));
@@ -69,7 +70,8 @@ public class MixinHandledScreen {
 
         this.academy$broadcastKeyDown = broadcastPressed;
 
-        boolean togglePressed = InputUtil.isKeyPressed(handle, ModKeyBindings.TOGGLE_ARMOR_DISPLAY.boundKey.getCode());
+        var toggleArmorDisplayCode = ModKeyBindings.TOGGLE_ARMOR_DISPLAY.boundKey.getCode();
+        boolean togglePressed = toggleArmorDisplayCode != -1 && InputUtil.isKeyPressed(handle, toggleArmorDisplayCode);
 
         if(this.focusedSlot != null && !this.academy$toggleKeyDown && togglePressed) {
             NetworkManager.sendToServer(new ToggleArmorDisplayC2SPacket(this.focusedSlot.id));
